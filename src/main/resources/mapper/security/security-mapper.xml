@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sh.security.model.dao.SecurityDao">
+
+	<select id="loadUserByUsername" resultMap="empAuthMap">
+		select 
+			*
+		from
+			emp
+		where
+			emp_id = #{username}
+	</select>
+<!-- 	<select id="selectAuthorities" resultMap="authorityMap">
+		select 
+			*
+		from
+			authority
+		where
+			emp_id = #{username}
+	</select> -->
+	<resultMap type="emp" id="empAuthMap">
+<!-- 		<id column="emp_id" property="empId"/> -->
+		<!-- <collection property="authorities" column="member_id" ofType="simpleGrantedAuthority" select="selectAuthorities"/>
+ -->	</resultMap>
+	<!-- <resultMap type="simpleGrantedAuthority" id="authorityMap">
+		<constructor>
+			<arg column="auth" javaType="string"/>
+		</constructor>
+	</resultMap> -->
+	
+</mapper>

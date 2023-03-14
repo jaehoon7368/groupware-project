@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- #7.1. 암호화 처리 빈 BCryptPasswordEncoder 등록 -->
+	<beans:bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bcryptPasswordEncoder" />
+
+	<!-- #7.2 자원별 권한여부설정 -->
+	<http pattern="/resources/**" security="none" />
+	<http auto-config="true">
+		<intercept-url pattern="/" access="permitAll"/>
+		<intercept-url pattern="/index.jsp" access="permitAll"/>
+		<intercept-url pattern="/emp/**" access="permitAll"/>		
+		<form-login 
+			login-page="/"
+			login-processing-url="/emp/login.do"
+			username-parameter="empId"
+			authentication-success-forward-url="/loginSuccess.do"/>
+			<logout
+				logout-url="/member/memberLogout.do"
+				logout-success-url="/"/>
+				
+		<remember-me 
+			data-source-ref="dataSource"
+			token-validity-seconds="1209600"/> <!-- 2주 (60 *  60 * 24 * 14) -->
+			
+		<access-denied-handler error-page="/error/accessDenied.do"/>
+	</http>
+	
+	<!-- #7.3 인증매니져 설정 -->
+	<authentication-manager>
+		<authentication-provider user-service-ref="securityService">
+			<password-encoder ref="bcryptPasswordEncoder"/>
+			<!-- 
+			<user-service>
+				<user 
+					name="honggd"
+					password="$2a$10$u2AogEisfk6QiWBJT1QsLOY3wqFdQZ9dlATuzG8SzFj/5/cAHvheS" 
+					authorities="ROLE_USER"/>
+				<user 
+					name="admin"
+					password="$2a$10$t9b2beNmjqNCpgrdzQFOge70xsWBHv88b3UFdtMwT8rxn0MFHAjV2" 
+					authorities="ROLE_USER,ROLE_ADMIN"/>
+			</user-service>
+			 -->
+		</authentication-provider>
+	</authentication-manager>
+	
+	<!-- #7.4 security service/dao 빈으로 등록 -->
+	<context:component-scan base-package="com.sh.security"/>
+	<mybatis-spring:scan base-package="com.sh.security.**.dao"/>
+</beans:beans>

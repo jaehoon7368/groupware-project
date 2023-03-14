@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="org.springframework.security.core.authority.SimpleGrantedAuthority" alias="simpleGrantedAuthority"/>
+		<package name="com.sh.groupware"/><!-- 지정한 패키지 하위의 모든 클래스를 소문자로 시갖하는 별칭으로 등록 -->
+	</typeAliases>
+	
+	<typeHandlers>
+		<!-- <typeHandler handler="com.sh.spring.common.typehandler.StringArrayTypeHandler"/> -->
+		<package name="com.sh.groupware.common.typehandler"/>
+	</typeHandlers>
+	
+</configuration>

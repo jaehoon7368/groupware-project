@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	<!-- 기본 namespace는 mvc로 지정했으므로, mvc태그는 namespace생략, 그외 태그는 namespace:tag형식으로 작성해야 한다. -->
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<!-- mvc관련 annotation 설정. @Controller @Service @Repository -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<!-- static자원 src/main/webapp/resources 하위의 static자원 요청시 해당경로에서 처리하도록 한다. -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<!-- controller의 handler메소드(웹요청처리메소드)가 리턴한 viewName을 완성해서 처리하는 빈 -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<!-- #13.1 jsonView 빈등록 -->
+	<beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView">
+		<beans:property name="contentType" value="application/json;charset=utf-8" />
+	</beans:bean>
+	<!-- #13.2 BeanNameViewResolver 등록 -->
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+	<!-- 처리순서 1로 높혀서 InternalResourceViewResolver보다 먼저 처리되도록 함. -->
+		<beans:property name="order" value="1"/> 
+	</beans:bean>
+	
+	<!-- 
+		base-package 하위의 @Component 클래스를 servlet-context에 빈으로 등록해서 관리
+	 -->
+	<context:component-scan base-package="com.sh.groupware" />
+	
+	<!-- #8. interceptor 등록 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/**/" />
+			<beans:bean class="com.sh.groupware.common.interceptor.LoggerInterceptor"></beans:bean>
+		</interceptor>
+		<!-- 
+		<interceptor>
+			<mapping path="/member/memberDetail.do" />
+			<mapping path="/member/memberUpdate.do" />
+			<mapping path="/board/**.do" />
+			<exclude-mapping path="/board/boardList.do"/>
+			<exclude-mapping path="/board/boardDetail.do"/>
+			<exclude-mapping path="/board/fileDownload.do"/>
+			<beans:bean class="com.sh.spring.common.interceptor.LoginInterceptor" />
+		</interceptor>
+		 -->
+	</interceptors>
+	
+	<!-- #10.1 aop관련 어노테이션 등록설정 -->
+	<!-- #12.1 root-context의 트랜잭션 설정을 servlet-context에도 적용 -->
+	<aop:aspectj-autoproxy />
+	
+	<!-- #11.1 파일업로드 처리용 MultipartResolver 빈 등록 -->
+	<beans:bean
+		id="multipartResolver" 
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<beans:property name="maxUploadSize" value="52428800"/><!-- 요청된 최대파일크기 50mb(50 * 1024 * 1024) -->
+			<beans:property name="maxUploadSizePerFile" value="10485760"/><!-- 파일하나당 최대크기 10mb(10 * 1024 * 1024) -->
+			<beans:property name="maxInMemorySize" value="10240"/><!-- 메모리최대크기가 넘는 파일을 임시파일로 저장 10kb(10 * 1024) -->
+	</beans:bean>
+	
+	<!-- #12.1. jacksonMessageConverter 빈 등록 -->
+    <beans:bean 
+        id="jacksonMessageConverter" 
+        class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+    <!-- messageConverter 등록 -->
+    <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <beans:property name="messageConverters">
+            <beans:list>
+                <beans:ref bean="jacksonMessageConverter"/>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+	
+</beans:beans>

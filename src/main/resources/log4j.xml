@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Appenders : 로그출력 -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- 파일출력용 Appender -->
+	<!-- %F 파일명 %L 라인넘버-->
+	<appender name="fileLogger" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${catalina.base}/logs/hello-spring/hello-spring.log"/>
+        <param name="append" value="true"/>
+        <param name="datePattern" value=".yy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p:[%d{yy-MM-dd HH:mm:ss}] %c(%L) - %m%n" />
+        </layout>
+    </appender>
+    
+    <appender name="sqlLogger" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p: %m%n" />
+        </layout>
+    </appender>
+
+  
+  	<!-- Query Loggers  -->
+    <logger name="jdbc.sqlonly" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="sqlLogger"/>
+    </logger>
+    <logger name="jdbc.resultsettable" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="sqlLogger"/>
+    </logger>
+	
+	<!-- logger : 로그수집 -->
+	<!-- Application Loggers -->
+	<logger name="com.sh.groupware">
+		<level value="debug" /><!-- info이상만 출력(info, warn, error, fatal), info하위는 생략(debug, trace) -->
+	</logger>
+	
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.beans">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.context">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="info" />
+	</logger>
+
+	<!-- Root Logger -->
+	<root>
+		<priority value="warn" />
+		<appender-ref ref="console" />
+		<appender-ref ref="fileLogger" />
+	</root>
+	
+</log4j:configuration>
