@@ -1,0 +1,73 @@
+@charset "UTF-8";
+
+/* 보고 홈의 진행중인 보고 */
+.div-report {
+  width: 250px;
+  display: block;
+  border-radius: 10px;
+  border: solid 1px lightgray;
+  margin-bottom: 30px;
+}
+
+.div-report-tbl {
+  width: 100%;
+  border-bottom: solid 1px lightgray;
+}
+
+.div-report-tbl table {
+  width: 100%;
+  table-layout: fixed;
+  padding: 20px 0;
+}
+
+.div-report-tbl tr {
+  width: 100%;
+}
+
+.div-report-tbl td {
+  padding: 0 10px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.report-day {
+  font-size: x-large;
+}
+
+.report-title {
+ font-size: medium;
+}
+
+.div-report-btn {
+  padding: 10px 0;
+}
+
+.report-btn {
+  width: 100%;
+  border: none;
+  border-radius: 0;
+}
+
+/* 보고 홈의 최근 생성된 보고 */
+.report-list-tbl {
+  width: 100%;
+  padding: 0;
+}
+
+.report-list-tbl table {
+  width: 100%;
+  margin: 10px 0;
+  border-collapse: collapse;
+}
+
+.report-list-tbl th, .report-list-tbl td {
+  padding: 10px 0;
+}
+
+.report-list-tbl th {
+  font-size: small;
+  font-weight: normal;
+  border-top: solid 1px lightgray;
+  border-bottom: solid 1px lightgray;
+}

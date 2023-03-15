@@ -53,7 +53,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active">
+								<a href="${pageContext.request.contextPath}/report/report.do" class="is-active">
 									<i class="large fa fa-solid fa-file"></i>
 									<span class="app-dashboard-sidebar-text">보고</span>
 								</a>
