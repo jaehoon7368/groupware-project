@@ -213,3 +213,17 @@
 	resize: none;
 	margin: 0;
 }
+
+
+/* reportCreate.jsp */
+.div-report-frm {
+	width: 100%;
+}
+
+.div-report-frm table {
+	width: 100%;
+}
+
+.div-report-frm textarea {
+	resize: none;
+}
