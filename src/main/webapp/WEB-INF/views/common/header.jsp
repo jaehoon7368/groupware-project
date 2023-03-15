@@ -71,13 +71,13 @@
 								</a>
 							</li>
 							<li>
-								<a href="${pageContext.request.contextPath}/board/boardList.do" class="is-active">
+								<a href="#" class="is-active">
 									<i class="large fa fa-solid fa-phone-volume"></i>
 									<span class="app-dashboard-sidebar-text">주소록</span>
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active">
+								<a href="${pageContext.request.contextPath}/board/boardHome.do" class="is-active">
 									<i class="large fa fa-solid fa-list"></i>
 									<span class="app-dashboard-sidebar-text">게시판</span>
 								</a>
