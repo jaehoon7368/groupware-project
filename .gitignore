@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,maven,eclipse,windows,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,maven,eclipse,windows,macos
 
+### Custom ###
+src/main/resources/datasource.properties
+
+
 ### Eclipse ###
 .metadata
 bin/
