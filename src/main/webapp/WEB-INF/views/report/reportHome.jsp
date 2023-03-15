@@ -11,50 +11,9 @@
 	</jsp:include>
 	
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css">
-		    
-                <div class="all-container app-dashboard-body-content off-canvas-content" data-off-canvas-content>
-					<!-- 왼쪽 추가 메뉴 -->
-					<div class="home-container left-container">
-						<div class="container-title">보 고</div>
-						<div class="container-btn">
-							<button>새로 만들기</button>
-						</div>
-						<div class="accordion-box">
-							<ul class="container-list">
-								<li>
-									<p class="title font-medium">기능별 메뉴1</p>
-									<div class="con">
-										<ul class="container-detail font-small">
-											<li><a class="container-a" href="#">어어어</a></li>
-											<li><a class="container-a" href="#">오오오</a></li>
-											<li><a class="container-a" href="#">어어어</a></li>
-										</ul>
-									</div>
-								</li>
-								<li>
-									<p class="title font-medium">기능별 메뉴2</p>
-									<div class="con">
-										<ul class="container-detail font-small">
-											<li><a class="container-a" href="#">어어어</a></li>
-											<li><a class="container-a" href="#">오오오</a></li>
-											<li><a class="container-a" href="#">어어어</a></li>
-										</ul>
-									</div>
-								</li>
-								<li>
-									<p class="title font-medium">기능별 메뉴3</p>
-									<div class="con">
-										<ul class="container-detail font-small">
-											<li><a class="container-a" href="#">어어어</a></li>
-											<li><a class="container-a" href="#">오오오</a></li>
-											<li><a class="container-a" href="#">어어어</a></li>
-										</ul>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<!-- 왼쪽 추가 메뉴 end -->
+	
+	<jsp:include page="/WEB-INF/views/report/reportLeftBar.jsp" />
+	
 					
 					<div class="home-container">
 						<!-- 상단 타이틀 -->
@@ -92,7 +51,40 @@
 						
 						<!-- 본문 -->
 						<div>
-							<div class="div-padding">
+							<div class="div-padding div-report-ing">
+								<div class="div-report">
+									<div class="div-report-tbl">
+										<table class="font-small">
+                                            <colgroup>
+                                                <col width="35%" />
+                                                <col width="65%" />
+                                            </colgroup>
+											<tbody>
+												<tr>
+													<td colspan="2" class="report-year">2023</td>
+												</tr>
+												<tr>
+													<td colspan="2" class="report-day">02/15(수)</td>
+												</tr>
+												<tr>
+													<td colspan="2" class="report-title">보고이름</td>
+												</tr>
+												<tr>
+													<td>부서</td>
+													<td>다우그룹</td>
+												</tr>
+												<tr>
+													<td>보고현황</td>
+													<td>보고자 0명 (미보고자 3명)</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="div-report-btn">
+										<button class="report-btn">보고하기</button>
+									</div>
+								</div>
+								
 								<div class="div-report">
 									<div class="div-report-tbl">
 										<table class="font-small">
@@ -126,6 +118,13 @@
 									</div>
 								</div>
 							</div>
+							<script>
+								document.querySelectorAll('.div-report').forEach((report) => {
+									report.addEventListener('click', (e) => {
+										location.href = '${pageContext.request.contextPath}/report/reportForm.do';
+									});
+								});
+							</script>
 
                             <div>
                                 <div class="div-report-list">

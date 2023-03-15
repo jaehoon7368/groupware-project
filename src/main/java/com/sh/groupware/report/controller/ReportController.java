@@ -13,7 +13,17 @@ public class ReportController {
 
 	@GetMapping("/report.do")
 	public String report() {
-		return "report/report";
+		return "report/reportHome";
 	} // report() end
+	
+	@GetMapping("/reportForm.do")
+	public String reportForm() {
+		return "report/reportForm";
+	} // reportForm() end
+	
+	@GetMapping("/reportCreate.do")
+	public String reportCreate() {
+		return "report/reportCreate";
+	} // reportCreate() end
 	
 } // class end

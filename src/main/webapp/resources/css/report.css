@@ -1,12 +1,22 @@
 @charset "UTF-8";
 
+/* reportHome.jsp */
 /* 보고 홈의 진행중인 보고 */
+.div-report-ing {
+	display: flex;
+}
+
 .div-report {
   width: 250px;
   display: block;
   border-radius: 10px;
   border: solid 1px lightgray;
   margin-bottom: 30px;
+  margin-right: 20px;
+}
+
+.div-report:hover {
+	cursor: pointer;
 }
 
 .div-report-tbl {
@@ -70,4 +80,136 @@
   font-weight: normal;
   border-top: solid 1px lightgray;
   border-bottom: solid 1px lightgray;
+}
+
+
+/* reportForm.jsp */
+/* 보고자 제외 */
+.div-report-no {
+	padding: 0 30px;
+	padding-bottom: 10px;
+	border-bottom: solid 1px lightgray;
+}
+
+.div-report-no button {
+	border-radius: 5px;
+}
+
+.report-no-modal {
+	width: 300px;
+}
+
+.report-no-modal-title {
+	margin-top: 20px;
+	margin-bottom: 5px;
+}
+
+.report-no-modal-fieldset {
+	margin-top: 0;
+	margin-botton: 10px;
+	padding: 5px 10px;
+}
+
+.report-no-modal-btn {
+	text-align: right;
+}
+
+.report-no-modal-btn button {
+	margin-left: 5px;
+	border-radius: 5px;
+}
+
+.btn-close {
+	border: none;
+	padding: 5px;
+}
+
+/* 미보고자 */
+.div-unreport {
+	padding: 20px 30px;
+	background-color: #ffeaeb;
+}
+
+.div-unreport-title {
+	margin-bottom: 5px;
+	color: red;
+	font-weight: bold;
+}
+
+.div-unreport-all {
+	display: flex;
+}
+
+.div-unreport-one {
+	width: 200px;
+	display: flex;
+	align-items: center;
+	background-color: #fff;
+	margin-right: 10px;
+}
+
+.div-unreport-one div {
+	padding: 10px;
+}
+
+.div-unreport-one div:last-of-type {
+	padding: 0;
+}
+
+.div-unreport-one img {
+	border-radius: 0;
+}
+
+/* 보고 작성 */
+.div-report-write {
+	margin: 10px;
+	border: solid 3px lightgray;
+}
+
+.div-report-write-name {
+	border-bottom: solid 1px lightgray;
+}
+
+.div-report-write-content textarea {
+	resize: none;
+}
+
+.div-report-write-btn {
+	text-align: center;
+	border-top: solid 1px lightgray;
+}
+
+.div-report-write-btn button {
+	border-radius: 5px;
+}
+
+/* 보고 댓글 */
+.div-report-commend {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	margin-top: 30px;
+	padding: 20px;
+	border-top: solid 1px lightgray;
+}
+
+.div-report-commend-all {
+	width: 100%;
+	display: flex;
+	align-items: baseline;
+}
+
+.div-report-commend-all div {
+	margin: 0 5px;
+	flex-shrink: 0;
+}
+
+.div-report-commend-all div:nth-of-type(2) {
+	width: 85%;
+}
+
+.div-report-commend-all textarea {
+	width: 100%;
+	resize: none;
+	margin: 0;
 }
