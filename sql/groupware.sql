@@ -30,6 +30,20 @@ create table dept (
     dept_title varchar2(20) not null,
     constraint pk_dept primary key (dept_code)
 );
+-- 첨부파일
+create table attachment (
+    no varchar2(15) not null,
+    original_filename varchar2(200) not null,
+    rename_filename varchar2(200) not null,
+    reg_date date default sysdate,
+    category char not null,
+    pk_no varchar2(15) not null,
+    constraint pk_attachment primary key (no),
+    constraint ck_attachment check (category in ('M', 'B', 'T', 'R'))
+);
+-- 첨부파일 시퀀스
+create sequence seq_attachment_no;
+
 
 insert into dept values('d1','인사총무팀');
 insert into job values('j1','사장',30);
