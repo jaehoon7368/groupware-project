@@ -159,7 +159,7 @@
 	<div>
 		<p>최신글 모음</p>
 	</div>
-	<div class="rigth-group">
+	<div class="right-group">
 		<div class="resent-every">
 			<p>전사게시판</p>
 				<ul>
