@@ -30,6 +30,49 @@ create table dept (
     dept_title varchar2(20) not null,
     constraint pk_dept primary key (dept_code)
 );
+-- 게시판
+create table board (
+    no varchar2(15) not null,
+    category varchar2(15) not null,
+    title varchar2(100) not null,
+    content varchar2(4000) not null,
+    read_count number default 0,
+    like_count number default 0,
+    created_date date default sysdate,
+    updated_date date,
+    emp_id varchar2(20) not null,
+    constraint pk_board primary key (no),
+    constraint fk_board_emp foreign key (emp_id) references emp (emp_id) on delete cascade
+);
+-- 댓글
+create table boardComment (
+    no varchar2(15) not null,
+    content varchar2(1000) not null,
+    reg_date date default sysdate,
+    comment_level number default 0,
+    ref_comment_no number,
+    board_no varchar2(15) not null,
+    emp_id varchar2(20) not null,
+    constraint pk_boardcomment primary key (no),
+    constraint fk_boardcomment_board foreign key (board_no) references board (no) on delete cascade,
+    constraint fk_boardcomment_emp foreign key (emp_id) references emp (emp_id) on delete cascade
+);
+-- 첨부파일
+create table attachment (
+    no varchar2(15) not null,
+    original_filename varchar2(200) not null,
+    rename_filename varchar2(200) not null,
+    reg_date date default sysdate,
+    category char not null,
+    pk_no varchar2(15) not null,
+    constraint pk_attachment primary key (no),
+    constraint ck_attachment check (category in ('M', 'B', 'T', 'R'))
+);
+
+create sequence seq_board_no;
+create sequence seq_attachment_no;
+create sequence seq_boardComment_no;
+
 
 insert into dept values('d1','인사총무팀');
 insert into job values('j1','사장',30);
