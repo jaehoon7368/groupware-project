@@ -18,7 +18,7 @@
 										<ul class="container-detail font-small">
 											<li><a class="container-a" href="${pageContext.request.contextPath}/sign/form/dayOff.do">연차신청서</a></li>
 											<li><a class="container-a" href="#">비품신청서</a></li>
-											<li><a class="container-a" href="#">출장신청서</a></li>
+											<li><a class="container-a" href="${pageContext.request.contextPath}/sign/form/trip.do">출장신청서</a></li>
 											<li><a class="container-a" href="#">사직서</a></li>
 										</ul>
 									</div>

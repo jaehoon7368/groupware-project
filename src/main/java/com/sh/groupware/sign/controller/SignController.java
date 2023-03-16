@@ -26,4 +26,9 @@ public class SignController {
 		return "form/dayOffForm";
 	} // dayOff() end
 	
+	@GetMapping("/form/trip.do")
+	public String trip() {
+		return "form/tripForm";
+	} // trip() end
+	
 } // class end
