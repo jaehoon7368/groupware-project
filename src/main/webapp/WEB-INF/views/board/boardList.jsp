@@ -5,55 +5,14 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/board.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/boardList.css">
+
 
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
 		<jsp:param value="게시판" name="title"/>
 	</jsp:include>
 
-				<div class="all-container app-dashboard-body-content off-canvas-content" data-off-canvas-content>
-					<!-- 왼쪽 추가 메뉴 -->
-					<div class="home-container left-container">
-						<div class="container-title"><a href="${pageContext.request.contextPath}/board/boardHome.do">게시판</a></div>
-						<div class="container-btn">
-							<button>글쓰기</button>
-						</div>
-						<div class="accordion-box">
-							<ul class="container-list">
-								<li>
-									<p class="title font-medium">즐겨찾기</p>
-									<div class="con">
-										<ul class="container-detail font-small">
-											<li><a class="container-a" href="#">어어어</a></li>
-											<li><a class="container-a" href="#">오오오</a></li>
-											<li><a class="container-a" href="#">어어어</a></li>
-										</ul>
-									</div>
-								</li>
-								<li>
-									<p class="title font-medium">공지게시판</p>
-									<div class="con">
-										<ul class="container-detail font-small">
-											<li><a class="container-a" href="#">공지게시판</a></li>
-											<li><a class="container-a" href="#">오오오</a></li>
-											<li><a class="container-a" href="#">어어어</a></li>
-										</ul>
-									</div>
-								</li>
-								<li>
-									<p class="title font-medium">부서게시판</p>
-									<div class="con">
-										<ul class="container-detail font-small">
-											<li><a class="container-a" href="#">어어어</a></li>
-											<li><a class="container-a" href="#">오오오</a></li>
-											<li><a class="container-a" href="#">어어어</a></li>
-										</ul>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<!-- 왼쪽 추가 메뉴 end -->
+	<jsp:include page="/WEB-INF/views/board/boardLeftBar.jsp" />
 					
 					<div class="home-container">
 						<!-- 상단 타이틀 -->
@@ -90,20 +49,21 @@
 						<!-- 상단 타이틀 end -->
 						
 						<!-- 본문 -->
-						<div class="div-padding"> 전체 게시판</div>
+						<div class="div-padding"></div>
 						
 	
-<section class="notice">
-  
+
+ <div class="content">
   <div id="board-button">
-  	<input type="button" value="글쓰기" id="board-btn" class=""/>
+  	<li><a href="${pageContext.request.contextPath}/board/boardForm.do">새글쓰기</a></li>
   	<input type="button" value="이동" id="board-btn" class=""/>
   	<input type="button" value="복사" id="board-btn" class=""/>
   	<input type="button" value="삭제" id="board-btn" class=""/>
   	<input type="button" value="공지로 등록" id="board-btn" class=""/>
   	<input type="button" value="목록 다운로드" id="board-btn" class=""/>
   </div>
-   
+  
+ <section class="notice">
   <!-- board list area -->
     <div id="board-list">
         <div class="container">
@@ -174,7 +134,8 @@
         </div>
     </div>
 </section>
-
+</div>
+<div class="div-padding"></div>
 <!-- 페이지바 -->
 
 <ul class="pagination text-center" role="navigation" aria-label="Pagination" data-page="6" data-total="16">

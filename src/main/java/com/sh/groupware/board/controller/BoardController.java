@@ -23,4 +23,11 @@ public class BoardController {
 	@GetMapping("/boardList.do")
 	private void boardList() {}
 	
+	@GetMapping("/boardForm.do")
+	private void boardForm() {}
+	
+	@GetMapping("/boardAdd.do")
+	private void boardCreate() {}
+	
+	
 }

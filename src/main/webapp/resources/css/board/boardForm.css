@@ -1,0 +1,24 @@
+.content {
+	display: block;
+	padding: 15px;
+}
+
+.target-select select {
+	width: 150px;
+}
+
+.write-table input {
+	width: 1200px;
+}
+
+.write-table td {
+	padding-left:90px;
+}
+
+.check-table td{
+	padding: 10px;
+}
+
+.div-report-write-btn {
+	text-align: center;
+}
