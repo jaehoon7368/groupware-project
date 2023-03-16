@@ -11,7 +11,7 @@
 						<div class="accordion-box">
 							<ul class="container-list">
 								<li>
-									<p class="title font-medium">기능별 메뉴1</p>
+									<p class="title font-medium">부서별 보고서</p>
 									<div class="con">
 										<ul class="container-detail font-small">
 											<li><a class="container-a" href="#">어어어</a></li>
@@ -21,17 +21,7 @@
 									</div>
 								</li>
 								<li>
-									<p class="title font-medium">기능별 메뉴2</p>
-									<div class="con">
-										<ul class="container-detail font-small">
-											<li><a class="container-a" href="#">어어어</a></li>
-											<li><a class="container-a" href="#">오오오</a></li>
-											<li><a class="container-a" href="#">어어어</a></li>
-										</ul>
-									</div>
-								</li>
-								<li>
-									<p class="title font-medium">기능별 메뉴3</p>
+									<p class="title font-medium">그 외 보고서</p>
 									<div class="con">
 										<ul class="container-detail font-small">
 											<li><a class="container-a" href="#">어어어</a></li>

@@ -463,7 +463,7 @@ button:hover {
 .home-container {
   width: 100%;
   min-width: 800px;
-  overflow: scroll;
+  overflow-y: scroll;
   height: 100%;
   padding: 0px;
 }
@@ -477,7 +477,7 @@ button:hover {
 .left-container {
   width: 250px;
   height: 100%;
-  overflow-y: auto;
+  /* overflow-y: none; */
   flex-shrink: 0;
   border-right: solid 2px #e3e3e3;
 }
@@ -524,7 +524,7 @@ p.title {
 
 .con {
   padding: 0 10px; 
-  display: none;
+  /* display: none; */
 }
 
 /* 상단 타이틀 */

@@ -89,7 +89,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active" title="전자결재">
+								<a href="${pageContext.request.contextPath}/sign/sign.do" class="is-active" title="전자결재">
 									<i class="large fa fa-solid fa-signature"></i>
 									<span class="app-dashboard-sidebar-text">전자결재</span>
 								</a>
