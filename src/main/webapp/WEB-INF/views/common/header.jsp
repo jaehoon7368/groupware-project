@@ -18,6 +18,8 @@
 		<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/foundation-icons/foundation-icons.css"> --%>
 		
 		<script src="https://kit.fontawesome.com/cbe4aa3844.js" crossorigin="anonymous"></script>
+			<link rel="stylesheet"
+				href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
 	</head>
 	<body>
 		<div class="app-dashboard shrink-medium">
@@ -59,13 +61,13 @@
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active">
+								<a href="${pageContext.request.contextPath }/reservation/reservation.do" class="is-active">
 									<i class="large fa fa-solid fa-check-to-slot"></i>
 									<span class="app-dashboard-sidebar-text">예약</span>
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active">
+								<a href="${pageContext.request.contextPath }/todo/todo.do"  class="is-active">
 									<i class="large fa fa-solid fa-list-ol"></i>
 									<span class="app-dashboard-sidebar-text">Todo</span>
 								</a>
