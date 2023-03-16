@@ -45,7 +45,7 @@
 								} else {
 									modal.style.display = 'inline-block';
 								}
-							});
+							}); 
 						</script>
 		<!-- 상단 타이틀 end -->
 		<!-- 본문 -->

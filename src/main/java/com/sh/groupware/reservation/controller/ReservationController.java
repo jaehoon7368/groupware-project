@@ -18,6 +18,6 @@ public class ReservationController {
 		
 		return "reservation/reservation";
 	}
-	
+	 
 
 }

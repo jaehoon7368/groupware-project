@@ -67,7 +67,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="${pageContext.request.contextPath }/todo/todo.do" class="is-active">
+								<a href="${pageContext.request.contextPath }/todo/todo.do"  class="is-active">
 									<i class="large fa fa-solid fa-list-ol"></i>
 									<span class="app-dashboard-sidebar-text">Todo</span>
 								</a>

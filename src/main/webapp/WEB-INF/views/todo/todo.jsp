@@ -34,7 +34,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> 
 		<script>
 							document.querySelector('#home-my-img').addEventListener('click', (e) => {
 								const modal = document.querySelector('#my-menu-modal');
