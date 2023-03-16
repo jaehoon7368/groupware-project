@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+/* signHome.jsp */
+/* 결재할 문서 */
+.div-sign-tobe {
+	width: 100%;
+	padding: 20px 30px;
+	border-top: solid 1px lightgray;
+	border-bottom: solid 1px lightgray;
+}
+
+.div-sign-tobe-non {
+	width: 100%;
+	padding: 50px 0;
+	text-align: center;
+	vertical-align: middle;
+	color: gray;
+}
+
+/* 기안 진행 문서 */
+.div-sign-all {
+	width: 100%;
+}
+
+.div-sign-all-title {
+	padding: 30px 30px 20px 30px;
+	font-size: large;
+}
+
+.div-sign-all-tbl {
+	width: 100%;
+}
+
+.div-sign-all-tbl table {
+	width: 100%;
+	text-align: center;
+	border-collapse: collapse;
+}
+
+.div-sign-all-tbl thead td {
+	font-size: small;
+	padding: 10px 0;
+	border-top: solid 1px lightgray;
+	border-bottom: solid 1px lightgray;
+}

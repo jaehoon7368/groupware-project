@@ -1,0 +1,187 @@
+@charset "UTF-8";
+
+/* 공통 */
+/* 결재 양식 상단 */
+.div-sign-btn {
+	width: 100%;
+	display: flex;
+	padding: 20px 30px;
+	border-bottom: solid 1px lightgray;
+}
+
+.div-sign-btn button {
+	margin: 0 5px;
+	border-radius: 5px;
+}
+
+/* 결재 양식 div */
+.div-sign-form {
+	padding-bottom: 10px;
+}
+
+.div-sign-form-detail {
+	margin: 10px;
+	border: solid 3px lightgray;
+}
+
+/* 결재 양식 하단 */
+.div-sign-bottom {
+	width: 100%;
+	border-top: solid 1px lightgray;
+}
+
+.div-sign-bottom-title {
+	width: 100%;
+	padding: 10px 20px;
+	border-bottom: solid 1px lightgray;
+}
+
+
+/* dayOffForm.jsp */
+/* 전체 표 */
+.sign-tbl {
+	width: 100%;
+	padding: 10px;
+}
+
+.sign-tbl-title {
+	text-align: center;
+	font-weight: bold;
+	padding: 20px;
+}
+
+/* 왼쪽 상단 표 */
+.sign-tbl-left {
+	width: 50%;
+}
+
+.sign-tbl-left-tbl {
+	width: 70%;
+	border: solid 1px #000;
+	border-collapse: collapse;
+}
+
+.sign-tbl-left-tbl td {
+	border: solid 1px #000;
+	padding: 5px;
+}
+
+.sign-tbl-left-title {
+	font-weight: bold;
+	text-align: center;
+	background-color: lightgray;
+}
+
+.sign-tbl-left-content {
+	text-align: left;
+}
+
+/* 우측 상단 */
+.sign-tbl-right {
+	width: 100%;
+	height: 100%;
+	text-align: right;
+}
+
+.sign-div-right {
+	width: 150px;
+	height: 130px;
+	display: inline-block;
+	text-align: right;
+}
+
+.sign-right-tbl {
+	width: 100%;
+	height: 130px;
+	border-collapse: collapse;
+}
+
+.sign-right-tbl th {
+	width: 20%;
+	text-align: center;
+	border: solid 1px #000;
+	border-right: none;
+	background-color: lightgray;
+}
+
+.sign-right-tbl td {
+	width: 100%;
+}
+
+.sign-right-tbl-line {
+	width: 100%;
+	height: 130px;
+	text-align: center;
+	border-collapse: collapse;
+}
+
+.sign-right-tbl-line td {
+	border: solid 1px #000;
+}
+
+.sign-right-tbl-line tr:nth-of-type(2) {
+	height: 100px;
+}
+
+.ok-sign {
+	width: 50px;
+	height: 50px;
+	margin-bottom: 5px;
+}
+
+.sign_name {
+	font-weight: bold;
+}
+
+/* 아래 표 */
+.div-sign-tbl {
+	padding: 10px;
+}
+
+.sign-tbl-bottom {
+	width: 100%;
+	border: solid 1px #000;
+	border-collapse: collapse;
+}
+
+.sign-tbl-bottom td {
+	border: solid 1px #000;
+	vertical-align: middle;
+	padding: 5px;
+}
+
+.sign-tbl-bottom td:first-of-type {
+	width: 130px;
+	background-color: lightgray;
+	text-align: center;
+	font-size: medium;
+	font-weight: bold;
+}
+
+.vacationType {
+	width: 30%;
+}
+
+.sign-tbl-bottom span {
+	display: inline-block;
+}
+
+.sign-tbl-bottom input, .sign-tbl-bottom select {
+	margin: 0;
+}
+
+.sign-tbl-bottom textarea {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	resize: none;
+}
+
+.sign-tbl-bottom tr:last-of-type td {
+	width: 100%;
+	height: 22px;
+	padding: 20px;
+	text-align: left;
+	font-weight: normal;
+	font-size: small;
+}
