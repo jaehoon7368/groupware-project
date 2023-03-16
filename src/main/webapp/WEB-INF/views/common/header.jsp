@@ -79,7 +79,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active">
+								<a href="${pageContext.request.contextPath}/board/boardHome.do" class="is-active">
 									<i class="large fa fa-solid fa-list"></i>
 									<span class="app-dashboard-sidebar-text">게시판</span>
 								</a>

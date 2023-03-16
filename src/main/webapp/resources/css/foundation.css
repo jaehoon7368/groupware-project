@@ -2729,7 +2729,7 @@ input[type='search'] {
 [type='file'],
 [type='checkbox'],
 [type='radio'] {
-  margin: 0 0 1rem; }
+  margin: 0 0 0rem; }
 
 [type='checkbox'] + label,
 [type='radio'] + label {
