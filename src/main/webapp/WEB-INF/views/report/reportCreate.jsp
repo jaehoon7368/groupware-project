@@ -52,7 +52,7 @@
 						<!-- 보고서 추가 -->
 						<div class="div-report-frm div-padding">
 							<form action="" name="reportCreateFrm">
-								<table>
+								<table class="font-small">
 									<tbody>
 										<tr>
 											<td>제목</td>
@@ -72,16 +72,25 @@
 										<tr>
 											<td>보고자</td>
 											<td>
-												<input type="radio" name="member" id="dd" /><label for="dd">부서원 전체</label><br />
+												<input type="radio" name="member" id="all" /><label for="all">부서원 전체</label><br />
+												<div id="reportAll" class="report-frm-div reportMem"></div>
 												<input type="radio" name="member" id="choice" /><label for="choice">직접 지정</label>
-												
+												<div id="reportChoice" class="report-frm-div reportMem">
+													<button class="add">+ 추가</button>
+												</div>
 											</td>
 										</tr>
 										<tr>
 											<td>참조자</td>
 											<td>
-												<input type="radio" name="reference" id="dd" /><label for="dd">부서원 전체</label><br />
-												<input type="radio" name="reference" id="choice" /><label for="choice">직접 지정</label>
+												<input type="radio" name="reference" id="user" /><label for="user">사용자</label><br />
+												<div id="referenceUser" class="report-frm-div references">
+													<button class="add">+ 추가</button>
+												</div>
+												<input type="radio" name="reference" id="dept" /><label for="dept">부서</label>
+												<div id="referenceDept" class="report-frm-div references">
+													<button class="add">+ 추가</button>
+												</div>
 											</td>
 										</tr>
 										<tr>
@@ -95,6 +104,32 @@
 								<script>
 									document.reportCreateFrm.addEventListener('submit', (e) => {
 										e.preventDefault();
+									});
+									
+									
+									// 보고자 부서원 전체 클릭 시 직접지정 아래에 div 숨기기
+									reportCreateFrm.querySelector('#all').addEventListener('click', (e) => {
+										reportChoice.style.display = '';
+									});
+
+									
+									// 보고자 직접지정 클릭 시 div 보이기
+									reportCreateFrm.querySelector('#choice').addEventListener('click', (e) => {
+										reportChoice.style.display = 'inline-block';
+									});
+									
+									
+									// 참조자 사용자 클릭 시 div 보이기 및 부서 아래에 div 숨기기
+									reportCreateFrm.querySelector('#user').addEventListener('click', (e) => {
+										referenceUser.style.display = 'inline-block';
+										referenceDept.style.display = '';
+									});
+
+									
+									// 참조자 부서 클릭 시 div 보이기 및 사용자 아래에 div 숨기기
+									reportCreateFrm.querySelector('#dept').addEventListener('click', (e) => {
+										referenceUser.style.display = '';
+										referenceDept.style.display = 'inline-block';
 									});
 								</script>
 							</form>
