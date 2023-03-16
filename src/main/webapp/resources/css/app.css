@@ -462,7 +462,7 @@ button:hover {
 
 .home-container {
   width: 100%;
-  min-width: 500px;
+  min-width: 800px;
   overflow: scroll;
   height: 100%;
   padding: 0px;
