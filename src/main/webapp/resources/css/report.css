@@ -268,3 +268,13 @@
 	border: none;
 	color: gray;
 }
+
+
+.div-emp-group {
+	height: 450px;
+}
+
+.div-emp-group .accordion-box {
+	height: 400px;
+	overflow-y: scroll;
+}
