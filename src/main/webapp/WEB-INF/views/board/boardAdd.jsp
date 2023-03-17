@@ -52,72 +52,186 @@
 <div class="content">
 	<form action="">
 		<table class="board-add">
-		
-			<div class="target-select">
-				<span>게시판 그룹</span>
-				<select value="" id="">
-					<option value="">다우그룹</option>
-				</select>
-			</div>
-			<tr>
-	  			<th>제목</td>
-	  			<td><input type="text" class="padding-input"/></td>
-	  		</tr>
-	  		<tr>
-	  			<th>설명</td>
-	  			<td><input type="text" class="padding-input"/></td>
-	  		</th>
-	  		<tr>
-				<th>유형</th>
-					<td><input type="checkbox" /></td>
-					<td><input type="checkbox" /></td>
-			</tr>
+			<colgroup>
+				<col width="130px">
+				<col width="*">
+			</colgroup>
 			
 			<tbody>
 				<tr>
-					<th>공유 부서 설정</th>
-						<td><input type="checkbox" />사용함</td>
-						<td><input type="checkbox" />사용하지 않음</td>
+					<th>
+						<span class="title">게시판 그룹</span>
+					</th>
+					<td>
+						<span class="select-wrap">
+							<select name="" id="select-group" style="width:100px;">
+								<option value="">다우그룹</option>
+							</select>
+						</span>
+						<span class="btn-wrap">
+							<span>+</span>
+							<span>게시판 그룹 선택</span>
+						</span>
+					</td>
 				</tr>
-				<tr>
-					<th>비공개 설정</th>
-						<td><input type="checkbox" />사용함</td>
-						<td><input type="checkbox" />사용하지 않음</td>
-				</tr>
-				<tr>
-					<th>익명 설정</th>
-						<td><input type="checkbox" />사용함</td>
-						<td><input type="checkbox" />사용하지 않음</td>
-				</tr>
-				<tr>
-					<th>말머리</th>
-						<td><input type="checkbox" />사용함</td>
-						<td><input type="checkbox" />사용하지 않음</td>
-				</tr>
-				<tr>
-					<th>게시물에 메일발송<br />버튼을표시</th>
-						<td><input type="checkbox" />예</td>
-						<td><input type="checkbox" />아니오</td>
-				</tr>
-				<tr>
-					<th>비공개 문서 제목 표시</th>
-						<td><input type="checkbox" />제목만 표시</td>
-						<td><input type="checkbox" />비공개 문서로 표시</td>
-				</tr>
-				<tr>
-					<th>게시글 별 열람자 설정</th>
-						<td><input type="checkbox" />사용함</td>
-						<td><input type="checkbox" />사용하지 않음</td>
-				</tr>
-				<tr>
-					<th>댓글 작성</th>
-						<td><input type="checkbox" />허용</td>
-						<td><input type="checkbox" />허용하지 않음</td>
-				</tr>
+			<tr>
+	  			<th>
+	  				<span class="title">제목</span>
+	  			</th>
+	  			<td>
+	  				<input type="text" class="padding-input"/>
+	  			</td>
+	  		</tr>
+	  		<tr>
+	  			<th>
+	  				<span>설명</span>
+	  			</th>
+	  			<td>
+	  				<div class="textarea-wrap">
+	  					<textarea name="" id="" cols="100" rows="2"></textarea>
+	  				</div>
+	  			</td>
+	  		</tr>
+	  		<tr>
+				<th>
+					<span class="title">유형</span>
+				</th>
+					<td>
+						<ul>
+							<li>
+								<label for="">
+									<input type="radio" name="type" value="classic" checked="checked"/>
+									<span>이미지</span>
+									<span>클래식</span>
+								</label>
+							</li>
+							<li>
+								<label for="">
+									<input type="radio" name="type" value="stream" checked="checked"/>
+									<span>이미지</span>
+									<span>피드</span>
+								</label>
+							</li>
+						</ul>
+						<div class="desc">※ 게시판 유형은 나중에 변경하실 수 없습니다.</div>
+					</td>
+			</tr>
+			<tr class="line">
+				<td colspan="2">
+					<hr>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span>공유 부서 설정</span>
+				</th>
+				<td>
+					<span class="wrap-option">
+						<input type="radio" />
+						<lebel>사용함</lebel>
+					</span>
+					<span class="wrap-option">
+						<input type="radio" checked="checked"/>
+						<lebel>사용하지 않음</lebel>
+					</span>
+						<div class="desc">※ 게시판을 공유할 부서를 지정하세요</div>
+				</td>
+			</tr>
+			<tr class="line">
+				<td colspan="3">
+					<hr>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span>비공개 설정</span>
+				</th>
+				<td>
+					<span class="wrap-option">
+						<input type="radio" />
+						<lebel>사용함</lebel>
+					</span>
+					<span class="wrap-option">
+						<input type="radio" checked="checked"/>
+						<lebel>사용하지 않음</lebel>
+					</span>
+						<div class="desc">※ 게시판을 공개할 멤버를 지정하세요.</div>
+				</td>
+			</tr>
+			<tr class="line">
+				<td colspan="3">
+					<hr>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span>익명 설정</span>
+				</th>
+				<td>
+					<span class="wrap-option">
+						<input type="radio" />
+						<lebel>사용함</lebel>
+					</span>
+					<span class="wrap-option">
+						<input type="radio" checked="checked"/>
+						<lebel>사용하지 않음</lebel>
+					</span>
+						<div class="desc">※ 익명 설정은 나중에 변결하실 수 없습니다.</div>
+				</td>
+			</tr>
+			<tr class="line">
+				<td colspan="3">
+					<hr>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span>말머리</span>
+				</th>
+				<td>
+					<span class="wrap-option">
+						<input type="radio" />
+						<lebel>사용함</lebel>
+					</span>
+					<span class="wrap-option">
+						<input type="radio" checked="checked"/>
+						<lebel>사용하지 않음</lebel>
+					</span>
+				</td>
+			</tr>
+			<tr class="line">
+				<td colspan="3">
+					<hr>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span>댓글 작성</span>
+				</th>
+				<td>
+					<span class="wrap-option">
+						<input type="radio" checked="checked" />
+						<lebel>허용</lebel>
+					</span>
+					<span class="wrap-option">
+						<input type="radio" />
+						<lebel>허용하지 않음</lebel>
+					</span>
+				</td>
+			</tr>
+			<tr class="line">
+				<td colspan="3">
+					<hr>
+				</td>
+			</tr>
+
+				
+				
 			
 			</tbody>
 		</table>
 	</form>
+	
 	<div class="div-padding div-report-write-btn">
 		<button>만들기</button>
 		<button>취소</button>
