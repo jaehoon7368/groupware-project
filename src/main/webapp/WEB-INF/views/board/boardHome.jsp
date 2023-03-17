@@ -79,13 +79,7 @@
 								<span class="createDate">2023-03-16</span>
 							</div>
 						</div>
-
-					</div>
-					
-					<!-- 왼쪽 추가 메뉴 end -->
-
 					</li>
-
 					
 					<li class="article-data">
 						<div class="article-wrap">
@@ -104,73 +98,6 @@
 								<span class="createDate">2023-03-16</span>
 							</div>
 						</div>
-
-					
-						<script>
-							document.querySelector('#home-my-img').addEventListener('click', (e) => {
-								const modal = document.querySelector('#my-menu-modal');
-								const style =  modal.style.display;
-								
-								if (style == 'inline-block') {
-									modal.style.display = 'none';
-								} else {
-									modal.style.display = 'inline-block';
-								}
-							});
-						</script>
-					
-						<!-- 상단 타이틀 end -->
-						
-<!-- 본문 -->
-<div class="div-padding"></div>
-						
-	<div class="content-wrapper">
-	
-	
-		<section class="board-left">
-			<div class="" id="">
-				  <div class="">
-				      <div class="">
-				        <p class="author-mutual">
-				          본문내용
-				        </p>
-				      </div>
-					</div>
-			</div>
-		</section>
-	
-	
-		<section class="board-right">
-			<div>
-				<p>최신글 모음</p>
-			</div>
-			<div class="right-group">
-				<div class="resent-every">
-					<p>전사게시판</p>
-						<ul>
-							<li>2017년 하반기 야유회...</li>
-							<li>윤리경영 시행 안내</li>
-							<li>프린터교체에 따른 설치...</li>
-							<li>[공지] SMB 취약점을 이...</li>
-						</ul>
-				</div>
-	
-				<div class="resent-news">
-					<p>전사게시판</p>
-						<ul>
-							<li>5월, 전세계를 공포로 몰...</li>
-							<li>이번주에도 어김없이 '이...</li>
-						</ul>
-				</div>
-			</div>
-		</section>
-	</div>
-</div>
- <!-- 본문 div-padding 끝  -->
-	
-	
-	
-
 					</li>
 					
 					<li class="article-data">
@@ -303,7 +230,6 @@
 
 	</div>
 	<!-- content end -->
-
 
 
 
