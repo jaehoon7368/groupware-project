@@ -303,6 +303,11 @@ button:hover {
 }
 
 
+/* header.jsp 메뉴 크기 지정 */
+.nav-font-size {
+	font-size: 16px;
+}
+
 
 /* 상단에 조그만한 img */
 .my-img {
