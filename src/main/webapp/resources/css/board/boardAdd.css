@@ -1,0 +1,18 @@
+.board-add padding-input {
+	width: 1200px;
+}
+.board-add td {
+	padding-left: 30px;
+}
+
+.target-select select {
+	width: 150px;
+}
+
+.content {
+	padding:15px;
+}
+
+.div-report-write-btn {
+	text-align: center;
+}
