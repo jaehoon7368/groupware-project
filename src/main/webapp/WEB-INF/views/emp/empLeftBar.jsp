@@ -79,7 +79,7 @@
                                 </div>
                             </li>
                             <li>
-                                <p class="title font-medium font-bold"><a href="${pageContext.request.contextPath }/emp/empEnroll.do">인사정보 등록</a></p>
+                                <p class="title font-medium font-bold a-font"><a href="${pageContext.request.contextPath }/emp/empEnroll.do">인사정보 등록</a></p>
                             </li>
                         </ul>
                     </div>

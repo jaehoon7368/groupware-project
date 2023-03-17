@@ -414,3 +414,6 @@ p.title {
 .border-bottom{
     border-bottom: .5px solid gray;
 }
+.a-font{
+	text-decoration: none;
+}
