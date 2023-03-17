@@ -275,9 +275,6 @@ button:hover {
   cursor: pointer;
 }
 
-.accordion-box ul:hover {
-  cursor: pointer;
-}
 
 /* a태그 사용 시 파란 글씨를 검정으로 바꾸는 css */
 .container-a {
@@ -516,7 +513,12 @@ button:hover {
 
 .accordion-box {
   width: 100%;
+  height: auto;
   margin:  0 auto;
+}
+
+.accordion-box ul:hover {
+  cursor: pointer;
 }
 
 p.title {

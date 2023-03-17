@@ -17,7 +17,7 @@
 					<div class="font-small home-container">
 						<!-- 상단 타이틀 -->
 						<div class="top-container">
-							<div class="container-title">연차신청서</div>
+							<div class="container-title">비품신청서</div>
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
@@ -62,7 +62,7 @@
 									<tbody>
 										<tr>
 											<td colspan="2" class="sign-tbl-title font-large">
-												연차신청서
+												비품신청서
 											</td>
 										</tr>
 										<tr>
@@ -176,100 +176,56 @@
 								</table>
 								
 								<br />
-								<script>
-									const nowDate = Date.now();
-									const dateOff = new Date().getTimezoneOffset() * 60000;
-									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
-								</script>
 								<div class="div-sign-tbl">
 									<table class="sign-tbl-bottom">
 										<tbody>
-											<tr>
-												<td>
-													휴가&nbsp;종류
-												</td>
-												<td>
-													<select class="vacationType" name="vacationType" id="vacationType">
-														<option value="half">반차</option>
-														<option value="day">연차</option>
-													</select>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													기간&nbsp;및&nbsp;일시
-												</td>
-												<td>
-													<span>
-														<span>
-															<input id="start-date" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
-														</span>
-														&nbsp;~&nbsp; 
-														<span>
-															<input id="end-date" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
-														</span>
-														&nbsp;&nbsp;
-														<span>선택일수 : 
-															<span id="usingPointArea">1</span>
-														</span>
-													</span>
-													
-													<script>
-														const startDate = document.querySelector('#start-date');
-														startDate.min = today;
-														startDate.value = today;
-
-														const endDate = document.querySelector('#end-date');
-														endDate.min = today;
-														endDate.value = today;
-														
-														const usingPointArea = document.querySelector('#usingPointArea');
-														
-														startDate.addEventListener('change', (e) => {
-															/* 
-															console.log('change', startDate.value);
-															 */
-															endDate.min = startDate.value;
-															endDate.value = startDate.value;
-														});
-													</script>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													반차&nbsp;여부
-												</td>
-												<td>
-													<span id="vacationHalfArea">
-														<input type="checkbox" name="half" id="half"><label for="half">여</label>
-													</span> 
-												</td>
-											</tr>
-											<tr>
-												<td>
-													연차&nbsp;일수
-												</td>
-												<td>
-													<span id="restPointArea">
-														잔여연차 : *3*
-													</span>&nbsp;&nbsp;
-													<span id="applyPointArea">
-														신청연차 : *1*
-													</span> 
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<b style="color: rgb(255, 0, 0);">*</b>&nbsp;휴가&nbsp;사유 
-												</td>
-												<td>
-													<textarea class="txta_editor"></textarea>
+											<tr class="sign-tbl-bottom-tr">
+												<th>제목</th>
+												<td colspan="5">
+													<input type="text" name="title" id="title" />
 												</td>
 											</tr>
 											<tr class="sign-tbl-bottom-tr">
-												<td colspan="2" class="sign-tbl-bottom-content">
-													1. 연차의 사용은 근로기준법에 따라 전년도에 발생한 개인별 잔여 연차에 한하여 사용함을 원칙으로 한다. 단, 최초 입사시에는 근로 기준법에 따라 발생 예정된 연차를 차용하여 월 1회 사용 할 수 있다.<br> 2. 경조사 휴가는 행사일을 증명할 수 있는 가족 관계 증명서 또는 등본, 청첩장 등 제출<br> 3. 공가(예비군/민방위)는 사전에 통지서를, 사후에 참석증을 반드시 제출 
-												</td>
+												<th rowspan="2">품명</th>
+												<th rowspan="2">수량</th>
+												<th colspan="2">구매예정가격</th>
+												<th rowspan="2">용도</th>
+											</tr>
+											<tr class="sign-tbl-bottom-tr">
+												<th>단가</th>
+												<th>금액</th>
+											</tr>
+											<tr class="sign-tbl-bottom-tr">
+												<td><input type="text" name="name" id="name" /></td>
+												<td><input type="number" name="amount" id="amount" min="0" /></td>
+												<td><input type="number" name="price" id="price" min="0" /></td>
+												<td><input type="text" name="totalPrice" id="totalPrice" min="0" /></td>
+												<td><input type="text" name="purpose" id="purpose" /></td>
+											</tr>
+											<tr class="sign-tbl-bottom-tr">
+												<td><input type="text" name="name" id="name" /></td>
+												<td><input type="number" name="amount" id="amount" min="0" /></td>
+												<td><input type="number" name="price" id="price" min="0" /></td>
+												<td><input type="text" name="totalPrice" id="totalPrice" min="0" /></td>
+												<td><input type="text" name="purpose" id="purpose" /></td>
+											</tr>
+											<tr class="sign-tbl-bottom-tr">
+												<td><input type="text" name="name" id="name" /></td>
+												<td><input type="number" name="amount" id="amount" min="0" /></td>
+												<td><input type="number" name="price" id="price" min="0" /></td>
+												<td><input type="text" name="totalPrice" id="totalPrice" min="0" /></td>
+												<td><input type="text" name="purpose" id="purpose" /></td>
+											</tr>
+											<tr class="sign-tbl-bottom-tr">
+												<td><input type="text" name="name" id="name" /></td>
+												<td><input type="number" name="amount" id="amount" min="0" /></td>
+												<td><input type="number" name="price" id="price" min="0" /></td>
+												<td><input type="text" name="totalPrice" id="totalPrice" min="0" /></td>
+												<td><input type="text" name="purpose" id="purpose" /></td>
+											</tr>
+											<tr class="sign-tbl-bottom-tr">
+												<th colspan="2">합계</th>
+												<td colspan="3"></td>
 											</tr>
 										</tbody>
 									</table>

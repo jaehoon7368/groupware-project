@@ -176,24 +176,52 @@
 								</table>
 								
 								<br />
+								<script>
+									const nowDate = Date.now();
+									const dateOff = new Date().getTimezoneOffset() * 60000;
+									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
+								</script>
 								<div class="div-sign-tbl">
 									<table class="sign-tbl-bottom">
 										<tbody>
 											<tr class="sign-tbl-bottom-tr">
-												<td colspan="2" class="sign-tbl-bottom-td">
+												<td colspan="4" class="sign-tbl-bottom-td">
 													아래와 같이 출장신청서를 제출합니다.
 												</td>
 											</tr>
+											<tr class="trip-boss">
+												<td rowspan="2">출장자</td>
+												<td>부서</td>
+												<td>직책</td>
+												<td>성명</td>
+											</tr>
+											<tr class="sign-tbl-bottom-tr">
+												<td><input type="text" name="boss-dept" id="boss-dept" /></td>
+												<td><input type="text" name="boss-job" id="boss-job" /></td>
+												<td><input type="text" name="boss-name" id="boss-name" /></td>
+											</tr>
+											<tr class="trip-with">
+												<td rowspan="2">
+													<span>동행자</span>
+													<br />
+													<div class="trip-div">
+														<button id="plus" data-open="exampleModal1">추가</button>
+													</div>
+												</td>
+												<td>부서</td>
+												<td>직책</td>
+												<td>성명</td>
+											</tr>
+											<tr id="trip-with-tr" class="sign-tbl-bottom-tr">
+												<td><input type="text" name="with-dept" id="with-dept" /></td>
+												<td><input type="text" name="with-job" id="with-job" /></td>
+												<td><input type="text" name="with-name" id="with-name" /></td>
+											</tr>
 											<tr>
-												<script>
-													const nowDate = Date.now();
-													const dateOff = new Date().getTimezoneOffset() * 60000;
-													const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
-												</script>
 												<td>
 													기간&nbsp;및&nbsp;일시
 												</td>
-												<td>
+												<td colspan="3">
 													<span>
 														<span>
 															<input id="start-date" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
@@ -203,15 +231,37 @@
 															<input id="end-date" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
 														</span>
 														&nbsp;&nbsp;
-														<span id="usingPointArea">선택일수 : *1*</span>
+														<span>선택일수 : 
+															<span id="usingPointArea">1</span>
+														</span>
 													</span>
+													
+													<script>
+														const startDate = document.querySelector('#start-date');
+														startDate.min = today;
+														startDate.value = today;
+
+														const endDate = document.querySelector('#end-date');
+														endDate.min = today;
+														endDate.value = today;
+														
+														const usingPointArea = document.querySelector('#usingPointArea');
+														
+														startDate.addEventListener('change', (e) => {
+															/* 
+															console.log('change', startDate.value);
+															 */
+															endDate.min = startDate.value;
+															endDate.value = startDate.value;
+														});
+													</script>
 												</td>
 											</tr>
 											<tr>
 												<td>
 													출장지
 												</td>
-												<td>
+												<td colspan="3">
 													<input type="text" name="trip-where" id="trip-where" />
 												</td>
 											</tr>
@@ -219,7 +269,7 @@
 												<td>
 													출장 목적
 												</td>
-												<td>
+												<td colspan="3">
 													<textarea class="txta_editor"></textarea>
 												</td>
 											</tr>
@@ -229,6 +279,85 @@
 							</div>
 						</div>
 						<!-- 결재 문서 end -->
+						
+						<!-- 모달 -->
+						<div class="report-no-modal reveal" id="exampleModal1" data-reveal>
+							<h5>선택</h5>
+							<div>
+								<input type="text" name="search" id="search" placeholder="이름/부서/직급" />
+							</div>
+							<div class="div-emp-group">
+								<div class="accordion-box">
+									<ul class="container-list">
+										<li>
+											<p class="title font-medium">인사/총무</p>
+											<div class="con">
+												<ul class="container-detail font-small">
+													<li class="emp" data-dept="인사" data-job="차장" data-name="어어어">어어어 차장</li>
+													<li class="emp" data-dept="인사" data-job="팀장" data-name="오오오">오오오 팀장</li>
+													<li class="emp" data-dept="인사" data-job="사원" data-name="어어어">어어어 사원</li>
+												</ul>
+											</div>
+										</li>
+										<li>
+											<p class="title font-medium">개발</p>
+											<div class="con">
+												<ul class="container-detail font-small">
+													<li><a class="container-a" href="#">어어어 부장</a></li>
+													<li><a class="container-a" href="#">오오오 대리</a></li>
+													<li><a class="container-a" href="#">어어어 인턴</a></li>
+												</ul>
+											</div>
+										</li>
+										<li>
+											<p class="title font-medium">법무</p>
+											<div class="con">
+												<ul class="container-detail font-small">
+													<li><a class="container-a" href="#">어어어 부장</a></li>
+													<li><a class="container-a" href="#">오오오 대리</a></li>
+													<li><a class="container-a" href="#">어어어 인턴</a></li>
+												</ul>
+											</div>
+										</li>
+										<li>
+											<p class="title font-medium">인사</p>
+											<div class="con">
+												<ul class="container-detail font-small">
+													<li><a class="container-a" href="#">어어어 부장</a></li>
+													<li><a class="container-a" href="#">오오오 대리</a></li>
+													<li><a class="container-a" href="#">어어어 인턴</a></li>
+												</ul>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="font-small report-no-modal-btn">
+								<button data-close aria-label="Close reveal">닫기</button>
+							</div>
+							<button class="btn-close close-button" data-close aria-label="Close reveal" type="button">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<!-- 모달 end -->
+						<script>
+							document.querySelectorAll('.emp').forEach((li) => {
+								li.addEventListener('click', (e) => {
+									const dept = e.target.dataset.dept;
+									const job = e.target.dataset.job;
+									const name = e.target.dataset.name;
+									console.log(dept, job, name);
+									
+									const withDept = document.querySelector('#with-dept');
+									const withJob = document.querySelector('#with-job');
+									const withName = document.querySelector('#with-name');
+									
+									withDept.value = dept;
+									withJob.value = job;
+									withName.value = name;
+								});
+							});
+						</script>
 						
 						<div class="div-sign-bottom">
 							<div class="div-sign-bottom-title">

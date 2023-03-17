@@ -146,6 +146,16 @@
 	border-collapse: collapse;
 }
 
+.sign-tbl-bottom th {
+	border: solid 1px #000;
+	vertical-align: middle;
+	padding: 5px;
+	background-color: lightgray;
+	text-align: center;
+	font-size: medium;
+	font-weight: bold;
+}
+
 .sign-tbl-bottom td {
 	border: solid 1px #000;
 	vertical-align: middle;
@@ -189,4 +199,60 @@
 
 .sign-tbl-bottom tr[class=sign-tbl-bottom-tr] td[class=sign-tbl-bottom-td] {
 	text-align: center;
+}
+
+.sign-tbl-bottom tr[class=sign-tbl-bottom-tr] td {
+	height: 25px;
+}
+
+.sign-tbl-bottom tr[class=sign-tbl-bottom-tr] td input {
+	border: none;
+	box-shadow: none;
+}
+
+
+/* tripForm.jsp 출장자, 동행자 */
+.trip-boss td, .trip-with td {
+	background-color: lightgray;
+	text-align: center;
+	font-weight: bold;
+	font-size: medium;
+}
+
+/* 동행자 추가 버튼 */
+.trip-div button {
+	padding: 2px 8px;
+	border-radius: 5px;
+	color: gray;
+	border: solid 1px gray;
+}
+
+
+
+
+.div-emp-group {
+	height: 450px;
+}
+
+.div-emp-group .accordion-box {
+	height: 400px;
+	overflow-y: scroll;
+}
+
+.report-no-modal {
+	width: 300px;
+}
+
+.report-no-modal-btn {
+	text-align: center;
+}
+
+.report-no-modal-btn button {
+	margin-left: 5px;
+	border-radius: 5px;
+}
+
+.btn-close {
+	border: none;
+	padding: 5px;
 }
