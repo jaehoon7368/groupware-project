@@ -18,6 +18,8 @@
 		<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/foundation-icons/foundation-icons.css"> --%>
 		
 		<script src="https://kit.fontawesome.com/cbe4aa3844.js" crossorigin="anonymous"></script>
+			<link rel="stylesheet"
+				href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
 	</head>
 	<body>
 		<div class="app-dashboard shrink-medium">
@@ -41,61 +43,61 @@
 					<div class="app-dashboard-sidebar-inner">
 						<ul class="menu vertical">
 							<li>
-								<a href="${pageContext.request.contextPath}/home/home.do" class="is-active">
+								<a href="${pageContext.request.contextPath}/home/home.do" class="is-active" title="홈">
 									<i class="large fa fa-sharp fa-solid fa-house"></i>
 									<span class="app-dashboard-sidebar-text">홈</span>
 								</a>
 							</li>
 							<li>
-								<a href="${pageContext.request.contextPath}/mail/mail.do" class="is-active">
+								<a href="${pageContext.request.contextPath}/mail/mail.do" class="is-active" title="메일">
 									<i class="large fa fa-solid fa-envelope"></i>
 									<span class="app-dashboard-sidebar-text">메일</span>
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active">
+								<a href="${pageContext.request.contextPath}/report/report.do" class="is-active" title="보고">
 									<i class="large fa fa-solid fa-file"></i>
 									<span class="app-dashboard-sidebar-text">보고</span>
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active">
+								<a href="${pageContext.request.contextPath }/reservation/reservation.do" class="is-active" title="예약">
 									<i class="large fa fa-solid fa-check-to-slot"></i>
 									<span class="app-dashboard-sidebar-text">예약</span>
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active">
+								<a href="${pageContext.request.contextPath }/todo/todo.do" class="is-active" title="Todo">
 									<i class="large fa fa-solid fa-list-ol"></i>
 									<span class="app-dashboard-sidebar-text">Todo</span>
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active">
+								<a href="#" class="is-active" title="주소록">
 									<i class="large fa fa-solid fa-phone-volume"></i>
 									<span class="app-dashboard-sidebar-text">주소록</span>
 								</a>
 							</li>
 							<li>
-								<a href="${pageContext.request.contextPath}/board/boardHome.do" class="is-active">
+								<a href="${pageContext.request.contextPath}/board/boardHome.do" class="is-active" title="게시판">
 									<i class="large fa fa-solid fa-list"></i>
 									<span class="app-dashboard-sidebar-text">게시판</span>
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active">
+								<a href="#" class="is-active" title="캘린더">
 									<i class="large fa fa-solid fa-calendar-days"></i>
 									<span class="app-dashboard-sidebar-text">캘린더</span>
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active">
+								<a href="${pageContext.request.contextPath}/sign/sign.do" class="is-active" title="전자결재">
 									<i class="large fa fa-solid fa-signature"></i>
 									<span class="app-dashboard-sidebar-text">전자결재</span>
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active">
+								<a href="#" class="is-active" title="근태관리">
 									<i class="large fa fa-solid fa-briefcase"></i>
 									<span class="app-dashboard-sidebar-text">근태관리</span>
 								</a>

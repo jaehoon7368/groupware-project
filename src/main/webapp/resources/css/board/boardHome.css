@@ -1,4 +1,60 @@
 
+.left-board ul {
+	padding: 0px;
+	margin: 0px;
+}
+
+.left-header {
+	padding-left: 10px;
+	border-bottom: 1px solid #ccc;
+	padding:10px;
+}
+
+.left-header a {
+	padding: 10px;
+	
+}
+
+.article-list {
+	border-bottom:1px solid #ccc;
+	list-style: none;
+	padding: 15px;
+}
+.article-list li {
+   margin: -1px 0 0;
+   padding: 16px 24px;
+   border-bottom:1px solid #ccc;
+}
+
+.resent-group ul, li {
+	list-style: none;
+}
 
 
-asd
+.resent-group li {
+	padding:5px;
+}
+
+.right-header {
+	padding-left: 10px;
+	border-bottom: 1px solid #ccc;
+	padding:10px;
+}
+
+.right-header a {
+	padding: 10px;
+}
+
+.group-list {
+	border: 1px solid #ccc;
+	padding: 10px;
+	border-top: none;
+}
+
+.content {
+	display: flex;
+}
+
+.left-content {
+	width: 100%;
+}
