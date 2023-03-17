@@ -12,7 +12,7 @@
 
 				<div class="all-container app-dashboard-body-content off-canvas-content" data-off-canvas-content>
 					<!-- 왼쪽 추가 메뉴 -->
-					<div class="home-container left-container">
+					<div class="left-container">
 						<div class="container-title">각자 기능</div>
 						<div class="container-btn">
 							<button>새로 만들기</button>
