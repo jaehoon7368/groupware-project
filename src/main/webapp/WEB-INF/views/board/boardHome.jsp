@@ -53,6 +53,7 @@
 							</ul>
 						</div>
 					</div>
+					
 					<!-- 왼쪽 추가 메뉴 end -->
 					
 					<div class="home-container">
@@ -75,6 +76,7 @@
 								</div>
 							</div>
 						</div>
+					
 						<script>
 							document.querySelector('#home-my-img').addEventListener('click', (e) => {
 								const modal = document.querySelector('#my-menu-modal');
@@ -87,98 +89,53 @@
 								}
 							});
 						</script>
+					
 						<!-- 상단 타이틀 end -->
 						
-						<!-- 본문 -->
-						<div class="div-padding"></div>
+<!-- 본문 -->
+<div class="div-padding"></div>
 						
-<div class="content-wrapper">
-<section class="board-left">
-<nav id="board-nav">
-<a href="">즐겨찾기</a>
-<a href="">전체 게시판</a>
-</nav>
+	<div class="content-wrapper">
 	
-<div class="wrapper">
-	<div class="people-you-might-know" id="content">
-		  <div class="row add-people-section">
-		      <div class="about-people-author">
-		        <p class="author-name">
-		          Business Trip 규정
-		        </p>
-		        <p class="author-mutual">
-		          본문내용
-		        </p>
-		      </div>
-		      <table id="writer-info">
-			      	<td><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></td>
-			      	<td>김상후 대표이사</td>
-			      	<td>2022-12-08(목) 14:52</td>
-		      </table>
-		</div>
+	
+		<section class="board-left">
+			<div class="" id="">
+				  <div class="">
+				      <div class="">
+				        <p class="author-mutual">
+				          본문내용
+				        </p>
+				      </div>
+					</div>
+			</div>
+		</section>
+	
+	
+		<section class="board-right">
+			<div>
+				<p>최신글 모음</p>
+			</div>
+			<div class="right-group">
+				<div class="resent-every">
+					<p>전사게시판</p>
+						<ul>
+							<li>2017년 하반기 야유회...</li>
+							<li>윤리경영 시행 안내</li>
+							<li>프린터교체에 따른 설치...</li>
+							<li>[공지] SMB 취약점을 이...</li>
+						</ul>
+				</div>
+	
+				<div class="resent-news">
+					<p>전사게시판</p>
+						<ul>
+							<li>5월, 전세계를 공포로 몰...</li>
+							<li>이번주에도 어김없이 '이...</li>
+						</ul>
+				</div>
+			</div>
+		</section>
 	</div>
-	<div class="people-you-might-know" id="content">
-		  <div class="row add-people-section">
-		      <div class="about-people-author">
-		        <p class="author-name">
-		          Business Trip 규정
-		        </p>
-		        <p class="author-mutual">
-		          본문내용
-		        </p>
-		      </div>
-		      <table id="writer-info">
-			      	<td><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></td>
-			      	<td>김상후 대표이사</td>
-			      	<td>2022-12-08(목) 14:52</td>
-		      </table>
-		</div>
-	</div>
-	<div class="people-you-might-know" id="content">
-		  <div class="row add-people-section">
-		      <div class="about-people-author">
-		        <p class="author-name">
-		          Business Trip 규정
-		        </p>
-		        <p class="author-mutual">
-		          본문내용
-		        </p>
-		      </div>
-		      <table id="writer-info">
-			      	<td><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></td>
-			      	<td>김상후 대표이사</td>
-			      	<td>2022-12-08(목) 14:52</td>
-		      </table>
-		</div>
-	</div>
-</div>
-</section>
-
-
-	<section class="board-right">
-	<div>
-		<p>최신글 모음</p>
-	</div>
-	<div class="right-group">
-		<div class="resent-every">
-			<p>전사게시판</p>
-				<ul>
-					<li>2017년 하반기 야유회...</li>
-					<li>윤리경영 시행 안내</li>
-					<li>프린터교체에 따른 설치...</li>
-					<li>[공지] SMB 취약점을 이...</li>
-				</ul>
-		</div>
-
-		<div class="resent-news">
-			<p>전사게시판</p>
-				<ul>
-					<li>5월, 전세계를 공포로 몰...</li>
-					<li>이번주에도 어김없이 '이...</li>
-				</ul>
-		</div>
-	</div>
-</section>
 </div>
  <!-- 본문 div-padding 끝  -->
 	
