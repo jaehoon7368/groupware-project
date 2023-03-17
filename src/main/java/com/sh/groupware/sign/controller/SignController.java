@@ -31,4 +31,14 @@ public class SignController {
 		return "form/tripForm";
 	} // trip() end
 	
+	@GetMapping("/form/product.do")
+	public String product() {
+		return "form/productForm";
+	} // product() end
+	
+	@GetMapping("/form/resignation.do")
+	public String resignation() {
+		return "form/resignationForm";
+	} // resignation() end
+	
 } // class end

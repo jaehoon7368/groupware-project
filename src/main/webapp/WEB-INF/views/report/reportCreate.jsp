@@ -65,7 +65,7 @@
 										<tr>
 											<td>비공개 설정</td>
 											<td>
-												<input type="radio" name="public" id="Y" /><label for="Y">보고자간 공개</label><br />
+												<input type="radio" name="public" id="Y" checked /><label for="Y">보고자간 공개</label><br />
 												<input type="radio" name="public" id="N" /><label for="N">보고자간 비공개</label>
 											</td>
 										</tr>
@@ -74,22 +74,22 @@
 											<td>
 												<input type="radio" name="member" id="all" /><label for="all">부서원 전체</label><br />
 												<div id="reportAll" class="report-frm-div reportMem"></div>
-												<input type="radio" name="member" id="choice" /><label for="choice">직접 지정</label>
-												<div id="reportChoice" class="report-frm-div reportMem">
-													<button class="add">+ 추가</button>
+												<input type="radio" name="member" id="choice" checked /><label for="choice">직접 지정</label>
+												<div id="reportChoice" class="report-frm-div reportMem" style="display: inline-block;">
+													<button class="add" data-open="exampleModal1">+ 추가</button>
 												</div>
 											</td>
 										</tr>
 										<tr>
 											<td>참조자</td>
 											<td>
-												<input type="radio" name="reference" id="user" /><label for="user">사용자</label><br />
-												<div id="referenceUser" class="report-frm-div references">
-													<button class="add">+ 추가</button>
+												<input type="radio" name="reference" id="user" checked /><label for="user">사용자</label><br />
+												<div id="referenceUser" class="report-frm-div references" style="display: inline-block;">
+													<button class="add" data-open="exampleModal1">+ 추가</button>
 												</div>
 												<input type="radio" name="reference" id="dept" /><label for="dept">부서</label>
 												<div id="referenceDept" class="report-frm-div references">
-													<button class="add">+ 추가</button>
+													<button class="add" data-open="exampleModal2">+ 추가</button>
 												</div>
 											</td>
 										</tr>
@@ -101,6 +101,96 @@
 										</tr>
 									</tbody>
 								</table>
+								
+								<!-- 모달 -->
+								<div class="report-no-modal reveal" id="exampleModal1" data-reveal>
+									<h5>선택</h5>
+									<div>
+										<input type="text" name="search" id="search" placeholder="이름/부서/직급" />
+									</div>
+									<div class="div-emp-group">
+										<div class="accordion-box">
+											<ul class="container-list">
+												<li>
+													<p class="title font-medium">인사/총무</p>
+													<div class="con">
+														<ul class="container-detail font-small">
+															<li><a class="container-a" href="#">어어어 차장</a></li>
+															<li><a class="container-a" href="#">오오오 팀장</a></li>
+															<li><a class="container-a" href="#">어어어 사원</a></li>
+														</ul>
+													</div>
+												</li>
+												<li>
+													<p class="title font-medium">개발</p>
+													<div class="con">
+														<ul class="container-detail font-small">
+															<li><a class="container-a" href="#">어어어 부장</a></li>
+															<li><a class="container-a" href="#">오오오 대리</a></li>
+															<li><a class="container-a" href="#">어어어 인턴</a></li>
+														</ul>
+													</div>
+												</li>
+												<li>
+													<p class="title font-medium"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" style="width: 20px; height: 20px;" />법무</p>
+													<div class="con">
+														<ul class="container-detail font-small">
+															<li><a class="container-a" href="#">어어어 부장</a></li>
+															<li><a class="container-a" href="#">오오오 대리</a></li>
+															<li><a class="container-a" href="#">어어어 인턴</a></li>
+														</ul>
+													</div>
+												</li>
+												<li>
+													<p class="title font-medium">인사</p>
+													<div class="con">
+														<ul class="container-detail font-small">
+															<li><a class="container-a" href="#">어어어 부장</a></li>
+															<li><a class="container-a" href="#">오오오 대리</a></li>
+															<li><a class="container-a" href="#">어어어 인턴</a></li>
+														</ul>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+									<div class="font-small report-no-modal-btn">
+										<button data-close aria-label="Close reveal">닫기</button>
+									</div>
+									<button class="btn-close close-button" data-close aria-label="Close reveal" type="button">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								
+								<!-- 모달 -->
+								<div class="report-no-modal reveal" id="exampleModal2" data-reveal>
+									<h5>부서 선택</h5>
+									<div class="div-emp-group">
+										<div class="accordion-box">
+											<ul class="container-list">
+												<li>
+													인사/총무
+												</li>
+												<li>
+													개발
+												</li>
+												<li>
+													법무
+												</li>
+												<li>
+													인사
+												</li>
+											</ul>
+										</div>
+									</div>
+									<div class="font-small report-no-modal-btn">
+										<button data-close aria-label="Close reveal">닫기</button>
+									</div>
+									<button class="btn-close close-button" data-close aria-label="Close reveal" type="button">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								
 								<script>
 									document.reportCreateFrm.addEventListener('submit', (e) => {
 										e.preventDefault();
