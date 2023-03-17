@@ -75,7 +75,37 @@ create sequence seq_boardComment_no;
 
 
 insert into dept values('d1','인사총무팀');
+insert into dept values('d2','개발');
+insert into dept values('d3','법무');
+insert into dept values('d4','마케팅');
+insert into dept values('d5','기획');
+
 insert into job values('j1','사장',30);
+insert into job values('j2','부사장',25);
+insert into job values('j3','부장',20);
+insert into job values('j4','차장',19);
+insert into job values('j5','과장',18);
+insert into job values('j6','대리',17);
+insert into job values('j7','주임',16);
+insert into job values('j8','사원',15);
+
+create table authority (
+    emp_id varchar2(20) not null,
+    auth varchar2(30) not null,
+    constraint pk_authority primary key (emp_id,auth), -- 복합
+    constraint fk_emp_id foreign key (emp_id) references emp (emp_id) on delete cascade
+);
+
+--drop table authority;
+
+select * from authority;
+
 insert into emp values ('230301','1234','김사장','880101-1081234','서울시 강남구 봉은사대로18-1','230301@gmail.com','010-1234-1234',default,null,default,'j1','d1');
 
 update emp set password = '$2a$10$lIwJyW5vKDbDMmNroJmoLORpC1Bu2l2RlL1lqW9TOF38hzcIoDRTG' where name = '김사장';
+
+select * from job;
+select * from dept;
+select * from emp;
+
+delete from emp where emp_id = '230302';
