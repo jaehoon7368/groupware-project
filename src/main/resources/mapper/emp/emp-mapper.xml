@@ -11,5 +11,24 @@
 		where
 			emp_id = #{memberId}
 	</select>
+	
+	<insert id="insertEmp">
+		insert into
+			emp
+		values(
+			#{empId},
+			#{password},
+			#{name},
+			#{ssn},
+			#{address},
+			#{email},
+			#{phone},
+			default,
+			null,
+			default,
+			#{jobCode},
+			#{deptCode}
+		)
+	</insert>
 	<resultMap type="emp" id="empMap"></resultMap>
 </mapper>

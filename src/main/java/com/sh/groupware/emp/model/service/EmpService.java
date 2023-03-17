@@ -7,4 +7,6 @@ public interface EmpService {
 
 	Emp selectEmp();
 
+	int insertEmp(Emp emp);
+
 }
