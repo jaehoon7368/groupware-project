@@ -17,7 +17,7 @@
 					<div class="font-small home-container">
 						<!-- 상단 타이틀 -->
 						<div class="top-container">
-							<div class="container-title">연차신청서</div>
+							<div class="container-title">출장신청서</div>
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
@@ -62,7 +62,7 @@
 									<tbody>
 										<tr>
 											<td colspan="2" class="sign-tbl-title font-large">
-												연차신청서
+												출장신청서
 											</td>
 										</tr>
 										<tr>
@@ -179,15 +179,9 @@
 								<div class="div-sign-tbl">
 									<table class="sign-tbl-bottom">
 										<tbody>
-											<tr>
-												<td>
-													휴가&nbsp;종류
-												</td>
-												<td>
-													<select class="vacationType" name="vacationType" id="vacationType">
-														<option value="half">반차</option>
-														<option value="day">연차</option>
-													</select>
+											<tr class="sign-tbl-bottom-tr">
+												<td colspan="2" class="sign-tbl-bottom-td">
+													아래와 같이 출장신청서를 제출합니다.
 												</td>
 											</tr>
 											<tr>
@@ -215,38 +209,18 @@
 											</tr>
 											<tr>
 												<td>
-													반차&nbsp;여부
+													출장지
 												</td>
 												<td>
-													<span id="vacationHalfArea">
-														<input type="checkbox" name="half" id="half"><label for="half">여</label>
-													</span> 
+													<input type="text" name="trip-where" id="trip-where" />
 												</td>
 											</tr>
 											<tr>
 												<td>
-													연차&nbsp;일수
-												</td>
-												<td>
-													<span id="restPointArea">
-														잔여연차 : *3*
-													</span>&nbsp;&nbsp;
-													<span id="applyPointArea">
-														신청연차 : *1*
-													</span> 
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<b style="color: rgb(255, 0, 0);">*</b>&nbsp;휴가&nbsp;사유 
+													출장 목적
 												</td>
 												<td>
 													<textarea class="txta_editor"></textarea>
-												</td>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<td colspan="2" class="sign-tbl-bottom-content">
-													1. 연차의 사용은 근로기준법에 따라 전년도에 발생한 개인별 잔여 연차에 한하여 사용함을 원칙으로 한다. 단, 최초 입사시에는 근로 기준법에 따라 발생 예정된 연차를 차용하여 월 1회 사용 할 수 있다.<br> 2. 경조사 휴가는 행사일을 증명할 수 있는 가족 관계 증명서 또는 등본, 청첩장 등 제출<br> 3. 공가(예비군/민방위)는 사전에 통지서를, 사후에 참석증을 반드시 제출 
 												</td>
 											</tr>
 										</tbody>
