@@ -7,7 +7,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
-		<jsp:param value="Report" name="title"/>
+		<jsp:param value="Sign" name="title"/>
 	</jsp:include>
 	
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sign.css">
