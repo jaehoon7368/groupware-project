@@ -40,7 +40,7 @@
 							</button>
 				        </div>
 					</div>
-					<div class="app-dashboard-sidebar-inner">
+					<div class="nav-font-size app-dashboard-sidebar-inner">
 						<ul class="menu vertical">
 							<li>
 								<a href="${pageContext.request.contextPath}/home/home.do" class="is-active" title="홈">
