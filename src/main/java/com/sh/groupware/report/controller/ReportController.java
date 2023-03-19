@@ -1,5 +1,6 @@
 package com.sh.groupware.report.controller;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +19,12 @@ import com.sh.groupware.dept.model.service.DeptService;
 import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.emp.model.dto.EmpDetail;
 import com.sh.groupware.emp.model.service.EmpService;
-import com.sh.groupware.report.model.dto.Category;
+import com.sh.groupware.report.model.dto.Type;
+import com.sh.groupware.report.model.dto.YN;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
 import com.sh.groupware.report.model.dto.ReportMember;
-import com.sh.groupware.report.model.dto.Type;
+import com.sh.groupware.report.model.dto.ReferType;
 import com.sh.groupware.report.model.service.ReportService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -70,16 +72,17 @@ public class ReportController {
 	
 	
 	@PostMapping("/reportCreate.do")
-	public String reportCreate(Report report, Authentication authentication, @RequestParam String member, @RequestParam String reference) {
-		log.debug("member = {}", member);
+	public String reportCreate(Report report, Authentication authentication, @RequestParam String _endDate, @RequestParam String reference) {
+		log.debug("_endDate = {}", _endDate);
 		log.debug("reference = {}", reference);
 		log.debug("authentiation, {}", authentication);
 		
 		Emp loginMember = (Emp) authentication.getPrincipal();
 		report.setWriter(loginMember.getEmpId());
+		report.setEndDate(LocalDate.parse(_endDate));
 		log.debug("report = {}", report);
 		
-		if ("all".equals(member)) {
+		if (YN.Y == report.getDeptYn()) {
 			List<Emp> empList = empService.findByDeptCodeEmpList(loginMember.getDeptCode());
 			if (empList.size() > 0) {
 				for (Emp emp : empList) {
@@ -90,7 +93,7 @@ public class ReportController {
 			}
 		}
 		
-		if (Type.D.toString() == reference) {
+		if (ReferType.D.name().equals(reference)) {
 			List<String> referenceDept = report.getReferenceDept();
 			if (referenceDept.size() > 0) {
 				for (String dept : referenceDept) {
@@ -103,14 +106,16 @@ public class ReportController {
 					if (empList.size() > 0) {
 						for (Emp emp : empList) {
 							Reference refer = new Reference();
-							refer.setReferenceType(Type.D);
+							refer.setReferenceType(ReferType.D);
 							refer.setEmpId(emp.getEmpId());
+							refer.setDeptCode(dept);
 							report.addReference(refer);
 						}
 					} // empList 있는 경우
 					else {
 						Reference refer = new Reference();
-						refer.setReferenceType(Type.D);
+						refer.setReferenceType(ReferType.D);
+						refer.setDeptCode(dept);
 						report.addReference(refer);
 					} // empList 없는 경우
 				}
@@ -120,7 +125,7 @@ public class ReportController {
 			List<Reference> referenceList = report.getReferenceList();
 			if (referenceList.size() > 0) {
 				for (Reference refer : referenceList) {
-					refer.setReferenceType(Type.E);
+					refer.setReferenceType(ReferType.E);
 				}
 			}
 		} // 참조자 선택한 경우

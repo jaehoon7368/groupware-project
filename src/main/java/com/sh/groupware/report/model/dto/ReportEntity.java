@@ -16,6 +16,8 @@ public class ReportEntity {
 	private String title;
 	private String explain;
 	private LocalDate regDate;
+	private LocalDate endDate;
 	private YN publicYn;
+	private YN deptYn;
 	
 } // class end

@@ -1,6 +1,6 @@
 package com.sh.groupware.report.model.dto;
 
-public enum Category {
+public enum ReferType {
 
-	S, R;
+	E, D;
 } // enum end

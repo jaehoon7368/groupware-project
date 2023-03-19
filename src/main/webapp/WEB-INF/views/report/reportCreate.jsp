@@ -69,11 +69,17 @@
 											</td>
 										</tr>
 										<tr>
+											<td>마감일</td>
+											<td>
+												<input type="date" name="_endDate" id="endDate" />
+											</td>
+										</tr>
+										<tr>
 											<td>보고자</td>
 											<td>
-												<input type="radio" name="member" id="all" value="all" checked /><label for="all">부서원 전체</label><br />
+												<input type="radio" name="deptYn" id="all" value="Y" checked /><label for="all">부서원 전체</label><br />
 												<div id="reportAll" class="report-frm-div reportMem"></div>
-												<input type="radio" name="member" id="choice" value="choice" /><label for="choice">직접 지정</label>
+												<input type="radio" name="deptYn" id="choice" value="N" /><label for="choice">직접 지정</label>
 												<div id="divReportChoice" class="div-choice">
 													<div id="reportChoice" class="report-frm-div reportMem"></div>
 													<button class="add" data-open="exampleModal1" data-type="reportChoice" type="button">+ 추가</button>

@@ -11,8 +11,9 @@ public class Reference {
 
 	private String no;
 	private String empId;
-	private Category category;
+	private Type type;
 	private String referenceNo;
-	private Type referenceType;
+	private ReferType referenceType;
+	private String deptCode;
 	
 } // class end

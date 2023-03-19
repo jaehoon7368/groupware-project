@@ -15,7 +15,7 @@ public interface ReportDao {
 
 	int insertReport(Report report);
 
-	@Insert("insert into reportMember values (seq_reportMember_no.nextval, #{reportNo}, #{empId}, default, #{publicYn})")
+	@Insert("insert into reportMember values (seq_reportMember_no.nextval, #{reportNo}, #{empId}, default, default)")
 	int insertReportMember(ReportMember member);
 
 	@Select("select * from reportMember where dept_code = #{deptCode}")
@@ -24,7 +24,7 @@ public interface ReportDao {
 	@Select("select * from reference where dept_code = #{deptCode}")
 	List<Reference> findByDeptCodeReference(String deptCode);
 
-	@Insert("insert into reference values (seq_reference_no.nextval, #{empId}, #{category}, #{referenceNo}, #{referenceType})")
+	@Insert("insert into reference values (seq_reference_no.nextval, #{empId}, #{type}, #{referenceNo}, #{referenceType}, #{deptCode})")
 	int insertReference(Reference refer);
 
 } // interface end

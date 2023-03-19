@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sh.groupware.report.model.dao.ReportDao;
-import com.sh.groupware.report.model.dto.Category;
+import com.sh.groupware.report.model.dto.Type;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
 import com.sh.groupware.report.model.dto.ReportMember;
-import com.sh.groupware.report.model.dto.Type;
+import com.sh.groupware.report.model.dto.ReferType;
 import com.sh.groupware.report.model.dto.YN;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class ReportServiceImpl implements ReportService {
 		if (referenceList.size() > 0) {
 			for (Reference refer : referenceList) {
 				refer.setReferenceNo(report.getNo());
-				refer.setCategory(Category.R);
+				refer.setType(Type.R);
 				log.debug("refer = {}", refer);
 				result = insertReference(refer);
 			}

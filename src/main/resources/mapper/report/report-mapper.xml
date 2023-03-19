@@ -13,7 +13,9 @@
 			#{title},
 			#{explain},
 			default,
-			default
+			#{endDate},
+			#{publicYn},
+			#{deptYn}
 		)
 		
 		<selectKey order="AFTER" resultType="string" keyProperty="no">

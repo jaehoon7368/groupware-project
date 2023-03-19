@@ -18,8 +18,8 @@ public class Report extends ReportEntity {
 	private List<ReportMember> memberList = new ArrayList<>();
 	private List<Reference> referenceList = new ArrayList<>();
 	
-	public Report(String no, String writer, String title, String explain, LocalDate regDate, YN publicYn) {
-		super(no, writer, title, explain, regDate, publicYn);
+	public Report(String no, String writer, String title, String explain, LocalDate regDate, LocalDate endDate, YN publicYn, YN deptYn) {
+		super(no, writer, title, explain, regDate, endDate, publicYn, deptYn);
 	} // Report() end
 	
 	public void addReportMember(ReportMember member) {
