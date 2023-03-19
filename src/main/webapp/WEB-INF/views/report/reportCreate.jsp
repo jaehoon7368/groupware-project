@@ -48,6 +48,11 @@
 						</script>
 						<!-- 상단 타이틀 end -->
 						
+						<script>
+							const nowDate = Date.now();
+							const dateOff = new Date().getTimezoneOffset() * 60000;
+							const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
+						</script>
 						<!-- 보고서 추가 -->
 						<div class="div-report-frm div-padding">
 							<form:form action="${pageContext.request.contextPath}/report/reportCreate.do" method="POST" name="reportCreateFrm">
@@ -72,6 +77,11 @@
 											<td>마감일</td>
 											<td>
 												<input type="date" name="_endDate" id="endDate" />
+												<script>
+													const endDate = document.querySelector('#endDate');
+													endDate.min = today;
+													endDate.value = today;
+												</script>
 											</td>
 										</tr>
 										<tr>

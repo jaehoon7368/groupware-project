@@ -52,76 +52,53 @@
 						<!-- 본문 -->
 						<div>
 							<div class="div-padding div-report-ing">
-								<div class="div-report">
-									<div class="div-report-tbl">
-										<table class="font-small">
-                                            <colgroup>
-                                                <col width="35%" />
-                                                <col width="65%" />
-                                            </colgroup>
-											<tbody>
-												<tr>
-													<td colspan="2" class="report-year">2023</td>
-												</tr>
-												<tr>
-													<td colspan="2" class="report-day">02/15(수)</td>
-												</tr>
-												<tr>
-													<td colspan="2" class="report-title">보고이름</td>
-												</tr>
-												<tr>
-													<td>부서</td>
-													<td>다우그룹</td>
-												</tr>
-												<tr>
-													<td>보고현황</td>
-													<td>보고자 0명 (미보고자 3명)</td>
-												</tr>
-											</tbody>
-										</table>
+								<c:forEach items="${reportList}" var="report">
+									<div class="div-report" data-no="${report.reportNo}">
+										<div class="div-report-tbl">
+											<table class="font-small">
+	                                            <colgroup>
+	                                                <col width="35%" />
+	                                                <col width="65%" />
+	                                            </colgroup>
+												<tbody>
+													<tr>
+														<td colspan="2" class="report-year">
+															<fmt:parseDate value="${report.endDate}" pattern="yyyy-MM-dd" var="endYear"></fmt:parseDate>
+															<fmt:formatDate value="${endYear}" pattern="yyyy" />
+														</td>
+													</tr>
+													<tr>
+														<td colspan="2" class="report-day">
+															<fmt:parseDate value="${report.endDate}" pattern="yyyy-MM-dd" var="endDate"></fmt:parseDate>
+															<fmt:formatDate value="${endDate}" pattern="MM/dd(E)" />
+														</td>
+													</tr>
+													<tr>
+														<td colspan="2" class="report-title">${report.title}</td>
+													</tr>
+													<tr>
+														<td>부서</td>
+														<td>${report.deptTitle}</td>
+													</tr>
+													<tr>
+														<td>보고현황</td>
+														<td title="보고자 ${report.memberCount}명 (미보고자 ${report.createCount}명)">보고자 ${report.memberCount}명 (미보고자 ${report.createCount}명)</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="div-report-btn">
+											<button class="report-btn" type="button">보고하기</button>
+										</div>
 									</div>
-									<div class="div-report-btn">
-										<button class="report-btn">보고하기</button>
-									</div>
-								</div>
+								</c:forEach>
 								
-								<div class="div-report">
-									<div class="div-report-tbl">
-										<table class="font-small">
-                                            <colgroup>
-                                                <col width="35%" />
-                                                <col width="65%" />
-                                            </colgroup>
-											<tbody>
-												<tr>
-													<td colspan="2" class="report-year">2023</td>
-												</tr>
-												<tr>
-													<td colspan="2" class="report-day">02/15(수)</td>
-												</tr>
-												<tr>
-													<td colspan="2" class="report-title">보고이름</td>
-												</tr>
-												<tr>
-													<td>부서</td>
-													<td>다우그룹</td>
-												</tr>
-												<tr>
-													<td>보고현황</td>
-													<td>보고자 0명 (미보고자 3명)</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-									<div class="div-report-btn">
-										<button class="report-btn">보고하기</button>
-									</div>
-								</div>
 							</div>
 							<script>
 								document.querySelectorAll('.div-report').forEach((report) => {
 									report.addEventListener('click', (e) => {
-										location.href = '${pageContext.request.contextPath}/report/reportForm.do';
+										console.log(e.target);
+										//location.href = `${pageContext.request.contextPath}/report/reportForm.do?no=\${e.target.dataset.no}`;
 									});
 								});
 							</script>

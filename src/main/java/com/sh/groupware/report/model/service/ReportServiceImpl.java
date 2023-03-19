@@ -1,5 +1,6 @@
 package com.sh.groupware.report.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sh.groupware.report.model.dao.ReportDao;
-import com.sh.groupware.report.model.dto.Type;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
+import com.sh.groupware.report.model.dto.ReportCheck;
 import com.sh.groupware.report.model.dto.ReportMember;
-import com.sh.groupware.report.model.dto.ReferType;
-import com.sh.groupware.report.model.dto.YN;
+import com.sh.groupware.report.model.dto.Type;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,5 +60,10 @@ public class ReportServiceImpl implements ReportService {
 	public int insertReference(Reference refer) {
 		return reportDao.insertReference(refer);
 	} // insertReference() end
+	
+	@Override
+	public List<ReportCheck> selectMyReportCheck(String loginMember) {
+		return reportDao.selectMyReportCheck(loginMember);
+	} // selectMyReportCheck() end
 	
 } // class end

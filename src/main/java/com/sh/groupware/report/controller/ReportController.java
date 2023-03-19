@@ -23,6 +23,7 @@ import com.sh.groupware.report.model.dto.Type;
 import com.sh.groupware.report.model.dto.YN;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
+import com.sh.groupware.report.model.dto.ReportCheck;
 import com.sh.groupware.report.model.dto.ReportMember;
 import com.sh.groupware.report.model.dto.ReferType;
 import com.sh.groupware.report.model.service.ReportService;
@@ -45,19 +46,23 @@ public class ReportController {
 	
 	
 	@GetMapping("/report.do")
-	public String report() {
+	public String report(Model model, Authentication authentication) {
+		String loginMember = ((Emp) authentication.getPrincipal()).getEmpId();
+		List<ReportCheck> reportList = reportService.selectMyReportCheck(loginMember);
+		model.addAttribute("reportList", reportList);
 		return "report/reportHome";
 	} // report() end
 	
 	
 	@GetMapping("/reportForm.do")
-	public String reportForm() {
+	public String reportForm(@RequestParam String no) {
+		log.debug("no = {}", no);
 		return "report/reportForm";
 	} // reportForm() end
 	
 	
 	@GetMapping("/reportCreateView.do")
-	public String reportCreate(Model model) {
+	public String reportCreateView(Model model) {
 		List<EmpDetail> empList = empService.selectAllEmpList();
 		log.debug("empList = {}", empList);
 		
@@ -68,7 +73,7 @@ public class ReportController {
 		model.addAttribute("deptList", deptList);
 		
 		return "report/reportCreate";
-	} // reportCreate() end
+	} // reportCreateView() end
 	
 	
 	@PostMapping("/reportCreate.do")
