@@ -17,7 +17,8 @@
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
-		<intercept-url pattern="/emp/**" access="permitAll"/>		
+		<intercept-url pattern="/emp/**" access="permitAll"/>	
+		<intercept-url pattern="/report/**" access="permitAll"/>	
 		<form-login 
 			login-page="/"
 			login-processing-url="/emp/login.do"

@@ -6,7 +6,7 @@
 					<div class="left-container">
 						<div class="container-title"><a href="${pageContext.request.contextPath}/report/report.do" class="container-a">보 고</a></div>
 						<div class="container-btn">
-							<button onclick="location.href='${pageContext.request.contextPath}/report/reportCreate.do';">새로 만들기</button>
+							<button onclick="location.href='${pageContext.request.contextPath}/report/reportCreateView.do';">새로 만들기</button>
 						</div>
 						<div class="accordion-box">
 							<ul class="container-list">

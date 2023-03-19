@@ -1,6 +1,6 @@
 package com.sh.groupware.report.model.dto;
 
-public enum Type {
+public enum Category {
 
-	E, D;
+	S, R;
 } // enum end

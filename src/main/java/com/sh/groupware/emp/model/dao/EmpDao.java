@@ -26,5 +26,11 @@ public interface EmpDao {
 	
 	@Select("select * from authority where emp_id = #{empId}")
 	List<Authority> selectAllAuthorityList(String empId);
+
+	@Select("select * from emp where dept_code = #{deptCode}")
+	List<Emp> findByDeptCodeEmpList(String deptCode);
+
+	@Select("select * from emp where dept_code = #{deptCode} and emp_id != #{empId}")
+	List<Emp> findByDeptCodeEmpIdEmpList(Map<String, Object> param);
 	
 }
