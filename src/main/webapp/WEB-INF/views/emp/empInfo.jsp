@@ -57,7 +57,7 @@
                                     <td>
                                         <div id="empId-container">
                                             ${loginEmp.empId}
-                                            <input type="hidden" id="idValid" value="0" />
+                                            <input type="hidden" id="empId" name="empId" value="${loginEmp.empId }" />
                                         </div>
                                     </td>
                                     <th>주민번호</th>
