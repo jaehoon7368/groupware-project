@@ -113,11 +113,12 @@ public class ReportController {
 			for (Reference refer : report.getReferenceList()) {
 				refer.setReferenceType(ReferType.D);
 			}
-		} else {
+		} // 참조 부서인 경우
+		else {
 			for (Reference refer : report.getReferenceList()) {
 				refer.setReferenceType(ReferType.E);
 			}
-		}
+		} // 참조자인 경우
 		
 		int result = reportService.insertReport(report);
 		

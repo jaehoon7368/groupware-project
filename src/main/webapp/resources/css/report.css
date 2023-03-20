@@ -125,6 +125,17 @@
 	padding: 5px;
 }
 
+/* 제외된 보고자 */
+.div-exception-report {
+	padding: 20px 30px;
+	width: 100%;
+}
+
+.div-exception-report span {
+	color: gray;
+	font-size: small;
+}
+
 /* 미보고자 */
 .div-unreport {
 	padding: 20px 30px;

@@ -102,6 +102,9 @@ public class EmpServiceImpl implements EmpService {
 				for (Authority authority : authorityList)
 					emp.addAuthorityList(authority);
 			}
+			
+			Attachment attach = attachmentDao.selectEmpProfilr(emp.getEmpId());
+			emp.setAttachment(attach);
 		}
 		log.debug("empList = {}", empList);
 		return empList;
