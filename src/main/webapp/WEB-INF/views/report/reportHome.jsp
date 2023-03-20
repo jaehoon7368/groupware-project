@@ -98,8 +98,20 @@
 								document.querySelectorAll('.div-report').forEach((report) => {
 									report.addEventListener('click', (e) => {
 										console.log(e.target);
-
-										// location.href = `${pageContext.request.contextPath}/report/reportForm.do?no=\${e.target.dataset.no}`;
+										let data = e.target;
+										
+										while (true) {
+											if (data.tagName === 'DIV' && data.classList[0] === 'div-report') {
+												console.log(data.tagName);
+												console.log(data.classList[0]);
+												console.log(data);
+												location.href = `${pageContext.request.contextPath}/report/reportForm.do?no=\${data.dataset.no}`;
+												return;
+											} else {
+												data = data.parentElement;
+												continue;
+											}
+										}
 									});
 								});
 							</script>

@@ -1,10 +1,12 @@
 package com.sh.groupware.report.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
@@ -29,5 +31,20 @@ public interface ReportDao {
 	int insertReference(Reference refer);
 
 	List<ReportCheck> selectMyReportCheck(String loginMember);
+
+	@Select("select * from view_reportCheck where report_no = #{no}")
+	List<ReportCheck> findByReportNoReportCheckList(String no);
+
+	@Select("select * from reportMember where report_no = #{no}")
+	List<ReportMember> findByReportNoMemberList(String no);
+
+	@Select("select * from reference where reference_no = #{no}")
+	List<Reference> findByReportNoReference(String no);
+
+	@Update("update reportMember set exclude_yn = 'Y' where report_no = #{no} and emp_id = #{empId}")
+	int updateExcludeYnY(Map<String, Object> param);
+
+	@Update("update reportMember set exclude_yn = 'N' where report_no = #{no} and emp_id = #{empId}")
+	int updateExcludeYnN(Map<String, Object> param);
 
 } // interface end

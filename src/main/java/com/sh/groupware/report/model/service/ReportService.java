@@ -1,6 +1,7 @@
 package com.sh.groupware.report.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
@@ -16,5 +17,17 @@ public interface ReportService {
 	int insertReference(Reference refer);
 
 	List<ReportCheck> selectMyReportCheck(String loginMember);
+
+	List<ReportCheck> findByReportNoReportCheckList(String no);
+	
+	List<ReportMember> findByReportNoMemberList(String no);
+	
+	List<Reference> findByReportNoReference(String no);
+
+	int updateExcludeYnY(Map<String, Object> param);
+
+	int updateExcludeYnN(Map<String, Object> param);
+
+	int updateExcludeYn(List<String> report, List<String> unreport, String no);
 
 } // interface end

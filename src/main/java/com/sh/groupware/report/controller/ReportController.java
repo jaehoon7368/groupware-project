@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -55,8 +56,14 @@ public class ReportController {
 	
 	
 	@GetMapping("/reportForm.do")
-	public String reportForm(@RequestParam String no) {
+	public String reportForm(@RequestParam String no, Model model) {
 		log.debug("no = {}", no);
+		
+		List<ReportCheck> reportCheckList = reportService.findByReportNoReportCheckList(no);
+		List<Reference> referList = reportService.findByReportNoReference(no);
+		
+		model.addAttribute("reportCheckList", reportCheckList);
+		model.addAttribute("referList", referList);
 		return "report/reportForm";
 	} // reportForm() end
 	
@@ -112,5 +119,39 @@ public class ReportController {
 		
 		return "redirect:/report/reportCreateView.do";
 	} // reportCreate() end
+	
+	
+	@PostMapping("/updateExcludeYn.do")
+	public String updateExcludeYn(@RequestParam(value="report[]", required = false) List<String> report, @RequestParam(value = "unreport[]", required = false) List<String> unreport, @RequestParam String no, Model model) {
+		log.debug("report = {}", report);
+		log.debug("unreport = {}", unreport);
+		log.debug("no = {}", no);
+		
+		int result = 0;
+		if (report != null) {
+			for (String empId : report) {
+				Map<String, Object> param = new HashMap<>();
+				param.put("no", no);
+				param.put("empId", empId);
+				result = reportService.updateExcludeYnN(param);
+			}
+		} // if (report.size() > 0) end
+		
+		if (unreport != null) {
+			for (String empId : unreport) {
+				Map<String, Object> param = new HashMap<>();
+				param.put("no", no);
+				param.put("empId", empId);
+				result = reportService.updateExcludeYnY(param);
+			}
+		} // if (unreport.size() > 0) end
+//		int result = reportService.updateExcludeYn(report, unreport, no);
+		
+		
+		List<ReportCheck> reportCheckList = reportService.findByReportNoReportCheckList(no);
+		model.addAttribute("reportCheckList", reportCheckList);
+		
+		return "redirect:/report/reportForm.do?no=" + no;
+	} // updateExcludeYn() end
 	
 } // class end
