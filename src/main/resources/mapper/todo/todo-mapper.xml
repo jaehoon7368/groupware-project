@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sh.groupware.todo.model.dao.TodoDao">
+
+
+
+<insert id="todoBoardEnroll">
+
+	insert into
+		todoboard
+	values(
+		 'tdb'||to_char(seq_todoboard_no.nextval,'fm00000'),
+		 #{title},
+		 #{empId},
+		 default
+	)
+</insert>
+
+<insert id="todoListEnroll">
+	insert into
+		todolist
+	values(
+			 'tdl'||to_char(seq_todolist_no.nextval,'fm00000'),
+			 #{todoListTitle},
+			 #{no},
+			 #{empId}
+	)
+
+</insert>
+
+</mapper>
