@@ -62,7 +62,7 @@
                                     <ul class="container-detail font-small">
                                         <li><a class="container-a" href="${pageContext.request.contextPath}/emp/empHome.do">내 근태 현황</a></li>
                                         <li><a class="container-a" href="#">내 연차 내역</a></li>
-                                        <li><a class="container-a" href="#">내 인사정보</a></li>
+                                        <li><a class="container-a" href="${pageContext.request.contextPath }/emp/empInfo.do">내 인사정보</a></li>
                                     </ul>
                                 </div>
                             </li>

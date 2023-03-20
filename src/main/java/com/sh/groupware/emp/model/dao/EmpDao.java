@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import com.sh.groupware.emp.model.dto.EmpDetail;
 import com.sh.groupware.emp.model.dto.Emp;
 
 @Mapper
@@ -18,6 +19,8 @@ public interface EmpDao {
 
 	@Insert("insert into authority values(#{empId},#{auth})")
 	int insertAuthority(Map<String, Object> param);
+
+	EmpDetail selectEmpDetail(String empId);
 	
 	
 

@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sh.groupware.common.attachment.model.dao.AttachmentDao;
+import com.sh.groupware.common.dto.Attachment;
 import com.sh.groupware.emp.model.dao.EmpDao;
+import com.sh.groupware.emp.model.dto.EmpDetail;
 import com.sh.groupware.emp.model.dto.Emp;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +24,9 @@ public class EmpServiceImpl implements EmpService {
 
 	@Autowired
 	private EmpDao empDao;
+	
+	@Autowired
+	private AttachmentDao attachmentDao;
 	
 	
 	@Override
@@ -72,7 +78,16 @@ public class EmpServiceImpl implements EmpService {
 			param.put("auth",str);
 			result = empDao.insertAuthority(param);
 		}
+		Attachment attach = emp.getAttachment();
+		result = attachmentDao.insertProfile(attach);
 		
 		return result;
 	}
+	
+	@Override
+	public EmpDetail selectEmpDetail(String empId) {
+		return empDao.selectEmpDetail(empId);
+	}
+	
+	
 }

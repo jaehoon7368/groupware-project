@@ -22,7 +22,7 @@
 			login-page="/"
 			login-processing-url="/emp/login.do"
 			username-parameter="empId"
-			authentication-success-forward-url="/loginSuccess.do"/>
+			authentication-success-forward-url="/emp/loginSuccess.do"/>
 			<logout
 				logout-url="/member/memberLogout.do"
 				logout-success-url="/"/>
@@ -30,8 +30,8 @@
 		<remember-me 
 			data-source-ref="dataSource"
 			token-validity-seconds="1209600"/> <!-- 2주 (60 *  60 * 24 * 14) -->
-			
-		<access-denied-handler error-page="/error/accessDenied.do"/>
+		<!-- 	
+		<access-denied-handler error-page="/error/accessDenied.do"/> -->
 	</http>
 	
 	<!-- #7.3 인증매니져 설정 -->
