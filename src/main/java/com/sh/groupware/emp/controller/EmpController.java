@@ -1,22 +1,36 @@
 package com.sh.groupware.emp.controller;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.sh.groupware.emp.model.dto.EmpDetail;
 import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.emp.model.service.EmpService;
+import com.sh.groupware.common.HelloSpringUtils;
+import com.sh.groupware.common.attachment.model.service.AttachmentService;
+import com.sh.groupware.common.dto.Attachment;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+@RequestMapping("/emp")
 @SessionAttributes({"loginEmp"})
 public class EmpController {
 	
@@ -24,23 +38,31 @@ public class EmpController {
 	private EmpService empService;
 	
 	@Autowired
+	private AttachmentService attachService;
+	
+	@Autowired
+	private ServletContext application;
+	
+	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
 	@PostMapping("/loginSuccess.do")
 	public String loginSuccess(HttpSession session) {
 		log.debug("loginSuccess 핸들러 호출!");
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Emp principal = (Emp) authentication.getPrincipal();
 		
 		return "redirect:/home/home.do";
 	}
 	
-	@GetMapping("emp/empHome.do")
+	@GetMapping("/empHome.do")
 	public void empHome() {}
 	
-	@GetMapping("emp/empEnroll.do")
+	@GetMapping("/empEnroll.do")
 	public void empInsertPage() {}
 	
-	@PostMapping("emp/empEnroll.do")
-	public String empEnroll(Emp emp) {
+	@PostMapping("/empEnroll.do")
+	public String empEnroll(Emp emp,@RequestParam("file") MultipartFile file) {
 		try {
 			log.debug("emp = {}",emp);
 			String rawPassword = emp.getPassword();
@@ -48,17 +70,57 @@ public class EmpController {
 			emp.setPassword(encodedPassword);
 			log.debug("emp = {}", emp);
 			
+			//프로필사진 업로드
+			String saveDirectory = application.getRealPath("/resources/upload/emp");
+			log.debug("saveDirectory = {}", saveDirectory);
+			log.debug("file = {}", file);
+			if(file.getSize() > 0) {
+				// 1. 저장 
+				String pkNo = emp.getEmpId();
+				String renamedFilename = HelloSpringUtils.renameMultipartFile(file);
+				String originalFilename = file.getOriginalFilename();
+				File destFile = new File(saveDirectory, renamedFilename);
+				try {
+					file.transferTo(destFile);
+				} catch (IllegalStateException | IOException e) {
+					log.error(e.getMessage(), e);
+				}
+				
+				Attachment attach = new Attachment();
+				attach.setRenameFilename(renamedFilename);
+				attach.setOriginalFilename(originalFilename);
+				attach.setPkNo(pkNo);
+				emp.setAttachment(attach);
+				log.debug("attach = {}",attach);
+				
+			}
 			int reasult = empService.insertEmp(emp);
+				
 			
 		} catch (Exception e) {
-			log.error("회원가입오류!", e);
+			log.error("인사정보 등록 오류!", e);
 			throw e;
 		}
-		log.trace("memberEnroll 끝!");
+		log.trace("empEnroll 끝!");
 		return "redirect:/emp/empEnroll.do";
 	}
 	
-	@GetMapping("/emp/passwordEncode.do")
+	@GetMapping("/empInfo.do")
+	public void empInfo(Model model,Authentication authentication) {
+		log.debug("authentication = {}", authentication);
+		Emp principal = (Emp) authentication.getPrincipal();
+		
+		String empId = principal.getEmpId();
+		EmpDetail emp = empService.selectEmpDetail(empId);
+		Attachment attach = attachService.selectEmpProfile(empId);
+		log.debug("emp = {}",emp);
+		log.debug("attach={}",attach);
+		model.addAttribute("emp", emp);
+		model.addAttribute("attach", attach);
+		
+	}
+	
+	@GetMapping("/passwordEncode.do")
 	public void selectOneEmp() {
 		Emp emp = empService.selectEmp();
 		log.debug("enp = {}",emp);
@@ -68,5 +130,6 @@ public class EmpController {
 		log.debug("encodedPassword = {}", encodedPassword);
 		
 	}
+	
 
 }

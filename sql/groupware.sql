@@ -66,7 +66,7 @@ create table attachment (
     category char not null,
     pk_no varchar2(15) not null,
     constraint pk_attachment primary key (no),
-    constraint ck_attachment check (category in ('M', 'B', 'T', 'R'))
+    constraint ck_attachment check (category in ('M', 'B', 'T', 'R', 'P'))
 );
 
 create sequence seq_board_no;
@@ -96,16 +96,10 @@ create table authority (
     constraint fk_emp_id foreign key (emp_id) references emp (emp_id) on delete cascade
 );
 
---drop table authority;
-
 select * from authority;
-
-insert into emp values ('230301','1234','김사장','880101-1081234','서울시 강남구 봉은사대로18-1','230301@gmail.com','010-1234-1234',default,null,default,'j1','d1');
-
-update emp set password = '$2a$10$lIwJyW5vKDbDMmNroJmoLORpC1Bu2l2RlL1lqW9TOF38hzcIoDRTG' where name = '김사장';
-
 select * from job;
 select * from dept;
 select * from emp;
+select * from attachment;
 
-delete from emp where emp_id = '230302';
+delete from emp where emp_id = '230304';

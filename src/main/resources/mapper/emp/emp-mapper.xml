@@ -12,6 +12,17 @@
 			emp_id = #{memberId}
 	</select>
 	
+	<select id="selectEmpDetail" resultMap="empDetailMap">
+		select
+			e.*,
+			(select dept_title from dept where dept_code=e.dept_code) dept_title,
+			(select job_title from job where job_code = e.job_code) job_title
+		from
+			emp e
+		where
+			emp_id = #{empId}
+	</select>
+	
 	<insert id="insertEmp">
 		insert into
 			emp

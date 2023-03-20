@@ -8,6 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.sh.groupware.common.dto.Attachment;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +33,7 @@ public class Emp implements UserDetails{
 	private String deptCode;
 	
 	List<SimpleGrantedAuthority> authorities;
+	private Attachment attachment;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
