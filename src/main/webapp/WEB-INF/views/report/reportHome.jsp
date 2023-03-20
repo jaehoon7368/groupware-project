@@ -63,13 +63,13 @@
 												<tbody>
 													<tr>
 														<td colspan="2" class="report-year">
-															<fmt:parseDate value="${report.endDate}" pattern="yyyy-MM-dd" var="endYear"></fmt:parseDate>
+															<fmt:parseDate value="${report.endDate}" pattern="yyyy-MM-dd" var="endYear" />
 															<fmt:formatDate value="${endYear}" pattern="yyyy" />
 														</td>
 													</tr>
 													<tr>
 														<td colspan="2" class="report-day">
-															<fmt:parseDate value="${report.endDate}" pattern="yyyy-MM-dd" var="endDate"></fmt:parseDate>
+															<fmt:parseDate value="${report.endDate}" pattern="yyyy-MM-dd" var="endDate" />
 															<fmt:formatDate value="${endDate}" pattern="MM/dd(E)" />
 														</td>
 													</tr>

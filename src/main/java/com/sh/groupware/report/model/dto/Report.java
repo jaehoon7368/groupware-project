@@ -13,8 +13,6 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Report extends ReportEntity {
 
-	private List<String> referenceDept = new ArrayList<>();
-	
 	private List<ReportMember> memberList = new ArrayList<>();
 	private List<Reference> referenceList = new ArrayList<>();
 	

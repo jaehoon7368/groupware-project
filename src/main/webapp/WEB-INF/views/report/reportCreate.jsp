@@ -394,7 +394,7 @@
 												typeDiv.innerHTML += `
 													<div class='div-emp-tag'>
 														<span data-code='\${dept.deptCode}'>\${dept.deptTitle}</span>
-														<input type='hidden' name='referenceDept[\${index}]' id='referenceDept[\${index}]' value='\${dept.deptCode}' />
+														<input type='hidden' name='referenceList[\${index}].deptCode' id='referenceList[\${index}].deptCode' value='\${dept.deptCode}' />
 													</div>
 												`;
 											});

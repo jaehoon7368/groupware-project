@@ -98,42 +98,15 @@ public class ReportController {
 			}
 		}
 		
-		if (ReferType.D.name().equals(reference)) {
-			List<String> referenceDept = report.getReferenceDept();
-			if (referenceDept.size() > 0) {
-				for (String dept : referenceDept) {
-					log.debug("dept = {}", dept);
-					Map<String, Object> param = new HashMap<>();
-					param.put("deptCode", dept);
-					param.put("empId", loginMember.getEmpId());
-					
-					List<Emp> empList = empService.findByDeptCodeEmpIdEmpList(param);
-					if (empList.size() > 0) {
-						for (Emp emp : empList) {
-							Reference refer = new Reference();
-							refer.setReferenceType(ReferType.D);
-							refer.setEmpId(emp.getEmpId());
-							refer.setDeptCode(dept);
-							report.addReference(refer);
-						}
-					} // empList 있는 경우
-					else {
-						Reference refer = new Reference();
-						refer.setReferenceType(ReferType.D);
-						refer.setDeptCode(dept);
-						report.addReference(refer);
-					} // empList 없는 경우
-				}
-			} // referenceDept 있는 경우
-		} // 참조 부서 선택한 경우
-		else {
-			List<Reference> referenceList = report.getReferenceList();
-			if (referenceList.size() > 0) {
-				for (Reference refer : referenceList) {
-					refer.setReferenceType(ReferType.E);
-				}
+		if (ReferType.D == ReferType.valueOf(reference)) {
+			for (Reference refer : report.getReferenceList()) {
+				refer.setReferenceType(ReferType.D);
 			}
-		} // 참조자 선택한 경우
+		} else {
+			for (Reference refer : report.getReferenceList()) {
+				refer.setReferenceType(ReferType.E);
+			}
+		}
 		
 		int result = reportService.insertReport(report);
 		

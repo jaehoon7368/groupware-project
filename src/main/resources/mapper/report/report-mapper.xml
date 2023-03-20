@@ -29,6 +29,7 @@
 	<select id="selectMyReportCheck" resultMap="reportCheckMap">
 		select
 			rm.*,
+			r.title,
 			r.writer,
 			r.end_date,
 			r.public_yn,
@@ -41,6 +42,8 @@
 				on r.no = rm.report_no
 		where
 			emp_id = #{loginMember}
+		order by
+			r.end_date
 	</select>
 	<resultMap type="reportCheck" id="reportCheckMap"></resultMap>
 	
