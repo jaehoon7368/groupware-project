@@ -18,6 +18,7 @@
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
 		<intercept-url pattern="/emp/**" access="permitAll"/>	
+		<intercept-url pattern="/report/**" access="permitAll"/>	
 		<intercept-url pattern="/todo/**" access="permitAll"/>
 	<!-- <intercept-url pattern="/**" access="isAuthenticated()"/> 모든 페이지 로그인해야 접근 가능하게 만듦	 -->	
 		<form-login 

@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sh.groupware.emp.model.dao.EmpDao;
+import com.sh.groupware.emp.model.dto.Authority;
 import com.sh.groupware.emp.model.dto.Emp;
+import com.sh.groupware.emp.model.dto.EmpDetail;
+import com.sh.groupware.report.model.dto.ReportMember;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -75,4 +78,32 @@ public class EmpServiceImpl implements EmpService {
 		
 		return result;
 	}
+	
+	
+	@Override
+	public List<EmpDetail> selectAllEmpList() {
+		List<EmpDetail> empList = empDao.selectAllEmpList();
+		
+		for (EmpDetail emp : empList) {
+			List<Authority> authorityList = empDao.selectAllAuthorityList(emp.getEmpId());
+			
+			if (authorityList.size() > 0) {
+				for (Authority authority : authorityList)
+					emp.addAuthorityList(authority);
+			}
+		}
+		log.debug("empList = {}", empList);
+		return empList;
+	} // selectAllEmpList() end
+	
+	@Override
+	public List<Emp> findByDeptCodeEmpList(String deptCode) {
+		return empDao.findByDeptCodeEmpList(deptCode);
+	} // findByDeptCodeEmpList() end
+	
+	@Override
+	public List<Emp> findByDeptCodeEmpIdEmpList(Map<String, Object> param) {
+		return empDao.findByDeptCodeEmpIdEmpList(param);
+	} // findByDeptCodeEmpIdEmpList() end
+	
 }

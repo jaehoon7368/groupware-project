@@ -31,4 +31,15 @@
 		)
 	</insert>
 	<resultMap type="emp" id="empMap"></resultMap>
+	
+	<select id="selectAllEmpList" resultMap="empDetailMap">
+		select
+			e.*,
+			(select job_title from job where job_code = e.job_code) job_title,
+			(select base_day_off from job where job_code = e.job_code) base_day_off,
+			(select dept_title from dept where dept_code = e.dept_code) dept_title
+		from
+			emp e
+	</select>
+	<resultMap type="empDetail" id="empDetailMap"></resultMap>
 </mapper>
