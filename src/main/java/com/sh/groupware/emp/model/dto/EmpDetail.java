@@ -1,6 +1,7 @@
 package com.sh.groupware.emp.model.dto;
 
 import java.time.LocalDate;
+import com.sh.groupware.common.dto.Attachment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class EmpDetail extends Emp {
 	
 	public EmpDetail(String empId, String password, String name, String ssn, String address, String email, String phone,
 			LocalDate hireDate, LocalDate quitDate, Quit quitYn, String jobCode, String deptCode,
-			List<SimpleGrantedAuthority> authorities, String jobTitle, int baseDayOff, String deptTitle) {
+			List<SimpleGrantedAuthority> authorities, Attachment attachment,String jobTitle, int baseDayOff, String deptTitle) {
 		super(empId, password, name, ssn, address, email, phone, hireDate, quitDate, quitYn, jobCode, deptCode,
-				authorities);
+				authorities, attachment);
 		this.jobTitle = jobTitle;
 		this.baseDayOff = baseDayOff;
 		this.deptTitle = deptTitle;
@@ -34,10 +35,10 @@ public class EmpDetail extends Emp {
 	
 	public EmpDetail(String empId, String password, String name, String ssn, String address, String email, String phone,
 			LocalDate hireDate, LocalDate quitDate, Quit quitYn, String jobCode, String deptCode,
-			List<SimpleGrantedAuthority> authorities, String jobTitle, int baseDayOff, String deptTitle,
+			List<SimpleGrantedAuthority> authorities, Attachment attachment,String jobTitle, int baseDayOff, String deptTitle,
 			List<Authority> authorityList) {
 		super(empId, password, name, ssn, address, email, phone, hireDate, quitDate, quitYn, jobCode, deptCode,
-				authorities);
+				authorities,attachment);
 		this.jobTitle = jobTitle;
 		this.baseDayOff = baseDayOff;
 		this.deptTitle = deptTitle;
@@ -50,3 +51,4 @@ public class EmpDetail extends Emp {
 	} // addAuthorityList() end
 	
 } // class end
+

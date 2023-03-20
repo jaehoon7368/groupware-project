@@ -1,18 +1,4 @@
 
-/* 태그 css */
-button {
-    border: solid 1px #bebebe;
-    padding: 10px;
-    border-radius: 30px;
-}
-
-button:hover {
-    cursor: pointer;
-}
-
-ul:hover {
-    cursor: pointer;
-}
 
 /* a태그 사용 시 파란 글씨를 검정으로 바꾸는 css */
 .container-a {
@@ -39,59 +25,6 @@ ul:hover {
     font-size: large;
 }
 
-
-
-/* 상단에 조그만한 img */
-.my-img {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-}
-
-
-
-/* 상단에 조그만한 img랑 img 클릭 시 띄우는 창 */
-.topbar-div {
-    position: relative;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.topbar-div div {
-    padding: 10px;
-}
-
-#my-menu-modal {
-    width: 80px;
-    position: absolute;
-    display: none;
-    text-align: center;
-    border: solid 1px gray;
-    border-radius: 10px;
-    background-color: #fff;
-    top: 40px;
-    left: 40px;
-    padding: 0px;
-}
-
-#my-menu-modal div {
-    padding: 0px;
-}
-
-.my-menu {
-    border: none;
-    border-radius: 0;
-    font-size: small;
-    border-bottom: solid 1px lightgray;
-}
-
-#my-menu-modal .my-menu-div:last-child .my-menu {
-    border-bottom: none;
-}
-
-
-
 /* home.jsp */
 .home-content {
     display: flex;
@@ -117,7 +50,7 @@ ul:hover {
     background-color: white;
 }
 
-#clock{
+#clock {
     font-size: 40px;
     padding: 3px 0;
 }
@@ -158,7 +91,8 @@ ul:hover {
     height: 50px;
 }
 
-.btn-tr button,select{
+.btn-tr button,
+select {
     border: 1px solid #00b6c2;
     color: #00b6c2;
 }
@@ -274,124 +208,52 @@ p.title {
 }
 
 /* 메인내용 */
-#date-box{
+#empInfo{
+    /* border: 1px solid black; */
+    margin-left: 20px;
+    margin-top: 20px;
+}
+#empInfo table{
+    border-collapse: collapse;
+}
+#empInfo th{
+    width: 150px;
+    height: 30px;
+    background-color: #e8e8e8;
+    border: 1px solid black;
+}
+#empInfo td {
+    width: 150px;
+    height: 50px;
+    border: 1px solid black;
+    padding: 2px;
     text-align: center;
 }
-#date-box i{
-    font-size: 18px;
-    color: gray;
+#empInfo td input{
+    width: 150px;
+    height: 40px;
+    margin-bottom: 0;
+    margin: auto;
 }
-#work-week-container{
-    position: relative;
-    border: 1px solid gray;
-    height: 100px;
-    width: 100%;
-}
-#work-week-time{
-    position: absolute;
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
-    height: 100%;
-}
-#work-week-time div{
-    width: 180px;
-    padding-top: 17px;
-}
-#work-week-time p {
-    margin-bottom: 5px;
-}
-
-.table-expand {
-    margin-top: 5rem;
-    width: 100%;
-}
-
-.table-expand td {
-    padding: 10px;
-}
-
-.table-expand .text-right {
-    padding-right: 3rem;
-}
-
-.table-expand-row.is-active .expand-icon::after {
-    content: '-';
-}
-
-.table-expand-row .expand-icon::after {
-    content: '+';
-}
-
-.table-expand-row-content {
-    display: none;
-}
-
-.total-time-info{
-    width: 110%;
-    font-size: 14px;
-    float : right;
-    color : gray;
-    border-bottom: .5px solid gray;
-    margin-top: 7px;
-    text-align: end;
-}
-
-.table-expand-row-content.is-active {
-    display: table-row;
-    -webkit-animation: fadeIn ease-in 1;
-    animation: fadeIn ease-in 1;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-    -webkit-animation-duration: 0.5s;
-    animation-duration: 0.5s;
-}
-
-#date-table{
-    width: 100%;
-    border-bottom: 0.5px solid gray;
-}
-#date-table tr{
-    padding: 10px 0;
-}
-#date-table th{
-    font-size: 14px;
-    border-bottom: none;
-}
-#date-table td{
+#btn-empEnroll{
     width: 100px;
-    text-align: center;
-    font-size: 14px;
+    height: 30px;
+    margin: 20px 40%;
+    border-radius: 5px;
+    background-color: white;
 }
 
-@-webkit-keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
 /* 메인내용 end */
 
 /* 공통 */
-.main-color{
+.main-color {
     color: #00b6c2;
 }
-.color-gray{
+
+.color-gray {
     color: gray;
 }
+
 .text-left {
     text-align: left;
 }
@@ -404,16 +266,14 @@ p.title {
     font-size: 14px;
 }
 
-.font-18{
+.font-18 {
     font-size: 18px;
 }
 
-.font-bold{
+.font-bold {
     font-weight: bold;
 }
-.border-bottom{
+
+.border-bottom {
     border-bottom: .5px solid gray;
-}
-.a-font{
-	text-decoration: none;
 }
