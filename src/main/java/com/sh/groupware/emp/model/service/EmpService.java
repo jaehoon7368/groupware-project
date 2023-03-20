@@ -1,8 +1,10 @@
 package com.sh.groupware.emp.model.service;
 
-import com.sh.groupware.emp.model.dto.EmpDetail;
-import com.sh.groupware.common.dto.Attachment;
+
+import java.util.List;
+import java.util.Map;
 import com.sh.groupware.emp.model.dto.Emp;
+import com.sh.groupware.emp.model.dto.EmpDetail;
 
 public interface EmpService {
 
@@ -13,6 +15,10 @@ public interface EmpService {
 
 	EmpDetail selectEmpDetail(String empId);
 
+	List<EmpDetail> selectAllEmpList();
 
+	List<Emp> findByDeptCodeEmpList(String deptCode);
+
+	List<Emp> findByDeptCodeEmpIdEmpList(Map<String, Object> param);
 
 }
