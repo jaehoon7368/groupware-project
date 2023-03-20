@@ -98,7 +98,8 @@
 								document.querySelectorAll('.div-report').forEach((report) => {
 									report.addEventListener('click', (e) => {
 										console.log(e.target);
-										//location.href = `${pageContext.request.contextPath}/report/reportForm.do?no=\${e.target.dataset.no}`;
+
+										// location.href = `${pageContext.request.contextPath}/report/reportForm.do?no=\${e.target.dataset.no}`;
 									});
 								});
 							</script>
