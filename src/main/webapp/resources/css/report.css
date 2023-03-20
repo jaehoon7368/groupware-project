@@ -75,9 +75,10 @@
   padding: 10px 0;
 }
 
-.report-list-tbl th {
+.report-list-tbl th, .report-list-tbl td {
   font-size: small;
-  font-weight: normal;
+  /* font-weight: normal; */
+  text-align: center;
   border-top: solid 1px lightgray;
   border-bottom: solid 1px lightgray;
 }
@@ -158,6 +159,10 @@
 
 .div-unreport-one img {
 	border-radius: 0;
+}
+
+.div-me {
+	border: solid 2px gray;
 }
 
 /* 보고 작성 */

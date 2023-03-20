@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
 import com.sh.groupware.report.model.dto.ReportCheck;
+import com.sh.groupware.report.model.dto.ReportDetail;
 import com.sh.groupware.report.model.dto.ReportMember;
 
 @Mapper
@@ -46,5 +47,13 @@ public interface ReportDao {
 
 	@Update("update reportMember set exclude_yn = 'N' where report_no = #{no} and emp_id = #{empId}")
 	int updateExcludeYnN(Map<String, Object> param);
+
+	int insertReportDetail(ReportDetail detail);
+
+	@Update("update reportMember set create_yn = 'Y' where report_no = #{no} and emp_id = #{empId}")
+	int updateCreateYnY(Map<String, Object> param);
+
+	@Select("select * from report where dept_yn = 'Y' and writer in (select emp_id from emp where dept_code = #{code}) order by end_date")
+	List<Report> findByDeptCodeReportList(String code);
 
 } // interface end

@@ -59,107 +59,108 @@
 						<div class="div-report-no">
 							<div class="row">
 								<div class="columns">
-									<button class="font-small" data-open="exampleModal1">보고자 제외</button>
-									<!-- 모달 -->
-									<div class="report-no-modal reveal" id="exampleModal1" data-reveal>
-										<h5>보고자 제외</h5>
-										<form name="unreportFrm">
-										<%-- <form:form action="${pageContext.request.contextPath}/report/updateExcludeYn.do" method="POST" name="unreportFrm"> --%>
-											<div>
+									<c:if test="${reportCheckList[0].writer == sessionScope.loginMember.empId}">
+										<button class="font-small" data-open="exampleModal1">보고자 제외</button>
+										<!-- 모달 -->
+										<div class="report-no-modal reveal" id="exampleModal1" data-reveal>
+											<h5>보고자 제외</h5>
+											<form name="unreportFrm">
+											<%-- <form:form action="${pageContext.request.contextPath}/report/updateExcludeYn.do" method="POST" name="unreportFrm"> --%>
 												<div>
-													<p class="font-small report-no-modal-title">미보고자</p>
-													<fieldset class="fieldset report-no-modal-fieldset">
-														<input type="hidden" name="no" value="${param.no}" />
-														<!-- <legend>미보고자</legend> -->
-														<input id="checkAll" type="checkbox"><label for="checkAll" class="font-small">전체</label><br />
-														<c:forEach items="${reportCheckList}" var="reportCheck">
-															<input id="${reportCheck.empId}" name="unreport" type="checkbox" onchange="checkEach(this);" value="${reportCheck.empId}" ${reportCheck.excludeYn == 'Y' ? 'checked' : ''}><label for="${reportCheck.empId}" class="font-small">${reportCheck.empName} ${reportCheck.jobTitle}</label><br />
-														</c:forEach>
-													</fieldset>
+													<div>
+														<p class="font-small report-no-modal-title">미보고자</p>
+														<fieldset class="fieldset report-no-modal-fieldset">
+															<input type="hidden" name="no" value="${param.no}" />
+															<input id="checkAll" type="checkbox"><label for="checkAll" class="font-small">전체</label><br />
+															<c:forEach items="${reportCheckList}" var="reportCheck">
+																<input id="${reportCheck.empId}" name="unreport" type="checkbox" onchange="checkEach(this);" value="${reportCheck.empId}" ${reportCheck.excludeYn == 'Y' ? 'checked' : ''}><label for="${reportCheck.empId}" class="font-small">${reportCheck.empName} ${reportCheck.jobTitle}</label><br />
+															</c:forEach>
+														</fieldset>
+													</div>
 												</div>
-											</div>
-											<div class="font-small report-no-modal-btn">
-												<button type="submit">확인</button>
-												<button data-close aria-label="Close reveal">취소</button>
-											</div>
-											<button class="btn-close close-button" data-close aria-label="Close reveal" type="button">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										<%-- </form:form> --%>
-										</form>
-									</div>
-									<script>
-										/**
-								         * 전체선택 또는 전체해제
-								         */
-										document.querySelector('#checkAll').addEventListener('change', (e) => {
-											const unreportes = document.querySelectorAll("[name=unreport]");
-								            console.log(unreportes);
-								
-								            const checkAll = document.getElementById("checkAll");
-								            for (let i = 0; i < unreportes.length; i++) {
-								                const unreport = unreportes[i];
-								                unreport.checked = checkAll.checked;
-								            }
-										});
-								
-								        /**
-								         * 개별체크박스를 통해 전체선택 제어
-								         */
-								        const checkEach = (unreport) => {
-								            console.log('checkEach', unreport);
-								            const unreportes = document.querySelectorAll("[name=unreport]");
-								            
-								            // false여부 판단
-								            for (let i = 0; i < unreportes.length; i++) {
-								                if (!unreportes[i].checked) {
-								                    document.getElementById("checkAll").checked = false;
-								                    return; // 조기리턴
-								                }
-								            }
-								            document.getElementById("checkAll").checked = true;
-								        };
-								        
-								        document.unreportFrm.addEventListener('submit', (e) => {
-								        	e.preventDefault();
-								        	
-								    		const csrfHeader = "${_csrf.headerName}";
-								    		const csrfToken = "${_csrf.token}";
-								    		const headers = {};
-								    		headers[csrfHeader] = csrfToken;
-								    		
-								    		const report = [];
-								    		const unreport = [];
-								    		const unreportes = e.target.unreport;
-								    		for (let i = 0; i < unreportes.length; i++) {
-								    			if (unreportes[i].checked) {
-								    				unreport.push(unreportes[i].id);
-								    			} 
-								    			if (!unreportes[i].checked) {
-								    				report.push(unreportes[i].id);
-								    			}
-								    		}
-								    		
-								    		const no = e.target.no.value;
-								    		console.log(no);
-								    		console.log(report);
-								    		console.log(unreport);
-								        	
-								        	$.ajax({
-								        		url: '${pageContext.request.contextPath}/report/updateExcludeYn.do',
-								        		method: 'POST',
-								        		headers,
-								        		data: {report, unreport, no},
-								        		success(data){
-								        			console.log(data);
-								        		},
-								        		error: console.log,
-								        		complete(){
-								        			location.reload();
-								        		}
-								        	});
-								        });
-								    </script>
+												<div class="font-small report-no-modal-btn">
+													<button type="submit">확인</button>
+													<button data-close aria-label="Close reveal">취소</button>
+												</div>
+												<button class="btn-close close-button" data-close aria-label="Close reveal" type="button">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											<%-- </form:form> --%>
+											</form>
+										</div>
+										<script>
+											/**
+									         * 전체선택 또는 전체해제
+									         */
+											document.querySelector('#checkAll').addEventListener('change', (e) => {
+												const unreportes = document.querySelectorAll("[name=unreport]");
+									            console.log(unreportes);
+									
+									            const checkAll = document.getElementById("checkAll");
+									            for (let i = 0; i < unreportes.length; i++) {
+									                const unreport = unreportes[i];
+									                unreport.checked = checkAll.checked;
+									            }
+											});
+									
+									        /**
+									         * 개별체크박스를 통해 전체선택 제어
+									         */
+									        const checkEach = (unreport) => {
+									            console.log('checkEach', unreport);
+									            const unreportes = document.querySelectorAll("[name=unreport]");
+									            
+									            // false여부 판단
+									            for (let i = 0; i < unreportes.length; i++) {
+									                if (!unreportes[i].checked) {
+									                    document.getElementById("checkAll").checked = false;
+									                    return; // 조기리턴
+									                }
+									            }
+									            document.getElementById("checkAll").checked = true;
+									        };
+									        
+									        document.unreportFrm.addEventListener('submit', (e) => {
+									        	e.preventDefault();
+									        	
+									    		const csrfHeader = "${_csrf.headerName}";
+									    		const csrfToken = "${_csrf.token}";
+									    		const headers = {};
+									    		headers[csrfHeader] = csrfToken;
+									    		
+									    		const report = [];
+									    		const unreport = [];
+									    		const unreportes = e.target.unreport;
+									    		for (let i = 0; i < unreportes.length; i++) {
+									    			if (unreportes[i].checked) {
+									    				unreport.push(unreportes[i].id);
+									    			} 
+									    			if (!unreportes[i].checked) {
+									    				report.push(unreportes[i].id);
+									    			}
+									    		}
+									    		
+									    		const no = e.target.no.value;
+									    		console.log(no);
+									    		console.log(report);
+									    		console.log(unreport);
+									        	
+									        	$.ajax({
+									        		url: '${pageContext.request.contextPath}/report/updateExcludeYn.do',
+									        		method: 'POST',
+									        		headers,
+									        		data: {report, unreport, no},
+									        		success(data){
+									        			console.log(data);
+									        		},
+									        		error: console.log,
+									        		complete(){
+									        			location.reload();
+									        		}
+									        	});
+									        });
+									    </script>
+									</c:if>
 								</div>
 							</div>
 						</div>
@@ -180,7 +181,7 @@
 							<div class="div-unreport-all">
 								<c:forEach items="${reportCheckList}" var="reportCheck">
 									<c:if test="${reportCheck.createYn == 'N' && reportCheck.excludeYn == 'N'}">
-										<div class="div-unreport-one">
+										<div class="div-unreport-one ${sessionScope.loginMember.empId == reportCheck.empId ? 'div-me' : ''}">
 											<div>
 												<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
 											</div>
@@ -194,30 +195,32 @@
 						<!-- 보고 작성 -->
 						<div class="div-report-write">
 							<div class="div-padding div-report-write-name">${reportCheckList[0].title}</div>
-							<div class="div-padding div-report-write-content">
-								<textarea id="summernote" name="memo"></textarea>
-								<script>
-									$('#summernote').summernote({
-										placeholder: 'Hello stand alone ui',
-										tabsize: 2,
-										height: 350,
-										width: '100%',
-										toolbar: [
-											['style', ['style']],
-											['font', ['bold', 'underline', 'clear']],
-											['color', ['color']],
-											['para', ['ul', 'ol', 'paragraph']],
-											['table', ['table']],
-											['insert', ['link', 'picture', 'video']],
-											['view', ['fullscreen', 'codeview', 'help']]
-										]
-									  });
-								</script>
-								<!-- <textarea rows="10" cols="10"></textarea> -->
-							</div>
-							<div class="div-padding div-report-write-btn">
-								<button>등록</button>
-							</div>
+							<form:form action="${pageContext.request.contextPath}/report/reportDetailEnroll.do" name="reportDetailFrm" method="POST">
+								<div class="div-padding div-report-write-content">
+									<input type="hidden" name="reportNo" value="${param.no}" />
+									<textarea id="summernote" name="content"></textarea>
+								</div>
+								<div class="div-padding div-report-write-btn">
+									<button type="submit">등록</button>
+								</div>
+							</form:form>
+							<script>
+								$('#summernote').summernote({
+									placeholder: 'Hello stand alone ui',
+									tabsize: 2,
+									height: 350,
+									width: '100%',
+									toolbar: [
+										['style', ['style']],
+										['font', ['bold', 'underline', 'clear']],
+										['color', ['color']],
+										['para', ['ul', 'ol', 'paragraph']],
+										['table', ['table']],
+										['insert', ['link', 'picture', 'video']],
+										['view', ['fullscreen', 'codeview', 'help']]
+									]
+								  });
+							</script>
 						</div>
 						
 						<!-- 보고 댓글 -->

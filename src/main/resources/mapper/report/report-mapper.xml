@@ -38,4 +38,24 @@
 	</select>
 	<resultMap type="reportCheck" id="reportCheckMap"></resultMap>
 	
+	<insert id="insertReportDetail">
+		insert into
+			reportDetail
+		values (
+			seq_reportDetail_no.nextval,
+			#{reportNo},
+			#{empId},
+			#{content},
+			default
+		)
+		
+		<selectKey order="AFTER" resultType="string" keyProperty="no">
+			select
+				seq_reportDetail_no.currval
+			from
+				dual
+		</selectKey>
+		
+	</insert>
+	
 </mapper>

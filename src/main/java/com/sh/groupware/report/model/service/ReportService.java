@@ -6,6 +6,7 @@ import java.util.Map;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
 import com.sh.groupware.report.model.dto.ReportCheck;
+import com.sh.groupware.report.model.dto.ReportDetail;
 import com.sh.groupware.report.model.dto.ReportMember;
 
 public interface ReportService {
@@ -29,5 +30,11 @@ public interface ReportService {
 	int updateExcludeYnN(Map<String, Object> param);
 
 	int updateExcludeYn(List<String> report, List<String> unreport, String no);
+
+	int insertReportDetail(ReportDetail detail);
+
+	int updateCreateYnY(Map<String, Object> param);
+
+	List<Report> findByDeptCodeReportList(String code);
 
 } // interface end

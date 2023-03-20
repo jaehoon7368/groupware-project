@@ -12,6 +12,7 @@ import com.sh.groupware.report.model.dao.ReportDao;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
 import com.sh.groupware.report.model.dto.ReportCheck;
+import com.sh.groupware.report.model.dto.ReportDetail;
 import com.sh.groupware.report.model.dto.ReportMember;
 import com.sh.groupware.report.model.dto.Type;
 
@@ -117,5 +118,47 @@ public class ReportServiceImpl implements ReportService {
 	public int updateExcludeYnN(Map<String, Object> param) {
 		return reportDao.updateExcludeYnN(param);
 	} // updateExcludeYnN() end
+	
+	@Override
+	public int insertReportDetail(ReportDetail detail) {
+		int result = reportDao.insertReportDetail(detail);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("no", detail.getReportNo());
+		param.put("empId", detail.getEmpId());
+		
+		result = updateCreateYnY(param);
+		
+		return result;
+	} // insertReportDetail() end
+	
+	@Override
+	public int updateCreateYnY(Map<String, Object> param) {
+		return reportDao.updateCreateYnY(param);
+	} // updateCreateYnY() end
+	
+	@Override
+	public List<Report> findByDeptCodeReportList(String code) {
+		List<Report> reportList = reportDao.findByDeptCodeReportList(code);
+		
+		if (reportList.size() > 0) {
+			for (Report repo : reportList) {
+				List<ReportMember> memberList = findByReportNoMemberList(repo.getNo());
+				if (memberList.size() > 0) {
+					for (ReportMember member : memberList) {
+						repo.addReportMember(member);
+					}
+				} // memberList report에 저장
+				
+				List<Reference> referList = findByReportNoReference(repo.getNo());
+				if (referList.size() > 0) {
+					for (Reference refer : referList) {
+						repo.addReference(refer);
+					}
+				} // referList report에 저장
+			}
+		}
+		return reportList;
+	} // findByDeptCodeReportList() end
 	
 } // class end

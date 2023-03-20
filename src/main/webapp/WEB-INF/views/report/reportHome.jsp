@@ -53,46 +53,47 @@
 						<div>
 							<div class="div-padding div-report-ing">
 								<c:forEach items="${reportList}" var="report">
-									<div class="div-report" data-no="${report.reportNo}">
-										<div class="div-report-tbl">
-											<table class="font-small">
-	                                            <colgroup>
-	                                                <col width="35%" />
-	                                                <col width="65%" />
-	                                            </colgroup>
-												<tbody>
-													<tr>
-														<td colspan="2" class="report-year">
-															<fmt:parseDate value="${report.endDate}" pattern="yyyy-MM-dd" var="endYear" />
-															<fmt:formatDate value="${endYear}" pattern="yyyy" />
-														</td>
-													</tr>
-													<tr>
-														<td colspan="2" class="report-day">
-															<fmt:parseDate value="${report.endDate}" pattern="yyyy-MM-dd" var="endDate" />
-															<fmt:formatDate value="${endDate}" pattern="MM/dd(E)" />
-														</td>
-													</tr>
-													<tr>
-														<td colspan="2" class="report-title">${report.title}</td>
-													</tr>
-													<tr>
-														<td>부서</td>
-														<td>${report.deptTitle}</td>
-													</tr>
-													<tr>
-														<td>보고현황</td>
-														<td title="보고자 ${report.memberCount}명 (미보고자 ${report.createCount}명)">보고자 ${report.memberCount}명 (미보고자 ${report.createCount}명)</td>
-													</tr>
-												</tbody>
-											</table>
+									<c:if test="${report.createYn == 'N'}">
+										<div class="div-report" data-no="${report.reportNo}">
+											<div class="div-report-tbl">
+												<table class="font-small">
+		                                            <colgroup>
+		                                                <col width="35%" />
+		                                                <col width="65%" />
+		                                            </colgroup>
+													<tbody>
+														<tr>
+															<td colspan="2" class="report-year">
+																<fmt:parseDate value="${report.endDate}" pattern="yyyy-MM-dd" var="endYear" />
+																<fmt:formatDate value="${endYear}" pattern="yyyy" />
+															</td>
+														</tr>
+														<tr>
+															<td colspan="2" class="report-day">
+																<fmt:parseDate value="${report.endDate}" pattern="yyyy-MM-dd" var="endDate" />
+																<fmt:formatDate value="${endDate}" pattern="MM/dd(E)" />
+															</td>
+														</tr>
+														<tr>
+															<td colspan="2" class="report-title">${report.title}</td>
+														</tr>
+														<tr>
+															<td>부서</td>
+															<td>${report.deptTitle}</td>
+														</tr>
+														<tr>
+															<td>보고현황</td>
+															<td title="보고자 ${report.memberCount}명 (미보고자 ${report.createCount}명)">보고자 ${report.memberCount}명 (미보고자 ${report.createCount}명)</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div class="div-report-btn">
+												<button class="report-btn" type="button">보고하기</button>
+											</div>
 										</div>
-										<div class="div-report-btn">
-											<button class="report-btn" type="button">보고하기</button>
-										</div>
-									</div>
+									</c:if>
 								</c:forEach>
-								
 							</div>
 							<script>
 								document.querySelectorAll('.div-report').forEach((report) => {
@@ -123,14 +124,24 @@
                                         <table>
                                             <thead>
                                                 <tr>
-                                                    <th>보고일</th>
                                                     <th>부서</th>
-                                                    <th>보고서</th>
                                                     <th>제목</th>
                                                     <th>보고자</th>
+                                                    <th>보고마감일</th>
                                                 </tr>
                                             </thead>
-                                            <tbody></tbody>
+                                            <tbody>
+                                            	<c:forEach items="${reportList}" var="report">
+                                            		<c:if test="${report.createYn == 'Y'}">
+	                                            		<tr>
+	                                            			<td>${report.deptTitle}</td>
+	                                            			<td>${report.title}</td>
+	                                            			<td>${report.empName}</td>
+	                                            			<td>${report.endDate}</td>
+	                                            		</tr>
+                                            		</c:if>
+                                            	</c:forEach>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
