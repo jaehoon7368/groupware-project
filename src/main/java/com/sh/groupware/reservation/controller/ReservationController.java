@@ -18,6 +18,11 @@ public class ReservationController {
 		
 		return "reservation/reservation";
 	}
+	
+	@GetMapping("/asset1.do")
+	public String asset1 () {
+		return "reservation/asset1";
+	}
 	 
 
 }

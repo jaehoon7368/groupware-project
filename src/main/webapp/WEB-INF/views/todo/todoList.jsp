@@ -216,7 +216,7 @@
 
 </style>
 			<div class="content-top">
-				<h2 class="board-menu" id="boardMenu">Board</h2>
+				<h2 class="board-menu" id="boardMenu">Board .${todoBoard.title}</h2>
 				<!-- 게시판 메뉴 모달 -->
 				<div class="removeView board-menu-modal" id="boardMenuModal" >
 						<div class="modalTitle">Board</div>
@@ -225,17 +225,17 @@
 						<div class="modalList">내보드</div>
 				</div>
 <script>
-	//todo홈버튼
+	//todo홈버튼  
 	document.querySelector("#todoHome").addEventListener('click',()=>{
 		location.href='${pageContext.request.contextPath}/todo/todo.do';		
 	})
 	const boardMenu = document.querySelector("#boardMenu");
 	const boardMenuModal = document.querySelector("#boardMenuModal");
-
+	// Board 클릭  보이고 안보이고 
 	boardMenu.addEventListener('click',()=>{
    		 boardMenuModal.classList.remove('removeView');
 	})
-
+	//바깥누르면 취소
 	document.addEventListener('click', (event) => {
     	if (!boardMenuModal.contains(event.target) && event.target !== boardMenu) {
         	boardMenuModal.classList.add('removeView');
@@ -248,18 +248,38 @@
 
 				<div class="wrap_todo_board todo-div">
 					<ul>
-						<li class="todo-li">
-							<div class="top-list" id="listTitle" onclick="changeView(event);">대기</div> <!-- 제목 -->
-									<form action="" id="updateFrm" class="removeView">
-										<input type="text"  placeholder="원래제목타이틀"/>
+							<c:forEach items="${ todoLists}" var="todoList" varStatus="vs">
+						<li class="todo-li" id = "listContainer">
+							<div class="top-list" id="listTitle${vs.index }" onclick="changeView${vs.index}(event);">${todoList.title}</div> <!-- 제목 -->
+									<form action="" id="updateFrm${vs.index}" class="removeView"> 
+										<input type="text"  placeholder="제목" value=""/>
 												<button class="comment-btn"> 저장 </button>
-												<button class="comment-btn" id="titleCanclebtn"> 취소 </button>
+												<button class="comment-btn" id="titleCanclebtn${vs.index}"> 취소 </button>
 												<button class="comment-btn"> 삭제 </button>
 									</form>
 									<div class="row">
-	<script>
+<script>
+// 제목 폼 변경 메소드
 
-	</script>
+var changeView${vs.index}=(e)=>{
+const ufrm = document.querySelector("#updateFrm${vs.index}");
+const listTitle = document.querySelector("#listTitle${vs.index}")
+	listTitle.classList.add('removeView');
+	ufrm.classList.remove('removeView');
+	e.stopPropagation();
+} 
+
+//제목 취소 버튼 이벤트
+	document.querySelector("#titleCanclebtn${vs.index}").addEventListener('click',(e)=>{
+		const listTitle = document.querySelector("#listTitle${vs.index}")
+		const ufrm = document.querySelector("#updateFrm${vs.index}");
+	listTitle.classList.remove('removeView');
+	ufrm.classList.add('removeView');		
+	e.preventDefault();
+}) 
+
+</script>				
+					
 									
 									<!-- 모달시작 -->
 								<div class="columns">
@@ -290,26 +310,6 @@
 												</div>
 												<div><!-- 공간용 --></div>
 											</div>
-<script>
-			var todoContent = document.querySelector("#todoContent");
-			var conFrm = document.querySelector("#updateConFrm") ;
-			var headerText = document.querySelector("#headerText");
-		document.querySelector("#todoContent").addEventListener('click',(e)=>{
-			todoContent.classList.add('removeView');
-			conFrm.classList.remove('removeView');
-			conFrm.style.marginLeft = '10px';
-			headerText.classList.add('removeView');
-			conFrm.style.width='100%';
-		})
-		
-		document.querySelector("#contentCanclebtn").addEventListener('click',(e)=>{
-			todoContent.classList.remove("removeView");
-			conFrm.classList.add("removeView");
-			e.preventDefault();
-		})
-		
-		
-</script>
 
 											<div class="todo-content">
 												<div class="explain-div">
@@ -368,32 +368,53 @@
 								</div>
 								<!-- 모달끝 -->
 							</div>
-							<!-- 테스트 반복  -->
-							<div class="board-list">
-								<span>할일 리스트 제목 </span>
-								<p>Moreimage</p>
-							</div>
-							<div class="board-list">
-								<span>할일 리스트 제목 </span>
-								<p>Moreimage</p>
-							</div>
-							<!-- 테스트 반복  -->
 							
-							<div class="new-board-list" onclick="changeView2(event);" id="newboardDiv">
+							<div class="new-board-list" onclick="changeView2${vs.index}(event);" id="newboardDiv${vs.index }">
 								<i class="fa fa-plus" aria-hidden="true"
 									style="font-size: 2em; color: gray;"></i>
 							</div>
 							<!--  -->
-							<div id="enrollFrm" class="removeView">
+							<div id="enrollFrm${vs.index }" class="removeView">
 									<form action="" class="">
 										<textarea name="" id="" cols="30" rows="5" style="margin-top: 21px;"></textarea>
 												<button class="comment-btn"> 저장 </button>
-												<button class="comment-btn" id="titleContentCanclebtn"> 취소 </button>
+												<button class="comment-btn" id="titleContentCanclebtn${vs.index }"> 취소 </button>
 												<button class="comment-btn"> 삭제 </button>
 									</form>
 							</div>
 						</li>
-						<li class="todo-li"></li>
+<script>
+//등록 폼 변경 이벤트
+const changeView2${vs.index}=(e)=>{
+	console.log('클릭확인')
+	e.target.classList.add('removeView');
+	var frm = document.querySelector("#enrollFrm${vs.index }");
+	frm.classList.remove('removeView');
+	e.stopPropagation();
+}
+// + 취소 버튼 변경 이벤트
+document.querySelector("#titleContentCanclebtn${vs.index }").addEventListener('click',(e)=>{
+	e.preventDefault();
+	const newboardDiv = document.querySelector("#newboardDiv${vs.index }")
+	const enrollFrm = document.querySelector("#enrollFrm${vs.index }");
+	enrollFrm.classList.add('removeView');
+	newboardDiv.classList.remove('removeView');
+})
+
+</script>
+						</c:forEach> <!--  container 끝 -->
+						<li class="todo-li">
+							<div class="new-board-list" onclick="" id="todoListEnrolldiv">
+								<i class="fa fa-plus" aria-hidden="true"
+									style="font-size: 2em; color: gray;"></i>
+							</div>
+							<div id="todoListEnrollFrm" class="removeView">
+											    <input type="text"  id="todoListTitle"/>
+												<button class="comment-btn" id="todoListEnrollbtn"> 저장 </button>
+												<button class="comment-btn" id="todoListEnrollCancle"> 취소 </button>
+												<button class="comment-btn"> 삭제 </button>
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -407,42 +428,75 @@
 	<script>
 	
 	
+	//todolist 등록 하면  비동기로 화면 뿌리기
+	const queryString= window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const pageTodoBoardNo = urlParams.get('no');
 	
-	// 제목 폼 변경 메소드
-	const listTitle = document.querySelector("#listTitle")
-	var changeView=(e)=>{
-	const ufrm = document.querySelector("#updateFrm");
-		listTitle.classList.add('removeView');
-		ufrm.classList.remove('removeView');
+	document.querySelector("#todoListEnrollbtn").addEventListener('click',(e)=>{
+		const todoListTitle = document.querySelector("#todoListTitle");
+		console.log(todoListTitle.value);
+		
+		const csrfHeader = "${_csrf.headerName}";
+        const csrfToken = "${_csrf.token}";
+        const headers = {};
+        headers[csrfHeader] = csrfToken;
+	
+		$.ajax({
+			url : '${pageContext.request.contextPath}/todo/todoListEnroll.do',
+			method :"POST",
+			headers,
+			data: { 
+				todoListTitle: todoListTitle.value,
+				pageTodoBoardNo : pageTodoBoardNo	
+			},		
+			success(data){
+				console.log(data)
+				const container = document.querySelector("#listContainer");
+				renderTodoList(container);
+				
+				//등록 후 다시 원래대로 돌아감
+				const todoListEnrolldiv =document.querySelector("#todoListEnrolldiv");
+				todoListEnrollFrm.classList.add('removeView');
+				console.log(todoListEnrolldiv)
+				todoListEnrolldiv.classList.remove('removeView');
+				
+			},
+			error : console.log
+		}) //ajax 끝
+	})
+	
+	//리스트 등록후 화면 렌디렁
+	renderTodoList=(selector,data)=>{
+		let html = ``
+		
+	}
+	//윈도우가 로드되면 렌더링
+	window.onload=()=>{
+		renderTodoList();
+	}
+	
+	
+	
+	
+	//TodoList 클릭 폼변경
+	const todoListEnrollFrm = document.querySelector("#todoListEnrollFrm");
+	const todoListEnrolldiv =document.querySelector("#todoListEnrolldiv").addEventListener('click',(e)=>{
 		e.stopPropagation();
-	} 
- 
-	//제목 취소 버튼 이벤트
- 	document.querySelector("#titleCanclebtn").addEventListener('click',(e)=>{
-		const ufrm = document.querySelector("#updateFrm");
-		listTitle.classList.remove('removeView');
-		ufrm.classList.add('removeView');		
+		e.target.classList.add('removeView');
+		todoListEnrollFrm.classList.remove('removeView');
+	})
+	//TodoList 취소 클릭
+	document.querySelector("#todoListEnrollCancle").addEventListener('click',(e)=>{
 		e.preventDefault();
-	}) 
+		const todoListEnrolldiv =document.querySelector("#todoListEnrolldiv");
+		todoListEnrollFrm.classList.add('removeView');
+		console.log(todoListEnrolldiv)
+		todoListEnrolldiv.classList.remove('removeView');
+	})
 	
 	
 
-	//등록 폼 변경 이벤트
-	const changeView2=(e)=>{
-		console.log('클릭확인')
-		e.target.classList.add('removeView');
-		var frm = document.querySelector("#enrollFrm");
-		frm.classList.remove('removeView');
-		e.stopPropagation();
-	}
-	// + 취소 버튼 변경 이벤트
-	document.querySelector("#titleContentCanclebtn").addEventListener('click',(e)=>{
-		e.preventDefault();
-		const newboardDiv = document.querySelector("#newboardDiv")
-		const enrollFrm = document.querySelector("#enrollFrm");
-		enrollFrm.classList.add('removeView');
-		newboardDiv.classList.remove('removeView');
-	})
 	
 	//모달 섫명 폼변경
 	const ptag = document.querySelector("#epContent");
@@ -459,6 +513,27 @@
 	    ptag.classList.remove('removeView');
 	    updateEpFrm.classList.add('removeView');
 	})
+	
+	// 타이틀 제목 클릭시 변경 
+	var todoContent = document.querySelector("#todoContent");
+			var conFrm = document.querySelector("#updateConFrm") ;
+			var headerText = document.querySelector("#headerText");
+		document.querySelector("#todoContent").addEventListener('click',(e)=>{
+			todoContent.classList.add('removeView');
+			conFrm.classList.remove('removeView');
+			conFrm.style.marginLeft = '10px';
+			headerText.classList.add('removeView');
+			conFrm.style.width='100%';
+		})
+		
+		document.querySelector("#contentCanclebtn").addEventListener('click',(e)=>{
+			todoContent.classList.remove("removeView");
+			conFrm.classList.add("removeView");
+			e.preventDefault();
+		})
+		
+		
+	
 	
 	
 	
