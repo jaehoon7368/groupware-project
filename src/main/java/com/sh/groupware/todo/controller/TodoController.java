@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.sh.groupware.emp.model.dto.Emp;
+import com.sh.groupware.todo.model.dto.Todo;
 import com.sh.groupware.todo.model.dto.TodoBoard;
 import com.sh.groupware.todo.model.dto.TodoList;
 import com.sh.groupware.todo.model.service.TodoService;
@@ -41,7 +38,7 @@ public class TodoController {
 		
 		model.addAttribute("todoBoards",todoBoards);
 	}
-	
+	//게시판등록
 	@PostMapping("/todoBoardEnroll.do")
 	public String todoBoardEnroll(TodoBoard todoBoard , 
 			Authentication authentication
@@ -51,46 +48,56 @@ public class TodoController {
 		log.debug("TodoBoard = {}",todoBoard);
 		log.debug("empId = {}",empId);
 		int result = todoService.todoBoardEnroll(todoBoard);
-		return "redirect:/todo/todoList.do?empId="+empId;
+		String no = todoBoard.getNo();
+		return "redirect:/todo/todoList.do?no="+no;
 	}
+	
+	
 	
 	@GetMapping("/todoList.do")
 	public String todoList (@RequestParam String no,Model model) {
-		
 		TodoBoard todoBoard = todoService.selectOneTodoBoardByNo(no);
 		List<TodoList> todoLists = todoService.selectTodoListByNo(no); 
-		log.debug("todoLists= {}",todoLists);
+		log.debug("todoLists = {}" ,todoLists);
+		log.debug("todoBoard = {}" ,todoBoard);
+		
+		if(todoLists.size() > 0) {
 		model.addAttribute("todoLists",todoLists);
+		}
+		
 		model.addAttribute("todoBoard",todoBoard);
-		model.addAttribute("todoListsLength", todoLists.size());
 		return "todo/todoList";
 		
 	}
 	
-	@ResponseBody
-	@PostMapping("todoListEnroll.do")
-	public int todoListEnroll (
+	//리스트 등록
+	@PostMapping("/todoListEnroll.do")
+	public String todoListEnroll (
 			@RequestParam String todoListTitle,
-			@RequestParam String pageTodoBoardNo,
+			@RequestParam String no,
 			Authentication authentication) {
 		Map<String,Object> param = new HashMap<>();
-		
 		String empId =  ((Emp)authentication.getPrincipal()).getEmpId();
-		
 		param.put("empId", empId);
-		param.put("no", pageTodoBoardNo);
+		param.put("no", no);
 		param.put("todoListTitle", todoListTitle);
-		
-		log.debug("todoListTitle = {}",todoListTitle);
-		
-		int result = todoService.todoListEnroll(param); 
-		TodoList todoList = todoService.selectLastTodoList();
-		
-		log.debug("todoList = {}",todoList);
-		
-		
-			return result;
-					
+		log.debug("param = {}",param);
+		int result = todoService.todoListEnroll(param);
+		log.debug("param = {}",param);
+		return "redirect:/todo/todoList.do?no="+no;
 	}
+	
+	
+	//할일 등록
+	@PostMapping("/todoEnroll.do")
+	public String todoEnroll(Todo todo,@RequestParam String todoBoardNo) {
+		log.debug("Todo = {}", todo);
+		
+		int result = todoService.todoEnroll(todo);
+		log.debug("todoBoardNo = {}",todoBoardNo);
+		
+		return "redirect:/todo/todoList.do?no="+todoBoardNo;
+	}
+	
 	 
 }

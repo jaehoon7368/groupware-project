@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
+import com.sh.groupware.todo.model.dto.Todo;
 import com.sh.groupware.todo.model.dto.TodoBoard;
 import com.sh.groupware.todo.model.dto.TodoList;
 
@@ -22,7 +23,9 @@ public interface TodoService {
 
 	int todoListEnroll(Map<String,Object> param);
 
-	TodoList selectLastTodoList();
+	TodoList selectLastTodoList(Map<String,Object> param);
+
+	int todoEnroll(Todo todo);
 	
 
 }
