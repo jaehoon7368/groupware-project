@@ -117,4 +117,8 @@ public class EmpServiceImpl implements EmpService {
 		return empDao.findByDeptCodeEmpIdEmpList(param);
 	} // findByDeptCodeEmpIdEmpList() end
 	
+	@Override
+	public int empUpdate(Emp emp) {
+		return empDao.empUpdate(emp);
+	}
 }

@@ -21,4 +21,6 @@ public interface EmpService {
 
 	List<Emp> findByDeptCodeEmpIdEmpList(Map<String, Object> param);
 
+	int empUpdate(Emp emp);
+
 }

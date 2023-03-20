@@ -7,6 +7,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -111,13 +112,37 @@ public class EmpController {
 		Emp principal = (Emp) authentication.getPrincipal();
 		
 		String empId = principal.getEmpId();
+		//내 인사정보 가져오기
 		EmpDetail emp = empService.selectEmpDetail(empId);
+		//내 인사정보 사진 가져오기
 		Attachment attach = attachService.selectEmpProfile(empId);
 		log.debug("emp = {}",emp);
 		log.debug("attach={}",attach);
 		model.addAttribute("emp", emp);
 		model.addAttribute("attach", attach);
 		
+	}
+	
+	@PostMapping("/empInfo.do")
+	public String empUpdate(Emp emp,Authentication authentication) {
+		log.debug("emp={}",emp);
+		// 비밀번호 암호화 처리
+		String rawPassword = emp.getPassword();
+		String encodedPassword = passwordEncoder.encode(rawPassword);
+		emp.setPassword(encodedPassword);
+		
+		int result = empService.empUpdate(emp);
+		
+		// 2. security context의 인증객체 갱신
+		Emp newEmp = emp;
+		Authentication newAuthentication = new UsernamePasswordAuthenticationToken(
+				newEmp,
+				authentication.getCredentials(),
+				authentication.getAuthorities()
+		);
+		SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+		
+		return "redirect:/emp/empInfo.do";
 	}
 	
 	@GetMapping("/passwordEncode.do")
