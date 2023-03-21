@@ -29,5 +29,8 @@ public class BoardController {
 	@GetMapping("/boardAdd.do")
 	private void boardCreate() {}
 	
+	@GetMapping("/openBoardForm.do")
+	private void openBoardForm() {}
+	
 	
 }

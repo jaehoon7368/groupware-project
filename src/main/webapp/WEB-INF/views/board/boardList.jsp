@@ -75,60 +75,26 @@
 					</th>
                     <th scope="col" class="th-num">번호</th>
                     <th scope="col" class="th-title">제목</th>
-                    <th scope="col" class="th-title">작성자</th>
+                    <th scope="col" class="th-writer">작성자</th>
                     <th scope="col" class="th-date">작성일</th>
-                    <th scope="col" class="th-title">조회</th>
-                    <th scope="col" class="th-title">좋아요</th>
+                    <th scope="col" class="th-readCount">조회</th>
+                    <th scope="col" class="th-likeCount">좋아요</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                	<td><input type="checkbox" name="" value=""/></td>
-                    <td>5</td>
-                    <td>
-                      <a href="#!">마찬가집니다</a>
-                    </td>
-                    <td>김기훈</td>
-                    <td>23/03/15</td>
-                    <td>1</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" name="" value=""/></td>
-                    <td>4</td>
-                    <td><a href="#!">저두요</a></td>
-                    <td>최민경</td>
-                    <td>23/03/14</td>
-                    <td>3</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                	<td><input type="checkbox" name="" value=""/></td>
-                    <td>3</td>
-                    <td><a href="#!">저는 상관없습니다</a></td>
-                    <td>유재훈</td>
-                    <td>23/03/13</td>
-                    <td>5</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                	<td><input type="checkbox" name="" value=""/></td>
-                    <td>2</td>
-                    <td><a href="#!">2차 갈래?</a></td>
-                    <td>김현동</td>
-                    <td>23/03/12</td>
-                    <td>7</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                	<td><input type="checkbox" name="" value=""/></td>
-                    <td>1</td>
-                    <td><a href="#!">너무 졸려요</a></td>
-                    <td>한혜진</td>
-                    <td>23/03/12</td>
-                    <td>2</td>
-                    <td>1</td>
-                </tr>
+	                <c:forEach items="${boardList}" var="board">
+		                <tr>
+		                	<td><input type="checkbox" name="" value=""/></td>
+		                    <td>${board.no}</td>
+		                    <td>
+		                      <a href="#!">${board.title}</a>
+		                    </td>
+		                    <td>${board.name}</td>
+		                    <td>${board.date}</td>
+		                    <td>${board.readCount}</td>
+		                    <td>${board.likeCount}</td>
+		                </tr>
+	                </c:forEach>
                 </tbody>
             </table>
         </div>

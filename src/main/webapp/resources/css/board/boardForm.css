@@ -1,5 +1,5 @@
 .content {
-	display: block;
+	display: inline-block;
 	padding: 15px;
 }
 
@@ -8,11 +8,12 @@
 }
 
 .write-table input {
-	width: 1200px;
+	width: 1240px;
 }
 
+
 .write-table td {
-	padding-left:90px;
+	padding-left:50px;
 }
 
 .check-table td{

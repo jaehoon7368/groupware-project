@@ -96,13 +96,17 @@
   <form method="post">
   	<table class="write-table">
   		<tr>
-  			<th>제목</td>
+  			<th>
+  				<span class="title">제목</span>
+  			</th>
   			<td><input type="text"/></td>
   		</tr>
   		<tr>
-  			<th>파일 첨부</td>
+  			<th>
+  				<span class="file">첨부파일</span>
+  			</th>
   			<td><input type="text"/></td>
-  		</th>
+  		</tr>
   	</table>
   	
   	<div ="editor">
