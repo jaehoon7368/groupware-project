@@ -123,10 +123,6 @@
 						</div>
 
 						<script>
-							document.querySelector('#divReportChoice').classList.remove('div-choice-focus');
-							document.querySelector('#divReferenceUser').classList.remove('div-choice-focus');
-							document.querySelector('#divReferenceDept').classList.remove('div-choice-focus');
-
 							document.reportCreateFrm.addEventListener('submit', (e) => {
 								e.preventDefault();
 
@@ -209,7 +205,7 @@
 							<div class="div-emp-group">
 								<div class="accordion-box">
 									<ul class="container-list">
-										<c:forEach items="${deptList}" var="dept">
+										<c:forEach items="${sessionScope.deptList}" var="dept">
 											<li>
 												<p class="title font-medium">${dept.deptTitle}</p>
 												<div class="con">
@@ -242,10 +238,8 @@
 							<div class="div-emp-group">
 								<div class="accordion-box">
 									<ul class="container-list">
-										<c:forEach items="${deptList}" var="dept">
-											<li class="li-dept-title" data-code="${dept.deptCode}" data-title="${dept.deptTitle}">${dept.deptTitle}
-												<!-- <p class="title font-medium">${dept.deptTitle}</p> -->
-											</li>
+										<c:forEach items="${sessionScope.deptList}" var="dept">
+											<li class="li-dept-title" data-code="${dept.deptCode}" data-title="${dept.deptTitle}">${dept.deptTitle}</li>
 										</c:forEach>
 									</ul>
 								</div>

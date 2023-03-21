@@ -77,11 +77,7 @@ public class ReportController {
 		List<EmpDetail> empList = empService.selectAllEmpList();
 		log.debug("empList = {}", empList);
 		
-		List<Dept> deptList = deptService.selectAllDept();
-		log.debug("deptList = {}", deptList);
-		
 		model.addAttribute("empList", empList);
-		model.addAttribute("deptList", deptList);
 		
 		return "report/reportCreate";
 	} // reportCreateView() end
