@@ -79,7 +79,7 @@
 	                                            	<c:forEach items="${reportList}" var="report">
 	                                            		<tr>
 	                                            			<td>
-	                                            				<a href="#">${report.title}</a>
+	                                            				<a href='${pageContext.request.contextPath}/report/reportDetail.do?no=${report.no}'>${report.title}</a>
 	                                            			</td>
 	                                            			<td>${report.explain}</td>
 	                                            			<td>${report.writer}</td>
