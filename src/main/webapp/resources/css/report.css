@@ -176,6 +176,63 @@
 	border: solid 2px gray;
 }
 
+.div-unreport-non {
+	margin-right: 10px;
+}
+
+.div-unreport-non span {
+	margin: 10px;
+	color: gray;
+}
+
+/* 보고자 */
+.div-okreport {
+	padding: 20px 30px;
+}
+
+.div-okreport-title {
+	margin-bottom: 5px;
+	color: gray;
+	font-weight: bold;
+}
+
+.div-okreport-all {
+	display: flex;
+}
+
+.div-okreport-one {
+	width: 200px;
+	display: flex;
+	align-items: center;
+	background-color: #fff;
+	margin-right: 10px;
+	border: solid 1px lightgray;
+}
+
+.div-okreport-one:hover {
+	cursor: pointer;
+}
+
+.div-okreport-one-click {
+	border: solid 2px #00b6c2;
+}
+
+.div-okreport-one div {
+	padding: 10px;
+}
+
+.div-okreport-one div:last-of-type {
+	padding: 0;
+}
+
+.div-okreport-one img {
+	border-radius: 0;
+}
+
+.div-me {
+	border: solid 2px gray;
+}
+
 /* 보고 작성 */
 .div-report-write {
 	margin: 10px;

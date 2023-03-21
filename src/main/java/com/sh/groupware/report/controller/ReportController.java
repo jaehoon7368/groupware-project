@@ -6,14 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.google.common.net.HttpHeaders;
 import com.sh.groupware.dept.model.dto.Dept;
 import com.sh.groupware.dept.model.service.DeptService;
 import com.sh.groupware.emp.model.dto.Emp;
@@ -40,9 +44,6 @@ public class ReportController {
 	
 	@Autowired
 	private EmpService empService;
-	
-	@Autowired
-	private DeptService deptService;
 	
 	
 	@GetMapping("/report.do")
@@ -174,5 +175,14 @@ public class ReportController {
 		model.addAttribute("reportList", reportList);
 		return "report/reportDept";
 	} // reportDeptView() end
+	
+	
+	@GetMapping("/reportDetail.do")
+	public String reportDetail(@RequestParam String no, Model model) {
+		model.addAttribute("no", no);
+		List<ReportCheck> reportCheckList = reportService.findByReportNoReportCheckList(no);
+		model.addAttribute("reportCheckList", reportCheckList);
+		return "report/reportDetail";
+	}; // reportDetail() end
 	
 } // class end
