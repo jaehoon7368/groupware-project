@@ -64,7 +64,7 @@
 										</tr>
 										<tr>
 											<td>설명</td>
-											<td><textarea rows="3" cols="10" id="explain" name="explain"></textarea></td>
+											<td><textarea rows="3" cols="10" id="explain" name="explain" ></textarea></td>
 										</tr>
 										<tr>
 											<td>비공개 설정</td>
@@ -123,9 +123,42 @@
 						</div>
 
 						<script>
-							// document.reportCreateFrm.addEventListener('submit', (e) => {
-							// 	e.preventDefault();
-							// });
+							document.reportCreateFrm.addEventListener('submit', (e) => {
+								e.preventDefault();
+
+								const title = e.target.title;
+								const explain = e.target.explain;
+								const deptChoice = e.target.deptYn[1].checked;
+								const referUser = e.target.reference[0].checked;
+								const referDept = e.target.reference[1].checked;
+
+								if (!/^[a-zA-Z0-9가-힣ㄱ-ㅎ]{2,}/.test(title.value)) {
+									alert('제목은 최소 3글자로 영문자, 숫자, 한글만 작성 가능합니다.');
+									title.select();
+									return false;
+								};
+
+								if (/\s+/.test(explain.value) || !explain.value) {
+									alert('설명을 작성해주세요.');
+									explain.select();
+									return false;
+								};
+
+								if (deptChoice && rapporteur.length == 0) {
+									alert('보고자를 추가해주세요.');
+									return false;
+								};
+
+								if (referUser && referenceUser.length == 0) {
+									alert('참조 가능한 사용자를 추가해주세요.');
+									return false;
+								};
+
+								if (referDept && referenceDept.length == 0) {
+									alert('참조 가능한 부서를 추가해주세요.');
+									return false;
+								};
+							});
 							
 							
 							// 보고자 부서원 전체 클릭 시 직접지정 아래에 div 숨기기
@@ -172,7 +205,7 @@
 							<div class="div-emp-group">
 								<div class="accordion-box">
 									<ul class="container-list">
-										<c:forEach items="${deptList}" var="dept">
+										<c:forEach items="${sessionScope.deptList}" var="dept">
 											<li>
 												<p class="title font-medium">${dept.deptTitle}</p>
 												<div class="con">
@@ -205,10 +238,8 @@
 							<div class="div-emp-group">
 								<div class="accordion-box">
 									<ul class="container-list">
-										<c:forEach items="${deptList}" var="dept">
-											<li class="li-dept-title" data-code="${dept.deptCode}" data-title="${dept.deptTitle}">${dept.deptTitle}
-												<!-- <p class="title font-medium">${dept.deptTitle}</p> -->
-											</li>
+										<c:forEach items="${sessionScope.deptList}" var="dept">
+											<li class="li-dept-title" data-code="${dept.deptCode}" data-title="${dept.deptTitle}">${dept.deptTitle}</li>
 										</c:forEach>
 									</ul>
 								</div>

@@ -2,6 +2,7 @@ package com.sh.groupware.emp.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -26,6 +27,8 @@ import com.sh.groupware.emp.model.service.EmpService;
 import com.sh.groupware.common.HelloSpringUtils;
 import com.sh.groupware.common.attachment.model.service.AttachmentService;
 import com.sh.groupware.common.dto.Attachment;
+import com.sh.groupware.dept.model.dto.Dept;
+import com.sh.groupware.dept.model.service.DeptService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,6 +42,9 @@ public class EmpController {
 	private EmpService empService;
 	
 	@Autowired
+	private DeptService deptService;
+	
+	@Autowired
 	private AttachmentService attachService;
 	
 	@Autowired
@@ -50,8 +56,13 @@ public class EmpController {
 	@PostMapping("/loginSuccess.do")
 	public String loginSuccess(HttpSession session) {
 		log.debug("loginSuccess 핸들러 호출!");
+		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Emp principal = (Emp) authentication.getPrincipal();
+		session.setAttribute("loginMember", principal);
+		
+		List<Dept> deptList = deptService.selectAllDept();
+		session.setAttribute("deptList", deptList);
 		
 		return "redirect:/home/home.do";
 	}

@@ -28,23 +28,34 @@
 	
 	<select id="selectMyReportCheck" resultMap="reportCheckMap">
 		select
-			rm.*,
-			r.title,
-			r.writer,
-			r.end_date,
-			r.public_yn,
-			r.dept_yn,
-			(select dept_title from dept where dept_code = (select dept_code from emp where emp_id = r.writer)) dept_title,
-			(select count(*) from reportMember group by report_no having report_no = rm.report_no) member_count,
-			(select count(*) from reportMember where create_yn = 'N' group by report_no having report_no = rm.report_no) create_count
+			*
 		from
-			report r left join reportMember rm
-				on r.no = rm.report_no
+			view_reportCheck
 		where
 			emp_id = #{loginMember}
 		order by
-			r.end_date
+			end_date
 	</select>
 	<resultMap type="reportCheck" id="reportCheckMap"></resultMap>
+	
+	<insert id="insertReportDetail">
+		insert into
+			reportDetail
+		values (
+			seq_reportDetail_no.nextval,
+			#{reportNo},
+			#{empId},
+			#{content},
+			default
+		)
+		
+		<selectKey order="AFTER" resultType="string" keyProperty="no">
+			select
+				seq_reportDetail_no.currval
+			from
+				dual
+		</selectKey>
+		
+	</insert>
 	
 </mapper>
