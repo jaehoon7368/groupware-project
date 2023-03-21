@@ -29,3 +29,4 @@ $('[data-open-details]').click(function (e) {
   $(this).toggleClass('is-active');
 });
 
+

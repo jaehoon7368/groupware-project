@@ -30,6 +30,22 @@ create table dept (
     dept_title varchar2(20) not null,
     constraint pk_dept primary key (dept_code)
 );
+
+--근태관리
+create table working_management(
+    no varchar2(15) not null,
+    start_work timestamp default systimestamp,
+    end_work timestamp,
+    overtime timestamp,
+    reg_date date default sysdate,
+    state varchar2(15),
+    day_work_time timestamp,
+    emp_id varchar2(20) not null,
+    constraint pk_working_management primary key (no),
+    constraint fk_working_management_emp foreign key (emp_id) references emp (emp_id) on delete cascade
+);
+
+
 -- 게시판
 create table board (
     no varchar2(15) not null,
@@ -69,6 +85,7 @@ create table attachment (
     constraint ck_attachment check (category in ('M', 'B', 'T', 'R', 'P'))
 );
 
+create sequence seq_working_management_no;
 create sequence seq_board_no;
 create sequence seq_attachment_no;
 create sequence seq_boardComment_no;
@@ -101,5 +118,4 @@ select * from job;
 select * from dept;
 select * from emp;
 select * from attachment;
-
-delete from emp where emp_id = '230304';
+select * from working_management;

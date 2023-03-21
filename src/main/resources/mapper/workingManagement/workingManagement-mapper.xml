@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sh.groupware.workingManagement.model.dao.WorkingManagementDao">
+	<insert id="insertStartWork">
+		insert into 
+			working_management 
+		values(
+			seq_working_management_no.nextval,
+			default,
+			null,
+			null,
+			default,
+			null,
+			null,
+			#{empId}
+			)
+	</insert>
+</mapper>

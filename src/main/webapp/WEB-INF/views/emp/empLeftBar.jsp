@@ -22,19 +22,19 @@
                                 </tr>             
                                 <tr>
                                     <td class="font-14 font-bold">출근시간</td>
-                                    <td class="text-right font-14">미등록</td>
+                                    <td class="text-right font-14" id="startwork-time">미등록</td>
                                 </tr>
                                 <tr>
                                     <td class="font-14 font-bold">퇴근시간</td>
-                                    <td class="text-right font-14">미등록</td>
+                                    <td class="text-right font-14" id="endwork-time">미등록</td>
                                 </tr>
                                 <tr>
                                     <td class="font-14 font-bold">주간 누적 근무시간</td>
-                                    <td class="text-right font-14">0h 0m 0s</td>
+                                    <td class="text-right font-14" id="totalwork-time">0h 0m 0s</td>
                                 </tr>
                                 <tr class="btn-tr">
-                                    <td><button class="font-bold">출근하기</button></td>
-                                    <td class="text-right"><button class="font-bold">퇴근하기</button></td>
+                                    <td><button class="font-bold" id="btn-startwork">출근하기</button></td>
+                                    <td class="text-right"><button class="font-bold" id="btn-endwork">퇴근하기</button></td>
                                 </tr>
                                 <tr class="btn-tr">
                                     <td colspan="2">
@@ -85,5 +85,35 @@
                     </div>
                 </div>
                 <!-- 왼쪽 추가 메뉴 end -->
-					
+
+<script>
+//출근 버튼 클릭 시
+document.querySelector('#btn-startwork').addEventListener('click', function () {
+	
+	const csrfHeader = "${_csrf.headerName}";
+    const csrfToken = "${_csrf.token}";
+    const headers = {};
+    headers[csrfHeader] = csrfToken;
+	
+	$.ajax({
+	   url : '${pageContext.request.contextPath}/workingManagement/insertStartWork.do',
+	   method : 'POST',
+	   headers,
+	   contentType : "application/json; charset=utf-8",
+	   success(data){
+		   console.log(data);
+		   console.log(data.state);
+
+	       if(data.state === "성공"){
+	           alert("출근이 성공적으로 등록됬습니다.");
+	           
+	       }
+	       else{
+	           alert("이미 출근하셨습니다.");
+	       }
+	   },
+	   error : console.log
+   });
+});
+</script>					
 					
