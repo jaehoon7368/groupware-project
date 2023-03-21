@@ -1,0 +1,419 @@
+
+/* 태그 css */
+button {
+    border: solid 1px #bebebe;
+    padding: 10px;
+    border-radius: 30px;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+ul:hover {
+    cursor: pointer;
+}
+
+/* a태그 사용 시 파란 글씨를 검정으로 바꾸는 css */
+.container-a {
+    color: #000;
+}
+
+.container-a:hover,
+.container-a:focus {
+    color: #00b6c2;
+}
+
+
+
+/* font */
+.font-small {
+    font-size: small;
+}
+
+.font-medium {
+    font-size: 14px;
+}
+
+.font-large {
+    font-size: large;
+}
+
+
+
+/* 상단에 조그만한 img */
+.my-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+
+
+/* 상단에 조그만한 img랑 img 클릭 시 띄우는 창 */
+.topbar-div {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.topbar-div div {
+    padding: 10px;
+}
+
+#my-menu-modal {
+    width: 80px;
+    position: absolute;
+    display: none;
+    text-align: center;
+    border: solid 1px gray;
+    border-radius: 10px;
+    background-color: #fff;
+    top: 40px;
+    left: 40px;
+    padding: 0px;
+}
+
+#my-menu-modal div {
+    padding: 0px;
+}
+
+.my-menu {
+    border: none;
+    border-radius: 0;
+    font-size: small;
+    border-bottom: solid 1px lightgray;
+}
+
+#my-menu-modal .my-menu-div:last-child .my-menu {
+    border-bottom: none;
+}
+
+
+
+/* home.jsp */
+.home-content {
+    display: flex;
+}
+
+.div-margin {
+    margin: 10px;
+}
+
+.div-padding {
+    padding: 20px;
+}
+
+/* home.jsp 본문에 왼쪽 */
+#home-left-work {
+    width: 250px;
+    height: 300px;
+    padding-left: 0;
+}
+
+#home-left-work table {
+    width: 100%;
+    background-color: white;
+}
+
+#clock{
+    font-size: 40px;
+    padding: 3px 0;
+}
+
+.img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+/* home.jsp 본문에 가운데 */
+#home-center {
+    width: 500px;
+    height: 300px;
+    border: solid 1px darkgray;
+    border-radius: 10px;
+}
+
+/* home.jsp 본문에 오른쪽 */
+#home-right {
+    width: 300px;
+    height: 500px;
+    border: solid 1px darkgray;
+    border-radius: 10px;
+}
+
+/* home.jsp 본문에 왼쪽 첫 번째 div안에 table */
+#home-my-tbl td {
+    padding: 5px;
+}
+
+/* home.jsp 본문에 왼쪽 근태관리 div에 table 및 select */
+#home-work-tbl td {
+    padding: 2px;
+}
+
+.btn-tr {
+    height: 50px;
+}
+
+.btn-tr button,select{
+    border: 1px solid #00b6c2;
+    color: #00b6c2;
+}
+
+.work-select {
+    width: 100%;
+    border-radius: 20px;
+    text-align: center;
+    margin: 0px;
+}
+
+.work-select option {
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+    border: none;
+}
+
+/* home.jsp 전사게시판과 메일함에 타이틀(?) */
+.home-div {
+    width: 100%;
+    border-bottom: solid 1px lightgray;
+    margin: 0;
+}
+
+.home-div button {
+    width: 23%;
+    border: none;
+    border-radius: 0;
+}
+
+/* home.jsp 결재 대기 문서의 table */
+#sign-tbl {
+    width: 100%;
+}
+
+
+
+/* base */
+.all-container {
+    display: flex;
+}
+
+.home-container {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+}
+
+.container-title {
+    padding: 20px 30px;
+    font-size: large;
+}
+
+/* 왼쪽 추가 메뉴 */
+.left-container {
+    width: 250px;
+    border-right: solid 2px #e3e3e3;
+}
+
+/* 왼쪽 추가 메뉴 새로만들기 btn */
+.container-btn {
+    text-align: center;
+}
+
+.container-btn button {
+    width: 75%;
+    padding: 15px 0px;
+    font-size: small;
+    border-radius: 5px;
+    border: solid 1px rgb(119, 119, 119);
+}
+
+/* 왼쪽 추가 메뉴 list */
+.container-list {
+    list-style: none;
+    margin-top: 20px;
+}
+
+.container-detail {
+    list-style: none;
+}
+
+.container-detail li {
+    padding: 5px;
+}
+
+.accordion-box {
+    width: 100%;
+    margin: 20% auto;
+
+}
+
+p.title {
+    width: 100%;
+    color: #000;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 0;
+}
+
+.con {
+    padding: 0 10px;
+    display: none;
+}
+
+/* 상단 타이틀 */
+.top-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* 메인내용 */
+#date-box{
+    text-align: center;
+}
+#date-box i{
+    font-size: 18px;
+    color: gray;
+}
+#work-week-container{
+    position: relative;
+    border: 1px solid gray;
+    height: 100px;
+    width: 100%;
+}
+#work-week-time{
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    height: 100%;
+}
+#work-week-time div{
+    width: 180px;
+    padding-top: 17px;
+}
+#work-week-time p {
+    margin-bottom: 5px;
+}
+
+.table-expand {
+    margin-top: 5rem;
+    width: 100%;
+}
+
+.table-expand td {
+    padding: 10px;
+}
+
+.table-expand .text-right {
+    padding-right: 3rem;
+}
+
+.table-expand-row.is-active .expand-icon::after {
+    content: '-';
+}
+
+.table-expand-row .expand-icon::after {
+    content: '+';
+}
+
+.table-expand-row-content {
+    display: none;
+}
+
+.total-time-info{
+    width: 110%;
+    font-size: 14px;
+    float : right;
+    color : gray;
+    border-bottom: .5px solid gray;
+    margin-top: 7px;
+    text-align: end;
+}
+
+.table-expand-row-content.is-active {
+    display: table-row;
+    -webkit-animation: fadeIn ease-in 1;
+    animation: fadeIn ease-in 1;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+}
+
+#date-table{
+    width: 100%;
+    border-bottom: 0.5px solid gray;
+}
+#date-table tr{
+    padding: 10px 0;
+}
+#date-table th{
+    font-size: 14px;
+    border-bottom: none;
+}
+#date-table td{
+    width: 100px;
+    text-align: center;
+    font-size: 14px;
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+/* 메인내용 end */
+
+/* 공통 */
+.main-color{
+    color: #00b6c2;
+}
+.color-gray{
+    color: gray;
+}
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.font-14 {
+    font-size: 14px;
+}
+
+.font-18{
+    font-size: 18px;
+}
+
+.font-bold{
+    font-weight: bold;
+}
+.border-bottom{
+    border-bottom: .5px solid gray;
+}
+.a-font{
+	text-decoration: none;
+}

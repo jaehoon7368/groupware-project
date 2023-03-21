@@ -176,6 +176,11 @@
 								</table>
 								
 								<br />
+								<script>
+									const nowDate = Date.now();
+									const dateOff = new Date().getTimezoneOffset() * 60000;
+									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
+								</script>
 								<div class="div-sign-tbl">
 									<table class="sign-tbl-bottom">
 										<tbody>
@@ -191,11 +196,6 @@
 												</td>
 											</tr>
 											<tr>
-												<script>
-													const nowDate = Date.now();
-													const dateOff = new Date().getTimezoneOffset() * 60000;
-													const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
-												</script>
 												<td>
 													기간&nbsp;및&nbsp;일시
 												</td>
@@ -209,8 +209,30 @@
 															<input id="end-date" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
 														</span>
 														&nbsp;&nbsp;
-														<span id="usingPointArea">선택일수 : *1*</span>
+														<span>선택일수 : 
+															<span id="usingPointArea">1</span>
+														</span>
 													</span>
+													
+													<script>
+														const startDate = document.querySelector('#start-date');
+														startDate.min = today;
+														startDate.value = today;
+
+														const endDate = document.querySelector('#end-date');
+														endDate.min = today;
+														endDate.value = today;
+														
+														const usingPointArea = document.querySelector('#usingPointArea');
+														
+														startDate.addEventListener('change', (e) => {
+															/* 
+															console.log('change', startDate.value);
+															 */
+															endDate.min = startDate.value;
+															endDate.value = startDate.value;
+														});
+													</script>
 												</td>
 											</tr>
 											<tr>

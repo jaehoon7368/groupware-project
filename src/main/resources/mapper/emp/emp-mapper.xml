@@ -11,5 +11,46 @@
 		where
 			emp_id = #{memberId}
 	</select>
+	
+	<select id="selectEmpDetail" resultMap="empDetailMap">
+		select
+			e.*,
+			(select dept_title from dept where dept_code=e.dept_code) dept_title,
+			(select job_title from job where job_code = e.job_code) job_title
+		from
+			emp e
+		where
+			emp_id = #{empId}
+	</select>
+	
+	<insert id="insertEmp">
+		insert into
+			emp
+		values(
+			#{empId},
+			#{password},
+			#{name},
+			#{ssn},
+			#{address},
+			#{email},
+			#{phone},
+			default,
+			null,
+			default,
+			#{jobCode},
+			#{deptCode}
+		)
+	</insert>
 	<resultMap type="emp" id="empMap"></resultMap>
+	
+	<select id="selectAllEmpList" resultMap="empDetailMap">
+		select
+			e.*,
+			(select job_title from job where job_code = e.job_code) job_title,
+			(select base_day_off from job where job_code = e.job_code) base_day_off,
+			(select dept_title from dept where dept_code = e.dept_code) dept_title
+		from
+			emp e
+	</select>
+	<resultMap type="empDetail" id="empDetailMap"></resultMap>
 </mapper>

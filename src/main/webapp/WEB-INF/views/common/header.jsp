@@ -97,7 +97,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active" title="근태관리">
+								<a href="${pageContext.request.contextPath}/emp/empHome.do" class="is-active" title="근태관리">
 									<i class="large fa fa-solid fa-briefcase"></i>
 									<span class="app-dashboard-sidebar-text">근태관리</span>
 								</a>

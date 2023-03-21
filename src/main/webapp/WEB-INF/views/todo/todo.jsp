@@ -171,11 +171,13 @@ line-height: 0.6;
 	text-align: center;
 	color: #c3c3c3;;
 }
+.removeView{
+	display:none;
+}
 
 /* 게시판 보드 모달 */
 
  </style> 
-
 			<div class="content-top">
 				<h2 class="board-menu" id="boardMenu">Board</h2>
 				<!-- 게시판 메뉴 모달 -->
@@ -222,48 +224,12 @@ line-height: 0.6;
 								<img src="/김현동/joonpark.jpg" alt="" style="width: 32px;">
 							</div>
 						</li>
-						<li class="todo-li newboard" onclick ="changeView();" id="beforeNewTodo">
-							<i class="fa fa-plus" style="font-size: 2em;" aria-hidden="true"></i>
-						</li>
 
 
 					</ul>
 				</div>
 				<!-- favorite end -->
-<script>
-    const openLink =()=>{
-    	location.href="${pageContext.request.contextPath}/todo/todoList.do"
-    }
-    const changeView=()=>{
-    	console.log();
-    	const before = document.querySelector("#beforeNewTodo");
-    	before.innerHTML=`
-    	    <div class="todo-top">
-			<p>이름</p>
-			</div>
-			<div>
-				<input type="text" class="todo-input" placeholder="새 보드 만들기">
-			</div>
-			<div class="todo-bottom">
-				<button class="todo-btn" onclick="openLink();">확인</button>
-				<button class="todo-btn" onclick ="returnView(event);" >취소</button>
-			</div>
-    	`;
-    	
-    	before.classList.remove('newboard');
-    }
-    const returnView=(e)=>{
-    	e.stopPropagation();
-    	const before = document.querySelector("#beforeNewTodo");
-    	console.log(before)
-    	before.innerHTML ='';
-    	before.innerHTML=`
-    		<i class="fa fa-plus" style="font-size: 2em;" aria-hidden="true"></i>
-    	`;
-    	 before.classList.add('newboard');
-    }
-    
-</script>
+
 
 
 				<hr>
@@ -271,9 +237,11 @@ line-height: 0.6;
 				<div class="wrop_todo_board ui-myboard">
 					<h5 class="board-info">내보드</h5>
 					<ul>
-						<li class="todo-li">
+						<c:forEach items="${todoBoards}" var="todoBoard" varStatus="vs">
+						
+						<li class="todo-li"  onclick="enterTodo('${todoBoard.no}');">
 							<div class="todo-top">
-								<span>보드 제목</span> <span> <a href=""><i
+								<span>${todoBoard.title }</span> <span> <a href=""><i
 										class="fa fa-link" aria-hidden="true"></i></a> <a href=""><i
 										class="fa fa-star-o" aria-hidden="true"></i></a></span>
 							</div>
@@ -281,56 +249,60 @@ line-height: 0.6;
 								<img src="/김현동/joonpark.jpg" alt="" style="width: 32px;">
 							</div>
 						</li>
-						<li class="todo-li">
+						</c:forEach>
+						<li class="todo-li newboard" onclick ="" id="beforeNewTodo">
+							<i class="fa fa-plus" style="font-size: 2em;" aria-hidden="true"></i>
+						<div class="removeView" id="afterNewTodo">
 							<div class="todo-top">
-								<span>보드 제목</span> <span> <a href=""><i
-										class="fa fa-link" aria-hidden="true"></i></a> <a href=""><i
-										class="fa fa-star-o" aria-hidden="true"></i></a></span>
+									<p>이름</p>
 							</div>
-							<div class="todo-bottom">
-								<img src="/김현동/joonpark.jpg" alt="" style="width: 32px;">
-							</div>
+										<form:form action="${pageContext.request.contextPath}/todo/todoBoardEnroll.do" method="POST">
+									<div>
+											<input type="text" class="todo-input" name="title" placeholder="새 보드 만들기">
+									</div>
+									<div class="todo-bottom">
+										<button class="todo-btn">확인</button>
+										<button class="todo-btn" id="enrollCanclebtn" >취소</button>
+									</div>
+										</form:form>
+									
+						</div>
 						</li>
-						<li class="todo-li">
-							<div class="todo-top">
-								<span>보드 제목</span> <span> <a href=""><i
-										class="fa fa-link" aria-hidden="true"></i></a> <a href=""><i
-										class="fa fa-star-o" aria-hidden="true"></i></a></span>
-							</div>
-							<div class="todo-bottom">
-								<img src="/김현동/joonpark.jpg" alt="" style="width: 32px;">
-							</div>
-						</li>
-						<li class="todo-li">
-							<div class="todo-top">
-								<span>보드 제목</span> <span> <a href=""><i
-										class="fa fa-link" aria-hidden="true"></i></a> <a href=""><i
-										class="fa fa-star-o" aria-hidden="true"></i></a></span>
-							</div>
-							<div class="todo-bottom">
-								<img src="/김현동/joonpark.jpg" alt="" style="width: 32px;">
-							</div>
-						</li>
-						<li class="todo-li">
-							<div class="todo-top">
-								<span>보드 제목</span> <span> <a href=""><i
-										class="fa fa-link" aria-hidden="true"></i></a> <a href=""><i
-										class="fa fa-star-o" aria-hidden="true"></i></a></span>
-							</div>
-							<div class="todo-bottom"></div>
-						</li>
+						
 					</ul>
 				</div>
 				<!-- myboard end-->
-
-
-
+	
 			</div>
 
 		</div>
 	</div>
 </div>
 
+<script>
+	const enterTodo =(no)=>{
+		 location.href='${pageContext.request.contextPath}/todo/todoList.do?no='+no; 
+	}
+
+	// +버튼 클릭  enroll 로 전환 
+		const beforeBox = document.querySelector("#beforeNewTodo i");
+		const afterNewTodo = document.querySelector("#afterNewTodo");
+	document.querySelector("#beforeNewTodo").addEventListener('click',(e)=>{
+		beforeBox.classList.add('removeView');
+		afterNewTodo.classList.remove('removeView');
+		e.stopPropagation();
+	})
+	//취소버튼 클릭 + 로 전환
+	document.querySelector("#enrollCanclebtn").addEventListener('click',(e)=>{
+		e.preventDefault();
+		beforeBox.classList.remove('removeView');
+		afterNewTodo.classList.add('removeView');
+		e.stopPropagation();
+	})
+    
+    
+  
+</script>
 
 
 

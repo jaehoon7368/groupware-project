@@ -1,40 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<!DOCTYPE html>
-<html class="no-js" lang="en" dir="ltr">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="x-ua-compatible" content="ie=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>${param.title}</title>
-		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/foundation.css">
-		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css">
-		<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/foundation-icons/foundation-icons.css"> --%>
-		
-		<script src="https://kit.fontawesome.com/cbe4aa3844.js" crossorigin="anonymous"></script>
-			<link rel="stylesheet"
-				href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
-				
-				
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/boardForm.css">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-  
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/boardForm.css">
-</head>
 
-<body>
-	
-
-
+<style>
+	body
+</style>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 		<jsp:param value="게시판" name="title"/>
 	</jsp:include>
@@ -169,11 +145,5 @@
 		      ]
 		    });
 		  </script>
+		  	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
-	    <script src="${pageContext.request.contextPath}/resources/js/vendor/jquery.js"></script>
-	    <script src="${pageContext.request.contextPath}/resources/js/vendor/what-input.js"></script>
-	    <script src="${pageContext.request.contextPath}/resources/js/vendor/foundation.js"></script>
-	    <script src="${pageContext.request.contextPath}/resources/js/app.js"></script> 
-	    
-</body>
-</html>

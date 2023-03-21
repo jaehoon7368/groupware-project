@@ -256,7 +256,7 @@
 	border-radius: 5px;
 }
 
-.report-frm-div {
+.div-choice {
 	width: 100%;
 	height: 35px;
 	border: dotted 1px lightgray;
@@ -264,7 +264,52 @@
 	margin: 5px 0;
 }
 
-.report-frm-div .add {
+.report-frm-div {
+	display: inline-block;
+}
+
+.div-choice .add {
 	border: none;
+	color: gray;
+}
+
+
+/* 선택 모달 */
+.div-emp-group {
+	height: 330px;
+}
+
+.div-emp-group .accordion-box {
+	height: 300px;
+	overflow-y: scroll;
+}
+
+.div-modal-choice, .div-modal-dept {
+	width: 100%;
+	height: 100px;
+	border-top: solid 1px lightgray;
+	border-bottom: solid 1px lightgray;
+	overflow-y: scroll;
+}
+
+.div-modal-choice-emp, .div-modal-choice-dept {
+	display: inline-block;
+	margin: 5px;
+	font-size: small;
+	padding: 5px;
+	border-radius: 50px;
+	border: solid 1px lightgray;
+}
+
+.div-modal-choice-emp:hover, .div-modal-choice-dept:hover {
+	cursor: pointer;
+}
+
+.div-emp-tag {
+	display: inline-block;
+	font-size: small;
+	padding: 5px;
+	border-radius: 50px;
+	border: solid 1px lightgray;
 	color: gray;
 }
