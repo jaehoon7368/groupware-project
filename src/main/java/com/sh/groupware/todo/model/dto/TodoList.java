@@ -1,5 +1,8 @@
 package com.sh.groupware.todo.model.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,5 +16,6 @@ public class TodoList {
 	private String title;
 	private String todoboardNo;
 	private String empId;
+	private List<Todo> todos = new ArrayList<>();
 
 }

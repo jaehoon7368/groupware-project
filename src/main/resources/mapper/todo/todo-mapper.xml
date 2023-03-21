@@ -16,6 +16,13 @@
 		 #{empId},
 		 default
 	)
+	
+		<selectKey order ="AFTER" resultType = "string" keyProperty="no">
+		select
+			'tdb'||to_char(seq_todoboard_no.currval,'fm00000')
+		 from 
+		 	dual
+	</selectKey>
 </insert>
 
 <insert id="todoListEnroll">
@@ -27,7 +34,56 @@
 			 #{no},
 			 #{empId}
 	)
+	
 
 </insert>
+
+<select id="selectLastTodoList" resultMap="todoList">
+	select
+	*
+	from
+		todolist
+	where 
+	no = #{no}
+</select>
+
+<select  id="selectTodoListByNo" resultMap ="todoList" >
+	select 
+		* 
+	from 
+		todolist 
+	where 
+		todoboard_no = #{no} order by no asc
+</select>
+<select  id="selectTodoByTodoListNo" resultMap="todo">
+	 select
+	  * 
+	 from 
+	 	todo 
+	 where 
+	 	todo_list_no = #{no}
+	 order by no asc
+</select>
+
+
+<insert id="todoEnroll">
+	insert into
+		todo
+	values(
+		 'td'||to_char(seq_todo_no.nextval,'fm00000'),
+		 #{content},
+		 default,
+		 default,
+		 #{todoListNo}
+	)
+	
+	
+</insert>
+
+
+
+
+<resultMap type="todo" id="todo"></resultMap>
+<resultMap type="todoList" id="todoList"></resultMap>
 
 </mapper>

@@ -13,6 +13,7 @@ public class Todo {
 	
 	private String no;
 	private String content;
+	private String info;
 	private LocalDate endDate;
 	private String explain;
 	private String todoListNo;
