@@ -10,10 +10,12 @@ import com.sh.groupware.emp.model.dto.Emp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(callSuper = true)
 public class Board extends BoardEntity{
 	
 	private int attachCount;
@@ -24,14 +26,13 @@ public class Board extends BoardEntity{
 		this.attachments.add(attach);
 	}
 
-	public Board(String no, String category, String title, String content, int readCount, int likeCount,
-			LocalDateTime createdDate, LocalDateTime updatedDate, String empId, String writer, int attachCount) {
-		super(no, category, title, content, readCount, likeCount, createdDate, updatedDate, empId, writer);
+	public Board(String no, BType bType, String title, String content, int readCount, int likeCount,
+			LocalDateTime createdDate, LocalDateTime updatedDate, String empId, String writer, int attachCount,
+			List<Attachment> attachments, Emp emp) {
+		super(no, bType, title, content, readCount, likeCount, createdDate, updatedDate, empId, writer);
 		this.attachCount = attachCount;
+		this.attachments = attachments;
+		this.emp = emp;
 	}
-
-	
-	
-	
-}
+}
 

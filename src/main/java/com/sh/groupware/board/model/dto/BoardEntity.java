@@ -13,7 +13,7 @@ public class BoardEntity {
 	
 
 	private String no;
-	private String category;
+	private BType bType;
 	private String title;
 	private String content;
 	private int readCount;

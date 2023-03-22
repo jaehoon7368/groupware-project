@@ -2,6 +2,7 @@ package com.sh.groupware.board.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -9,6 +10,7 @@ import javax.servlet.ServletContext;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,10 @@ import com.sh.groupware.board.model.dto.Board;
 import com.sh.groupware.board.model.service.BoardService;
 import com.sh.groupware.common.HelloSpringUtils;
 import com.sh.groupware.common.dto.Attachment;
+import com.sh.groupware.emp.model.dto.Emp;
+import com.sh.groupware.emp.model.dto.EmpDetail;
+import com.sh.groupware.emp.model.service.EmpService;
+import com.sh.groupware.report.model.dto.ReportCheck;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,6 +38,9 @@ public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private EmpService empService;
 	
 	@Autowired
 	private ServletContext application;
@@ -67,10 +76,12 @@ public class BoardController {
 	
 	@PostMapping("/boardEnroll.do")
 	public String boardEnroll(
-			Board board, 
-			@RequestParam("upFile") List<MultipartFile> upFiles, 
-			RedirectAttributes redirectAttr) {
-		
+			Board board,
+			@RequestParam("upFile") List<MultipartFile> upFiles,
+			RedirectAttributes redirectAttr
+			) {
+
+		log.debug("board = {}", board);
 		
 		// ServletContext : application객체의 타입. DI. 스프링과 관계없는 servlet spec의 객체
 		String saveDirectory = application.getRealPath("/resources/upload/board");
@@ -84,6 +95,7 @@ public class BoardController {
 			
 			if(upFile.getSize() > 0) {
 				// 1. 저장 
+				String pkNo = board.getNo();
 				String renameFilename = HelloSpringUtils.renameMultipartFile(upFile);
 				String originalFilename = upFile.getOriginalFilename();
 				File destFile = new File(saveDirectory, renameFilename);
@@ -97,6 +109,7 @@ public class BoardController {
 				Attachment attach = new Attachment();
 				attach.setRenameFilename(renameFilename);
 				attach.setOriginalFilename(originalFilename);
+				attach.setPkNo(pkNo);
 				board.addAttachment(attach);
 			}
 			
@@ -116,7 +129,9 @@ public class BoardController {
 	
 	
 	@GetMapping("/boardForm.do")
-	private void boardForm() {}
+	private void boardForm() {
+	
+	}
 	
 	@GetMapping("/boardAdd.do")
 	private void boardCreate() {}

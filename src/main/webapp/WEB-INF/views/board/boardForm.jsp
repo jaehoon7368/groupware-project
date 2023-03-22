@@ -1,5 +1,10 @@
  <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> 
 
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/boardForm.css">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
@@ -54,30 +59,27 @@
 
 <section class="content">
 
+
+  <form:form name="boardFrm" action="${pageContext.request.contextPath}/board/boardEnroll.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
+  
 	<div class="target-select">
 		<span>To.</span>
-		<select value="" id="">
-			<option value="">전사게시판</option>
-			<option value="">부서게시판</option>
-		</select>
-		<select name="" id="">
-			<option value="">전사 공지</option>
-			<option value="">Local Policy</option>
-			<option value="">주간 식단표</option>
-			<option value="">IT뉴스</option>
+		<select name="bType" id="bType">
+			<option value="A">전사 공지</option>
+			<option value="M">주간 식단표</option>
+			<option value="N">IT뉴스</option>
 		</select>
 	</div>
 
   <hr style="width:1000px;">
-
-  <form name="boardFrm" action="${pageContext.request.contextPath}/board/boardEnroll.do" method="post" enctype="multipart/form-data">
   	<table class="write-table">
   		<tr>
   			<th>
   				<span class="title" id="title" name="title">제목</span>
   			</th>
-  			<td><input type="text"/ id="title" name="title"></td>
-  			<td><input type="hidden"/ id="empId" name="empId" value="${loginMember.empId}"></td>
+  			<td><input type="text" id="title" name="title"></td>
+  			<td><input type="hidden" id="empId" name="empId" value="${loginMember.empId}"></td>
+  			<td><input type="hidden" id="wrtier" name="writer" value="${loginMember.name}"></td>
   		</tr>
   		<tr>
   			<th>
@@ -118,7 +120,7 @@
 		<input type="submit" value="등록"/>
 		<input type="submit" value="취소"/>
 	</div>
-</form>
+</form:form>
 </section>
   </div>
 </div>

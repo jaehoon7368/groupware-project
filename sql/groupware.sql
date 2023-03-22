@@ -33,7 +33,7 @@ create table dept (
 -- 게시판
 create table board (
     no varchar2(15) not null,
-    category varchar2(15) not null,
+    b_type varchar2(15) not null,
     title varchar2(100) not null,
     content varchar2(4000) not null,
     read_count number default 0,
@@ -47,6 +47,7 @@ create table board (
 -- 게시판 테이블 컬럼 추가
 alter table board add writer varchar2(20) not null;
 alter table board add foreign key(writer) references emp (emp_id) on delete cascade;
+alter table board rename column type to b_type;
 
 -- 댓글
 create table boardComment (
@@ -119,7 +120,7 @@ order by
     no desc;
 
 select * from board;
-delete from board where no = '1';
+delete from board where no = 'bo020';
 Insert into BOARD (NO,CATEGORY,TITLE,CONTENT,READ_COUNT,LIKE_COUNT,CREATED_DATE,UPDATED_DATE,EMP_ID,WRITER) values (SEQ_BOARD_NO.nextval,'A','안녕하세요','안녕하세요 테스트중입니다.',DEFAULT,DEFAULT,DEFAULT,null,'230301','김사장');
 Insert into BOARD (NO,CATEGORY,TITLE,CONTENT,READ_COUNT,LIKE_COUNT,CREATED_DATE,UPDATED_DATE,EMP_ID,WRITER) values ('1','A','박부사 테스트중이에요','안녕하세요 테스트중입니다.',DEFAULT,DEFAULT,DEFAULT,null,'230302','박부사');
 Insert into BOARD (NO,CATEGORY,TITLE,CONTENT,READ_COUNT,LIKE_COUNT,CREATED_DATE,UPDATED_DATE,EMP_ID,WRITER) values (SEQ_BOARD_NO.nextval,'A','안녕하세요','안녕하세요 테스트중입니다.',DEFAULT,DEFAULT,DEFAULT,null,'230303','유사원');
@@ -145,5 +146,18 @@ select
 		        	on b.no = a.no
 		where
 		    b.no = '1';
-    
+insert into 
+			board (no, b_type, title, content,READ_COUNT,LIKE_COUNT,CREATED_DATE,UPDATED_DATE,EMP_ID,WRITER)
+		values (
+			seq_board_no.nextval,
+			'A',
+			'안녕하세요',
+			'안녕하세요',
+			default,
+			default,
+			default,
+            null,
+			'230301',
+			'김사장'
+		);
 commit;

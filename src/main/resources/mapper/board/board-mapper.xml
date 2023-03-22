@@ -18,14 +18,20 @@
 	
 	<insert id="insertBoard">
 		insert into 
-			board (no, title, content, emp_id) 
+			board (no, b_type, title, content, READ_COUNT, LIKE_COUNT, CREATED_DATE, UPDATED_DATE, EMP_ID, WRITER)
 		values (
 			seq_board_no.nextval,
+			#{bType},
 			#{title},
 			#{content},
-			#{empId}
+			default,
+			default,
+			default,
+            null,
+			#{empId},
+			#{writer}
 		)
-		<selectKey order="AFTER" resultType="_int" keyProperty="no">
+		<selectKey order="AFTER" resultType="String" keyProperty="no">
 			select 
 				seq_board_no.currval
 			from
@@ -42,6 +48,7 @@
 			#{renameFilename},
 			default,
 			category = 'B',
+			#{pkNo}
 		)
 	</insert>
 	
