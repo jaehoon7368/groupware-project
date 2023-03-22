@@ -6,24 +6,28 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.google.common.net.HttpHeaders;
 import com.sh.groupware.dept.model.dto.Dept;
 import com.sh.groupware.dept.model.service.DeptService;
 import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.emp.model.dto.EmpDetail;
 import com.sh.groupware.emp.model.service.EmpService;
-import com.sh.groupware.report.model.dto.Type;
 import com.sh.groupware.report.model.dto.YN;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
 import com.sh.groupware.report.model.dto.ReportCheck;
+import com.sh.groupware.report.model.dto.ReportDetail;
 import com.sh.groupware.report.model.dto.ReportMember;
 import com.sh.groupware.report.model.dto.ReferType;
 import com.sh.groupware.report.model.service.ReportService;
@@ -41,22 +45,30 @@ public class ReportController {
 	@Autowired
 	private EmpService empService;
 	
-	@Autowired
-	private DeptService deptService;
-	
 	
 	@GetMapping("/report.do")
 	public String report(Model model, Authentication authentication) {
-		String loginMember = ((Emp) authentication.getPrincipal()).getEmpId();
-		List<ReportCheck> reportList = reportService.selectMyReportCheck(loginMember);
+		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+		model.addAttribute("empId", empId);
+		
+		List<ReportCheck> reportList = reportService.selectMyReportCheck(empId);
 		model.addAttribute("reportList", reportList);
+		
+		List<ReportCheck> newReportList = reportService.selectMyReportCheck(empId);
+		
 		return "report/reportHome";
 	} // report() end
 	
 	
 	@GetMapping("/reportForm.do")
-	public String reportForm(@RequestParam String no) {
+	public String reportForm(@RequestParam String no, Model model) {
 		log.debug("no = {}", no);
+		
+		List<ReportCheck> reportCheckList = reportService.findByReportNoReportCheckList(no);
+		List<Reference> referList = reportService.findByReportNoReference(no);
+		
+		model.addAttribute("reportCheckList", reportCheckList);
+		model.addAttribute("referList", referList);
 		return "report/reportForm";
 	} // reportForm() end
 	
@@ -66,11 +78,7 @@ public class ReportController {
 		List<EmpDetail> empList = empService.selectAllEmpList();
 		log.debug("empList = {}", empList);
 		
-		List<Dept> deptList = deptService.selectAllDept();
-		log.debug("deptList = {}", deptList);
-		
 		model.addAttribute("empList", empList);
-		model.addAttribute("deptList", deptList);
 		
 		return "report/reportCreate";
 	} // reportCreateView() end
@@ -102,15 +110,79 @@ public class ReportController {
 			for (Reference refer : report.getReferenceList()) {
 				refer.setReferenceType(ReferType.D);
 			}
-		} else {
+		} // 참조 부서인 경우
+		else {
 			for (Reference refer : report.getReferenceList()) {
 				refer.setReferenceType(ReferType.E);
 			}
-		}
+		} // 참조자인 경우
 		
 		int result = reportService.insertReport(report);
 		
 		return "redirect:/report/reportCreateView.do";
 	} // reportCreate() end
+	
+	
+	@PostMapping("/updateExcludeYn.do")
+	public String updateExcludeYn(@RequestParam(value="report[]", required = false) List<String> report, @RequestParam(value = "unreport[]", required = false) List<String> unreport, @RequestParam String no, Model model) {
+		log.debug("report = {}", report);
+		log.debug("unreport = {}", unreport);
+		log.debug("no = {}", no);
+		
+		int result = 0;
+		if (report != null) {
+			for (String empId : report) {
+				Map<String, Object> param = new HashMap<>();
+				param.put("no", no);
+				param.put("empId", empId);
+				result = reportService.updateExcludeYnN(param);
+			}
+		} // if (report.size() > 0) end
+		
+		if (unreport != null) {
+			for (String empId : unreport) {
+				Map<String, Object> param = new HashMap<>();
+				param.put("no", no);
+				param.put("empId", empId);
+				result = reportService.updateExcludeYnY(param);
+			}
+		} // if (unreport.size() > 0) end
+		
+		List<ReportCheck> reportCheckList = reportService.findByReportNoReportCheckList(no);
+		model.addAttribute("reportCheckList", reportCheckList);
+		
+		return "redirect:/report/reportForm.do?no=" + no;
+	} // updateExcludeYn() end
+	
+	
+	@PostMapping("/reportDetailEnroll.do")
+	public String reportDetailEnroll(@RequestParam String reportNo, @RequestParam String content, Authentication authentication) {
+		log.debug("reportNo = {}, content = {}", reportNo, content);
+		
+		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+		ReportDetail detail = new ReportDetail(null, reportNo, empId, content, null);
+		
+		int result = reportService.insertReportDetail(detail);
+		
+		return  "redirect:/report/report.do";
+	} // reportDetailEnroll() end
+	
+	
+	@GetMapping("/reportDeptView.do")
+	public String reportDeptView(@RequestParam String code, Model model) {
+		log.debug("code = {}", code);
+		List<Report> reportList = reportService.findByDeptCodeReportList(code);
+		model.addAttribute("reportList", reportList);
+		return "report/reportDept";
+	} // reportDeptView() end
+	
+	
+	@GetMapping("/reportDetail.do")
+	public String reportDetail(@RequestParam String no, Model model) {
+		model.addAttribute("no", no);
+		List<ReportCheck> reportCheckList = reportService.findByReportNoReportCheckList(no);
+		model.addAttribute("reportCheckList", reportCheckList);
+		return "report/reportDetail";
+	}; // reportDetail() end
 	
 } // class end

@@ -1,7 +1,8 @@
 package com.sh.groupware.report.model.service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import com.sh.groupware.report.model.dao.ReportDao;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
 import com.sh.groupware.report.model.dto.ReportCheck;
+import com.sh.groupware.report.model.dto.ReportDetail;
 import com.sh.groupware.report.model.dto.ReportMember;
 import com.sh.groupware.report.model.dto.Type;
 
@@ -65,5 +67,98 @@ public class ReportServiceImpl implements ReportService {
 	public List<ReportCheck> selectMyReportCheck(String loginMember) {
 		return reportDao.selectMyReportCheck(loginMember);
 	} // selectMyReportCheck() end
+	
+	@Override
+	public List<ReportCheck> findByReportNoReportCheckList(String no) {
+		return reportDao.findByReportNoReportCheckList(no);
+	} // findByReportNoReportCheckList() end
+
+	
+	@Override
+	public List<ReportMember> findByReportNoMemberList(String no) {
+		return reportDao.findByReportNoMemberList(no);
+	} // findByReportNoMemberList
+	
+	@Override
+	public List<Reference> findByReportNoReference(String no) {
+		return reportDao.findByReportNoReference(no);
+	} // findByReportNoReference() end
+	
+	@Override
+	public int updateExcludeYn(List<String> report, List<String> unreport, String no) {
+		int result = 0;
+		
+		if (report != null) {
+			for (String empId : report) {
+				Map<String, Object> param = new HashMap<>();
+				param.put("no", no);
+				param.put("empId", empId);
+				result = updateExcludeYnN(param);
+			}
+		} // if (report.size() > 0) end
+		
+		if (unreport != null) {
+			for (String empId : unreport) {
+				Map<String, Object> param = new HashMap<>();
+				param.put("no", no);
+				param.put("empId", empId);
+				result = updateExcludeYnY(param);
+			}
+		} // if (unreport.size() > 0) end
+		return result;
+	} // updateExcludeYn() end
+	
+	@Override
+	public int updateExcludeYnY(Map<String, Object> param) {
+		log.debug("no = {}, empId = {}", param.get("no"), param.get("empId"));
+		return reportDao.updateExcludeYnY(param);
+	} // updateExcludeYnY() end
+	
+	@Override
+	public int updateExcludeYnN(Map<String, Object> param) {
+		return reportDao.updateExcludeYnN(param);
+	} // updateExcludeYnN() end
+	
+	@Override
+	public int insertReportDetail(ReportDetail detail) {
+		int result = reportDao.insertReportDetail(detail);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("no", detail.getReportNo());
+		param.put("empId", detail.getEmpId());
+		
+		result = updateCreateYnY(param);
+		
+		return result;
+	} // insertReportDetail() end
+	
+	@Override
+	public int updateCreateYnY(Map<String, Object> param) {
+		return reportDao.updateCreateYnY(param);
+	} // updateCreateYnY() end
+	
+	@Override
+	public List<Report> findByDeptCodeReportList(String code) {
+		List<Report> reportList = reportDao.findByDeptCodeReportList(code);
+		
+		if (reportList.size() > 0) {
+			for (Report repo : reportList) {
+				List<ReportMember> memberList = findByReportNoMemberList(repo.getNo());
+				if (memberList.size() > 0) {
+					for (ReportMember member : memberList) {
+						repo.addReportMember(member);
+					}
+				} // memberList report에 저장
+				
+				List<Reference> referList = findByReportNoReference(repo.getNo());
+				if (referList.size() > 0) {
+					for (Reference refer : referList) {
+						repo.addReference(refer);
+					}
+				} // referList report에 저장
+			}
+		}
+		return reportList;
+	} // findByDeptCodeReportList() end
 	
 } // class end

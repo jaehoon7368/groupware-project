@@ -24,7 +24,7 @@
 					<div class="home-container">
 						<!-- 상단 타이틀 -->
 						<div class="top-container">
-							<div class="container-title">${reportCheckList[0].title}</div>
+							<div id="report-title" class="container-title">${reportCheckList[0].title}</div>
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
@@ -167,31 +167,19 @@
 						<div>
 							<div class="div-exception-report">
 								<span>제외된 보고자:</span>
-								<span class="div-exclude"></span>
+								<span class="div-exclude">
+									<c:if test="${!empty reportCheckList}">
+										없음
+									</c:if>
+									<c:if test="${empty reportCheckList}">
+										<c:forEach items="${reportCheckList}" var="reportCheck">
+											<c:if test="${report.excludeYn == 'Y'}">
+												${report.empId} &nbsp;&nbsp;&nbsp;
+											</c:if>
+										</c:forEach>
+									</c:if>
+								</span>
 							</div>
-							<script>
-								const div = document.querySelector('.div-exclude');
-								div.innerText = '';
-								const unreport = [];
-								
-								document.unreportFrm.unreport.forEach((unrepo, index) => {
-									if (unrepo.checked) {
-										unreport.push({id:unrepo.id, name:unrepo.dataset.name, jobTitle:unrepo.dataset.jobTitle});
-									}
-								});
-								
-								const size = unreport.length;
-								console.log(size);
-								if (size != 0) {
-									unreport.forEach(({id, name, jobTitle}, index) => {
-										div.innerText += `\${name} \${jobTitle}`;
-										if (index + 1 != size)
-											div.innerText += ', ';
-									});
-								} else {
-									div.innerText = '없음';
-								}
-							</script>
 						</div>
 						
 						<!-- 미보고자 -->
@@ -210,57 +198,80 @@
 								</c:forEach>
 							</div>
 						</div>
+						<script>
+							if (!document.querySelector('.div-unreport-one')) {
+								document.querySelector('.div-unreport-all').innerHTML = `
+									<div class="div-unreport-non">
+										<span>없음</span>
+									</div>
+								`;
+							}
+						</script>
 						
-						<!-- 보고 작성 -->
+						<!-- 보고 작성자 -->
+						<div class="div-okreport font-small">
+							<div class="div-okreport-title"><span>보고자</span></div>
+							<div class="div-okreport-all">
+								<c:forEach items="${reportCheckList}" var="reportCheck" varStatus="vs">
+									<c:if test="${reportCheck.createYn == 'Y'}">
+										<div class="div-okreport-one" data-id="${reportCheck.empId}" data-no="${vs.index}">
+											<div>
+												<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
+											</div>
+											<div class="left">${reportCheck.empName} ${reportCheck.jobTitle}</div>
+										</div>
+									</c:if>
+								</c:forEach>
+							</div>
+						</div>
+						
+						<!-- 보고 조회 -->
 						<div class="div-report-write">
 							<div class="div-padding div-report-write-name">${reportCheckList[0].title}</div>
-							<form:form action="${pageContext.request.contextPath}/report/reportDetailEnroll.do" name="reportDetailFrm" method="POST">
-								<div class="div-padding div-report-write-content">
-									<input type="hidden" name="reportNo" value="${param.no}" />
-									<textarea id="summernote" name="content"></textarea>
-								</div>
-								<div class="div-padding div-report-write-btn">
-									<button type="submit">등록</button>
-								</div>
-							</form:form>
-							<script>
-								$('#summernote').summernote({
-									placeholder: 'Hello stand alone ui',
-									tabsize: 2,
-									height: 350,
-									width: '100%',
-									toolbar: [
-										['style', ['style']],
-										['font', ['bold', 'underline', 'clear']],
-										['color', ['color']],
-										['para', ['ul', 'ol', 'paragraph']],
-										['table', ['table']],
-										['insert', ['link', 'picture', 'video']],
-										['view', ['fullscreen', 'codeview', 'help']]
-									]
-								  });
-								
-
-								document.reportDetailFrm.addEventListener('submit', (e) => {
-									e.preventDefault();
-									
-									const content = e.target.content;
-
-									if (/\s+/.test(content.value) || !content.value) {
-										alert('보고내용을 작성해주세요.');
-										content.select();
-										return false;
-									};
-									
-									if (/[']+/.test(content.value) || !content.value) {
-										alert("보고내용에 '는 작성이 불가능합니다.");
-										content.select();
-										return false;
-									};
-									
-								});
-							</script>
+							<div class="div-padding div-report-write-content"></div>
 						</div>
+						
+						<script>
+							document.querySelectorAll('.div-okreport-one').forEach((one) => {
+								console.log(one);
+								
+								one.addEventListener('click', (e) => {
+									document.querySelectorAll('.div-okreport-one').forEach((one) => {
+										one.classList.remove('div-okreport-one-click');
+									});
+									
+									let clickDiv = e.target;
+									
+									while (true) {
+										if (clickDiv.classList[0] === 'div-okreport-one') {
+											clickDiv.classList.add('div-okreport-one-click');
+											break;
+										} else {
+											clickDiv = clickDiv.parentElement;
+											continue;
+										}
+									}
+									
+									const id = clickDiv.dataset.id;
+									const index = clickDiv.dataset.no;
+									console.log(id, index);
+
+									
+									const reportList = [];
+									<c:forEach items="${reportCheckList}" var="report">
+										reportList.push({empId:'${report.empId}', content:'${report.content}'});
+									</c:forEach>
+									console.log(reportList);
+									
+									const div = document.querySelector('.div-report-write-content');
+									div.innerHTML = `
+										\${reportList[index].content}
+									`;
+								});
+							});
+
+							
+						</script>
 						
 						<!-- 보고 댓글 -->
 						<div class="div-report-commend">
@@ -277,7 +288,6 @@
 								</div>
 							</div>
 						</div>
-						
 					</div>
 				</div>
 				
