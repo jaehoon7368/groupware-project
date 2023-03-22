@@ -41,8 +41,10 @@ create table board (
     created_date date default sysdate,
     updated_date date,
     emp_id varchar2(20) not null,
+    writer varchar2(20) not null,
     constraint pk_board primary key (no),
-    constraint fk_board_emp foreign key (emp_id) references emp (emp_id) on delete cascade
+    constraint fk_board_emp foreign key (emp_id) references emp (emp_id) on delete cascade,
+    constraint fk_board_writer foreign key (writer) references emp (emp_id) on delete cascade
 );
 -- 게시판 테이블 컬럼 추가
 alter table board add writer varchar2(20) not null;
@@ -145,7 +147,16 @@ select
 		    	left join attachment a
 		        	on b.no = a.no
 		where
-		    b.no = '1';
+		    b.no = '1' and a.category = 'B';
+            
+SELECT
+    b.*, a.*, a.no AS attach_no
+FROM 
+    board b 
+        LEFT JOIN attachment a ON b.no = a.no
+WHERE
+    b.no = '1' AND a.category = 'B';
+            
 insert into 
 			board (no, b_type, title, content,READ_COUNT,LIKE_COUNT,CREATED_DATE,UPDATED_DATE,EMP_ID,WRITER)
 		values (
@@ -161,3 +172,29 @@ insert into
 			'김사장'
 		);
 commit;
+
+select
+		    b.*,
+		    a.*,
+		    a.no attach_no,
+		    e.*
+		from
+		    board b 
+		    	left join attachment a
+		        	on b.no = a.no
+		         left join emp e
+            		on b.emp_id = e.emp_id	
+		where
+		    b.no = 1 ;
+            
+SELECT
+    b.*,
+    a.*,
+    a.no  attach_no
+FROM 
+    board b 
+        LEFT JOIN attachment a 
+            ON b.no = a.no AND a.category = 'B'
+WHERE b.no = '1';
+
+select*from board;

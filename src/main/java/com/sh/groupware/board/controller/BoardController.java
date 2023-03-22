@@ -64,15 +64,6 @@ public class BoardController {
 		model.addAttribute("boardList", boardList);
 	}
 	
-//	@GetMapping("/boardDetail.do")
-//	public void boardDetail(@RequestParam int no, Model model) {
-//		log.debug("no = {}", no);
-//		Board board = boardService.selectOneBoardCollection(no);
-//		log.debug("board = {}", board);
-//		
-//		model.addAttribute("board", board);
-//		
-//	}
 	
 	@PostMapping("/boardEnroll.do")
 	public String boardEnroll(
@@ -125,6 +116,15 @@ public class BoardController {
 	}
 	
 	
+	@GetMapping("/boardDetail.do")
+	public void boardDetail(@RequestParam String no, Model model) {
+		log.debug("no = {}", no);
+		Board board = boardService.selectOneBoardCollection(no);
+		log.debug("board = {}", board);
+		
+		model.addAttribute("board", board);
+		
+	}
 	
 	
 	

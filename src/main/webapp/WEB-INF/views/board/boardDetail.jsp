@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/boardList.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/boardDetail.css">
 
 
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
@@ -54,68 +54,84 @@
 	
 
  <div class="content">
- <section class="tool-bar">
- 	<ul>
- 		<li>글쓰기</li>
- 		<li>삭제하기</li>
- 	</ul>
+ 	<div class="tool-bar">
+ 		<div class="tool-button">
+ 			<a href="${pageContext.request.contextPath}/board/boardForm.do">
+		 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
+		 		<span>새글쓰기</span>
+	 		</a>
+ 		</div>
+ 		<div class="tool-button">
+ 			<a href="${pageContext.request.contextPath}/board/boardDelete.do">
+	 			<span><img src="${pageContext.request.contextPath}/resources/images/trash.png" alt="" class="tool-img" /></span>
+	 			<span>삭제</span>
+	 		</a>
+ 		</div>
+ 	</div>
+
+ <div class="div-padding"></div>
+ 
+ <section class="detail">
+ 	<div class="title">
+ 		<h1 id="title" name="title">${board.title} <span id="readCount" name="readCount">[${board.readCount}]</span></h1>
+ 	</div>
+ 	
+ 	<div class="info-wrap">
+ 		<div>
+ 			<span><img src="" alt="" />${board.writer}</span>
+ 			<a href="">이미지클릭시 정보 팝업</a>
+ 			<span id="createdDate" class="createdDate">
+			    <fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" />
+			    <fmt:formatDate value="${createdDate}" pattern="yyyy-MM-dd EEE HH:mm"/>
+			</span>
+ 		</div>
+ 	</div>
+ 	
+ 	<div class="div-padding"></div>
+ 	
+ 	<div class="content-view">
+ 		<span class="content">${board.content}</span>
+ 	</div>
+ 	
+ 	<div class="div-padding"></div>
+ 	
+ 	<div class="view-option">
+ 		<div class="comment">
+ 			<span>말풍선</span>
+ 			<span>댓글</span>
+ 			<span>0</span>
+ 			<span class="part">|</span>
+ 		</div>
+ 		<div class="readCount">
+ 			<span>조회</span>
+ 			<span>${board.readCount}</span>
+ 			<span class="part">|</span>
+ 		</div>
+ 		<div class="likeCount">
+ 			<span>하트</span>
+ 			<span>좋아요</span>
+ 			<span>${board.likeCount}</span>
+ 		</div>
+ 	</div>
  </section>
+ 
+  <div class="div-report-commend">
+	<div>댓글</div>
+		<div class="div-report-commend-all">
+			<div>
+				<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
+			</div>
+			<div>
+				<textarea rows="1"></textarea>
+			</div>
+			<div>
+				<button class="font-small">댓글작성</button>
+			</div>
+		</div>
+	</div>
   
-  
- <section class="notice">
-  <!-- board list area -->
-    <div id="board-list">
-        <div class="container">
-            <table class="board-table">
-                <thead>
-                <tr>
-                	<th>
-						<input type="checkbox" name="" value=""/>
-					</th>
-                    <th scope="col" class="th-num">번호</th>
-                    <th scope="col" class="th-title">제목</th>
-                    <th scope="col" class="th-writer">작성자</th>
-                    <th scope="col" class="th-date">작성일</th>
-                    <th scope="col" class="th-readCount">조회</th>
-                    <th scope="col" class="th-likeCount">좋아요</th>
-                </tr>
-                </thead>
-                <tbody>
-	                <c:forEach items="${boardList}" var="board">
-		                <tr>
-		                	<td><input type="checkbox" name="" value=""/></td>
-		                    <td>${board.no}</td>
-		                    <td>
-		                      <a href="#!">${board.title}</a>
-		                    </td>
-		                    <td>${board.writer}</td>
-		                    <td>
-								<fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate"/>
-								<fmt:formatDate value="${createdDate}" pattern="yy-MM-dd HH:mm"/>
-							</td>
-		                    <td>${board.readCount}</td>
-		                    <td>${board.likeCount}</td>
-		                </tr>
-	                </c:forEach>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
 </div>
 <div class="div-padding"></div>
-<!-- 페이지바 -->
 
-<ul class="pagination text-center" role="navigation" aria-label="Pagination" data-page="6" data-total="16">
-  <li class="pagination-previous disabled">Previous <span class="show-for-sr">page</span></li>
-  <li class="current"><span class="show-for-sr">You're on page</span> 1</li>
-  <li><a href="#" aria-label="Page 2">2</a></li>
-  <li><a href="#" aria-label="Page 3">3</a></li>
-  <li><a href="#" aria-label="Page 4">4</a></li>
-  <li class="ellipsis" aria-hidden="true"></li>
-  <li><a href="#" aria-label="Page 12">12</a></li>
-  <li><a href="#" aria-label="Page 13">13</a></li>
-  <li class="pagination-next"><a href="#" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
-</ul>
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

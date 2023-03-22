@@ -275,7 +275,6 @@
 						
 						<!-- 보고 댓글 -->
 						<div class="div-report-commend">
-							<div>댓글</div>
 							<div class="div-report-commend-all">
 								<div>
 									<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
