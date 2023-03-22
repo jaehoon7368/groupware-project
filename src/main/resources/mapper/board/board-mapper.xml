@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sh.groupware.board.model.dao.BoardDao">
+
+	<select id="selectBoardList" resultMap="boardMap">
+		select 
+		    b.*,
+		    (select count(*) from attachment where no = b.no and category = 'B') attach_count
+		from
+		    board b left join emp e
+		        on b.emp_id = e.emp_id
+		order by 
+		    no desc
+	</select>
+	<resultMap type="board" id="boardMap"></resultMap>
+	
+	<insert id="insertBoard">
+		insert into 
+			board (no, title, content, emp_id) 
+		values (
+			seq_board_no.nextval,
+			#{title},
+			#{content},
+			#{empId}
+		)
+		<selectKey order="AFTER" resultType="_int" keyProperty="no">
+			select 
+				seq_board_no.currval
+			from
+				dual
+		</selectKey>
+	</insert>
+	
+	<insert id="insertAttachment">
+		insert into 
+			attachment
+		values(
+			seq_attachment_no.nextval, 
+			#{originalFilename}, 
+			#{renameFilename},
+			default,
+			category = 'B',
+		)
+	</insert>
+	
+	
+</mapper>

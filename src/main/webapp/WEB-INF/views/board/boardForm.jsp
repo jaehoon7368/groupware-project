@@ -68,27 +68,31 @@
 		</select>
 	</div>
 
+  <hr style="width:1000px;">
 
-  <form method="post">
+  <form name="boardFrm" action="${pageContext.request.contextPath}/board/boardEnroll.do" method="post" enctype="multipart/form-data">
   	<table class="write-table">
   		<tr>
   			<th>
-  				<span class="title">제목</span>
+  				<span class="title" id="title" name="title">제목</span>
   			</th>
-  			<td><input type="text"/></td>
+  			<td><input type="text"/ id="title" name="title"></td>
+  			<td><input type="hidden"/ id="empId" name="empId" value="${loginMember.empId}"></td>
   		</tr>
   		<tr>
   			<th>
   				<span class="file">첨부파일</span>
   			</th>
-  			<td><input type="text"/></td>
+  			<td><input type="file" name="upFile" id="upFile"/></td>
   		</tr>
   	</table>
   	
+	<hr style="width:1000px;">
+			
   	<div ="editor">
   		<th>
   			<td>
-			 	 <textarea id="summernote" name="memo"></textarea>  			
+			 	 <textarea id="summernote" name="content"></textarea>  			
   			</td>
   		</th>
   	</div>
@@ -109,41 +113,46 @@
   			<td><input type="checkbox"/> 푸시알림</td>
   		</tr>
   	</table>
-</form>
-	<div class="div-padding div-report-write-btn">
-		<button>등록</button>
-		<button>임시저장</button>
-	</div>
-
-
-
-
-</section>
-
-
-
-
-
   	
-  
+	<div class="div-padding div-report-write-btn">
+		<input type="submit" value="등록"/>
+		<input type="submit" value="취소"/>
+	</div>
+</form>
+</section>
   </div>
-		</div>
-		<script>
-		  $('#summernote').summernote({
-		      placeholder: 'Hello stand alone ui',
-		      tabsize: 2,
-		      height: 350,
-		      width: 1350,
-		      toolbar: [
-		        ['style', ['style']],
-		        ['font', ['bold', 'underline', 'clear']],
-		        ['color', ['color']],
-		        ['para', ['ul', 'ol', 'paragraph']],
-		        ['table', ['table']],
-		        ['insert', ['link', 'picture', 'video']],
-		        ['view', ['fullscreen', 'codeview', 'help']]
+</div>
+<script>
+document.querySelectorAll("[name=upFile]").forEach((input) => {
+	input.addEventListener('change', (e) => {
+		const file = e.target.files[0];
+		const label = e.target.nextElementSibling;
+		
+		if(file)
+			label.innerHTML = file.name;
+		else 
+			label.innerHTML = '파일을 선택하세요';
+	});
+});
+
+
+</script>
+<script>
+$('#summernote').summernote({
+	 placeholder: 'Hello stand alone ui',
+	 tabsize: 2,
+	 height: 350,
+	 width: 1000,
+	 toolbar: [
+			     ['style', ['style']],
+				 ['font', ['bold', 'underline', 'clear']],
+				 ['color', ['color']],
+				 ['para', ['ul', 'ol', 'paragraph']],
+			     ['table', ['table']],
+			     ['insert', ['link', 'picture', 'video']],
+			     ['view', ['fullscreen', 'codeview', 'help']]
 		      ]
 		    });
-		  </script>
-		  	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-	
+</script>
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+

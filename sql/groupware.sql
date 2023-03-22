@@ -44,6 +44,10 @@ create table board (
     constraint pk_board primary key (no),
     constraint fk_board_emp foreign key (emp_id) references emp (emp_id) on delete cascade
 );
+-- 게시판 테이블 컬럼 추가
+alter table board add writer varchar2(20) not null;
+alter table board add foreign key(writer) references emp (emp_id) on delete cascade;
+
 -- 댓글
 create table boardComment (
     no varchar2(15) not null,
@@ -102,4 +106,44 @@ select * from dept;
 select * from emp;
 select * from attachment;
 
+
 delete from emp where emp_id = '230304';
+
+select 
+		    b.*,
+		    (select count(*) from attachment where no = b.no and category = 'B') attach_count
+from
+    board b left join emp e
+        on b.emp_id = e.emp_id
+order by 
+    no desc;
+
+select * from board;
+delete from board where no = '1';
+Insert into BOARD (NO,CATEGORY,TITLE,CONTENT,READ_COUNT,LIKE_COUNT,CREATED_DATE,UPDATED_DATE,EMP_ID,WRITER) values (SEQ_BOARD_NO.nextval,'A','안녕하세요','안녕하세요 테스트중입니다.',DEFAULT,DEFAULT,DEFAULT,null,'230301','김사장');
+Insert into BOARD (NO,CATEGORY,TITLE,CONTENT,READ_COUNT,LIKE_COUNT,CREATED_DATE,UPDATED_DATE,EMP_ID,WRITER) values ('1','A','박부사 테스트중이에요','안녕하세요 테스트중입니다.',DEFAULT,DEFAULT,DEFAULT,null,'230302','박부사');
+Insert into BOARD (NO,CATEGORY,TITLE,CONTENT,READ_COUNT,LIKE_COUNT,CREATED_DATE,UPDATED_DATE,EMP_ID,WRITER) values (SEQ_BOARD_NO.nextval,'A','안녕하세요','안녕하세요 테스트중입니다.',DEFAULT,DEFAULT,DEFAULT,null,'230303','유사원');
+Insert into BOARD (NO,CATEGORY,TITLE,CONTENT,READ_COUNT,LIKE_COUNT,CREATED_DATE,UPDATED_DATE,EMP_ID,WRITER) values (SEQ_BOARD_NO.nextval,'A','안녕하세요','안녕하세요 테스트중입니다.',DEFAULT,DEFAULT,DEFAULT,null,'230304','한소희');
+
+select
+	 b.*,
+	( select a.* from attachment a where category = 'B')
+from
+	 board b 
+		 left join attachment a
+		      on b.no = a.no
+where
+	 b.no = '1';
+     
+select
+		    b.*,
+		    a.*,
+		    a.no attach_no
+		from
+		    board b 
+		    	left join attachment a
+		        	on b.no = a.no
+		where
+		    b.no = '1';
+    
+commit;

@@ -1,19 +1,39 @@
 .content {
 	display: inline-block;
 	padding: 15px;
+	width:1000px;
 }
 
 .target-select select {
 	width: 150px;
+	height: 30px;
+	font-size: 13px;
+	color: black;
 }
-
+.write-table {
+	width: 100%;
+}
 .write-table input {
-	width: 1240px;
+	width: 870px;
 }
-
-
+.write-table span {
+	font-size: 13px;
+	color: gray;
+}
+.write-table th {
+	display:block;
+	width: 60px;
+	vertical-align: top;
+}
 .write-table td {
-	padding-left:50px;
+	padding-left:60px;
+
+}
+.write-table input#title{
+	height: 30px;
+}
+.write-table input#file{
+	height: 70px;
 }
 
 .check-table td{
@@ -22,4 +42,12 @@
 
 .div-report-write-btn {
 	text-align: center;
+}
+
+tbody {
+	font-size: 13px;
+}
+
+.check-table th {
+	width: 130px;
 }

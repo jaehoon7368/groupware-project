@@ -54,21 +54,13 @@
 	
 
  <div class="content">
- 
- 	<div class="tool-bar">
- 		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/board/boardForm.do">
-		 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
-		 		<span>새글쓰기</span>
-	 		</a>
- 		</div>
- 		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/board/boardDelete.do">
-	 			<span><img src="${pageContext.request.contextPath}/resources/images/trash.png" alt="" class="tool-img" /></span>
-	 			<span>삭제</span>
-	 		</a>
- 		</div>
- 	</div>
+ <section class="tool-bar">
+ 	<ul>
+ 		<li>글쓰기</li>
+ 		<li>삭제하기</li>
+ 	</ul>
+ </section>
+  
   
  <section class="notice">
   <!-- board list area -->
@@ -90,7 +82,7 @@
                 </thead>
                 <tbody>
 	                <c:forEach items="${boardList}" var="board">
-		                <tr data-no="${board.no}">
+		                <tr>
 		                	<td><input type="checkbox" name="" value=""/></td>
 		                    <td>${board.no}</td>
 		                    <td>
@@ -99,7 +91,7 @@
 		                    <td>${board.writer}</td>
 		                    <td>
 								<fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate"/>
-								<fmt:formatDate value="${createdDate}" pattern="yy-MM-dd"/>
+								<fmt:formatDate value="${createdDate}" pattern="yy-MM-dd HH:mm"/>
 							</td>
 		                    <td>${board.readCount}</td>
 		                    <td>${board.likeCount}</td>
@@ -125,15 +117,5 @@
   <li><a href="#" aria-label="Page 13">13</a></li>
   <li class="pagination-next"><a href="#" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
 </ul>
-
-<script>
-document.querySelectorAll("tr[data-no]").forEach((tr) => {
-	tr.addEventListener('click', (e) => {
-		const no = tr.dataset.no;
-		console.log(no);
-		location.href = '${pageContext.request.contextPath}/board/boardDetail.do?no=' + no;
-	});
-});
-</script>
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
