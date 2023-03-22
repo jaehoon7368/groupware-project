@@ -6,6 +6,26 @@ section.notice {
   padding: 0px;
 
 }
+.tool-bar {
+	display: block;
+	padding: 10px;
+}
+
+tr[data-no] {cursor: pointer;}
+
+.tool-img {
+	height: 17px;
+	width: 17px;
+}
+.tool-button {
+	float: left;
+	padding: 10px;
+}
+.tool-bar span{
+	padding: 2px;
+	color: black;
+	font-size: 13px;
+}
 
 
 .page-title h3 {
@@ -38,15 +58,30 @@ section.notice {
   text-align: center;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
+
+}
+
+.board-table tbody tr:hover {
+ 	background: #F6f6f6;
 }
 
 .board-table .th-num {
-  width: 100px;
+  width: 80px;
   text-align: center;
 }
 
 .board-table .th-date {
-  width: 200px;
+  width: 150px;
+}
+.board-table .th-writer{
+	width: 150px;
+}
+
+.board-table .th-readCount{
+	width: 100px;
+}
+.board-table .th-likeCount{
+	width: 100px;
 }
 
 .board-table th, .board-table td {
