@@ -17,6 +17,8 @@ public interface BoardDao {
 
 	int insertAttachment(Attachment attach);
 
+	Board selectOneBoardCollection(String no);
+
 //	Board selectOneBoardCollection(int no);
 
 }

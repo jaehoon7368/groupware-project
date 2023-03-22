@@ -45,8 +45,9 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.insertAttachment(attach);
 	}
 	
-//	@Override
-//	public Board selectOneBoardCollection(int no) {
-//		return boardDao.selectOneBoardCollection(no);
-//	}
+	@Override
+	public Board selectOneBoardCollection(String no) {
+		return boardDao.selectOneBoardCollection(no);
+	}
+
 }

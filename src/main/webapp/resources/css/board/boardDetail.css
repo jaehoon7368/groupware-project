@@ -1,0 +1,74 @@
+.tool-bar {
+	display: inline-block;
+	padding: 10px;
+	border-bottom: 1px solid lightgray;
+	width:100%;
+}
+.tool-img {
+	height: 17px;
+	width: 17px;
+}
+.tool-button {
+	float: left;
+	padding: 10px;
+}
+.tool-bar span{
+	padding: 2px;
+	color: black;
+	font-size: 13px;
+}
+.title {
+	display: block;
+}
+.title h1{
+	font-size: 24px;
+}
+
+.detail {
+	padding: 15px;
+	border-bottom: 1px solid lightgray;
+	width:100%;
+}
+
+.info-wrap{
+	padding: 20px;
+}
+
+.view-option {
+	display:flex;
+	padding-left:10px;
+}
+
+.view-option .part {
+	padding: 5px;
+	color: lightgray;
+}
+
+.div-report-commend {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	margin-top: 10px;
+	padding: 20px;
+}
+
+.div-report-commend-all {
+	width: 100%;
+	display: flex;
+	align-items: baseline;
+}
+
+.div-report-commend-all div {
+	margin: 0 5px;
+	flex-shrink: 0;
+}
+
+.div-report-commend-all div:nth-of-type(2) {
+	width: 85%;
+}
+
+.div-report-commend-all textarea {
+	width: 100%;
+	resize: none;
+	margin: 0;
+}

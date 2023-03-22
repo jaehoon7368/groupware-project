@@ -137,9 +137,6 @@ document.querySelectorAll("[name=upFile]").forEach((input) => {
 	});
 });
 
-
-</script>
-<script>
 $('#summernote').summernote({
 	 placeholder: 'Hello stand alone ui',
 	 tabsize: 2,
@@ -155,6 +152,14 @@ $('#summernote').summernote({
 			     ['view', ['fullscreen', 'codeview', 'help']]
 		      ]
 		    });
+		    
+//form submit 시 content 값 수정
+document.querySelector("form[name=boardFrm]").addEventListener('submit', (e) => {
+	const content = document.querySelector('#summernote').value;
+	const regex = /(<([^>]+)>)/gi; //정규식을 이용하여 태그 제거
+	const contentValue = content.replace(regex, ""); //태그 제거한 내용만 가져오기
+	document.querySelector('#summernote').value = contentValue; //태그 제거한 내용으로 content 값 변경
+});    
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 

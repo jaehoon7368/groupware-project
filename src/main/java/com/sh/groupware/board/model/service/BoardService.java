@@ -12,6 +12,6 @@ public interface BoardService {
 
 	int insertBoard(Board board);
 
-//	Board selectOneBoardCollection(int no);
+	Board selectOneBoardCollection(String no);
 
 }

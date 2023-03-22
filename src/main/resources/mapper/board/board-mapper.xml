@@ -52,5 +52,43 @@
 		)
 	</insert>
 	
+	<select id="selectOneBoardCollection" resultMap="boardCollectionMap">
+		SELECT
+		    b.*,
+		    a.*,
+		    a.no  attach_no
+		FROM 
+		    board b 
+		        LEFT JOIN attachment a 
+		            ON b.no = a.no AND a.category = 'B'
+		WHERE 
+			b.no = #{no}
+	</select>
+	<!-- collection, association태그 사용시에는 id/result태그를 생략할 수 없다. -->
+	<resultMap type="board" id="boardCollectionMap">
+		<id column="no" property="no"/>
+		<result column="b_type" property="bType"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="read_count" property="readCount"/>
+		<result column="like_count" property="likeCount"/>
+		<result column="created_date" property="createdDate"/>
+		<result column="updated_date" property="updatedDate"/>
+		<result column="emp_id" property="empId"/>
+		<result column="writer" property="writer"/>
+		<association property="emp" javaType="emp">
+			<id column="emp_id" property="empId"/>
+			<result column="name" property="name"/>
+		</association>
+		<collection property="attachments" ofType="attachment">
+			<id column="attach_no" property="no"/>
+			<result column="original_filename" property="originalFilename"/>
+			<result column="rename_filename" property="renameFilename"/>
+			<result column="reg_date" property="regDate"/>
+			<result column="category" property="category"/>
+			<result column="pk_no" property="pkNo"/>
+		</collection>
+	</resultMap>
+	
 	
 </mapper>
