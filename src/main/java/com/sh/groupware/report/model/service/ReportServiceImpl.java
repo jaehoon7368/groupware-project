@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sh.groupware.common.attachment.model.dao.AttachmentDao;
+import com.sh.groupware.common.dto.Attachment;
 import com.sh.groupware.report.model.dao.ReportDao;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
@@ -25,6 +27,9 @@ public class ReportServiceImpl implements ReportService {
 
 	@Autowired
 	private ReportDao reportDao;
+	
+	@Autowired
+	private AttachmentDao attachmentDao;
 	
 	
 	@Override
@@ -122,6 +127,13 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public int insertReportDetail(ReportDetail detail) {
 		int result = reportDao.insertReportDetail(detail);
+		
+		List<Attachment> attachList = detail.getAttachments();
+		for (Attachment attach : attachList) {
+			attach.setPkNo(detail.getNo());
+			
+			result = attachmentDao.insertReportAttachment(attach);
+		}
 		
 		Map<String, Object> param = new HashMap<>();
 		param.put("no", detail.getReportNo());

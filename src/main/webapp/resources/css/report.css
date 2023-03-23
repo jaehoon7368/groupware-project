@@ -83,6 +83,13 @@
   border-bottom: solid 1px lightgray;
 }
 
+.report-tr:hover {
+	cursor: pointer;
+	/* box-shadow: 0 1px 2px rgba(10, 10, 10, 0.1); */
+	box-shadow: 0 0 5px #d7d7d7;
+	background-color: #f8f8f8;
+}
+
 
 /* reportForm.jsp */
 /* 보고자 제외 */
@@ -247,6 +254,70 @@
 	resize: none;
 }
 
+.div-report-write-upload {
+	display: flex;
+	border-top: solid 1px lightgray;
+	border-bottom: solid 1px lightgray;
+}
+
+.div-report-write-tbl {
+	width: 100%;
+}
+
+.div-report-write-tbl td:first-of-type {
+	vertical-align: top;
+	width: 20%;
+}
+
+.div-report-write-tbl td:last-of-type {
+	text-align: center;
+	border: dashed 2px lightgray;
+}
+
+.div-report-write-file {
+	width: 100%;
+	height: 60px;
+	vertical-align: middle;
+}
+
+.div-report-write-file-name {
+	width: 100%;
+	text-align: left;
+	color: gray;
+	font-size: small;
+}
+
+.div-report-write-file-name div {
+	padding: 3px 5px;
+}
+
+.div-report-write-file-name input[type=button] {
+	padding: 3px 5px;
+	border: none;
+	font-weight: bold;
+	background-color: #fff;
+}
+
+.td-label {
+	padding-top: 17px;
+	height: 100%;
+	font-size: small;
+	color: gray;
+}
+
+.td-label:hover {
+	cursor: pointer;
+}
+
+.div-report-write-file input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
 .div-report-write-btn {
 	text-align: center;
 	border-top: solid 1px lightgray;
@@ -255,6 +326,35 @@
 .div-report-write-btn button {
 	border-radius: 5px;
 }
+
+.div-report-write-attach {
+	width: 100%;
+}
+
+.div-report-write-view {
+	display: none;
+	margin: 10px;
+	border: solid 3px lightgray;
+}
+
+.write-name {
+	padding: 0 5px;
+	font-weight: bold;
+	font-size: medium;
+}
+
+.write-date {
+	font-size: small;
+	color: gray;
+	padding: 10px;
+}
+
+.attach-btn {
+	font-size: small;
+	color: gray;
+	border: none;
+}
+
 
 /* 보고 댓글 */
 .div-report-commend {
