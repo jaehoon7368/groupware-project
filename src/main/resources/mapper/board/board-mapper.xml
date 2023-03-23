@@ -42,27 +42,26 @@
 	<insert id="insertAttachment">
 		insert into 
 			attachment
-		values(
+		values (
 			seq_attachment_no.nextval, 
 			#{originalFilename}, 
 			#{renameFilename},
 			default,
-			category = 'B',
+			'B',
 			#{pkNo}
 		)
 	</insert>
 	
 	<select id="selectOneBoardCollection" resultMap="boardCollectionMap">
-		SELECT
-		    b.*,
-		    a.*,
-		    a.no  attach_no
+		SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no 
 		FROM 
 		    board b 
-		        LEFT JOIN attachment a 
-		            ON b.no = a.no AND a.category = 'B'
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
 		WHERE 
-			b.no = #{no}
+		    b.no = #{no}
 	</select>
 	<!-- collection, association태그 사용시에는 id/result태그를 생략할 수 없다. -->
 	<resultMap type="board" id="boardCollectionMap">
@@ -89,6 +88,16 @@
 			<result column="pk_no" property="pkNo"/>
 		</collection>
 	</resultMap>
+	
+	<select id="selectOneAttachment" resultMap="attachmentMap">
+			select 
+				*
+			from
+				attachment
+			where
+				no = #{no}
+	</select>
+	<resultMap type="attachment" id="attachmentMap"></resultMap>
 	
 	
 </mapper>
