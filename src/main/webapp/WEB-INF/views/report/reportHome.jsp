@@ -83,7 +83,7 @@
 														</tr>
 														<tr>
 															<td>보고현황</td>
-															<td title="보고자 ${report.memberCount}명 (미보고자 ${report.createCount}명)">보고자 ${report.memberCount}명 (미보고자 ${report.createCount}명)</td>
+															<td title="보고자 ${report.createCount}명 (미보고자 ${report.noCreateCount}명)">보고자 ${report.createCount}명 (미보고자 ${report.noCreateCount}명)</td>
 														</tr>
 													</tbody>
 												</table>
@@ -133,7 +133,7 @@
                                             <tbody>
                                             	<c:forEach items="${reportList}" var="report">
                                             		<c:if test="${report.createYn == 'Y'}">
-	                                            		<tr onclick="detailReport('${report.reportNo}');">
+	                                            		<tr class="report-tr" onclick="detailReport('${report.reportNo}');">
 	                                            			<td>${report.deptTitle}</td>
 	                                            			<td>${report.title}</td>
 	                                            			<td>${report.empName}</td>
@@ -150,7 +150,7 @@
                             	const detailReport = (no) => {
                             		console.log(no);
                             		location.href = `${pageContext.request.contextPath}/report/reportDetail.do?no=\${no}`;
-                            	}
+                            	};
                             </script>
                             
 						</div>

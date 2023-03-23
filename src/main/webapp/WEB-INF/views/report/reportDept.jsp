@@ -77,10 +77,8 @@
                                             	</c:if>
                                             	<c:if test="${!empty reportList}">
 	                                            	<c:forEach items="${reportList}" var="report">
-	                                            		<tr>
-	                                            			<td>
-	                                            				<a href='${pageContext.request.contextPath}/report/reportDetail.do?no=${report.no}'>${report.title}</a>
-	                                            			</td>
+	                                            		<tr class="report-tr" data-no="${report.no}">
+	                                            			<td>${report.title}</td>
 	                                            			<td>${report.explain}</td>
 	                                            			<td>${report.writer}</td>
 	                                            			<td>${report.regDate}</td>
@@ -93,7 +91,23 @@
                                     </div>
                                 </div>
                             </div>
-                            
+                            <script>
+                            	document.querySelectorAll('.report-tr').forEach((tr) => {
+                            		tr.addEventListener('click', (e) => {
+                            			let clickTr = e.target;
+                            			
+                            			while (true) {
+    										if (clickTr.tagName == 'TR') {
+		                            			location.href = '${pageContext.request.contextPath}/report/reportDetail.do?no=' + clickTr.dataset.no;
+    											break;
+    										} else {
+    											clickTr = clickTr.parentElement;
+    											continue;
+    										}
+    									}
+                            		});
+                            	});
+                            </script>
 						</div>
 					</div>
 				</div>

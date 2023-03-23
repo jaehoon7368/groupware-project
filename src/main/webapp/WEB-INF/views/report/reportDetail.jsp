@@ -226,9 +226,10 @@
 						</div>
 						
 						<!-- 보고 조회 -->
-						<div class="div-report-write">
+						<div class="div-report-write-view">
 							<div class="div-padding div-report-write-name">${reportCheckList[0].title}</div>
 							<div class="div-padding div-report-write-content"></div>
+							<div class="div-padding div-report-write-attach"></div>
 						</div>
 						
 						<script>
@@ -236,6 +237,8 @@
 								console.log(one);
 								
 								one.addEventListener('click', (e) => {
+									document.querySelector('.div-report-write-view').style.display = 'block';
+									
 									document.querySelectorAll('.div-okreport-one').forEach((one) => {
 										one.classList.remove('div-okreport-one-click');
 									});
@@ -258,23 +261,62 @@
 
 									
 									const reportList = [];
+									let attachments = [];
 									<c:forEach items="${reportCheckList}" var="report">
-										reportList.push({empId:'${report.empId}', content:'${report.content}'});
+										<c:if test="${report.attachments.size() > 0}">
+											<c:forEach items="${report.attachments}" var="attach">
+												attachments.push({
+													no: '${attach.no}',
+													originalFilename: '${attach.originalFilename}'
+												});
+											</c:forEach>
+											console.log(attachments);
+										</c:if>
+											reportList.push({
+												empId: '${report.empId}', 
+												empName: '${report.empName}', 
+												createDate: '${report.createDate}',
+												content: '${report.content}', 
+												attachments
+											});
+											attachments = [];
+										
 									</c:forEach>
 									console.log(reportList);
 									
-									const div = document.querySelector('.div-report-write-content');
-									div.innerHTML = `
+									const titleDiv = document.querySelector('.div-report-write-name');
+									titleDiv.innerHTML = `
+										<span class="write-name">\${reportList[index].empName}</span><span class="write-date">\${reportList[index].createDate}</span>
+									`;
+									
+									const contentDiv = document.querySelector('.div-report-write-content');
+									contentDiv.innerHTML = `
 										\${reportList[index].content}
 									`;
+									
+									const attachDiv = document.querySelector('.div-report-write-attach');
+									attachDiv.innerHTML = '';
+									
+									const attachs = reportList[index].attachments;
+									if (attachs.length > 0) {
+										attachs.forEach((attach, index) => {
+											const {no, originalFilename} = attach;
+											
+											attachDiv.innerHTML += `
+												<button type="button" class="attach-btn" onclick="location.href='${pageContext.request.contextPath}/report/fileDownload.do?no=\${no}';">
+													첨부파일\${index + 1} - \${originalFilename}
+												</button>
+											`;
+										});
+									}
+									
 								});
 							});
-
-							
 						</script>
 						
 						<!-- 보고 댓글 -->
 						<div class="div-report-commend">
+							<div>댓글</div>
 							<div class="div-report-commend-all">
 								<div>
 									<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />

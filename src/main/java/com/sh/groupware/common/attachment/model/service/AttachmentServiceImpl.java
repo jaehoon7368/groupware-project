@@ -1,5 +1,8 @@
 package com.sh.groupware.common.attachment.model.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,5 +41,15 @@ public class AttachmentServiceImpl implements AttachmentService {
 		
 		return resultattach;
 	}
+
+	@Override
+	public List<Attachment> selectAllAttachList(Map<String, Object> param) {
+		return attachmentDao.selectAllAttachList(param);
+	} // selectAllAttachList() end
+	
+	@Override
+	public Attachment selectOneAttachment(int no) {
+		return attachmentDao.selectOneAttachment(no);
+	} // selectOneAttachment() end
 	
 }

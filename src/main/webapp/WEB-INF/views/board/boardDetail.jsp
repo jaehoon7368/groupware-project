@@ -93,6 +93,16 @@
  		<span class="content">${board.content}</span>
  	</div>
  	
+ 	<div class="file">
+ 		<c:forEach items="${board.attachments}" var="attach" varStatus="vs">
+			<button type="button" 
+					class="btn btn-outline-success btn-block"
+					onclick="location.href = '${pageContext.request.contextPath}/board/fileDownload.do?no=${attach.no}';">
+				첨부파일${vs.count} - ${attach.originalFilename}
+			</button>
+		</c:forEach>
+ 	</div>
+ 	
  	<div class="div-padding"></div>
  	
  	<div class="view-option">

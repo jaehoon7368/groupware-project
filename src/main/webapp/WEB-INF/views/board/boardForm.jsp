@@ -126,15 +126,17 @@
 </div>
 <script>
 document.querySelectorAll("[name=upFile]").forEach((input) => {
-	input.addEventListener('change', (e) => {
-		const file = e.target.files[0];
-		const label = e.target.nextElementSibling;
-		
-		if(file)
-			label.innerHTML = file.name;
-		else 
-			label.innerHTML = '파일을 선택하세요';
-	});
+    input.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        const label = e.target.nextElementSibling;
+        
+        if(label) { // label이 null인 경우에 대한 예외 처리
+            if(file)
+                label.innerHTML = file.name;
+            else 
+                label.innerHTML = '파일을 선택하세요';
+        }
+    });
 });
 
 $('#summernote').summernote({
@@ -153,13 +155,13 @@ $('#summernote').summernote({
 		      ]
 		    });
 		    
-//form submit 시 content 값 수정
+/* //form submit 시 content 값 수정
 document.querySelector("form[name=boardFrm]").addEventListener('submit', (e) => {
 	const content = document.querySelector('#summernote').value;
 	const regex = /(<([^>]+)>)/gi; //정규식을 이용하여 태그 제거
 	const contentValue = content.replace(regex, ""); //태그 제거한 내용만 가져오기
 	document.querySelector('#summernote').value = contentValue; //태그 제거한 내용으로 content 값 변경
-});    
+});     */
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 

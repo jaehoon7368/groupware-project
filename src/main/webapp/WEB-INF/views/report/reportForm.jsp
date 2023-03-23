@@ -201,7 +201,7 @@
 								<c:forEach items="${reportCheckList}" var="reportCheck">
 									<c:if test="${reportCheck.createYn == 'N' && reportCheck.excludeYn == 'N'}">
 										<div class="div-unreport-one ${sessionScope.loginMember.empId == reportCheck.empId ? 'div-me' : ''}">
-											<div>
+											<div>  
 												<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
 											</div>
 											<div class="left">${reportCheck.empName} ${reportCheck.jobTitle}</div>
@@ -214,16 +214,33 @@
 						<!-- 보고 작성 -->
 						<div class="div-report-write">
 							<div class="div-padding div-report-write-name">${reportCheckList[0].title}</div>
-							<form:form action="${pageContext.request.contextPath}/report/reportDetailEnroll.do" name="reportDetailFrm" method="POST">
+							<form action="${pageContext.request.contextPath}/report/reportDetailEnroll.do?${_csrf.parameterName}=${_csrf.token}" name="reportDetailFrm" method="POST" enctype="multipart/form-data">
 								<div class="div-padding div-report-write-content">
 									<input type="hidden" name="reportNo" value="${param.no}" />
 									<textarea id="summernote" name="content"></textarea>
 								</div>
+								<div class="div-padding div-report-write-upload">
+									<table class="div-report-write-tbl">
+										<tbody>
+											<tr>
+												<td class="font-small">파일 첨부</td>
+												<td>
+													<div class="div-report-write-file">
+														<label class="td-label" for="exampleFileUpload"><i class="fa-solid fa-up-right-from-square"></i> 이 곳을 클릭하여 파일 업로드</label>
+														<input type="file" name="upFile" id="exampleFileUpload">
+													</div>
+													<div class="div-report-write-file-name"></div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 								<div class="div-padding div-report-write-btn">
 									<button type="submit">등록</button>
 								</div>
-							</form:form>
+							</form>
 							<script>
+								/* 썸머노트 textarea js */
 								$('#summernote').summernote({
 									placeholder: 'Hello stand alone ui',
 									tabsize: 2,
@@ -238,9 +255,53 @@
 										['insert', ['link', 'picture', 'video']],
 										['view', ['fullscreen', 'codeview', 'help']]
 									]
-								  });
+								});
+
+								// 첨부파일목록
+								// const fileList = Array.from(exampleFileUpload.files);
+
+								// 첨부파일 추가
+								document.querySelector('#exampleFileUpload').addEventListener('change', (e) => {
+									const file = e.target.files[0];
+									// const index = fileList.findIndex((files) => {
+									// 	return files[0].name === file.name;
+									// });
+									// if (index < 0) {
+									// 	fileList.push(Array.from(e.target.files));
+
+										const div = document.querySelector('.div-report-write-file-name');
+										
+										if (file) {
+											div.innerHTML = `
+												<div><input type="button" value="X" data-name="\${file.name}" onclick="delFile(this);"/>&nbsp;\${file.name}</div>
+											`;
+										}
+
+									// }
+									
+									// console.log(fileList);
+								});
+
+								// 첨부파일 삭제
+								const delFile = (btn) => {
+									const name = btn.dataset.name;
+
+									// input[type=file] value 초기화
+									exampleFileUpload.value = '';
+
+									// 파일명 출력한 태그 제거
+									btn.parentElement.remove();
+
+									// fileList의 값 제거
+									// fileList.splice(fileList.findIndex((files) => {
+									// 	console.log(name);
+									// 	return files[0].name === btn.dataset.name;
+									// }), 1);
+									// console.log(fileList);
+								};
 								
 
+								/* 보고 내용 작성 폼 전송 시 유효성검사 */
 								document.reportDetailFrm.addEventListener('submit', (e) => {
 									e.preventDefault();
 									
@@ -258,6 +319,7 @@
 										return false;
 									};
 									
+									reportDetailFrm.submit();
 								});
 							</script>
 						</div>
