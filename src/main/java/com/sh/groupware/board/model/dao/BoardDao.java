@@ -19,6 +19,8 @@ public interface BoardDao {
 
 	Board selectOneBoardCollection(String no);
 
-//	Board selectOneBoardCollection(int no);
+	Attachment selectOneAttachment(String no);
+
+
 
 }
