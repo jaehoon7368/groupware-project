@@ -55,5 +55,5 @@ public interface ReportDao {
 
 	@Select("select * from report where dept_yn = 'Y' and writer in (select emp_id from emp where dept_code = #{code}) order by end_date")
 	List<Report> findByDeptCodeReportList(String code);
-
-} // interface end
+	
+} // class end

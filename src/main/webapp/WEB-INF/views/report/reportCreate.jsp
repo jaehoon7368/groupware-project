@@ -158,6 +158,8 @@
 									alert('참조 가능한 부서를 추가해주세요.');
 									return false;
 								};
+								
+								reportCreateFrm.submit();
 							});
 							
 							
