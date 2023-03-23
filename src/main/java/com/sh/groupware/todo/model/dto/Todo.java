@@ -1,6 +1,9 @@
 package com.sh.groupware.todo.model.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.sh.groupware.common.dto.Attachment;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,8 +17,17 @@ public class Todo {
 	private String no;
 	private String content;
 	private String info;
-	private LocalDate endDate;
-	private String explain;
+	private LocalDateTime endDate;
 	private String todoListNo;
+	private String attachNo;
+	private List<Attachment> attachments;
+	private List<TodoComment> todocomments;
 
+	
+	public void addAttachment(Attachment attachment) {
+		
+		this.attachments.add(attachment);
+	}
+	
+	
 }

@@ -17,6 +17,11 @@ public interface AttachmentDao {
 	@Select("select * from attachment where pk_no = #{empId}")
 	Attachment selectEmpProfilr(String empId);
 
+	
+
+	int todoFileUpload(Attachment attachment);
+
+	int updateTodoFileUpload(String attachNo);
 	@Insert("insert into attachment values (seq_attachment_no.nextval, #{originalFilename}, #{renameFilename}, default, #{category}, #{pkNo})")
 	int insertReportAttachment(Attachment attach);
 

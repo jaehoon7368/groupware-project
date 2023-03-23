@@ -38,7 +38,7 @@
 
 </insert>
 
-<select id="selectLastTodoList" resultMap="todoList">
+<select id="selectLastTodoList" resultMap="todoListMap">
 	select
 	*
 	from
@@ -47,7 +47,7 @@
 	no = #{no}
 </select>
 
-<select  id="selectTodoListByNo" resultMap ="todoList" >
+<select  id="selectTodoListByNo" resultMap ="todoListMap" >
 	select 
 		* 
 	from 
@@ -55,7 +55,7 @@
 	where 
 		todoboard_no = #{no} order by no asc
 </select>
-<select  id="selectTodoByTodoListNo" resultMap="todo">
+<select  id="selectTodoByTodoListNo" resultMap="todoMap">
 	 select
 	  * 
 	 from 
@@ -74,16 +74,130 @@
 		 #{content},
 		 default,
 		 default,
-		 #{todoListNo}
+		 #{todoListNo},
+		 default
 	)
 	
 	
 </insert>
 
+<update id="todoListUpdate">
+	update
+		todolist
+	set
+		title = #{title}
+	where
+		no = #{no}
+</update>
+<delete id="todoListDelete">
+	delete from
+		todoList
+	where
+		no = #{no} 
+</delete>
+
+<update id="todoInfoUpdate">
+	update
+		todo
+	set
+		info = #{info}
+	where  no = #{no}
+
+</update>
+
+<update id="todoContentUpdate">
+	update
+		todo
+	set
+		content = #{content}
+	where no = #{no}
+</update>
+
+<insert id="commentEnroll">
+	insert into
+		todocomment
+	values(
+	  'tc'||to_char(SEQ_TODOCOMMENT_NO.nextval,'fm00000'),
+	 	#{content},
+	 	sysdate,
+	 	#{empId},
+	 	#{todoNo}
+	)
+</insert>
+
+<update id="bookMarkOn">
+	update
+		todoboard
+	set
+		bookmark = 'Y'
+	where
+		no = #{todoBoardNo}
+</update>
 
 
 
-<resultMap type="todo" id="todo"></resultMap>
-<resultMap type="todoList" id="todoList"></resultMap>
+<select  id="todoSelectByNo" resultMap="todoMap">
+       select 
+        t.*,
+        c.no todocommentno,
+        c.content todocontent,
+        c.reg_date,
+        c.emp_id,
+        c.todo_no
+        from
+        todo t left join todocomment c
+        on t.no =  c.todo_no 
+        where 
+        t.no = #{no} 
+<!--         select
+        *
+        from
+        	todo
+        where
+        	no = #{no}
+ -->
+</select>
+
+	<update id ="updateTodoFileUpload">
+		update
+			todo
+		set
+		attach_no = #{attachNo}
+	
+	</update>
+
+
+
+<resultMap type="todo" id="todoMap">
+		<id column="no" property="no"/>
+		<result column="content" property="content"/>
+		<result column="end_date" property="endDate"/>
+		<result column="todo_list_no" property="todoListNo"/>
+		<result column="info" property="info"/>
+		<result column="attach_no" property="attachNo"/>
+ 		<collection property ="attachments" ofType="attachment">
+			<id column="attch_no" property="no"/>
+			<result column="original_filename" property="originalFilename"/>
+			<result column="renamed_filename" property="renamedFilename"/>
+			<result column="attach_reg_date" property="regDate"/>
+			<result column="category" property="category"/>
+			<result column="pkNo" property="pkNo"/>
+		</collection>	 
+		
+		<collection property ="todocomments" ofType="todocomment">
+			<id column="todocommentno" property="no"/>
+			<result column="todocontent" property="content"/>
+			<result column="reg_date" property="regDate"/>
+			<result column="emp_id" property="empId"/>
+			<result column="todo_no" property="todoNo"/>
+		</collection>	
+
+ 
+
+</resultMap>
+<resultMap type ="todoBoard" id="todoBoardMap"></resultMap>
+<resultMap type="todoList" id="todoListMap"></resultMap>
+<resultMap type="attachment" id="attachmentMap" ></resultMap>
+<resultMap type="todocomment" id="todocommentMap"></resultMap>
 
 </mapper>
