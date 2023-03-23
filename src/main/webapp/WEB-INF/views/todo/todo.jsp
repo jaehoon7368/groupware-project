@@ -65,6 +65,7 @@
 }
 
 .todo-li {
+	position :relative;
 	min-width: 200px;
 	width: 20%;
 	height: 96px;
@@ -176,7 +177,16 @@ line-height: 0.6;
 }
 
 /* 게시판 보드 모달 */
-
+/* 북마크  위치조정 */
+.test{
+	position:relative;
+}
+.bookMark{
+    position: absolute;
+    right: 36px;
+    top: 32px;
+}
+	
  </style> 
 			<div class="content-top">
 				<h2 class="board-menu" id="boardMenu">Board</h2>
@@ -213,7 +223,8 @@ line-height: 0.6;
 				<div class="wrap_todo_board ui-favorite-board">
 					<h5 class="board-info">즐겨찾는보드</h5>
 
-					<ul>
+					<ul> 
+						<!-- 여기서부터 즐겨찾기  -->
 						<li class="todo-li">
 							<div class="todo-top">
 								<span>1팀_업무지시방</span> <span> <a href=""><i
@@ -239,19 +250,23 @@ line-height: 0.6;
 					<ul>
 						<c:forEach items="${todoBoards}" var="todoBoard" varStatus="vs">
 						
-						<li class="todo-li"  onclick="enterTodo('${todoBoard.no}');">
+						<li class="todo-li"  onclick="enterTodo('${todoBoard.no}',event);">
 							<div class="todo-top">
-								<span>${todoBoard.title }</span> <span> <a href=""><i
-										class="fa fa-link" aria-hidden="true"></i></a> <a href=""><i
-										class="fa fa-star-o" aria-hidden="true"></i></a></span>
+								<span>${todoBoard.title }</span> <span>  
+							
 							</div>
 							<div class="todo-bottom">
 								<img src="/김현동/joonpark.jpg" alt="" style="width: 32px;">
 							</div>
 						</li>
+						<li class="test">
+							<i class="fa fa-star-o bookMark" aria-hidden="true" onclick ="bookMarkOn('${todoBoard.no}',event);"></i></span>
+						</li>
 						</c:forEach>
+						
+						<!-- 등록 폼 -->
 						<li class="todo-li newboard" onclick ="" id="beforeNewTodo">
-							<i class="fa fa-plus" style="font-size: 2em;" aria-hidden="true"></i>
+							<i class="fa fa-plus" style="font-size: 2em;" aria-hidden="true" ></i>
 						<div class="removeView" id="afterNewTodo">
 							<div class="todo-top">
 									<p>이름</p>
@@ -265,7 +280,6 @@ line-height: 0.6;
 										<button class="todo-btn" id="enrollCanclebtn" >취소</button>
 									</div>
 										</form:form>
-									
 						</div>
 						</li>
 						
@@ -273,6 +287,9 @@ line-height: 0.6;
 				</div>
 				<!-- myboard end-->
 	
+	<style>
+	
+	</style>
 			</div>
 
 		</div>
@@ -280,8 +297,41 @@ line-height: 0.6;
 </div>
 
 <script>
-	const enterTodo =(no)=>{
-		 location.href='${pageContext.request.contextPath}/todo/todoList.do?no='+no; 
+	const bookMarkOn=(todoBoardNo,e)=>{
+		const csrfHeader = "${_csrf.headerName}";
+        const csrfToken = "${_csrf.token}";
+        const headers = {};
+        headers[csrfHeader] = csrfToken;
+		console.log(todoBoardNo)
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/todo/bookMarkOn.do",
+			method : "POST",
+			headers,
+			data :{
+				todoBoardNo : todoBoardNo
+			},
+			success(data){
+				console.log(data);
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			},
+			error:console.log
+			
+		}) /* ajax 끝*/
+		
+	}
+	const enterTodo =(no,e)=>{
+		e.stopPropagation(); 
+		location.href='${pageContext.request.contextPath}/todo/todoList.do?no='+no; 
+		
 	}
 
 	// +버튼 클릭  enroll 로 전환 
@@ -300,7 +350,8 @@ line-height: 0.6;
 		e.stopPropagation();
 	})
     
-    
+  
+
   
 </script>
 

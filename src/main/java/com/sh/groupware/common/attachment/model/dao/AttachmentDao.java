@@ -13,4 +13,10 @@ public interface AttachmentDao {
 	@Select("select * from attachment where pk_no = #{empId}")
 	Attachment selectEmpProfilr(String empId);
 
+	
+
+	int todoFileUpload(Attachment attachment);
+
+	int updateTodoFileUpload(String attachNo);
+
 }

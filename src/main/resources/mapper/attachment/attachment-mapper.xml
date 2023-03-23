@@ -15,4 +15,31 @@
 			#{pkNo}
 		)
 	</insert>
+	
+	<insert id="todoFileUpload">
+		insert into
+			attachment
+		values(
+		seq_attachment_no.nextval,
+			#{originalFilename},
+			#{renameFilename},
+			default,
+			'T',
+			#{pkNo}
+		)
+		
+		<selectKey order="AFTER" resultType="String" keyProperty="no">
+			select 
+				seq_attachment_no.currval
+			from
+				dual
+		</selectKey>
+		
+	
+	</insert>
+	
+	
+	
+
+
 </mapper>
