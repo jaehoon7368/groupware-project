@@ -23,7 +23,7 @@
 								<div>
 									<a href="#" id="home-my-img">
 										<c:if test="${!empty sessionScope.loginMember.attachment}">
-											<img src="${pageContext.request.contextPath}/resources/upload/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+											<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
 										</c:if>
 										<c:if test="${empty sessionScope.loginMember.attachment}">
 											<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">

@@ -59,6 +59,9 @@ public class EmpController {
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Emp principal = (Emp) authentication.getPrincipal();
+		Attachment attach = attachService.selectEmpProfile(principal.getEmpId());
+		principal.setAttachment(attach);
+		
 		session.setAttribute("loginMember", principal);
 		
 		List<Dept> deptList = deptService.selectAllDept();
