@@ -28,7 +28,12 @@
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
-										<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
+										<c:if test="${!empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+										</c:if>
+										<c:if test="${empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+										</c:if>
 									</a>
 								</div>
 								<div id="my-menu-modal">
@@ -226,109 +231,282 @@
 						</div>
 						
 						<!-- 보고 조회 -->
-						<div class="div-report-write-view">
-							<div class="div-padding div-report-write-name">${reportCheckList[0].title}</div>
-							<div class="div-padding div-report-write-content"></div>
-							<div class="div-padding div-report-write-attach"></div>
-						</div>
+						<c:forEach items="${reportCheckList}" var="reportCheck" varStatus="vs">
+							<c:if test="${reportCheck.createYn == 'Y'}">
+								<div class="div-report-write-view" data-no="${vs.index}">
+									<div class="div-padding div-report-write-top">
+										<div class="div-report-write-name">
+											<span class="write-name">${reportCheck.empName}</span>
+											<span class="write-date">${reportCheck.createDate}</span>
+										</div>
+										<div class="div-report-write-btn-group">
+											<form:form action="${pageContext.request.contextPath}/report/reportDetailDelete.do" method="POST">
+												<input type="hidden" name="no" value="${reportCheck.detailNo}" />
+												<input type="hidden" name="reportNo" value="${reportCheck.reportNo}" />
+												<input type="hidden" name="empId" value="${reportCheck.empId}" />
+												<button type="button" class="update-btn" data-no="${vs.index}" data-detail-no="${reportCheck.detailNo}">수정</button>
+												<button type="submit" class="delete-btn">삭제</button>
+											</form:form>
+										</div>
+									</div>
+									<div class="div-report-detail">
+										<div class="div-padding div-report-write-content">
+											<div class="before-content">
+												${reportCheck.content}
+											</div>
+										</div>
+										<div class="div-padding div-report-write-attach">
+											<c:if test="${reportCheck.attachments.size() > 0}">
+												<c:forEach items="${reportCheck.attachments}" var="attach" varStatus="vs">
+													<button type="button" class="attach-btn" onclick="location.href='${pageContext.request.contextPath}/report/fileDownload.do?no=${attach.no}';">
+														첨부파일${vs.count} - ${attach.originalFilename}
+													</button>
+												</c:forEach>
+											</c:if>
+										</div>
+									</div>
+									<div class="div-report-detail-update" style="display: none;">
+										<form action="${pageContext.request.contextPath}/report/reportDetailUpdate.do?${_csrf.parameterName}=${_csrf.token}" name="reportDetailUpdateFrm${vs.index}" method="POST" enctype="multipart/form-data">
+											<div class="div-padding div-report-write-content">
+												<input type="hidden" name="no" value="${reportCheck.detailNo}" />
+												<textarea id="summernote${vs.index}" name="content">${reportCheck.content}</textarea>
+												<script>
+													$('#summernote${vs.index}').summernote({
+														placeholder: 'Hello stand alone ui',
+														tabsize: 2,
+														height: 350,
+														width: '100%',
+														toolbar: [
+															['style', ['style']],
+															['font', ['bold', 'underline', 'clear']],
+															['color', ['color']],
+															['para', ['ul', 'ol', 'paragraph']],
+															['table', ['table']],
+															['insert', ['link', 'picture', 'video']],
+															['view', ['fullscreen', 'codeview', 'help']]
+														]
+													});
+												</script>
+											</div>
+											<div class="div-padding div-report-write-upload">
+												<table class="div-report-write-tbl">
+													<tbody>
+														<tr>
+															<td class="font-small">파일 첨부</td>
+															<td>
+																<div class="div-report-write-file">
+																	<label class="td-label" for="exampleFileUpload${vs.index}"><i class="fa-solid fa-up-right-from-square"></i> 이 곳을 클릭하여 파일 업로드</label>
+																	<input type="file" name="upFile" id="exampleFileUpload${vs.index}">
+																</div>
+																<div class="div-report-write-file-name">
+																	<c:if test="${reportCheck.attachments.size() > 0}">
+																		<c:forEach items="${reportCheck.attachments}" var="attach" varStatus="vs">
+																			<div>
+																				<input type="button" value="X" data-no="${attach.no}" data-name="${attach.originalFilename}" onclick="delFile(this);"/>&nbsp;${attach.originalFilename}
+																			</div>
+																		</c:forEach>
+																	</c:if>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<div class="div-report-update-file">
+													<input type="hidden" name="noFile" />
+												</div>
+												<script>
+													document.querySelector('#exampleFileUpload${vs.index}').addEventListener('change', (e) => {
+														const file = e.target.files[0];
+														const div = e.target.parentElement.nextElementSibling;
+														console.log(div);
+														
+														if (file) {
+															div.innerHTML = `
+																<div>
+																	<input type="button" value="X" data-no="0" data-name="\${file.name}" onclick="delFile(this);"/>&nbsp;\${file.name}
+																</div>
+															`;
+														}
+													});
+												</script>
+											</div>
+											<div class="div-padding div-report-write-btn">
+												<button type="submit">수정</button>
+												<button type="button" onclick="beforeDivOpen(this);">취소</button>
+											</div>
+										</form>
+										<script>
+											document.querySelector('[name=reportDetailUpdateFrm${vs.index}]').addEventListener('submit', (e) => {
+												e.preventDefault();
+												console.log(e.target);
+												const content = e.target.content;
+												console.log(content.value);
+
+												if (/^\s+$/.test(content.value) || !content.value) {
+													alert('보고내용을 작성해주세요.');
+													content.select();
+													return false;
+												};
+												
+												if (/[']+/.test(content.value)) {
+													alert("보고내용에 '는 작성이 불가능합니다.");
+													content.select();
+													return false;
+												};
+												
+												e.target.submit();
+											});
+										</script>
+									</div>
+									
+									<!-- 보고 댓글 -->
+									<div class="div-report-comment">
+										<div style="font-weight: bold;">댓글</div>
+										<form:form action="${pageContext.request.contextPath}/report/reportCommentEnroll.do" method="POST" name="commentEnrollFrm">
+											<div class="div-report-comment-all">
+												<div>
+													<c:if test="${!empty sessionScope.loginMember.attachment}">
+														<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+													</c:if>
+													<c:if test="${empty sessionScope.loginMember.attachment}">
+														<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+													</c:if>
+													<input type="hidden" name="reportNo" value="${param.no}" />
+													<input type="hidden" name="detailNo" value="${reportCheck.detailNo}" />
+												</div>
+												<div>
+													<textarea name="content"></textarea>
+												</div>
+												<div>
+													<button type="submit" class="font-small">댓글작성</button>
+												</div>
+											</div>
+										</form:form>
+										<c:if test="${reportCheck.comments.size() > 0}">
+											<c:forEach items="${reportCheck.comments}" var="comment">
+												<div class="div-report-comment-detail">
+													<div class="div-report-comment-img">
+														<c:if test="${!empty comment.profileImg}">
+															<img src="${pageContext.request.contextPath}/resources/upload/emp/${comment.profileImg}" class="my-img" />
+														</c:if>
+														<c:if test="${empty comment.profileImg}">
+															<img src="${pageContext.request.contextPath}/resources/images/default.png" class="my-img" />
+														</c:if>
+														<input type="hidden" name="reportNo" value="${param.no}" />
+														<input type="hidden" name="detailNo" value="${reportCheck.detailNo}" />
+													</div>
+													<div class="div-report-comment-contain">
+														<div class="div-report-comment-title">
+															<div style="width: 100%;">
+																<span>${comment.writerName} ${comment.jobTitle}</span>
+																&nbsp;&nbsp;&nbsp;
+																<span>${comment.regDate}</span>
+															</div>
+															<div class="div-report-comment-btn">
+																<button type="submit">수정</button>
+																<button>삭제</button>
+															</div>
+														</div>
+														<div class="div-report-comment-content">
+															${comment.content}
+														</div>
+													</div>
+												</div>
+											</c:forEach>
+										</c:if>
+									</div>
+									
+								</div>
+							</c:if>
+						</c:forEach>
 						
 						<script>
+							/* 클릭한 보고자 및 그의 대한 내용 */
 							document.querySelectorAll('.div-okreport-one').forEach((one) => {
-								console.log(one);
-								
 								one.addEventListener('click', (e) => {
-									document.querySelector('.div-report-write-view').style.display = 'block';
+									let clickDiv = e.target;
+									const allView = document.querySelectorAll('.div-report-write-view');
+									let no;
 									
+									/* 보고자 div class 지우기 */
 									document.querySelectorAll('.div-okreport-one').forEach((one) => {
 										one.classList.remove('div-okreport-one-click');
 									});
 									
-									let clickDiv = e.target;
 									
+									/* 보고자 div class 추가 및 아래 내용 띄우기 */
 									while (true) {
 										if (clickDiv.classList[0] === 'div-okreport-one') {
 											clickDiv.classList.add('div-okreport-one-click');
+											
+											no = clickDiv.dataset.no;
+											
+											document.querySelectorAll('.div-report-write-view').forEach((viewDiv) => {
+													viewDiv.style.display = 'none';
+											});
+											
+											allView[no].style.display = 'block';
+											
 											break;
 										} else {
 											clickDiv = clickDiv.parentElement;
 											continue;
 										}
 									}
-									
-									const id = clickDiv.dataset.id;
-									const index = clickDiv.dataset.no;
-									console.log(id, index);
-
-									
-									const reportList = [];
-									let attachments = [];
-									<c:forEach items="${reportCheckList}" var="report">
-										<c:if test="${report.attachments.size() > 0}">
-											<c:forEach items="${report.attachments}" var="attach">
-												attachments.push({
-													no: '${attach.no}',
-													originalFilename: '${attach.originalFilename}'
-												});
-											</c:forEach>
-											console.log(attachments);
-										</c:if>
-											reportList.push({
-												empId: '${report.empId}', 
-												empName: '${report.empName}', 
-												createDate: '${report.createDate}',
-												content: '${report.content}', 
-												attachments
-											});
-											attachments = [];
-										
-									</c:forEach>
-									console.log(reportList);
-									
-									const titleDiv = document.querySelector('.div-report-write-name');
-									titleDiv.innerHTML = `
-										<span class="write-name">\${reportList[index].empName}</span><span class="write-date">\${reportList[index].createDate}</span>
-									`;
-									
-									const contentDiv = document.querySelector('.div-report-write-content');
-									contentDiv.innerHTML = `
-										\${reportList[index].content}
-									`;
-									
-									const attachDiv = document.querySelector('.div-report-write-attach');
-									attachDiv.innerHTML = '';
-									
-									const attachs = reportList[index].attachments;
-									if (attachs.length > 0) {
-										attachs.forEach((attach, index) => {
-											const {no, originalFilename} = attach;
-											
-											attachDiv.innerHTML += `
-												<button type="button" class="attach-btn" onclick="location.href='${pageContext.request.contextPath}/report/fileDownload.do?no=\${no}';">
-													첨부파일\${index + 1} - \${originalFilename}
-												</button>
-											`;
-										});
-									}
-									
 								});
 							});
+							
+							
+							/* 수정 버튼 클릭 */
+							document.querySelectorAll('.update-btn').forEach((update) => {
+								update.addEventListener('click', (e) => {
+									const div = e.target.parentElement.parentElement;
+									console.log(div);
+
+									const before = div.nextElementSibling;
+									before.style.display = 'none';
+
+									const after = div.nextElementSibling.nextElementSibling;
+									after.style.display = 'inline-block';
+								});
+							});
+							
+							
+							/* 첨부파일 취소 */
+							const delFile = (btn) => {
+								const name = btn.dataset.name;
+								const no = btn.dataset.no;
+								console.log(no);
+
+								if (no !== '0') {
+									const tag = btn.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
+									tag.innerHTML += `
+										<input type="hidden" name="noFile" value="\${no}" />
+									`;
+									console.log(tag);
+								}
+
+
+								// input[type=file] value 초기화
+								exampleFileUpload.value = '';
+
+								// 파일명 출력한 태그 제거
+								btn.parentElement.remove();
+								
+							};
+							
+							
+							/* 수정폼의 최소버튼 클릭 */
+							const beforeDivOpen = (me) => {
+								console.log(me);
+								const allViewDiv = document.querySelectorAll('.div-report-write-view');
+								const parentDiv = me.parentElement.parentElement.parentElement.parentElement;
+								const no = parentDiv.dataset.no;
+
+								allViewDiv[no].querySelector('.div-report-detail-update').style.display = 'none';
+								allViewDiv[no].querySelector('.div-report-detail').style.display = 'inline-block';
+							}
 						</script>
-						
-						<!-- 보고 댓글 -->
-						<div class="div-report-commend">
-							<div>댓글</div>
-							<div class="div-report-commend-all">
-								<div>
-									<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
-								</div>
-								<div>
-									<textarea rows="1"></textarea>
-								</div>
-								<div>
-									<button class="font-small">댓글작성</button>
-								</div>
-							</div>
-						</div>
 					</div>
 				</div>
 				

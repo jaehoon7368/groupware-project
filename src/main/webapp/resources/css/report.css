@@ -17,6 +17,19 @@
 
 .div-report:hover {
 	cursor: pointer;
+	transform: translate(0, -5px);
+	transition-duration: .3s;
+	box-shadow: 0 2px 5px lightgray;
+}
+
+.div-report:hover .div-report-btn {
+	background-color: #00b6c2;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.div-report:hover .div-report-btn .report-btn {
+	color: #fff;
 }
 
 .div-report-tbl {
@@ -246,8 +259,37 @@
 	border: solid 3px lightgray;
 }
 
-.div-report-write-name {
+.div-report-write-top {
+	width: 100%;
 	border-bottom: solid 1px lightgray;
+	display: flex;
+	align-items: center
+}
+
+.div-report-detail {
+	width: 100%;
+}
+
+.div-report-detail-update {
+	width: 100%;
+}
+
+.div-report-detail-update form {
+	width: 100%;
+}
+
+.div-report-write-name {
+	width: 50%;
+}
+
+.div-report-write-btn-group {
+	width: 100%;
+	text-align: right;
+}
+
+.div-report-write-btn-group button {
+	font-size: small;
+	border-radius: 5px;
 }
 
 .div-report-write-content textarea {
@@ -357,7 +399,7 @@
 
 
 /* 보고 댓글 */
-.div-report-commend {
+.div-report-comment {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -366,25 +408,81 @@
 	border-top: solid 1px lightgray;
 }
 
-.div-report-commend-all {
+.div-report-comment-all {
 	width: 100%;
 	display: flex;
-	align-items: baseline;
+	align-items: center
 }
 
-.div-report-commend-all div {
-	margin: 0 5px;
+.div-report-comment-all div {
+	margin-right: 5px;
 	flex-shrink: 0;
 }
 
-.div-report-commend-all div:nth-of-type(2) {
-	width: 85%;
+.div-report-comment-all div:nth-of-type(2) {
+	width: 80%;
+	min-width: 500px;
 }
 
-.div-report-commend-all textarea {
+.div-report-comment-all textarea {
 	width: 100%;
+	min-width: 500px;
 	resize: none;
 	margin: 0;
+	min-height: 30px;
+	padding: 0 5px;
+}
+
+.div-report-comment-detail {
+	width: 100%;
+	display: flex;
+	padding: 20px 0;
+	align-items: center
+}
+
+.div-report-comment-img {
+	width: 30px;
+    text-align: center;
+}
+
+.div-report-comment-contain {
+	width: 100%;
+}
+
+.div-report-comment-title {
+	width: 100%;
+	padding: 5px 10px;
+	font-size: small;
+	display: flex;
+}
+
+.div-report-comment-title span:first-of-type {
+	font-weight: bold;
+}
+
+.div-report-comment-title span:last-of-type {
+	color: gray;
+}
+
+.div-report-comment-btn {
+	width: 100%;
+	text-align: right;
+	display: none;
+}
+
+.div-report-comment-detail:hover .div-report-comment-btn {
+	display: inline-block;
+}
+
+.div-report-comment-btn button {
+	font-size: small;
+	padding: 2px;
+	border-radius: 0;
+}
+
+.div-report-comment-content {
+	padding: 0 10px;
+	font-size: small;
 }
 
 

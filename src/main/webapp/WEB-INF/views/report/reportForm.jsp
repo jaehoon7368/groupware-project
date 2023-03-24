@@ -28,7 +28,12 @@
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
-										<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
+										<c:if test="${!empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+										</c:if>
+										<c:if test="${empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+										</c:if>
 									</a>
 								</div>
 								<div id="my-menu-modal">
@@ -174,11 +179,15 @@
 								div.innerText = '';
 								const unreport = [];
 								
-								document.unreportFrm.unreport.forEach((unrepo, index) => {
-									if (unrepo.checked) {
-										unreport.push({id:unrepo.id, name:unrepo.dataset.name, jobTitle:unrepo.dataset.jobTitle});
-									}
-								});
+								const unreportAll = document.querySelectorAll('[name=unreport]');
+								
+								if (unreportAll.length > 0) {
+									unreportAll.forEach((unrepo, index) => {
+										if (unrepo.checked) {
+											unreport.push({id:unrepo.id, name:unrepo.dataset.name, jobTitle:unrepo.dataset.jobTitle});
+										}
+									});
+								}
 								
 								const size = unreport.length;
 								console.log(size);
@@ -322,22 +331,6 @@
 									reportDetailFrm.submit();
 								});
 							</script>
-						</div>
-						
-						<!-- 보고 댓글 -->
-						<div class="div-report-commend">
-							<div>댓글</div>
-							<div class="div-report-commend-all">
-								<div>
-									<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
-								</div>
-								<div>
-									<textarea rows="1"></textarea>
-								</div>
-								<div>
-									<button class="font-small">댓글작성</button>
-								</div>
-							</div>
 						</div>
 						
 					</div>

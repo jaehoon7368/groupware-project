@@ -48,8 +48,13 @@ public class AttachmentServiceImpl implements AttachmentService {
 	} // selectAllAttachList() end
 	
 	@Override
-	public Attachment selectOneAttachment(int no) {
+	public Attachment selectOneAttachment(String no) {
 		return attachmentDao.selectOneAttachment(no);
 	} // selectOneAttachment() end
+	
+	@Override
+	public int deleteOneAttachment(String no) {
+		return attachmentDao.deleteOneAttachment(no);
+	} // deleteOneAttachment() end
 	
 }
