@@ -3,9 +3,9 @@ package com.sh.groupware.todo.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.http.ResponseEntity;
 
 import com.sh.groupware.todo.model.dto.Todo;
 import com.sh.groupware.todo.model.dto.TodoBoard;
@@ -29,6 +29,18 @@ public interface TodoDao {
 	List<TodoList> selectTodoListByNo(String no);
 	List<Todo> selectTodoByTodoListNo(String no);
 	int todoEnroll(Todo todo);
+	Todo todoSelectByNo(String no);
+	int todoListUpdate(TodoList todoList);
+	int todoListDelete(TodoList todoList);
+	int todoInfoUpdate(Todo todo);
+	int todoContentUpdate(Todo todo);
+	@Delete("delete from todo where no = #{no}")
+	int todoDelete(Todo todo);
+	int commentEnroll(Map<String, Object> param);
+	int bookMarkOn(String todoBoardNo);
+	@Select("select * from todoBoard where no = #{todoBoardNo}")
+	TodoBoard selectLastTodoBoardByNo(String todoBoardNo);
+	int updateTodoFileUpload(String attachNo);
 	
 	
 

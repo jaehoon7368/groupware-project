@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.RowBounds;
 
 import com.sh.groupware.board.model.dto.Board;
+import com.sh.groupware.common.dto.Attachment;
 
 public interface BoardService {
 
@@ -13,5 +14,7 @@ public interface BoardService {
 	int insertBoard(Board board);
 
 	Board selectOneBoardCollection(String no);
+
+	Attachment selectOneAttachment(String no);
 
 }

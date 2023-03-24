@@ -2,21 +2,23 @@ package com.sh.groupware.board.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -24,10 +26,7 @@ import com.sh.groupware.board.model.dto.Board;
 import com.sh.groupware.board.model.service.BoardService;
 import com.sh.groupware.common.HelloSpringUtils;
 import com.sh.groupware.common.dto.Attachment;
-import com.sh.groupware.emp.model.dto.Emp;
-import com.sh.groupware.emp.model.dto.EmpDetail;
 import com.sh.groupware.emp.model.service.EmpService;
-import com.sh.groupware.report.model.dto.ReportCheck;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -71,18 +70,14 @@ public class BoardController {
 			@RequestParam("upFile") List<MultipartFile> upFiles,
 			RedirectAttributes redirectAttr
 			) {
-
 		log.debug("board = {}", board);
 		
-		// ServletContext : application객체의 타입. DI. 스프링과 관계없는 servlet spec의 객체
 		String saveDirectory = application.getRealPath("/resources/upload/board");
 		log.debug("saveDirectory = {}", saveDirectory);
 		
 		// 첨부파일 저장(서버컴퓨터) 및 Attachment객체 만들기
 		for(MultipartFile upFile : upFiles) {
 			log.debug("upFile = {}", upFile);
-//			log.debug("upFile = {}", upFile.getOriginalFilename());
-//			log.debug("upFile = {}", upFile.getSize());	
 			
 			if(upFile.getSize() > 0) {
 				// 1. 저장 
@@ -126,6 +121,39 @@ public class BoardController {
 		
 	}
 	
+	@ResponseBody
+	@GetMapping("/fileDownload.do")
+	public Resource fileDownload(@RequestParam String no, HttpServletResponse response) {
+		// renameFilename 파일을 찾고, originalFilename으로 파일명 전송.
+		Attachment attach = boardService.selectOneAttachment(no);
+		log.debug("attach = {}", attach);
+		
+		// FileSystemResource - file:~ 경로 사용
+		String renameFilename = attach.getRenameFilename();
+		String originalFilename = attach.getOriginalFilename();
+		
+		// 한글깨짐대비
+		try {
+			originalFilename = new String(originalFilename.getBytes("utf-8"), "iso-8859-1");
+		} catch (UnsupportedEncodingException e){
+			log.error(e.getMessage(), e);
+		}
+		
+		String saveDirectory = application.getRealPath("/resources/upload/board");
+		File downFile = new File(saveDirectory, renameFilename);
+		
+		String location = "file:" + downFile;
+		Resource resource = resourceLoader.getResource(location);
+		log.debug("resource = {}", resource);
+		log.debug("resource.exists() = {}", resource.exists());
+		log.debug("resource.getClass() = {}", resource.getClass());
+				
+		// 응답헤더설정
+		response.setContentType("application/octet-stream; charset=utf-8");
+		response.addHeader("Content-Disposition", "attachment; filename=" + originalFilename);
+		
+		return resource;
+	}
 	
 	
 	@GetMapping("/boardForm.do")

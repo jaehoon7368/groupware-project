@@ -1,0 +1,181 @@
+@charset "UTF-8";
+
+.wrap_board ul {
+	list-style: none;
+	list-style: none;
+	display: flex;
+	align-content: center;
+	flex-wrap: wrap;
+}
+
+.todo-li {
+	min-width: 300px;
+	width: 20%;
+	min-height: 96px;
+	height: 100%;
+	border: 1px solid rgb(227, 227, 227);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 6px;
+	margin-right: 15px;
+	margin-top: 20px;
+	transition-duration: .3s;
+	font-size: 14px;
+	background-color: #e5e5e5;
+}
+
+.board-info {
+	color: rgb(104, 104, 104);
+}
+
+.board-list {
+	background-color: white;
+	padding-left: 7px;
+	margin-top: 5px;
+	display: flex;
+	flex-direction: column;
+}
+
+.top-list {
+	height: 50px;
+	display: flex;
+	align-items: center;
+}
+
+.new-board-list {
+	margin-top: 20px;
+	margin-bottom: 10px;
+	height: 50px;
+	border: 1px dashed gray;
+	display: flex;
+	align-items: center;
+	padding-left: 10px;
+}
+
+.todo-div ul {
+	cursor: auto;
+}
+
+.wrap-todo-detail {
+	margin: 20px;
+}
+
+.todo-header {
+	display: flex;
+	justify-content: flex-start;
+	width: 90%;
+}
+
+.explain-div {
+	margin-left: 50px;
+	height: 20%;
+	min-height: 100px;
+}
+
+.explain-div p:hover {
+	background-color: #D6D9E0;
+	cursor: pointer;
+}
+
+.todo-content ul {
+	margin-bottom: 50px;
+}
+
+.attach-div {
+	height: 100px;
+	width: 100%;
+	border: 2px dashed rgba(128, 128, 128, 0.336);
+	color: gray;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.comment-div {
+	display: flex;
+	align-items: center;
+}
+
+.comment-div input {
+	margin-left: 30px;
+	width: 90%;
+	height: 30px;
+	border: 1px solid #e3dede;
+}
+
+.todo-title {
+	padding-left: 10px;
+	color: gray;
+}
+
+.comment-btn {
+	border: solid gray 1px;
+	padding: 0px;
+	border-radius: 0px;
+	width: 59px;
+	height: 31px;
+	margin-top: 5px;
+	background-color: white;
+	color: black;
+	transform: translate(0, -11px);
+}
+
+.removeView {
+	display: none;
+}
+
+.addView {
+	display: block;
+}
+
+.enrollFrm {
+	height: 130px;
+}
+
+#todoContent {
+	cursor: pointer;
+	margin-left: 10px;
+}
+/*게시판 모달*/
+.board-menu {
+	position: relative;
+	cursor: pointer;
+}
+
+.board-menu-modal {
+	position: absolute;
+	transform: translate(0, -10px);
+	border: 1px solid #dddddd;
+	width: 241px;
+	height: 218px;
+	background-color: white;
+	z-index: 2;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.board-menu-modal:hover {
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px
+		rgba(0, 0, 0, 0.22);
+}
+
+.board-menu-modal div {
+	font-size: 20px;
+	line-height: 2.7;
+	text-rendering: optimizeLegibility;
+	margin-bottom: 0px;
+}
+
+.modalList:hover {
+	color: white;
+	background-color: #00b6c2;
+}
+
+.modalTitle {
+	text-align: center;
+	color: #c3c3c3;;
+}
+/*게시판 모달*/
+
+
