@@ -58,11 +58,14 @@ public class EmpController {
 		log.debug("loginSuccess 핸들러 호출!");
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Emp principal = (Emp) authentication.getPrincipal();
-		Attachment attach = attachService.selectEmpProfile(principal.getEmpId());
-		principal.setAttachment(attach);
+		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		
-		session.setAttribute("loginMember", principal);
+		EmpDetail loginMember = empService.selectEmpDetail(empId);
+
+		Attachment attach = attachService.selectEmpProfile(empId);
+		loginMember.setAttachment(attach);
+		
+		session.setAttribute("loginMember", loginMember);
 		
 		List<Dept> deptList = deptService.selectAllDept();
 		session.setAttribute("deptList", deptList);

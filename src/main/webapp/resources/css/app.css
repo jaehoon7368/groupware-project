@@ -319,12 +319,34 @@ button:hover {
 .topbar-div {
   position: relative;
   display: flex;
+  /* justify-content: space-between; */
   justify-content: flex-start;
   align-items: center;
 }
 
 .topbar-div div {
   padding: 10px;
+}
+
+#home-my-menu-modal {
+  width: 80px;
+  position: absolute;
+  display: none;
+  text-align: center;
+  border: solid 1px gray;
+  border-radius: 10px;
+  background-color: #fff;
+  top: 40px;
+  left: 40px;
+  padding: 0px;
+}
+
+#home-my-menu-modal div {
+  padding: 0px;
+}
+
+#home-my-menu-modal .my-menu-div:last-child .my-menu {
+  border-bottom: none;
 }
 
 #my-menu-modal {

@@ -365,7 +365,12 @@
 										<form:form action="${pageContext.request.contextPath}/report/reportCommentEnroll.do" method="POST" name="commentEnrollFrm">
 											<div class="div-report-comment-all">
 												<div>
-													<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
+													<c:if test="${!empty sessionScope.loginMember.attachment}">
+														<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+													</c:if>
+													<c:if test="${empty sessionScope.loginMember.attachment}">
+														<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+													</c:if>
 													<input type="hidden" name="reportNo" value="${param.no}" />
 													<input type="hidden" name="detailNo" value="${reportCheck.detailNo}" />
 												</div>

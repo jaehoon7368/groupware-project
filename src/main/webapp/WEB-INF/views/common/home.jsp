@@ -13,12 +13,18 @@
 				<div class="app-dashboard-body-content off-canvas-content" data-off-canvas-content>
 					<!-- 상단 타이틀 -->
 					<div class="home-topbar topbar-div">
+						<div></div>
 						<div>
 							<a href="#" id="home-my-img">
-								<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
+								<c:if test="${!empty sessionScope.loginMember.attachment}">
+									<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+								</c:if>
+								<c:if test="${empty sessionScope.loginMember.attachment}">
+									<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+								</c:if>
 							</a>
 						</div>
-						<div id="my-menu-modal">
+						<div id="home-my-menu-modal">
 							<div class="my-menu-div">
 								<button class="my-menu">기본정보</button>
 							</div>
@@ -29,7 +35,7 @@
 					</div>
 					<script>
 						document.querySelector('#home-my-img').addEventListener('click', (e) => {
-							const modal = document.querySelector('#my-menu-modal');
+							const modal = document.querySelector('#home-my-menu-modal');
 							const style =  modal.style.display;
 							
 							if (style == 'inline-block') {
@@ -50,14 +56,19 @@
 									<tbody>
 										<tr>
 											<td colspan="2">
-												<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="img">
+												<c:if test="${!empty sessionScope.loginMember.attachment}">
+													<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="img">
+												</c:if>
+												<c:if test="${empty sessionScope.loginMember.attachment}">
+													<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="img">
+												</c:if>
 											</td>
 										</tr>
 										<tr>
-											<td colspan="2">대표</td>
+											<td colspan="2">${sessionScope.loginMember.name} ${sessionScope.loginMember.jobTitle}</td>
 										</tr>
 										<tr>
-											<td colspan="2">그룹</td>
+											<td colspan="2">${sessionScope.loginMember.deptTitle}</td>
 										</tr>
 										<tr>
 											<td>오늘 온 메일</td>
