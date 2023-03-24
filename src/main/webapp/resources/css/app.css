@@ -336,7 +336,7 @@ button:hover {
   border-radius: 10px;
   background-color: #fff;
   top: 40px;
-  left: 40px;
+  right: 40px;
   padding: 0px;
 }
 
@@ -539,5 +539,6 @@ p.title {
   display: flex;
   align-items: center;
   width: 100%;
+  justify-content: space-between;
 }
 

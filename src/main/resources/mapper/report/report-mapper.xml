@@ -58,4 +58,50 @@
 		
 	</insert>
 	
+	
+	<update id="updateReportDetail">
+		update
+			reportDetail
+		set
+			content = #{content}
+		where
+			no = #{no}
+		
+		<selectKey order="AFTER" resultType="string" keyProperty="reportNo">
+			select
+				report_no
+			from
+				reportDetail
+			where
+				no = #{no}
+		</selectKey>
+	</update>
+	
+	
+	<insert id="insertReportComment">
+		insert into
+			reportComment
+		values (
+			seq_reportComment_no.nextval,
+			#{detailNo},
+			#{writer},
+			#{content},
+			default
+		)
+	</insert>
+	
+	
+	<select id="selectAllReportComment" resultMap="reportCommentMap">
+		select
+			c.*,
+			(select name from emp where emp_id = c.writer) writerName,
+			(select job_title from job where job_code = (select job_code from emp where emp_id = c.writer)) jobTitle,
+			(select rename_filename from attachment where category = 'P' and pk_no = c.writer) profileImg
+		from
+			reportComment c
+		where
+			detail_no = #{detailNo}
+	</select>
+	<resultMap type="reportComment" id="reportCommentMap"></resultMap>
+	
 </mapper>

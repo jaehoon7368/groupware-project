@@ -26,7 +26,12 @@
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
-										<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
+										<c:if test="${!empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/upload/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+										</c:if>
+										<c:if test="${empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+										</c:if>
 									</a>
 								</div>
 								<div id="my-menu-modal">
