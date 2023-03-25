@@ -373,7 +373,7 @@ public class ReportController {
 	
 	
 	@PostMapping("/reportCommentUpdate.do")
-	public String reportCommentUpdate(ReportComment reportComment, @RequestParam String reportNo, Authentication authentication) {
+	public String reportCommentUpdate(ReportComment reportComment, @RequestParam String no, Authentication authentication) {
 		log.debug("reportComment = {}", reportComment);
 		
 		String loginId = ((Emp) authentication.getPrincipal()).getEmpId();
@@ -381,7 +381,8 @@ public class ReportController {
 		
 		int result = reportService.updateReportComment(reportComment);
 		
-		return "redirect:/report/reportDetail.do?no=" + reportNo;
+		return null;
+//		return "redirect:/report/reportDetail.do?no=" + no;
 	} // reportCommentEnroll() end
 
 	

@@ -383,7 +383,7 @@
 											</div>
 										</form:form>
 										<c:if test="${reportCheck.comments.size() > 0}">
-											<c:forEach items="${reportCheck.comments}" var="comment">
+											<c:forEach items="${reportCheck.comments}" var="comment" varStatus="vs">
 												<div class="div-report-comment-detail">
 													<div class="div-report-comment-img">
 														<c:if test="${!empty comment.profileImg}">
@@ -392,24 +392,81 @@
 														<c:if test="${empty comment.profileImg}">
 															<img src="${pageContext.request.contextPath}/resources/images/default.png" class="my-img" />
 														</c:if>
-														<input type="hidden" name="reportNo" value="${param.no}" />
-														<input type="hidden" name="detailNo" value="${reportCheck.detailNo}" />
 													</div>
 													<div class="div-report-comment-contain">
-														<div class="div-report-comment-title">
-															<div style="width: 100%;">
-																<span>${comment.writerName} ${comment.jobTitle}</span>
-																&nbsp;&nbsp;&nbsp;
-																<span>${comment.regDate}</span>
+														<div class="div-report-comment-before">
+															<div class="div-report-comment-title">
+																<div style="width: 100%;">
+																	<span>${comment.writerName} ${comment.jobTitle}</span>
+																	&nbsp;&nbsp;&nbsp;
+																	<span>${comment.regDate}</span>
+																</div>
+																<c:if test="${sessionScope.loginMember.empId eq comment.writer}">
+																	<div class="div-report-comment-btn">
+																		<input type="hidden" name="no" value="${comment.no}" />
+																		<input type="hidden" name="detailNo" value="${comment.detailNo}" />
+																		<input type="hidden" name="reportNo" value="${param.no}" />
+																		<button type="button" onclick="reportCommentUpdateForm(this);">수정</button>
+																		<button type="button">삭제</button>
+																	</div>
+																</c:if>
 															</div>
-															<div class="div-report-comment-btn">
-																<button type="submit">수정</button>
-																<button>삭제</button>
+															<div class="div-report-comment-content">
+																${comment.content}
 															</div>
 														</div>
-														<div class="div-report-comment-content">
-															${comment.content}
-														</div>
+														<form name="reportCommentUpdateFrm${vs.index}">
+															<div class="div-report-comment-after">
+																<div>
+																	<div class="div-report-comment-title">
+																		<div style="width: 100%;">
+																			<span>${comment.writerName} ${comment.jobTitle}</span>
+																		</div>
+																	</div>
+																	<div class="div-report-comment-content">
+																		<input type="hidden" name="no" value="${comment.no}" />
+																		<input type="hidden" name="detailNo" value="${comment.detailNo}" />
+																		<input type="hidden" name="reportNo" value="${param.no}" />
+																		<textarea name="content">${comment.content}</textarea>
+																	</div>
+																</div>
+																<div class="div-report-comment-update-btn">
+																	<button type="submit">수정</button>
+																	<button type="button" onclick="reportCommentUpdateNo(this);">취소</button>
+																</div>
+															</div>
+														</form>
+														<script>
+															document.reportCommentUpdateFrm${vs.index}.addEventListener('submit', (e) => {
+																e.preventDefault();
+																
+																const content = e.target.content;
+																
+																if (/\s+/.test(content.value) || !content.value) {
+																	alert('댓글을 작성해주세요.');
+																	content.select();
+																	return false;
+																};
+																
+																const csrfHeader = "${_csrf.headerName}";
+													    		const csrfToken = "${_csrf.token}";
+													    		const headers = {};
+													    		headers[csrfHeader] = csrfToken;
+													    		
+													    		const frmData = new FormData(e.target);
+																
+																$.ajax({
+													        		url: '${pageContext.request.contextPath}/report/reportCommentUpdate.do',
+													        		method: 'POST',
+													        		headers,
+													        		data: frmData,
+													        		success(data){
+													        			console.log(data);
+													        		},
+													        		error: console.log
+													        	});
+															});
+														</script>
 													</div>
 												</div>
 											</c:forEach>
@@ -505,7 +562,27 @@
 
 								allViewDiv[no].querySelector('.div-report-detail-update').style.display = 'none';
 								allViewDiv[no].querySelector('.div-report-detail').style.display = 'inline-block';
-							}
+							};
+							
+							
+							/* 댓글 수정 */
+							const reportCommentUpdateForm = (btn) => {
+								const before = btn.parentElement.parentElement.parentElement;
+								const after = before.nextElementSibling.children;
+								
+								after[0].style.display = 'block';
+								before.style.display = 'none';
+							};
+							
+							
+							/* 댓글 수정 취소 */
+							const reportCommentUpdateNo = (no) => {
+								const after = no.parentElement.parentElement;
+								const before = after.parentElement.previousElementSibling;
+								
+								after.style.display = 'none';
+								before.style.display = 'block';
+							};
 						</script>
 					</div>
 				</div>
