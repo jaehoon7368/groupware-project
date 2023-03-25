@@ -26,6 +26,24 @@ public interface TodoService {
 	TodoList selectLastTodoList(Map<String,Object> param);
 
 	int todoEnroll(Todo todo);
+
+	Todo todoSelectByNo(String no);
+
+	int todoListUpdate(TodoList todoList);
+
+	int todoListDelete(TodoList todoList);
+
+	int todoInfoUpdate(Todo todo);
+
+	int todoContentUpdate(Todo todo);
+
+	int todoDelete(Todo todo);
+
+	int commentEnroll(Map<String, Object> param);
+
+	int bookMarkOn(String todoBoardNo);
+
+	TodoBoard selectLastTodoBoardByNo(String todoBoardNo);
 	
 
 }

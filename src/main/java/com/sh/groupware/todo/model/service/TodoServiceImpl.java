@@ -68,5 +68,41 @@ public class TodoServiceImpl implements TodoService {
 	public int todoEnroll(Todo todo) {
 		return todoDao.todoEnroll(todo);
 	}
+	@Override
+	public Todo todoSelectByNo(String no) {
+		return todoDao.todoSelectByNo(no);
+	}
+	@Override
+	public int todoListUpdate(TodoList todoList) {
+		return todoDao.todoListUpdate(todoList);
+	}
+	@Override
+	public int todoListDelete(TodoList todoList) {
+		return todoDao.todoListDelete(todoList);
+	}
+	@Override
+	public int todoInfoUpdate(Todo todo) {
+		return todoDao.todoInfoUpdate(todo);
+	}
+	@Override
+	public int todoContentUpdate(Todo todo) {
+		return todoDao.todoContentUpdate(todo);
+	}
+	@Override
+	public int todoDelete(Todo todo) {
+		return todoDao.todoDelete(todo);
+	}
+	@Override
+	public int commentEnroll(Map<String, Object> param) {
+		return todoDao.commentEnroll(param);
+	}
+	@Override
+	public int bookMarkOn(String todoBoardNo) {
+		return todoDao.bookMarkOn(todoBoardNo);
+	}
+	@Override
+	public TodoBoard selectLastTodoBoardByNo(String todoBoardNo) {
+		return todoDao.selectLastTodoBoardByNo(todoBoardNo);
+	}
 	
 }

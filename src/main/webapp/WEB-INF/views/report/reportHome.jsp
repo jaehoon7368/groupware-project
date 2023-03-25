@@ -22,7 +22,12 @@
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
-										<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
+										<c:if test="${!empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+										</c:if>
+										<c:if test="${empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+										</c:if>
 									</a>
 								</div>
 								<div id="my-menu-modal">
@@ -83,7 +88,7 @@
 														</tr>
 														<tr>
 															<td>보고현황</td>
-															<td title="보고자 ${report.memberCount}명 (미보고자 ${report.createCount}명)">보고자 ${report.memberCount}명 (미보고자 ${report.createCount}명)</td>
+															<td title="보고자 ${report.createCount}명 (미보고자 ${report.noCreateCount}명)">보고자 ${report.createCount}명 (미보고자 ${report.noCreateCount}명)</td>
 														</tr>
 													</tbody>
 												</table>
@@ -107,7 +112,7 @@
 												console.log(data.classList[0]);
 												console.log(data);
 												location.href = `${pageContext.request.contextPath}/report/reportForm.do?no=\${data.dataset.no}`;
-												return;
+												break;
 											} else {
 												data = data.parentElement;
 												continue;
@@ -133,7 +138,7 @@
                                             <tbody>
                                             	<c:forEach items="${reportList}" var="report">
                                             		<c:if test="${report.createYn == 'Y'}">
-	                                            		<tr>
+	                                            		<tr class="report-tr" onclick="detailReport('${report.reportNo}');">
 	                                            			<td>${report.deptTitle}</td>
 	                                            			<td>${report.title}</td>
 	                                            			<td>${report.empName}</td>
@@ -146,6 +151,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <script>
+                            	const detailReport = (no) => {
+                            		console.log(no);
+                            		location.href = `${pageContext.request.contextPath}/report/reportDetail.do?no=\${no}`;
+                            	};
+                            </script>
                             
 						</div>
 					</div>

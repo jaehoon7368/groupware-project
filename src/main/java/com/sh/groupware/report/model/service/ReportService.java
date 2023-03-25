@@ -6,6 +6,7 @@ import java.util.Map;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
 import com.sh.groupware.report.model.dto.ReportCheck;
+import com.sh.groupware.report.model.dto.ReportComment;
 import com.sh.groupware.report.model.dto.ReportDetail;
 import com.sh.groupware.report.model.dto.ReportMember;
 
@@ -36,5 +37,17 @@ public interface ReportService {
 	int updateCreateYnY(Map<String, Object> param);
 
 	List<Report> findByDeptCodeReportList(String code);
+
+	int updateReportDetail(ReportDetail reportDetail);
+
+	int reportDetailDelete(ReportDetail reportDetail);
+
+	List<ReportComment> selectAllReportComment(String detailNo);
+
+	int insertReportComment(ReportComment reportComment);
+
+	int updateReportComment(ReportComment reportComment);
+
+	int deleteReportComment(ReportComment reportComment);
 
 } // interface end

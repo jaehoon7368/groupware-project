@@ -1,6 +1,10 @@
 package com.sh.groupware.report.model.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.sh.groupware.common.dto.Attachment;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,5 +24,11 @@ public class ReportDetail {
 	@NonNull
 	private String content;
 	private LocalDate regDate;
+
+	private List<Attachment> attachments = new ArrayList<>();
+	
+	public void addAttachment(Attachment attach) {
+		this.attachments.add(attach);
+	} // addAttachment() end
 	
 } // class end

@@ -7,7 +7,7 @@
 						<div class="container-title"><a href="${pageContext.request.contextPath}/board/boardHome.do" class="container-a">게시판</a></div>
 						
 							<div class="container-btn">
-							<button><a href="${pageContext.request.contextPath}/board/boardForm.do">글쓰기</a></button>
+							<a href="${pageContext.request.contextPath}/board/boardForm.do"><button>글쓰기</button></a>
 							</div>
 						
 						<div class="accordion-box">
@@ -26,7 +26,7 @@
 										<ul class="container-detail font-small">
 											<li><a class="container-a" href="${pageContext.request.contextPath}/board/boardList.do">전사 공지</a></li>
 											<li><a class="container-a" href="#">주간 식단표</a></li>
-											<li><a class="container-a" href="#">IT뉴스</a></li>
+											<li><a class="container-a" href="${pageContext.request.contextPath}/board/openBoardForm.do">IT뉴스</a></li>
 										</ul>
 									</div>
 								</li>

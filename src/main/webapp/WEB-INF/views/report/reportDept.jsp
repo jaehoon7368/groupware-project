@@ -26,7 +26,12 @@
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
-										<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
+										<c:if test="${!empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+										</c:if>
+										<c:if test="${empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+										</c:if>
 									</a>
 								</div>
 								<div id="my-menu-modal">
@@ -77,10 +82,8 @@
                                             	</c:if>
                                             	<c:if test="${!empty reportList}">
 	                                            	<c:forEach items="${reportList}" var="report">
-	                                            		<tr>
-	                                            			<td>
-	                                            				<a href="#">${report.title}</a>
-	                                            			</td>
+	                                            		<tr class="report-tr" data-no="${report.no}">
+	                                            			<td>${report.title}</td>
 	                                            			<td>${report.explain}</td>
 	                                            			<td>${report.writer}</td>
 	                                            			<td>${report.regDate}</td>
@@ -93,7 +96,23 @@
                                     </div>
                                 </div>
                             </div>
-                            
+                            <script>
+                            	document.querySelectorAll('.report-tr').forEach((tr) => {
+                            		tr.addEventListener('click', (e) => {
+                            			let clickTr = e.target;
+                            			
+                            			while (true) {
+    										if (clickTr.tagName == 'TR') {
+		                            			location.href = '${pageContext.request.contextPath}/report/reportDetail.do?no=' + clickTr.dataset.no;
+    											break;
+    										} else {
+    											clickTr = clickTr.parentElement;
+    											continue;
+    										}
+    									}
+                            		});
+                            	});
+                            </script>
 						</div>
 					</div>
 				</div>

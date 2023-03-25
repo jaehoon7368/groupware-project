@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sh.groupware.board.model.dao.BoardDao">
+
+	<select id="selectBoardList" resultMap="boardMap">
+		select 
+		    b.*,
+		    (select count(*) from attachment where no = b.no and category = 'B') attach_count
+		from
+		    board b left join emp e
+		        on b.emp_id = e.emp_id
+		order by 
+		    no desc
+	</select>
+	<resultMap type="board" id="boardMap"></resultMap>
+	
+	<insert id="insertBoard">
+		insert into 
+			board (no, b_type, title, content, READ_COUNT, LIKE_COUNT, CREATED_DATE, UPDATED_DATE, EMP_ID, WRITER)
+		values (
+			seq_board_no.nextval,
+			#{bType},
+			#{title},
+			#{content},
+			default,
+			default,
+			default,
+            null,
+			#{empId},
+			#{writer}
+		)
+		<selectKey order="AFTER" resultType="String" keyProperty="no">
+			select 
+				seq_board_no.currval
+			from
+				dual
+		</selectKey>
+	</insert>
+	
+	<insert id="insertAttachment">
+		insert into 
+			attachment
+		values (
+			seq_attachment_no.nextval, 
+			#{originalFilename}, 
+			#{renameFilename},
+			default,
+			'B',
+			#{pkNo}
+		)
+	</insert>
+	
+	<select id="selectOneBoardCollection" resultMap="boardCollectionMap">
+		SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no 
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
+		WHERE 
+		    b.no = #{no}
+	</select>
+	<!-- collection, association태그 사용시에는 id/result태그를 생략할 수 없다. -->
+	<resultMap type="board" id="boardCollectionMap">
+		<id column="no" property="no"/>
+		<result column="b_type" property="bType"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="read_count" property="readCount"/>
+		<result column="like_count" property="likeCount"/>
+		<result column="created_date" property="createdDate"/>
+		<result column="updated_date" property="updatedDate"/>
+		<result column="emp_id" property="empId"/>
+		<result column="writer" property="writer"/>
+		<association property="emp" javaType="emp">
+			<id column="emp_id" property="empId"/>
+			<result column="name" property="name"/>
+		</association>
+		<collection property="attachments" ofType="attachment">
+			<id column="attach_no" property="no"/>
+			<result column="original_filename" property="originalFilename"/>
+			<result column="rename_filename" property="renameFilename"/>
+			<result column="reg_date" property="regDate"/>
+			<result column="category" property="category"/>
+			<result column="pk_no" property="pkNo"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectOneAttachment" resultMap="attachmentMap">
+			select 
+				*
+			from
+				attachment
+			where
+				no = #{no}
+	</select>
+	<resultMap type="attachment" id="attachmentMap"></resultMap>
+	
+	
+</mapper>

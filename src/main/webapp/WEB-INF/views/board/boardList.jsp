@@ -54,14 +54,21 @@
 	
 
  <div class="content">
-  <div id="board-button">
-  	<li><a href="${pageContext.request.contextPath}/board/boardForm.do">새글쓰기</a></li>
-  	<input type="button" value="이동" id="board-btn" class=""/>
-  	<input type="button" value="복사" id="board-btn" class=""/>
-  	<input type="button" value="삭제" id="board-btn" class=""/>
-  	<input type="button" value="공지로 등록" id="board-btn" class=""/>
-  	<input type="button" value="목록 다운로드" id="board-btn" class=""/>
-  </div>
+ 
+ 	<div class="tool-bar">
+ 		<div class="tool-button">
+ 			<a href="${pageContext.request.contextPath}/board/boardForm.do">
+		 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
+		 		<span>새글쓰기</span>
+	 		</a>
+ 		</div>
+ 		<div class="tool-button">
+ 			<a href="${pageContext.request.contextPath}/board/boardDelete.do">
+	 			<span><img src="${pageContext.request.contextPath}/resources/images/trash.png" alt="" class="tool-img" /></span>
+	 			<span>삭제</span>
+	 		</a>
+ 		</div>
+ 	</div>
   
  <section class="notice">
   <!-- board list area -->
@@ -75,60 +82,29 @@
 					</th>
                     <th scope="col" class="th-num">번호</th>
                     <th scope="col" class="th-title">제목</th>
-                    <th scope="col" class="th-title">작성자</th>
+                    <th scope="col" class="th-writer">작성자</th>
                     <th scope="col" class="th-date">작성일</th>
-                    <th scope="col" class="th-title">조회</th>
-                    <th scope="col" class="th-title">좋아요</th>
+                    <th scope="col" class="th-readCount">조회</th>
+                    <th scope="col" class="th-likeCount">좋아요</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                	<td><input type="checkbox" name="" value=""/></td>
-                    <td>5</td>
-                    <td>
-                      <a href="#!">마찬가집니다</a>
-                    </td>
-                    <td>김기훈</td>
-                    <td>23/03/15</td>
-                    <td>1</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" name="" value=""/></td>
-                    <td>4</td>
-                    <td><a href="#!">저두요</a></td>
-                    <td>최민경</td>
-                    <td>23/03/14</td>
-                    <td>3</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                	<td><input type="checkbox" name="" value=""/></td>
-                    <td>3</td>
-                    <td><a href="#!">저는 상관없습니다</a></td>
-                    <td>유재훈</td>
-                    <td>23/03/13</td>
-                    <td>5</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                	<td><input type="checkbox" name="" value=""/></td>
-                    <td>2</td>
-                    <td><a href="#!">2차 갈래?</a></td>
-                    <td>김현동</td>
-                    <td>23/03/12</td>
-                    <td>7</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                	<td><input type="checkbox" name="" value=""/></td>
-                    <td>1</td>
-                    <td><a href="#!">너무 졸려요</a></td>
-                    <td>한혜진</td>
-                    <td>23/03/12</td>
-                    <td>2</td>
-                    <td>1</td>
-                </tr>
+	                <c:forEach items="${boardList}" var="board">
+		                <tr data-no="${board.no}">
+		                	<td><input type="checkbox" name="" value=""/></td>
+		                    <td>${board.no}</td>
+		                    <td>
+		                      <a href="#!">${board.title}</a>
+		                    </td>
+		                    <td>${board.writer}</td>
+		                    <td>
+								<fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate"/>
+								<fmt:formatDate value="${createdDate}" pattern="yy-MM-dd"/>
+							</td>
+		                    <td>${board.readCount}</td>
+		                    <td>${board.likeCount}</td>
+		                </tr>
+	                </c:forEach>
                 </tbody>
             </table>
         </div>
@@ -149,5 +125,15 @@
   <li><a href="#" aria-label="Page 13">13</a></li>
   <li class="pagination-next"><a href="#" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
 </ul>
+
+<script>
+document.querySelectorAll("tr[data-no]").forEach((tr) => {
+	tr.addEventListener('click', (e) => {
+		const no = tr.dataset.no;
+		console.log(no);
+		location.href = '${pageContext.request.contextPath}/board/boardDetail.do?no=' + no;
+	});
+});
+</script>
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

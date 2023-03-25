@@ -17,6 +17,19 @@
 
 .div-report:hover {
 	cursor: pointer;
+	transform: translate(0, -5px);
+	transition-duration: .3s;
+	box-shadow: 0 2px 5px lightgray;
+}
+
+.div-report:hover .div-report-btn {
+	background-color: #00b6c2;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.div-report:hover .div-report-btn .report-btn {
+	color: #fff;
 }
 
 .div-report-tbl {
@@ -81,6 +94,13 @@
   text-align: center;
   border-top: solid 1px lightgray;
   border-bottom: solid 1px lightgray;
+}
+
+.report-tr:hover {
+	cursor: pointer;
+	/* box-shadow: 0 1px 2px rgba(10, 10, 10, 0.1); */
+	box-shadow: 0 0 5px #d7d7d7;
+	background-color: #f8f8f8;
 }
 
 
@@ -176,18 +196,168 @@
 	border: solid 2px gray;
 }
 
+.div-unreport-non {
+	margin-right: 10px;
+}
+
+.div-unreport-non span {
+	margin: 10px;
+	color: gray;
+}
+
+/* 보고자 */
+.div-okreport {
+	padding: 20px 30px;
+}
+
+.div-okreport-title {
+	margin-bottom: 5px;
+	color: gray;
+	font-weight: bold;
+}
+
+.div-okreport-all {
+	display: flex;
+}
+
+.div-okreport-one {
+	width: 200px;
+	display: flex;
+	align-items: center;
+	background-color: #fff;
+	margin-right: 10px;
+	border: solid 1px lightgray;
+}
+
+.div-okreport-one:hover {
+	cursor: pointer;
+}
+
+.div-okreport-one-click {
+	border: solid 2px #00b6c2;
+}
+
+.div-okreport-one div {
+	padding: 10px;
+}
+
+.div-okreport-one div:last-of-type {
+	padding: 0;
+}
+
+.div-okreport-one img {
+	border-radius: 0;
+}
+
+.div-me {
+	border: solid 2px gray;
+}
+
 /* 보고 작성 */
 .div-report-write {
 	margin: 10px;
 	border: solid 3px lightgray;
 }
 
-.div-report-write-name {
+.div-report-write-top {
+	width: 100%;
 	border-bottom: solid 1px lightgray;
+	display: flex;
+	align-items: center
+}
+
+.div-report-detail {
+	width: 100%;
+}
+
+.div-report-detail-update {
+	width: 100%;
+}
+
+.div-report-detail-update form {
+	width: 100%;
+}
+
+.div-report-write-name {
+	width: 50%;
+}
+
+.div-report-write-btn-group {
+	width: 100%;
+	text-align: right;
+}
+
+.div-report-write-btn-group button {
+	font-size: small;
+	border-radius: 5px;
 }
 
 .div-report-write-content textarea {
 	resize: none;
+}
+
+.div-report-write-upload {
+	display: flex;
+	border-top: solid 1px lightgray;
+	border-bottom: solid 1px lightgray;
+}
+
+.div-report-write-tbl {
+	width: 100%;
+}
+
+.div-report-write-tbl td:first-of-type {
+	vertical-align: top;
+	width: 20%;
+}
+
+.div-report-write-tbl td:last-of-type {
+	text-align: center;
+	border: dashed 2px lightgray;
+}
+
+.div-report-write-file {
+	width: 100%;
+	height: 60px;
+	vertical-align: middle;
+}
+
+.div-report-write-file-name {
+	width: 100%;
+	text-align: left;
+	color: gray;
+	font-size: small;
+}
+
+.div-report-write-file-name div {
+	padding: 3px 5px;
+}
+
+.div-report-write-file-name input[type=button] {
+	padding: 3px 5px;
+	border: none;
+	font-weight: bold;
+	background-color: #fff;
+}
+
+.td-label {
+	padding-top: 17px;
+	height: 100%;
+	font-size: small;
+	color: gray;
+}
+
+.td-label:hover {
+	cursor: pointer;
+}
+
+.div-report-write-file input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
 }
 
 .div-report-write-btn {
@@ -199,8 +369,37 @@
 	border-radius: 5px;
 }
 
+.div-report-write-attach {
+	width: 100%;
+}
+
+.div-report-write-view {
+	display: none;
+	margin: 10px;
+	border: solid 3px lightgray;
+}
+
+.write-name {
+	padding: 0 5px;
+	font-weight: bold;
+	font-size: medium;
+}
+
+.write-date {
+	font-size: small;
+	color: gray;
+	padding: 10px;
+}
+
+.attach-btn {
+	font-size: small;
+	color: gray;
+	border: none;
+}
+
+
 /* 보고 댓글 */
-.div-report-commend {
+.div-report-comment {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -209,25 +408,81 @@
 	border-top: solid 1px lightgray;
 }
 
-.div-report-commend-all {
+.div-report-comment-all {
 	width: 100%;
 	display: flex;
-	align-items: baseline;
+	align-items: center
 }
 
-.div-report-commend-all div {
-	margin: 0 5px;
+.div-report-comment-all div {
+	margin-right: 5px;
 	flex-shrink: 0;
 }
 
-.div-report-commend-all div:nth-of-type(2) {
-	width: 85%;
+.div-report-comment-all div:nth-of-type(2) {
+	width: 80%;
+	min-width: 500px;
 }
 
-.div-report-commend-all textarea {
+.div-report-comment-all textarea {
 	width: 100%;
+	min-width: 500px;
 	resize: none;
 	margin: 0;
+	min-height: 30px;
+	padding: 0 5px;
+}
+
+.div-report-comment-detail {
+	width: 100%;
+	display: flex;
+	padding: 20px 0;
+	align-items: center
+}
+
+.div-report-comment-img {
+	width: 30px;
+    text-align: center;
+}
+
+.div-report-comment-contain {
+	width: 100%;
+}
+
+.div-report-comment-title {
+	width: 100%;
+	padding: 5px 10px;
+	font-size: small;
+	display: flex;
+}
+
+.div-report-comment-title span:first-of-type {
+	font-weight: bold;
+}
+
+.div-report-comment-title span:last-of-type {
+	color: gray;
+}
+
+.div-report-comment-btn {
+	width: 100%;
+	text-align: right;
+	display: none;
+}
+
+.div-report-comment-detail:hover .div-report-comment-btn {
+	display: inline-block;
+}
+
+.div-report-comment-btn button {
+	font-size: small;
+	padding: 2px;
+	border-radius: 0;
+}
+
+.div-report-comment-content {
+	padding: 0 10px;
+	font-size: small;
 }
 
 

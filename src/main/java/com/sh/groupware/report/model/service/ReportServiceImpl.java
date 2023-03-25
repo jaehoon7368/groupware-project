@@ -1,17 +1,24 @@
 package com.sh.groupware.report.model.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sh.groupware.common.attachment.model.dao.AttachmentDao;
+import com.sh.groupware.common.dto.Attachment;
+import com.sh.groupware.common.dto.Category;
 import com.sh.groupware.report.model.dao.ReportDao;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
 import com.sh.groupware.report.model.dto.ReportCheck;
+import com.sh.groupware.report.model.dto.ReportComment;
 import com.sh.groupware.report.model.dto.ReportDetail;
 import com.sh.groupware.report.model.dto.ReportMember;
 import com.sh.groupware.report.model.dto.Type;
@@ -25,6 +32,12 @@ public class ReportServiceImpl implements ReportService {
 
 	@Autowired
 	private ReportDao reportDao;
+	
+	@Autowired
+	private AttachmentDao attachmentDao;
+	
+	@Autowired
+	private ServletContext application;
 	
 	
 	@Override
@@ -53,20 +66,24 @@ public class ReportServiceImpl implements ReportService {
 		return result;
 	} // insertReport() end
 
+	
 	@Override
 	public int insertReportMember(ReportMember member) {
 		return reportDao.insertReportMember(member);
 	} // insertReportMember() end
+	
 	
 	@Override
 	public int insertReference(Reference refer) {
 		return reportDao.insertReference(refer);
 	} // insertReference() end
 	
+	
 	@Override
 	public List<ReportCheck> selectMyReportCheck(String loginMember) {
 		return reportDao.selectMyReportCheck(loginMember);
 	} // selectMyReportCheck() end
+	
 	
 	@Override
 	public List<ReportCheck> findByReportNoReportCheckList(String no) {
@@ -79,10 +96,12 @@ public class ReportServiceImpl implements ReportService {
 		return reportDao.findByReportNoMemberList(no);
 	} // findByReportNoMemberList
 	
+	
 	@Override
 	public List<Reference> findByReportNoReference(String no) {
 		return reportDao.findByReportNoReference(no);
 	} // findByReportNoReference() end
+	
 	
 	@Override
 	public int updateExcludeYn(List<String> report, List<String> unreport, String no) {
@@ -108,20 +127,30 @@ public class ReportServiceImpl implements ReportService {
 		return result;
 	} // updateExcludeYn() end
 	
+	
 	@Override
 	public int updateExcludeYnY(Map<String, Object> param) {
 		log.debug("no = {}, empId = {}", param.get("no"), param.get("empId"));
 		return reportDao.updateExcludeYnY(param);
 	} // updateExcludeYnY() end
 	
+	
 	@Override
 	public int updateExcludeYnN(Map<String, Object> param) {
 		return reportDao.updateExcludeYnN(param);
 	} // updateExcludeYnN() end
 	
+	
 	@Override
 	public int insertReportDetail(ReportDetail detail) {
 		int result = reportDao.insertReportDetail(detail);
+		
+		List<Attachment> attachList = detail.getAttachments();
+		for (Attachment attach : attachList) {
+			attach.setPkNo(detail.getNo());
+			
+			result = attachmentDao.insertReportAttachment(attach);
+		}
 		
 		Map<String, Object> param = new HashMap<>();
 		param.put("no", detail.getReportNo());
@@ -132,10 +161,12 @@ public class ReportServiceImpl implements ReportService {
 		return result;
 	} // insertReportDetail() end
 	
+	
 	@Override
 	public int updateCreateYnY(Map<String, Object> param) {
 		return reportDao.updateCreateYnY(param);
 	} // updateCreateYnY() end
+	
 	
 	@Override
 	public List<Report> findByDeptCodeReportList(String code) {
@@ -160,5 +191,73 @@ public class ReportServiceImpl implements ReportService {
 		}
 		return reportList;
 	} // findByDeptCodeReportList() end
+	
+	
+	@Override
+	public int updateReportDetail(ReportDetail reportDetail) {
+		int result = reportDao.updateReportDetail(reportDetail);
+		
+		List<Attachment> attachments = reportDetail.getAttachments();
+		if (attachments.size() > 0) {
+			for (Attachment attach : attachments)
+				result = attachmentDao.insertReportAttachment(attach);				
+		}
+		return result;
+	} // updateReportDetail() end
+	
+	
+	@Override
+	public int reportDetailDelete(ReportDetail reportDetail) {
+		int result = 0;
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("category", Category.R);
+		param.put("pkNo", reportDetail.getNo());
+		
+		List<Attachment> attachments = attachmentDao.selectAllAttachList(param);
+		if (attachments.size() > 0) {
+			for (Attachment attach : attachments) {
+				String saveDirectory = application.getRealPath("/resources/upload/report");
+				File delFile = new File(saveDirectory, attach.getRenameFilename());
+				
+				if (delFile.exists())
+					delFile.delete();
+				
+				result = attachmentDao.deleteOneAttachment(attach.getNo());
+			}
+		}
+		
+		param.put("reportNo", reportDetail.getReportNo());
+		param.put("empId", reportDetail.getEmpId());
+		result = reportDao.updateCreateYnN(param);
+		
+		result = reportDao.reportDetailDelete(reportDetail.getNo());
+		
+		return result;
+	} //reportDetailDelete() end
+	
+	
+	@Override
+	public List<ReportComment> selectAllReportComment(String detailNo) {
+		return reportDao.selectAllReportComment(detailNo);
+	} // selectAllReportComment() end
+	
+	
+	@Override
+	public int insertReportComment(ReportComment reportComment) {
+		return reportDao.insertReportComment(reportComment);
+	} // insertReportComment() end
+	
+	
+	@Override
+	public int updateReportComment(ReportComment reportComment) {
+		return reportDao.updateReportComment(reportComment);
+	} // updateReportComment() end
+	
+	
+	@Override
+	public int deleteReportComment(ReportComment reportComment) {
+		return reportDao.reportCommentDelete(reportComment);
+	} // reportCommentDelete() end
 	
 } // class end
