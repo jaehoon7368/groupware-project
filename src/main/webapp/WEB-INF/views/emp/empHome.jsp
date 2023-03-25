@@ -192,7 +192,7 @@
 		        								subTd5.textContent = "기본 "+ chageWorkTime(dayWorkTime) + " / 연장 " + overtime;
 		        								
 		        								const subTd6 = document.createElement("td");
-		        								subTd6.textContent = state;
+		        								subTd6.textContent = "";
 		        								
 		        								subTr.append(subTd1,subTd2,subTd3,subTd4,subTd5,subTd6);
 		        								tbody2.append(subTr);
