@@ -256,8 +256,14 @@ public class ReportServiceImpl implements ReportService {
 	
 	
 	@Override
-	public int deleteReportComment(ReportComment reportComment) {
-		return reportDao.reportCommentDelete(reportComment);
+	public int deleteReportComment(String no) {
+		return reportDao.reportCommentDelete(no);
 	} // reportCommentDelete() end
+	
+	
+	@Override
+	public ReportComment findByNoReportComment(String no) {
+		return reportDao.findByNoReportComment(no);
+	} // findByNoReportComment() end
 	
 } // class end

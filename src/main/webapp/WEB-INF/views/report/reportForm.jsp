@@ -316,7 +316,7 @@
 									
 									const content = e.target.content;
 
-									if (/\s+/.test(content.value) || !content.value) {
+									if (/^\s+$/.test(content.value) || !content.value) {
 										alert('보고내용을 작성해주세요.');
 										content.select();
 										return false;
