@@ -73,10 +73,11 @@ public interface ReportDao {
 
 	int insertReportComment(ReportComment reportComment);
 
-	@Update("update reportComment set content = #{content} where no = #{no}")
 	int updateReportComment(ReportComment reportComment);
 
 	@Delete("delete from reportComment where no = #{no}")
-	int reportCommentDelete(ReportComment reportComment);
+	int reportCommentDelete(String no);
+
+	ReportComment findByNoReportComment(String no);
 	
 } // class end

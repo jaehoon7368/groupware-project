@@ -371,31 +371,34 @@ public class ReportController {
 		return "redirect:/report/reportDetail.do?no=" + reportNo;
 	} // reportCommentEnroll() end
 	
-	
+
+	@ResponseBody
 	@PostMapping("/reportCommentUpdate.do")
-	public String reportCommentUpdate(ReportComment reportComment, @RequestParam String no, Authentication authentication) {
-		log.debug("reportComment = {}", reportComment);
+	public ReportComment reportCommentUpdate(@RequestParam String no, @RequestParam String detailNo, @RequestParam String content, Authentication authentication) {
+		ReportComment reportComment = new ReportComment();
+		reportComment.setNo(no);
+		reportComment.setDetailNo(detailNo);
+		reportComment.setContent(content);
 		
 		String loginId = ((Emp) authentication.getPrincipal()).getEmpId();
 		reportComment.setWriter(loginId);
 		
 		int result = reportService.updateReportComment(reportComment);
-		
-		return null;
-//		return "redirect:/report/reportDetail.do?no=" + no;
-	} // reportCommentEnroll() end
-
-	
-	@PostMapping("/reportCommentDelete.do")
-	public String reportCommentDelete(ReportComment reportComment, @RequestParam String reportNo, Authentication authentication) {
+		reportComment = reportService.findByNoReportComment(reportComment.getNo());
 		log.debug("reportComment = {}", reportComment);
 		
-		String loginId = ((Emp) authentication.getPrincipal()).getEmpId();
-		reportComment.setWriter(loginId);
+		return reportComment;
+	} // reportCommentUpdate() end
+
+	
+	@ResponseBody
+	@PostMapping("/reportCommentDelete.do")
+	public int reportCommentDelete(@RequestParam String no, Authentication authentication) {
+		log.debug("no = {}", no);
 		
-		int result = reportService.deleteReportComment(reportComment);
+		int result = reportService.deleteReportComment(no);
 		
-		return "redirect:/report/reportDetail.do?no=" + reportNo;
-	} // reportCommentEnroll() end
+		return result;
+	} // reportCommentDelete() end
 	
 } // class end

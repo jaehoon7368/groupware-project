@@ -48,6 +48,8 @@ public interface ReportService {
 
 	int updateReportComment(ReportComment reportComment);
 
-	int deleteReportComment(ReportComment reportComment);
+	int deleteReportComment(String no);
+
+	ReportComment findByNoReportComment(String no);
 
 } // interface end
