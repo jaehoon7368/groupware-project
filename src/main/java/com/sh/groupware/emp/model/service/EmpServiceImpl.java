@@ -124,4 +124,5 @@ public class EmpServiceImpl implements EmpService {
 	public int empUpdate(Emp emp) {
 		return empDao.empUpdate(emp);
 	}
+	
 }
