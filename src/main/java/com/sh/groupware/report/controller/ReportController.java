@@ -213,7 +213,7 @@ public class ReportController {
 		
 		int result = reportService.insertReportDetail(reportDetail);
 		
-		return  "redirect:/report/report.do";
+		return  "redirect:/report/reportDetail.do?no=" + reportDetail.getReportNo();
 	} // reportDetailEnroll() end@PostMapping("/reportDetailEnroll.do")
 	
 	
@@ -355,7 +355,7 @@ public class ReportController {
 	public String reportDetailDelete(ReportDetail reportDetail) {
 		log.debug("reportDetail = {}", reportDetail);
 		int result = reportService.reportDetailDelete(reportDetail);
-		return "redirect:/report/report.do";
+		return "redirect:/report/reportForm.do?no=" + reportDetail.getReportNo();
 	} // reportDetailDelete() end
 	
 	

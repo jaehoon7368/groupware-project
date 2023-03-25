@@ -569,7 +569,7 @@
 							/* 수정 버튼 클릭 */
 							document.querySelectorAll('.update-btn').forEach((update) => {
 								update.addEventListener('click', (e) => {
-									const div = e.target.parentElement.parentElement;
+									const div = e.target.parentElement.parentElement.parentElement;
 									console.log(div);
 
 									const before = div.nextElementSibling;
