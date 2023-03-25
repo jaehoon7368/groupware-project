@@ -19,7 +19,11 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2" id="clock" style="color:black;">clock</td>
-                                </tr>             
+                                </tr>
+                                <tr>
+                                    <td class="font-14 font-bold">업무상태</td>
+                                    <td class="text-right font-14" id="work-state">출근전</td>
+                                </tr>            
                                 <tr>
                                     <td class="font-14 font-bold">출근시간</td>
                                     <td class="text-right font-14" id="startwork-time">미등록</td>
@@ -35,20 +39,6 @@
                                 <tr class="btn-tr">
                                     <td><button class="font-bold" id="btn-startwork">출근하기</button></td>
                                     <td class="text-right"><button class="font-bold" id="btn-endwork">퇴근하기</button></td>
-                                </tr>
-                                <tr class="btn-tr">
-                                    <td colspan="2">
-                                        <!-- <button>상태변경(select태그로 변경...)</button> -->
-                                        <!-- <select class="form-select" aria-label="Default select example"> -->
-                                        <select class="work-select font-bold">
-                                            <option selected>상태변경</option>
-                                            <option value="1">업무</option>
-                                            <option value="2">업무종료</option>
-                                            <option value="3">외근</option>
-                                            <option value="4">출장</option>
-                                            <option value="5">반차</option>
-                                        </select>
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -87,6 +77,64 @@
                 <!-- 왼쪽 추가 메뉴 end -->
 
 <script>
+window.addEventListener('load', function(){
+	
+	 getStartAndEndDateOfWeek();
+	
+	const csrfHeader = "${_csrf.headerName}";
+    const csrfToken = "${_csrf.token}";
+    const headers = {};
+    headers[csrfHeader] = csrfToken;
+    
+    $.ajax({
+ 	   url : '${pageContext.request.contextPath}/workingManagement/checkWorkTime.do',
+ 	   contentType : "application/json; charset=utf-8",
+ 	   success(data){
+ 		   console.log(data);
+ 		   if(data){
+ 			   const {no,startWork,endWork,overtime,regDate,state,dayWorkTime,empId} = data;
+ 			   var starttime = new Date(startWork);
+ 			   var endtime = new Date(endWork);
+ 			   
+ 			   //하루 근무시간 계산
+ 			   const daytime = endtime - starttime;
+ 			   console.log(daytime);
+ 			   
+ 			   const workState = document.querySelector("#work-state");
+ 			   workState.textContent = state;
+ 			   
+ 			   
+ 			   if(startWork){
+ 				 var hours = (starttime.getHours()); 
+                 var minutes = starttime.getMinutes();
+                 var seconds = starttime.getSeconds();
+                 var startWorkTime = `\${hours < 10 ? '0' + hours : hours}:\${minutes < 10 ? '0'+minutes : minutes}:\${seconds < 10 ? '0'+seconds : seconds}`;
+                 // 출근시간 정보 출력
+                 document.querySelector('#startwork-time').textContent = startWorkTime;
+ 			   }
+ 			   
+ 			   if(endWork){
+  				  var hours = (endtime.getHours()); 
+                  var minutes = endtime.getMinutes();
+                  var seconds = endtime.getSeconds();
+                  var endWorkTime = `\${hours < 10 ? '0' + hours : hours}:\${minutes < 10 ? '0'+minutes : minutes}:\${seconds < 10 ? '0'+seconds : seconds}`;
+                  // 퇴근시간 정보 출력
+ 				  document.querySelector('#endwork-time').textContent = endWorkTime;
+ 			   }
+ 			   
+ 			   if(daytime > 0){
+ 				   //하루 근무시간 update
+ 				  updateDayWorkTime(daytime);
+ 			   }
+ 		   }
+ 	   },
+ 	   error : console.log
+    });
+   
+});
+
+
+
 //출근 버튼 클릭 시
 document.querySelector('#btn-startwork').addEventListener('click', function () {
 	
@@ -101,12 +149,10 @@ document.querySelector('#btn-startwork').addEventListener('click', function () {
 	   headers,
 	   contentType : "application/json; charset=utf-8",
 	   success(data){
-		   console.log(data);
-		   console.log(data.state);
 
 	       if(data.state === "성공"){
 	           alert("출근이 성공적으로 등록됬습니다.");
-	           
+	           location.reload();
 	       }
 	       else{
 	           alert("이미 출근하셨습니다.");
@@ -115,5 +161,90 @@ document.querySelector('#btn-startwork').addEventListener('click', function () {
 	   error : console.log
    });
 });
+
+document.querySelector('#btn-endwork').addEventListener('click', function () {
+	
+	const csrfHeader = "${_csrf.headerName}";
+    const csrfToken = "${_csrf.token}";
+    const headers = {};
+    headers[csrfHeader] = csrfToken;
+	
+	$.ajax({
+	   url : '${pageContext.request.contextPath}/workingManagement/updateEndWork.do',
+	   method : 'POST',
+	   headers,
+	   contentType : "application/json; charset=utf-8",
+	   success(data){
+		   console.log(data);
+		   
+		   if(data.state === "성공"){
+	           alert("퇴근이 성공적으로 등록됬습니다.");
+	           location.reload();
+	       }else if(data.state === '출근전'){
+	    	   alert("출근전입니다.");
+	    	   return;
+	       }
+	       else{
+	           alert("이미 퇴근하셨습니다.");
+	           return;
+	       }
+		},
+	   error : console.log
+   });
+});
+
+const updateDayWorkTime = (daytime) =>{
+	
+	const csrfHeader = "${_csrf.headerName}";
+    const csrfToken = "${_csrf.token}";
+    const headers = {};
+    headers[csrfHeader] = csrfToken;
+	
+    $.ajax({
+        url: '${pageContext.request.contextPath}/workingManagement/updateDayWorkTime.do',
+        method: 'POST',
+        headers,
+        data: {daytime},
+        success(data) {
+          console.log(data);
+          getStartAndEndDateOfWeek();
+        },
+        error: console.log
+      });
+	};
+
+//이번주 누적시간 가져오기
+function getStartAndEndDateOfWeek() {
+	  const today = new Date();
+	  const todayDay = today.getDay(); // 오늘 날짜의 요일 (0: 일요일, 1: 월요일, ..., 6: 토요일)
+
+	  const startDate = new Date(today); // 해당 주의 시작일
+	  startDate.setDate(startDate.getDate() - todayDay);
+
+	  const endDate = new Date(today); // 해당 주의 종료일
+	  endDate.setDate(endDate.getDate() + (6 - todayDay));
+
+	  const start = startDate.getFullYear() + "." + (startDate.getMonth() + 1) + "." + startDate.getDate();
+	  const end = endDate.getFullYear() + "." + (endDate.getMonth() + 1) + "." + endDate.getDate();
+	  
+	  $.ajax({
+		  url : "${pageContext.request.contextPath}/workingManagement/weekTotalTime.do",
+		  data : {start, end},
+		  contentType : "application/json; charset=utf-8",
+		  success(data){
+			  console.log(data);
+			  const totalWorkTime = document.querySelector("#totalwork-time");
+			  const mainTotalWorkTime = document.querySelector("#main-totalwork-time");
+			  const mainWorkTime = document.querySelector("#main-work-time");
+			  let time = 144000000 - data; // 40시간 - 주간근무시간
+			  console.log(chageWorkTime(data));
+			  totalWorkTime.textContent = chageWorkTime(data);
+			  mainTotalWorkTime.textContent = chageWorkTime(data);
+			  mainWorkTime.textContent = chageWorkTime(time);
+		  },
+		  error : console.log
+		  
+	  });
+}
 </script>					
 					

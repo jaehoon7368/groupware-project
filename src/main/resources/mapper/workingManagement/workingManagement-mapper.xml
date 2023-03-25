@@ -12,9 +12,19 @@
 			null,
 			null,
 			default,
-			null,
-			null,
+			'업무중',
+			0,
 			#{empId}
 			)
 	</insert>
+	
+	<update id="updateDayWorkTime">
+		update
+			working_management
+		set
+			day_work_time = #{daytime}
+		where
+			emp_id = #{empId}
+			and TRUNC(reg_date) = TO_DATE(#{time})
+	</update>
 </mapper>

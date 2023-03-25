@@ -23,10 +23,6 @@ var yearNow = document.getElementById("year");
 setInterval(clock, 1000); // 1초마다 실행
 // 근태관리 실시간 시간 보여주기 end
 
-$('[data-open-details]').click(function (e) {
-  e.preventDefault();
-  $(this).next().toggleClass('is-active');
-  $(this).toggleClass('is-active');
-});
+
 
 

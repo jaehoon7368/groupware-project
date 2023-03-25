@@ -18,6 +18,6 @@ public class WorkingManagement {
 	private Timestamp overtime;
 	private LocalDate regDate;
 	private String state;
-	private Timestamp dayWorkTime;
+	private long dayWorkTime;
 	private String empId;
 }

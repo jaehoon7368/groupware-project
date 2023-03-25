@@ -34,17 +34,16 @@ create table dept (
 --근태관리
 create table working_management(
     no varchar2(15) not null,
-    start_work timestamp default systimestamp,
+    start_work timestamp default TO_TIMESTAMP_TZ(TO_CHAR(SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD HH24:MI:SS.FF3'), 'YYYY-MM-DD HH24:MI:SS.FF3 TZR TZD'),
     end_work timestamp,
     overtime timestamp,
-    reg_date date default sysdate,
+    reg_date date default TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul',
     state varchar2(15),
-    day_work_time timestamp,
+    day_work_time number,
     emp_id varchar2(20) not null,
     constraint pk_working_management primary key (no),
     constraint fk_working_management_emp foreign key (emp_id) references emp (emp_id) on delete cascade
 );
-
 
 -- 게시판
 create table board (
@@ -119,3 +118,8 @@ select * from dept;
 select * from emp;
 select * from attachment;
 select * from working_management;
+
+
+
+
+
