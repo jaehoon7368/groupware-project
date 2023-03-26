@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
+import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.todo.model.dto.Todo;
 import com.sh.groupware.todo.model.dto.TodoBoard;
 import com.sh.groupware.todo.model.dto.TodoList;
@@ -15,7 +16,6 @@ public interface TodoService {
 
 	List<TodoBoard> selectTodoBoardByempId(String empId);
 
-	List<TodoBoard> selectAllTodoBoard();
 
 	List<TodoList> selectTodoListByNo(String no);
 
@@ -41,9 +41,24 @@ public interface TodoService {
 
 	int commentEnroll(Map<String, Object> param);
 
-	int bookMarkOn(String todoBoardNo);
+	int bookMarkOn(Map<String, Object> param);
 
+	int bookMarkOff(Map<String, Object> param);
+	
 	TodoBoard selectLastTodoBoardByNo(String todoBoardNo);
+
+	Emp selectOneEmpByEmpId(String empId);
+
+	int todoAttachDelete(String renameFilename);
+
+	int todoComentDelete(String no);
+
+	List<TodoBoard> selectBookMarkTodoBoard(String empId);
+
+
+	int insertGroupEmp(Map<String, Object> param);
+
+	List<TodoBoard> selectTodoBoardByEmpId(String empId);
 	
 
 }

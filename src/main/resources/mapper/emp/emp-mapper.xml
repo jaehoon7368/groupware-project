@@ -52,5 +52,20 @@
 		from
 			emp e
 	</select>
+	<select  id="selectAllEmpAddTitleDept" resultMap="empDetailMap">
+		select 
+			e.*,
+    		j.job_title,
+    		d.dept_title 
+		from 
+		     emp e join job j
+		    	 on e.job_code = j.job_code 
+		     join dept d
+		    	 on e.dept_code = d.dept_code
+	</select>
+	
+
+	
+	
 	<resultMap type="empDetail" id="empDetailMap"></resultMap>
 </mapper>
