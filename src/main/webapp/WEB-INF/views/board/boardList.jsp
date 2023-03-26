@@ -114,17 +114,35 @@
 <div class="div-padding"></div>
 <!-- 페이지바 -->
 
-<ul class="pagination text-center" role="navigation" aria-label="Pagination" data-page="6" data-total="16">
-  <li class="pagination-previous disabled">Previous <span class="show-for-sr">page</span></li>
-  <li class="current"><span class="show-for-sr">You're on page</span> 1</li>
-  <li><a href="#" aria-label="Page 2">2</a></li>
-  <li><a href="#" aria-label="Page 3">3</a></li>
-  <li><a href="#" aria-label="Page 4">4</a></li>
-  <li class="ellipsis" aria-hidden="true"></li>
-  <li><a href="#" aria-label="Page 12">12</a></li>
-  <li><a href="#" aria-label="Page 13">13</a></li>
-  <li class="pagination-next"><a href="#" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
-</ul>
+
+  <ul class="pagination justify-content-center">
+
+    <c:if test="${startPage > 1}">
+      <li class="page-item">
+        <a class="page-link" href="${pageContext.request.contextPath}/board/boardList.do?cpage=${startPage-1}" aria-label="Previous">
+          <span aria-hidden="true">&lt;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+      </li>
+    </c:if>
+
+    <c:forEach var="i" begin="${startPage}" end="${endPage}">
+      <li class="page-item ${i==currentPage ? 'active' : ''}">
+        <a class="page-link" href="${pageContext.request.contextPath}/board/boardList.do?cpage=${i}">${i}</a>
+      </li>
+    </c:forEach>
+
+    <c:if test="${endPage < totalPage}">
+      <li class="page-item">
+        <a class="page-link" href="${pageContext.request.contextPath}/board/boardList.do?cpage=${endPage+1}" aria-label="Next">
+          <span aria-hidden="true">&gt;</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+  </ul>
+</c:if>
+
+
 
 <script>
 document.querySelectorAll("tr[data-no]").forEach((tr) => {
@@ -135,5 +153,7 @@ document.querySelectorAll("tr[data-no]").forEach((tr) => {
 	});
 });
 </script>
+
+
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

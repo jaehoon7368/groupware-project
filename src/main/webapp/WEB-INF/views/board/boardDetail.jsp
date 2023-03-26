@@ -57,14 +57,24 @@
  	<div class="tool-bar">
  		<div class="tool-button">
  			<a href="${pageContext.request.contextPath}/board/boardForm.do">
-		 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
-		 		<span>새글쓰기</span>
+ 				<button id="write-btn">
+			 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
+			 		<span>새글쓰기</span>
+		 		</button>
 	 		</a>
  		</div>
  		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/board/boardDelete.do">
-	 			<span><img src="${pageContext.request.contextPath}/resources/images/trash.png" alt="" class="tool-img" /></span>
-	 			<span>삭제</span>
+			  <button id="deleteBtn">
+			    <span><img src="${pageContext.request.contextPath}/resources/images/trash.png" alt="" class="tool-img"></span>
+			    <span>삭제</span>
+			  </button>
+ 		</div>
+ 		<div class="tool-button">
+			  <a href="${pageContext.request.contextPath}/board/boardUpdateForm.do?no=${board.no}">
+ 				<button id="write-btn">
+			 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
+			 		<span>수정</span>
+		 		</button>
 	 		</a>
  		</div>
  	</div>
@@ -142,6 +152,33 @@
   
 </div>
 <div class="div-padding"></div>
+
+
+<script>
+  document.querySelector('#deleteBtn').addEventListener("click", (e) => {
+    e.preventDefault();
+    const csrfHeader = "${_csrf.headerName}";
+    const csrfToken = "${_csrf.token}";
+    const headers = {};
+    headers[csrfHeader] = csrfToken;
+
+    if (confirm("게시물을 삭제하시겠습니까?")) {
+      $.ajax({
+        url: '${pageContext.request.contextPath}/board/boardDelete.do',
+        method: "POST",
+        data: {no: "${board.no}"},
+        headers,
+        success(data) {
+          console.log(data);
+          location.href = '${pageContext.request.contextPath}/board/boardList.do';
+        },
+        error: console.log
+         
+      });
+    }
+  });
+</script>
+
 
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

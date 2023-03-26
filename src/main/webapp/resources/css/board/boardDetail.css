@@ -12,6 +12,17 @@
 	float: left;
 	padding: 10px;
 }
+
+#write-btn{
+	border: none;
+}
+#deleteBtn{
+	border: none;
+}
+
+#updateBtn{
+	border: none;
+}
 .tool-bar span{
 	padding: 2px;
 	color: black;

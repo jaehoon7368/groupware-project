@@ -195,6 +195,33 @@ FROM
     board b 
         LEFT JOIN attachment a 
             ON b.no = a.no AND a.category = 'B'
-WHERE b.no = '1';
+WHERE b.no = '23';
 
+SELECT a.no, a.original_filename, a.rename_filename, a.reg_date
+FROM attachment a
+JOIN board b ON a.pk_no = b.no
+WHERE a.category = 'B'
+AND a.pk_no = '23';
+
+select*from attachment;
 select*from board;
+
+SELECT 
+    b.*, 
+    a.*, 
+    a.no AS attach_no 
+FROM 
+    board b 
+    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
+WHERE 
+    b.no = '29';
+    
+  
+		select 
+		    b.*,
+		    (select count(*) from attachment where no = b.no and category = 'B') attach_count
+		from
+		    board b left join emp e
+		        on b.emp_id = e.emp_id
+		order by 
+		    no desc;

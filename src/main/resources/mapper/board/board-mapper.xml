@@ -14,6 +14,30 @@
 		order by 
 		    no desc
 	</select>
+	
+	<select id="selectBoardCount" resultType="int">
+        select
+        	count(*)
+        from 
+        	board
+    </select>
+    
+    <select id="selectBoardByNo" resultMap="boardMap">
+    	select
+    		*
+    	from
+    		board
+    	where
+    		no = #{no}
+    </select>
+    
+    <delete id="deleteBoard" >
+    	delete from board
+    	where no = #{no}
+    	
+    
+    </delete>
+    
 	<resultMap type="board" id="boardMap"></resultMap>
 	
 	<insert id="insertBoard">
@@ -98,6 +122,18 @@
 				no = #{no}
 	</select>
 	<resultMap type="attachment" id="attachmentMap"></resultMap>
+	
+	<update id="updateBoard">
+		update
+			board
+		set 
+			b_type = #{bType},
+			title = #{title},
+			content = #{content}, 
+			UPDATED_DATE = sysdate
+		where
+			no = #{no}
+	</update>
 	
 	
 </mapper>

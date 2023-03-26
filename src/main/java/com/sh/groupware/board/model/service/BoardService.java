@@ -17,4 +17,15 @@ public interface BoardService {
 
 	Attachment selectOneAttachment(String no);
 
+	int selectBoardCount();
+
+	Board selectBoardByNo(String no);
+
+	int deleteBoard(String no);
+
+	int updateBoard(Board board);
+
+
+
+
 }
