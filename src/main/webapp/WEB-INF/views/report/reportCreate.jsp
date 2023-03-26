@@ -143,7 +143,7 @@
 									return false;
 								};
 
-								if (/\s+/.test(explain.value) || !explain.value) {
+								if (/^\s+$/.test(explain.value) || !explain.value) {
 									alert('설명을 작성해주세요.');
 									explain.select();
 									return false;
