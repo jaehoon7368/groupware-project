@@ -10,9 +10,9 @@
 	<jsp:param value="Todo" name="title" />
 </jsp:include>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/todo/todo.css" />
 <div class="all-container app-dashboard-body-content off-canvas-content"
 	data-off-canvas-content>
-
 
 	<div class="home-container">
 		<!-- 상단 타이틀 -->
@@ -51,143 +51,8 @@
 
 		<!-- 본문 -->
 		<div class="div-padding">
-<style>
-.wrap_board {
+
 	
-}
-
-.wrap_board ul {
-	list-style: none;
-	list-style: none;
-	display: flex;
-	align-content: center;
-	flex-wrap: wrap;
-}
-
-.todo-li {
-	position :relative;
-	min-width: 200px;
-	width: 20%;
-	height: 96px;
-	border: 1px solid rgb(227, 227, 227);
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	padding: 14px;
-	margin-right: 30px;
-	margin-top: 20px;
-	cursor: pointer;
-	border-radius: 12px 12px 12px 12px;
-	-moz-border-radius: 12px 12px 12px 12px;
-	-webkit-border-radius: 12px 12px 12px 12px;
-	transition-duration: .3s;
-	font-size: 14px;
-}
-
-.todo-li:hover {
-	box-shadow: 0 5px 5px -5px #333;
-	transform: translate(0, -2px);;
-}
-
-.todo-top {
-	display: flex;
-	justify-content: space-between;
-}
-.todo-top p{
-line-height: 0.6;
-}
-
-.todo-top a {
-	text-decoration: none;
-	color: black;
-}
-
-.todo-bottom {
-	display: flex;
-}
-
-.board-info {
-	color: rgb(104, 104, 104);
-}
-
-.newboard {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.todo-input {
-	height: 20px;
-	margin: 0px;
-}
-
-.todo-btn {
-	border: solid gray 1px;
-	padding: 0px;
-	border-radius: 0px;
-	width: 59px;
-	height: 20px;
-	margin-top: 5px;
-	background-color: white;
-	color: black;
-}
-
-.todo-btn:hover {
-	background-color: #00b6c2;
-}
-.removeView{
-	display : none;
-}
-/* 게시판 보드 모달 */
-.board-menu {
-	position : relative;
-	cursor: pointer;
-}
-.board-menu-modal{
-    position: absolute;
-    transform: translate(0,-10px);
-    border: 1px solid #dddddd;
-    width: 241px;
-    height: 218px; 
-    background-color: white;
-    z-index: 2;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-}
-.board-menu-modal:hover {
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-}
-.board-menu-modal div {
-    font-size: 20px;
-    line-height: 2.7;
-    text-rendering: optimizeLegibility;
-    margin-bottom: 0px;
-    
-}
-.modalList:hover {
-	color : white;
-	background-color: #00b6c2;
-}
-.modalTitle{
-	text-align: center;
-	color: #c3c3c3;;
-}
-.removeView{
-	display:none;
-}
-
-/* 게시판 보드 모달 */
-/* 북마크  위치조정 */
-.test{
-	position:relative;
-}
-.bookMark{
-    position: absolute;
-    right: 36px;
-    top: 32px;
-}
-	
- </style> 
 			<div class="content-top">
 				<h2 class="board-menu" id="boardMenu">Board</h2>
 				<!-- 게시판 메뉴 모달 -->
@@ -223,18 +88,25 @@ line-height: 0.6;
 				<div class="wrap_todo_board ui-favorite-board">
 					<h5 class="board-info">즐겨찾는보드</h5>
 
-					<ul> 
+					<ul id ="bookMarkBody"> 
 						<!-- 여기서부터 즐겨찾기  -->
-						<li class="todo-li">
-							<div class="todo-top">
-								<span>1팀_업무지시방</span> <span> <a href=""><i
-										class="fa fa-link" aria-hidden="true"></i></a> <a href=""><i
-										class="fa fa-star-o" aria-hidden="true"></i></a></span>
+					<c:forEach items ="${bookMarkTodoBoards }" var="bookMarkTodoBoard">
+					<li class="todo-li"  onclick="enterTodo('${bookMarkTodoBoard.no}',event);">
+						<div class="todo-top">
+								<span>${bookMarkTodoBoard.title }</span> <span>  
+							
 							</div>
 							<div class="todo-bottom">
 								<img src="/김현동/joonpark.jpg" alt="" style="width: 32px;">
 							</div>
 						</li>
+						<li class="test">
+							<i class="fa fa-star-o bookMark" aria-hidden="true" onclick ="bookMarkOff('${bookMarkTodoBoard.no}',event);"></i></span>
+						</li>
+							<form:form id="offForm" action="${pageContext.request.contextPath}/todo/bookMarkOff.do" method="POST">
+  								<input type="hidden" name="todoBoardNo" >
+							</form:form>  
+					</c:forEach>
 
 
 					</ul>
@@ -262,6 +134,9 @@ line-height: 0.6;
 						<li class="test">
 							<i class="fa fa-star-o bookMark" aria-hidden="true" onclick ="bookMarkOn('${todoBoard.no}',event);"></i></span>
 						</li>
+							<form:form id="myForm" action="${pageContext.request.contextPath}/todo/bookMarkOn.do" method="POST">
+									<input type="hidden" name ="todoBoardNo1"  />
+							</form:form>
 						</c:forEach>
 						
 						<!-- 등록 폼 -->
@@ -286,6 +161,8 @@ line-height: 0.6;
 					</ul>
 				</div>
 				<!-- myboard end-->
+				
+				
 	
 	<style>
 	
@@ -297,37 +174,20 @@ line-height: 0.6;
 </div>
 
 <script>
-	const bookMarkOn=(todoBoardNo,e)=>{
-		const csrfHeader = "${_csrf.headerName}";
-        const csrfToken = "${_csrf.token}";
-        const headers = {};
-        headers[csrfHeader] = csrfToken;
-		console.log(todoBoardNo)
-		
-		$.ajax({
-			url: "${pageContext.request.contextPath}/todo/bookMarkOn.do",
-			method : "POST",
-			headers,
-			data :{
-				todoBoardNo : todoBoardNo
-			},
-			success(data){
-				console.log(data);
-				
-				
-				
-				
-				
-				
-				
-				
-				
-			},
-			error:console.log
-			
-		}) /* ajax 끝*/
-		
-	}
+function bookMarkOn(todoBoardNo, e) {
+  	 		 e.preventDefault();
+  	 	
+  	 	 document.querySelector('input[name="todoBoardNo1"]').value = todoBoardNo;
+   		 document.querySelector('#myForm').submit();
+  }
+function bookMarkOff(todoBoardNo, e) {
+  	 		 e.preventDefault();
+  	 	
+  	 	 document.querySelector('input[name="todoBoardNo"]').value = todoBoardNo;
+   		 document.querySelector('#offForm').submit();
+  }
+	
+	
 	const enterTodo =(no,e)=>{
 		e.stopPropagation(); 
 		location.href='${pageContext.request.contextPath}/todo/todoList.do?no='+no; 

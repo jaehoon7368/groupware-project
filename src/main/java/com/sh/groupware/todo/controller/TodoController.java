@@ -2,6 +2,8 @@ package com.sh.groupware.todo.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,7 @@ import com.sh.groupware.common.HelloSpringUtils;
 import com.sh.groupware.common.attachment.model.service.AttachmentService;
 import com.sh.groupware.common.dto.Attachment;
 import com.sh.groupware.emp.model.dto.Emp;
+import com.sh.groupware.emp.model.service.EmpService;
 import com.sh.groupware.todo.model.dto.Todo;
 import com.sh.groupware.todo.model.dto.TodoBoard;
 import com.sh.groupware.todo.model.dto.TodoList;
@@ -43,13 +46,21 @@ public class TodoController {
 	private AttachmentService attachmentService;
 	@Autowired
 	private ServletContext application;
+	@Autowired 
+	private EmpService empService;
+	
 	
 	@GetMapping("/todo.do")
-	public void todo (Model model) {
-		List<TodoBoard> todoBoards = todoService.selectAllTodoBoard();                                                                                                                                                                                                                                                                                                                                                                                     
-		log.debug("todoBoards {}=",todoBoards);
+	public void todo (Model model, 
+			Authentication authentication) {
+		String empId = ((Emp)authentication.getPrincipal()).getEmpId();
+	
+		List<TodoBoard> bookMarkTodoBoards = todoService.selectBookMarkTodoBoard(empId);
+		List<TodoBoard> todoBoards = todoService.selectTodoBoardByEmpId(empId);                                                                                                                                                                                                                                                                                                                                                                                     
 		
+		log.debug("todoBoards {}=",todoBoards);
 		model.addAttribute("todoBoards",todoBoards);
+		model.addAttribute("bookMarkTodoBoards",bookMarkTodoBoards);
 	}
 	//게시판등록
 	@PostMapping("/todoBoardEnroll.do")
@@ -68,17 +79,23 @@ public class TodoController {
 	
 	
 	@GetMapping("/todoList.do")
-	public String todoList (@RequestParam String no,Model model) {
+	public String todoList (@RequestParam String no,Model model,Authentication authentication) {
 		TodoBoard todoBoard = todoService.selectOneTodoBoardByNo(no);
 		List<TodoList> todoLists = todoService.selectTodoListByNo(no); 
-		log.debug("todoLists = {}" ,todoLists);
-		log.debug("todoBoard = {}" ,todoBoard);
+		String empId =  ((Emp)authentication.getPrincipal()).getEmpId();
+		
+		Emp emp = todoService.selectOneEmpByEmpId(empId);
+		 // 모든 사원 조회
+		List <Emp> emps = empService.selectAllEmpAddTitleDept();
+		
+		log.debug("emps = {}",emps);
 		
 		if(todoLists.size() > 0) {
 		model.addAttribute("todoLists",todoLists);
 		}
-		
 		model.addAttribute("todoBoard",todoBoard);
+		model.addAttribute("emp",emp);
+		model.addAttribute("emps",emps);
 		return "todo/todoList";
 		
 	}
@@ -160,12 +177,16 @@ public class TodoController {
 			@RequestParam MultipartFile file,
 			@RequestParam String todoNo
 			) {
-		String saveDirectory = application.getRealPath("/resources/upload/todo");
+		
+		
+		String saveDirectory = "C:\\Workspaces\\spring_workspace\\groupware-project\\src\\main\\webapp\\resources\\upload\\todo";
+		//String saveDirectory = application.getRealPath("/resources/upload/todo");
 		log.debug("saveDirectory = {}", saveDirectory);
 		Todo todo = todoService.todoSelectByNo(todoNo);
 		
 		Attachment attach = new Attachment();
 		
+		log.debug("file = {}" ,file);
 		
 		if(file.getSize() > 0) {
 			// 1. 저장 
@@ -183,6 +204,7 @@ public class TodoController {
 			attach.setRenameFilename(renamedFilename);
 			attach.setOriginalFilename(originalFilename);
 			attach.setPkNo(todoNo);
+			todo.addAttachment(attach);
 		}
 
 		// attachment 에 
@@ -216,16 +238,63 @@ public class TodoController {
 		return "redirect:/todo/todoList.do?no="+todoBoardNo;
 	};
 	//북마크 등록
-	@ResponseBody
 	@PostMapping("bookMarkOn.do")
-	public TodoBoard bookMarkOn(@RequestParam String todoBoardNo) {
-		log.debug("todoBoardNo = {}",todoBoardNo);
-		int result =  todoService.bookMarkOn(todoBoardNo);
-		TodoBoard todoBoard  = todoService.selectLastTodoBoardByNo(todoBoardNo);
-		return todoBoard;
+	public String bookMarkOn(@RequestParam String todoBoardNo1,Authentication authentication) {
+		String todoBoardNo = todoBoardNo1;
+		log.debug("todoBoardNo 북마크온 확인  = {}",todoBoardNo);
+		Map<String,Object> param = new HashMap<>();
+		String empId =  ((Emp)authentication.getPrincipal()).getEmpId();
+		param.put("empId", empId);
+		param.put("todoBoardNo", todoBoardNo);
+		int result =  todoService.bookMarkOn(param);
+		
+		return "redirect:/todo/todo.do";
+	}
+	//북마크 해제
+	@PostMapping("bookMarkOff.do")
+	public String bookMarkOff(@RequestParam String todoBoardNo,Authentication authentication) {
+		log.debug("todoBoardNo 북마크 오프 확인  = {}",todoBoardNo);
+		String empId =  ((Emp)authentication.getPrincipal()).getEmpId();
+		Map<String,Object> param = new HashMap<>();
+		param.put("empId", empId);
+		param.put("todoBoardNo", todoBoardNo);
+		int result =  todoService.bookMarkOff(param);
+		return "redirect:/todo/todo.do";
 	}
 	
 	
+	
+	@PostMapping("todoComentDelete.do")
+	public String todoComentDelete(@RequestParam String no,@RequestParam String todoBoardNo) {
+		log.debug("todoBoardNo = {}",todoBoardNo);
+		log.debug("no = {}",no);
+		
+		int result = todoService.todoComentDelete(no);
+		return "redirect:/todo/todoList.do?no="+todoBoardNo;
+	}
+	@PostMapping("todoAttachDelete.do")
+	public String todoAttachDelete(@RequestParam String todoBoardNo, @RequestParam String renameFilename) {
+		log.debug("todoBoardNo = {}",todoBoardNo);
+		log.debug("no = {}",renameFilename);
+		
+		int result = todoService.todoAttachDelete(renameFilename);
+		return"redirect:/todo/todoList.do?no="+todoBoardNo;
+	}
+	
+	//사원 공유 추가 
+	@PostMapping("groupAddEmp.do")
+	public String groupAddEmp (@RequestParam String[] empId,
+			@RequestParam String todoBoardNo) {
+		log.debug("empId = {}",Arrays.toString(empId));
+		log.debug("todoBoardNo {}",todoBoardNo);
+		
+		Map <String,Object> param = new HashMap<>();
+		param.put("empIds",empId);
+		param.put("todoBoardNo", todoBoardNo);
+		int result = todoService.insertGroupEmp(param);
+		
+		return "redirect:/todo/todoList.do?no="+todoBoardNo;
+	}
 	
 
 

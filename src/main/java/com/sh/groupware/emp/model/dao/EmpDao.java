@@ -39,5 +39,7 @@ public interface EmpDao {
 	@Update("update emp set password=#{password}, phone= #{phone}, address= #{address} where emp_id = #{empId}")
 	int empUpdate(Emp emp);
 
+
+	List<Emp> selectAllEmpAddTitleDept();
 	
 }
