@@ -14,95 +14,9 @@
 	
 	<jsp:include page="/WEB-INF/views/sign/signLeftBar.jsp" />
 	
-					<div class="font-small home-container">
-						<!-- 상단 타이틀 -->
-						<div class="top-container">
-							<div class="container-title">사직서</div>
-							<div class="home-topbar topbar-div">
-								<div>
-									<a href="#" id="home-my-img">
-										<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
-									</a>
-								</div>
-								<div id="my-menu-modal">
-									<div class="my-menu-div">
-										<button class="my-menu">기본정보</button>
-									</div>
-									<div class="my-menu-div">
-										<button class="my-menu">로그아웃</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="top-container">
-							<div class="div-sign-btn font-small">
-								<button>결재요청</button>
-								<button>취소</button>
-								<button>결재 정보</button>
-							</div>
-						</div>
-						<script>
-							document.querySelector('#home-my-img').addEventListener('click', (e) => {
-								const modal = document.querySelector('#my-menu-modal');
-								const style =  modal.style.display;
-								
-								if (style == 'inline-block') {
-									modal.style.display = 'none';
-								} else {
-									modal.style.display = 'inline-block';
-								}
-							});
-						</script>
-						<!-- 상단 타이틀 end -->
-						
-						<!-- 결재 문서 -->
-						<div class="div-sign-form">
-							<div class="div-sign-form-detail">
-								<table class="sign-tbl">
-									<tbody>
-										<tr>
-											<td colspan="2" class="sign-tbl-title font-large">
-												사직서
-											</td>
-										</tr>
-										<tr>
-											<td class="sign-tbl-left">
-												<table class="sign-tbl-left-tbl">
-													<tbody>
-														<tr>
-															<td class="sign-tbl-left-title">
-																기안자
-															</td>
-															<td class="sign-tbl-left-content">
-																<span>기안자</span>
-															</td>
-														</tr>
-														<tr>
-															<td class="sign-tbl-left-title">
-																기안부서
-															</td>
-															<td class="sign-tbl-left-content">
-																<span>기안부서</span>
-															</td>
-														</tr>
-														<tr>
-															<td class="sign-tbl-left-title">
-																기안일
-															</td>
-															<td class="sign-tbl-left-content">
-																<span>기안일</span>
-															</td>
-														</tr>
-														<tr>
-															<td class="sign-tbl-left-title">
-																문서번호
-															</td>
-															<td class="sign-tbl-left-content">
-																<span>문서번호</span>
-															</td>
-														</tr>
-													</tbody>
-												</table>
+	<jsp:include page="/WEB-INF/views/sign/signCreate.jsp">
+		<jsp:param value="사직서" name="title" />
+	</jsp:include>
 								
 											</td>
 											<td class="sign-tbl-right">
