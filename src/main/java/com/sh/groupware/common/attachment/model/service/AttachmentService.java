@@ -15,5 +15,7 @@ public interface AttachmentService {
 
 	List<Attachment> selectAllAttachList(Map<String, Object> param);
 
-	Attachment selectOneAttachment(int no);
+	Attachment selectOneAttachment(String noFile);
+
+	int deleteOneAttachment(String no);
 }

@@ -3,6 +3,7 @@ package com.sh.groupware.common.attachment.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -29,6 +30,9 @@ public interface AttachmentDao {
 	List<Attachment> selectAllAttachList(Map<String, Object> param);
 
 	@Select("select * from attachment where no = #{no}")
-	Attachment selectOneAttachment(int no);
+	Attachment selectOneAttachment(String no);
+
+	@Delete("delete from attachment where no = #{no}")
+	int deleteOneAttachment(String no);
 
 }

@@ -2,7 +2,11 @@ package com.sh.groupware.emp.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -24,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sh.groupware.emp.model.dto.EmpDetail;
 import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.emp.model.service.EmpService;
+import com.sh.groupware.workingManagement.model.dto.WorkingManagement;
+import com.sh.groupware.workingManagement.model.service.WorkingManagementService;
 import com.sh.groupware.common.HelloSpringUtils;
 import com.sh.groupware.common.attachment.model.service.AttachmentService;
 import com.sh.groupware.common.dto.Attachment;
@@ -48,18 +54,30 @@ public class EmpController {
 	private AttachmentService attachService;
 	
 	@Autowired
+	private WorkingManagementService workingManagementService;
+	
+	@Autowired
 	private ServletContext application;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	DateTimeFormatter dayf = DateTimeFormatter.ofPattern("yy/MM/dd"); //날짜 패턴 변경
+	LocalDateTime now = LocalDateTime.now(); //현재 시간
 	
 	@PostMapping("/loginSuccess.do")
 	public String loginSuccess(HttpSession session) {
 		log.debug("loginSuccess 핸들러 호출!");
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Emp principal = (Emp) authentication.getPrincipal();
-		session.setAttribute("loginMember", principal);
+		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+		
+		EmpDetail loginMember = empService.selectEmpDetail(empId);
+
+		Attachment attach = attachService.selectEmpProfile(empId);
+		loginMember.setAttachment(attach);
+		
+		session.setAttribute("loginMember", loginMember);
 		
 		List<Dept> deptList = deptService.selectAllDept();
 		session.setAttribute("deptList", deptList);
@@ -166,6 +184,8 @@ public class EmpController {
 		log.debug("encodedPassword = {}", encodedPassword);
 		
 	}
+	
+	
 	
 
 }

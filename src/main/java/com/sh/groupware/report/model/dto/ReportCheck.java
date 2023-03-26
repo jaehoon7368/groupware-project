@@ -31,10 +31,15 @@ public class ReportCheck extends ReportMember {
 	private LocalDate createDate;
 	
 	private List<Attachment> attachments = new ArrayList<>();
+	private List<ReportComment> comments = new ArrayList<>();
 	
 	public void addAttachment(Attachment attach) {
 		this.attachments.add(attach);
 	} // addAttachment() end
+	
+	public void addComment(ReportComment comment) {
+		this.comments.add(comment);
+	}
 
 	public ReportCheck(String no, String reportNo, String empId, YN createYn, YN excludeYn, String title, String writer,
 			LocalDate endDate, YN publicYn, YN deptYn, int totalMemberCount, int createCount, int noCreateCount,
