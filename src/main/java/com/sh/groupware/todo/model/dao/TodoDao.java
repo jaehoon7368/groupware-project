@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import com.sh.groupware.common.dto.Attachment;
+import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.todo.model.dto.Todo;
 import com.sh.groupware.todo.model.dto.TodoBoard;
 import com.sh.groupware.todo.model.dto.TodoList;
@@ -17,8 +19,6 @@ public interface TodoDao {
 	int todoBoardEnroll(TodoBoard todoBoard);
 	@Select("select * from todoboard where emp_id = #{empId}")
 	List<TodoBoard> selectTodoBoardByempId(String empId);
-	@Select("select * from todoboard order by no asc")
-	List<TodoBoard> selectAllTodoBoard();
 	
 	@Select("select * from todoboard where no = #{no} order by no asc")
 	TodoBoard selectOneTodoBoardByNo(String no);
@@ -37,10 +37,23 @@ public interface TodoDao {
 	@Delete("delete from todo where no = #{no}")
 	int todoDelete(Todo todo);
 	int commentEnroll(Map<String, Object> param);
-	int bookMarkOn(String todoBoardNo);
+	int bookMarkOn(Map<String, Object> param);
+	int bookMarkOff(Map<String, Object> param);
 	@Select("select * from todoBoard where no = #{todoBoardNo}")
 	TodoBoard selectLastTodoBoardByNo(String todoBoardNo);
 	int updateTodoFileUpload(String attachNo);
+	@Select("select * from emp e left join attachment a on e.emp_id = a.pk_no where e.emp_id = #{empId}")
+	Emp selectOneEmpByEmpId(String empId);
+	@Select("select * from attachment where pk_no = #{empId}")
+	Attachment selectOneAttachmentByEmpId(String empId);
+	@Delete("delete from attachment where rename_filename = #{renameFilename}")
+	int todoAttachDelete(String renameFilename);
+	@Delete("delete from todocomment where no = #{no}")
+	int todoComentDelete(String no);
+	
+	List<TodoBoard> selectBookMarkTodoBoard(String empId);
+	int insertGroupEmp(Map<String, String> param);
+	List<TodoBoard> selectTodoBoardByEmpId(String empId);
 	
 	
 

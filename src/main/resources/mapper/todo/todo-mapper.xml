@@ -126,13 +126,25 @@
 </insert>
 
 <update id="bookMarkOn">
-	update
-		todoboard
-	set
-		bookmark = 'Y'
-	where
-		no = #{todoBoardNo}
+	insert into
+		todoboardbookmark
+	values(
+		seq_todoboardbookmark_no.nextval,
+		#{todoBoardNo},
+		#{empId},
+		default
+	)
+	
 </update>
+<update id="bookMarkOff">
+	update
+		todoboardbookmark
+	set
+		bookmark = 'N'
+	where
+		todoboard_no = #{todoBoardNo}
+</update>
+
 
 
 
@@ -143,11 +155,17 @@
         c.content todocontent,
         c.reg_date,
         c.emp_id,
-        c.todo_no
+        c.todo_no,
+        a.no attach_no,
+        a.*,
+        (select rename_filename from attachment where pk_no = c.emp_id) empfilename,
+        (select name from emp where emp_id =c.emp_id) empName
         from
         todo t left join todocomment c
-        on t.no =  c.todo_no 
-        where 
+        on t.no =  c.todo_no
+        left join attachment a
+        on t.no =a.pk_no
+        where  
         t.no = #{no} 
 <!--         select
         *
@@ -166,6 +184,36 @@
 	
 	</update>
 
+	<insert id="insertGroupEmp" >
+	    insert into todoboardgroup values( #{todoBoardNo}, #{empId} )
+	</insert>
+	
+	<select  id="selectBookMarkTodoBoard" resultMap="todoBoardMap">
+   		select distinct
+			tb.*
+		from
+		    todoboard tb left join todoboardGroup tbg
+  			 on tb.no = tbg.todoboard_no
+            left join todoboardbookmark tbm
+            on tb.no = tbm.todoboard_no
+ 	   where  
+	        (tb.emp_id = #{empId} or  tbg.emp_id = #{empId}) 
+	        and tbm.bookmark = 'Y'
+	        order by tb.no asc
+	</select>
+	
+	<select  id="selectTodoBoardByEmpId" resultMap="todoBoardMap">
+		select distinct
+			tb.*
+		from
+		    todoboard tb left join todoboardGroup tbg
+		    on tb.no = tbg.todoboard_no
+	    where  
+	        tb.emp_id = #{empId} or  tbg.emp_id = #{empId} 
+	        order by tb.no asc
+	
+	</select>
+
 
 
 <resultMap type="todo" id="todoMap">
@@ -178,8 +226,8 @@
  		<collection property ="attachments" ofType="attachment">
 			<id column="attch_no" property="no"/>
 			<result column="original_filename" property="originalFilename"/>
-			<result column="renamed_filename" property="renamedFilename"/>
-			<result column="attach_reg_date" property="regDate"/>
+			<result column="rename_filename" property="renameFilename"/>
+			<result column="reg_date" property="regDate"/>
 			<result column="category" property="category"/>
 			<result column="pkNo" property="pkNo"/>
 		</collection>	 
@@ -190,11 +238,14 @@
 			<result column="reg_date" property="regDate"/>
 			<result column="emp_id" property="empId"/>
 			<result column="todo_no" property="todoNo"/>
+			<result column="empfilename" property="empFilename"/>
+			<result column="empName" property="empName"/>
 		</collection>	
 
  
 
 </resultMap>
+<resultMap type= "emp" id="empMap"></resultMap>
 <resultMap type ="todoBoard" id="todoBoardMap"></resultMap>
 <resultMap type="todoList" id="todoListMap"></resultMap>
 <resultMap type="attachment" id="attachmentMap" ></resultMap>
