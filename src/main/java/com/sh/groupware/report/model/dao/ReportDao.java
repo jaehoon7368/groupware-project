@@ -79,5 +79,8 @@ public interface ReportDao {
 	int reportCommentDelete(String no);
 
 	ReportComment findByNoReportComment(String no);
+
+	@Select("select * from report where writer = #{empId}")
+	List<Report> findByWriterReportCheckList(String empId);
 	
 } // class end
