@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -65,7 +66,7 @@ public class ReportController {
 	
 	
 	@GetMapping("/report.do")
-	public String report(Model model, Authentication authentication) {
+	public String report(Model model, Authentication authentication, HttpSession session) {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		model.addAttribute("empId", empId);
 		
@@ -73,6 +74,9 @@ public class ReportController {
 		model.addAttribute("reportList", reportList);
 		
 		List<ReportCheck> newReportList = reportService.selectMyReportCheck(empId);
+		
+		List<Report> myReportList = reportService.findByWriterReportCheckList(empId);
+		session.setAttribute("myReportList", myReportList);
 		
 		return "report/reportHome";
 	} // report() end
@@ -103,7 +107,7 @@ public class ReportController {
 	
 	
 	@PostMapping("/reportCreate.do")
-	public String reportCreate(Report report, Authentication authentication, @RequestParam String _endDate, @RequestParam String reference) {
+	public String reportCreate(Report report, Authentication authentication, @RequestParam String _endDate, @RequestParam String reference, HttpSession session) {
 		log.debug("_endDate = {}", _endDate);
 		log.debug("reference = {}", reference);
 		log.debug("authentiation, {}", authentication);
@@ -137,12 +141,16 @@ public class ReportController {
 		
 		int result = reportService.insertReport(report);
 		
+		List<Report> myReportList = reportService.findByWriterReportCheckList(loginMember.getEmpId());
+		session.setAttribute("myReportList", myReportList);
+		
 		return "redirect:/report/reportCreateView.do";
 	} // reportCreate() end
 	
 	
+	@ResponseBody
 	@PostMapping("/updateExcludeYn.do")
-	public String updateExcludeYn(@RequestParam(value="report[]", required = false) List<String> report, @RequestParam(value = "unreport[]", required = false) List<String> unreport, @RequestParam String no, Model model) {
+	public List<ReportCheck> updateExcludeYn(@RequestParam(value="report[]", required = false) List<String> report, @RequestParam(value = "unreport[]", required = false) List<String> unreport, @RequestParam String no, Model model) {
 		log.debug("report = {}", report);
 		log.debug("unreport = {}", unreport);
 		log.debug("no = {}", no);
@@ -169,7 +177,7 @@ public class ReportController {
 		List<ReportCheck> reportCheckList = reportService.findByReportNoReportCheckList(no);
 		model.addAttribute("reportCheckList", reportCheckList);
 		
-		return "redirect:/report/reportForm.do?no=" + no;
+		return reportCheckList;
 	} // updateExcludeYn() end
 	
 	
@@ -355,7 +363,7 @@ public class ReportController {
 	public String reportDetailDelete(ReportDetail reportDetail) {
 		log.debug("reportDetail = {}", reportDetail);
 		int result = reportService.reportDetailDelete(reportDetail);
-		return "redirect:/report/reportForm.do?no=" + reportDetail.getReportNo();
+		return "redirect:/report/reportDetail.do?no=" + reportDetail.getReportNo();
 	} // reportDetailDelete() end
 	
 	

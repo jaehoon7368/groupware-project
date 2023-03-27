@@ -52,4 +52,6 @@ public interface ReportService {
 
 	ReportComment findByNoReportComment(String no);
 
+	List<Report> findByWriterReportCheckList(String empId);
+
 } // interface end

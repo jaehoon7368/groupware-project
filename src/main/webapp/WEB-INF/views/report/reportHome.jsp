@@ -111,7 +111,7 @@
 												console.log(data.tagName);
 												console.log(data.classList[0]);
 												console.log(data);
-												location.href = `${pageContext.request.contextPath}/report/reportForm.do?no=\${data.dataset.no}`;
+												location.href = `${pageContext.request.contextPath}/report/reportDetail.do?no=\${data.dataset.no}`;
 												break;
 											} else {
 												data = data.parentElement;
