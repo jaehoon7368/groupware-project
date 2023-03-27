@@ -51,7 +51,7 @@
                                 <div class="con">
                                     <ul class="container-detail font-small">
                                         <li><a class="container-a" href="${pageContext.request.contextPath}/emp/empHome.do">내 근태 현황</a></li>
-                                        <li><a class="container-a" href="#">내 연차 내역</a></li>
+                                        <li><a class="container-a" href="${pageContext.request.contextPath}/emp/empAnnual.do">내 연차 내역</a></li>
                                         <li><a class="container-a" href="${pageContext.request.contextPath }/emp/empInfo.do">내 인사정보</a></li>
                                     </ul>
                                 </div>
@@ -149,7 +149,7 @@ document.querySelector('#btn-startwork').addEventListener('click', function () {
 	   headers,
 	   contentType : "application/json; charset=utf-8",
 	   success(data){
-
+			console.log(data);
 	       if(data.state === "성공"){
 	           alert("출근이 성공적으로 등록됬습니다.");
 	           location.reload();
@@ -162,6 +162,7 @@ document.querySelector('#btn-startwork').addEventListener('click', function () {
    });
 });
 
+//퇴근하기 버튼 누를시
 document.querySelector('#btn-endwork').addEventListener('click', function () {
 	
 	const csrfHeader = "${_csrf.headerName}";
@@ -233,14 +234,18 @@ function getStartAndEndDateOfWeek() {
 		  contentType : "application/json; charset=utf-8",
 		  success(data){
 			  console.log(data);
+			  const {totalMonthTime, weekTotalTime} = data;
 			  const totalWorkTime = document.querySelector("#totalwork-time");
 			  const mainTotalWorkTime = document.querySelector("#main-totalwork-time");
 			  const mainWorkTime = document.querySelector("#main-work-time");
-			  let time = 144000000 - data; // 40시간 - 주간근무시간
-			  console.log(chageWorkTime(data));
-			  totalWorkTime.textContent = chageWorkTime(data);
-			  mainTotalWorkTime.textContent = chageWorkTime(data);
-			  mainWorkTime.textContent = chageWorkTime(time);
+			  const monthWorkTime = document.querySelector("#main-month-work-time");
+			  console.log("totalMonthTime = " + totalMonthTime);
+			  
+			  let times = 144000000 - weekTotalTime; // 40시간 - 주간근무시간
+			  totalWorkTime.textContent = chageWorkTime(weekTotalTime);
+			  mainTotalWorkTime.textContent = chageWorkTime(weekTotalTime);
+			  mainWorkTime.textContent = chageWorkTime(times);
+			  monthWorkTime.textContent = chageWorkTime(totalMonthTime);
 		  },
 		  error : console.log
 		  

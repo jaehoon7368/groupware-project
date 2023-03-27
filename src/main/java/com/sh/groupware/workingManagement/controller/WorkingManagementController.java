@@ -141,9 +141,7 @@ public class WorkingManagementController {
 		log.debug("dateText={}", dateText);
 		Emp principal = (Emp) authentication.getPrincipal();
 		String empId = principal.getEmpId();
-		
-		String time = now.format(dayff); //이번달
-		
+				
 		String[] arr = dateText.split("\\.");
 		String date = arr[0].substring(2) + "/" + arr[1] ;
 		log.debug("date = {}",date);
@@ -151,13 +149,9 @@ public class WorkingManagementController {
 		Map<String,Object> param = new HashMap<>();
 		param.put("empId", empId);
 		param.put("date", date);
-		param.put("time", time);
 		
 		 // 회원의 월별 근태현황 조회
 		List<WorkingManagement> workList = workingManagementService.selectMonthWork(param);
-		
-		//이번달 누적 시간 가져오기
-		int totalMonthTime = workingManagementService.totalMonthTime(param);
 		
 		Calendar cal = new Calendar();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM");
@@ -189,7 +183,6 @@ public class WorkingManagementController {
 		Map<String, Object> response = new HashMap<>();
 		response.put("workList", workList);
 		response.put("weekDates", weekDates);
-		response.put("totalMonthTime", totalMonthTime);
 
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
@@ -216,7 +209,7 @@ public class WorkingManagementController {
 				.body(weekList);
 	}
 	
-	// 금주의 누적시간 가져오기
+	// 이번달, 금주의 누적시간 가져오기
 	@GetMapping("/weekTotalTime.do")
 	public ResponseEntity<?> weekTotalTime(String start, String end, Authentication authentication){
 		log.debug("start = {}",start);
@@ -224,15 +217,25 @@ public class WorkingManagementController {
 		Emp principal = (Emp) authentication.getPrincipal();
 		String empId = principal.getEmpId();
 		
+		String monthTime = now.format(dayff);
+		
+		
 		Map<String,Object> param = new HashMap<>();
+		Map<String,Object> time = new HashMap<>();
 		param.put("empId", empId);
 		param.put("start", start);
 		param.put("end", end);
+		param.put("monthTime", monthTime);
 		
+		// 금주 누적시간 가져오기
 		int weekTotalTime = workingManagementService.weekTotalTime(param);
+		time.put("weekTotalTime",weekTotalTime);
+		//이번달 누적 시간 가져오기
+		int totalMonthTime = workingManagementService.totalMonthTime(param);
+		time.put("totalMonthTime", totalMonthTime);
 		
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
-				.body(weekTotalTime);
+				.body(time);
 	}
 }
