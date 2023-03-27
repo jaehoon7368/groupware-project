@@ -30,17 +30,17 @@
 																		<tbody>
 																			<tr>
 																				<td>
-																					<span class="sign_rank">차장</span>
+																					<span class="sign_rank">${sessionScope.loginMember.jobTitle}</span>
 																				</td>
 																			</tr>
 																			<tr>
 																				<td>
-																					<span class="sign_wrap">아무개</span>
+																					<span class="sign_wrap">${sessionScope.loginMember.name}</span>
 																				</td>
 																			</tr>
 																			<tr>
 																				<td>
-																					<span class="sign_date">2023-03-15</span>
+																					<span class="sign_date"></span>
 																				</td>
 																			</tr>
 																		</tbody>
@@ -51,7 +51,7 @@
 													</table>
 												</div>
 							
-												
+												<%-- 
 												<div class="sign-div-right">
 													<table class="sign-right-tbl">
 														<tbody>
@@ -83,28 +83,38 @@
 															</tr>
 														</tbody>
 													</table>
-												</div>
+												</div> 
+												--%>
 											</td>
 										</tr>
 									</tbody>
 								</table>
-								
-								<br />
 								<script>
 									const nowDate = Date.now();
 									const dateOff = new Date().getTimezoneOffset() * 60000;
 									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
+									
+									document.querySelector('.sign_date').innerText = today;
 								</script>
+								
+								<br />
 								<form:form action="${pageContext.request.contextPath}/sign/dayOffCreate.do" method="post" name="dayOffFrm">
 									<div class="div-sign-tbl">
 										<table class="sign-tbl-bottom">
 											<tbody>
 												<tr>
+													<td>긴급&nbsp;문서</td>
+													<td>
+														<input type="radio" name="emergency" id="emergencyY" value="Y" /><label for="emergencyY">여</label>
+														<input type="radio" name="emergency" id="emergencyN" value="N" checked /><label for="emergencyN">부</label>
+													</td>
+												</tr>
+												<tr>
 													<td>
 														휴가&nbsp;종류
 													</td>
 													<td>
-														<select class="vacationType" name="vacationType" id="vacationType">
+														<select class="vacationType" name="type" id="vacationType">
 															<option value="D">연차</option>
 															<option value="H">반차</option>
 														</select>
@@ -117,11 +127,11 @@
 													<td>
 														<span>
 															<span>
-																<input id="start-date" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
+																<input id="start-date" name="startDate" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
 															</span>
 															&nbsp;~&nbsp; 
 															<span>
-																<input id="end-date" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
+																<input id="end-date" name="endDate" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
 															</span>
 															&nbsp;&nbsp;
 															<span>선택일수 : 
@@ -148,10 +158,14 @@
 													</td>
 													<td>
 														<span id="restPointArea">
-															잔여연차 : *3*
+															잔여연차 : <span id="restPoint">${sessionScope.loginMember.baseDayOff}</span>
 														</span>&nbsp;&nbsp;
 														<span id="applyPointArea">
 															신청연차 : <span id="applyPoint"></span>
+															<input type="hidden" name="count" />
+														</span> &nbsp;&nbsp;
+														<span id="finalPointArea">
+															최종 남은 연차 : <span id="finalPoint"></span>
 														</span> 
 													</td>
 												</tr>
@@ -160,7 +174,7 @@
 														<b style="color: rgb(255, 0, 0);">*</b>&nbsp;휴가&nbsp;사유 
 													</td>
 													<td>
-														<textarea name="dayOffReason" class="txta_editor"></textarea>
+														<textarea name="content" class="txta_editor"></textarea>
 													</td>
 												</tr>
 												<tr class="sign-tbl-bottom-tr">
@@ -175,23 +189,34 @@
 											let start;
 											let end;
 											let diff = 1;
+											let base;
+											const startDate = document.querySelector('#start-date');
+											const endDate = document.querySelector('#end-date');
+											const usingPointArea = document.querySelector('#usingPointArea');
+											const finalDayOff = document.querySelector('#finalPoint');
 											
 											const diffDay = (start, end) => {
 												diff = end - start;
-												return diff / (1000 * 60 * 60 * 24);
+												return diff / (1000 * 60 * 60 * 24) + 1;
 											};
 											
-											const startDate = document.querySelector('#start-date');
-											const endDate = document.querySelector('#end-date');
+											const inner = (tag, val) => {
+												return tag.innerText = val;
+											};
 											
-											startDate.min = today;
-											startDate.value = today;
-											endDate.min = today;
-											endDate.value = today;
+											window.addEventListener('load', () => {
+												base = document.querySelector('#restPoint').innerText;
+												
+												startDate.min = today;
+												startDate.value = today;
+												endDate.min = today;
+												endDate.value = today;
+												
+												inner(usingPointArea, diff);
+												inner(applyPoint, diff);
+												inner(finalDayOff, base - diff);
+											});
 											
-											const usingPointArea = document.querySelector('#usingPointArea');
-											usingPointArea.innerText = diff;
-											applyPoint.innerText = diff;
 											
 											startDate.addEventListener('change', (e) => {
 												endDate.min = startDate.value;
@@ -203,17 +228,18 @@
 													endDate.value = startDate.value;
 													end = new Date(endDate.value).getTime();
 												}
-												
-												usingPointArea.innerText = diffDay(start, end) + 1;
-												applyPoint.innerText = diffDay(start, end) + 1;
+												inner(usingPointArea, diffDay(start, end));
+												inner(applyPoint, diffDay(start, end));
+												inner(finalDayOff, base - diffDay(start, end));
 											});
 											
 											endDate.addEventListener('change', (e) => {
 												end = new Date(endDate.value).getTime();
 												start = new Date(startDate.value).getTime();
-												
-												usingPointArea.innerText = diffDay(start, end) + 1;
-												applyPoint.innerText = diffDay(start, end) + 1;
+
+												inner(usingPointArea, diffDay(start, end));
+												inner(applyPoint, diffDay(start, end));
+												inner(finalDayOff, base - diffDay(start, end));
 											});
 										</script>
 									</div>
@@ -224,19 +250,23 @@
 						<script>
 							const signCreate = () => {
 								const frm = document.dayOffFrm;
-								const reason = frm.dayOffReason;
-								const vacationType = frm.vacationType;
+								const content = frm.content;
+								const type = frm.type;
 								const half = frm.half;
+								console.log(frm.startDate.value);
+								console.log(frm.endDate.value);
 								console.log(vacationType.value);
 								console.log(half.value);
 								
-								if (/^\s+$/.test(reason.value) || !reason.value) {
+								frm.count.value = applyPoint.innerText;
+								
+								if (/^\s+$/.test(content.value) || !content.value) {
 									alert('휴가 사유를 작성해주세요.');
-									reason.select();
+									content.select();
 									return false;
 								}
 								
-								if (vacationType.value == 'H' && half.value == 'X') {
+								if (type.value == 'H' && half.value == 'X') {
 									alert('반차 여부를 오전 또는 오후로 선택해주세요.');
 									return false;
 								}

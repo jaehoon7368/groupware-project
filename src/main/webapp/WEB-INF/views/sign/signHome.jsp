@@ -65,18 +65,58 @@
 							<div class="div-sign-all">
 								<div class="div-sign-all-title">기안 진행 문서</div>
 								<div class="div-sign-all-tbl">
-									<table>
+									<table class="div-sign-all-tbl-ing">
 										<thead>
 											<tr>
 												<td>기안일</td>
 												<td>결재양식</td>
 												<td>긴급</td>
-												<td>제목</td>
 												<td>결재상태</td>
 											</tr>
 										</thead>
 										<tbody>
-											
+											<c:if test="${empty myCreateSignList}">
+												<tr>
+													<td colspan="4">기안 진행 중인 문서가 없습니다.</td>
+												</tr>
+											</c:if>
+											<c:if test="${!empty myCreateSignList}">
+												<c:forEach items="${myCreateSignList}" var="sign">
+													<c:if test="${sign.complete == 'N'}">
+														<tr class="">
+															<td>${sign.regDate}</td>
+															<td>
+																<c:choose>
+																	<c:when test="${sign.type == 'D'}">연차신청서</c:when>
+																	<c:when test="${sign.type == 'P'}">비품신청서</c:when>
+																	<c:when test="${sign.type == 'T'}">출장신청서</c:when>
+																	<c:when test="${sign.type == 'R'}">사직서</c:when>
+																</c:choose>
+															</td>
+															<td>
+																<c:if test="${sign.emergency == 'Y'}">
+																	<button type="button" class="alert button hollow tiny">긴급</button>
+																</c:if>
+															</td>
+															<td>
+																<c:forEach items="${sign.signStatusList}" var="signStatus" varStatus="vs">
+																	<c:if test="${vs.last}">
+																		<c:if test="${signStatus.status == 'S' || signStatus.status == 'W'}">
+																			<button class="small success button">진행중</button>
+																		</c:if>
+																		<c:if test="${signStatus.status == 'C'}">
+																			<button class="small secondary button">완료</button>
+																		</c:if>
+																		<c:if test="${signStatus.status == 'H' || signStatus.status == 'R'}">
+																			<button class="small warning button">보류/반려</button>
+																		</c:if>
+																	</c:if>
+																</c:forEach>
+															</td>
+														</tr>
+													</c:if>
+												</c:forEach>
+											</c:if>
 										</tbody>
 									</table>
 								</div>
@@ -92,12 +132,52 @@
 												<td>기안일</td>
 												<td>결재양식</td>
 												<td>긴급</td>
-												<td>제목</td>
 												<td>결재상태</td>
 											</tr>
 										</thead>
 										<tbody>
-											
+											<c:if test="${empty myCreateSignList}">
+												<tr>
+													<td colspan="4">기안이 완료된 문서가 없습니다.</td>
+												</tr>
+											</c:if>
+											<c:if test="${!empty myCreateSignList}">
+												<c:forEach items="${myCreateSignList}" var="sign">
+													<c:if test="${sign.complete == 'Y'}">
+														<tr class="">
+															<td>${sign.regDate}</td>
+															<td>
+																<c:choose>
+																	<c:when test="${sign.type == 'D'}">연차신청서</c:when>
+																	<c:when test="${sign.type == 'P'}">비품신청서</c:when>
+																	<c:when test="${sign.type == 'T'}">출장신청서</c:when>
+																	<c:when test="${sign.type == 'R'}">사직서</c:when>
+																</c:choose>
+															</td>
+															<td>
+																<c:if test="${sign.emergency == 'Y'}">
+																	<button type="button" class="alert button hollow tiny">긴급</button>
+																</c:if>
+															</td>
+															<td>
+																<c:forEach items="${sign.signStatusList}" var="signStatus" varStatus="vs">
+																	<c:if test="${vs.last}">
+																		<c:if test="${signStatus.status == 'S' || signStatus.status == 'W'}">
+																			<button class="small success button">진행중</button>
+																		</c:if>
+																		<c:if test="${signStatus.status == 'C'}">
+																			<button class="small secondary button">완료</button>
+																		</c:if>
+																		<c:if test="${signStatus.status == 'H' || signStatus.status == 'R'}">
+																			<button class="small warning button">보류/반려</button>
+																		</c:if>
+																	</c:if>
+																</c:forEach>
+															</td>
+														</tr>
+													</c:if>
+												</c:forEach>
+											</c:if>
 										</tbody>
 									</table>
 								</div>

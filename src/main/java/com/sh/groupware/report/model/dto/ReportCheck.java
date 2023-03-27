@@ -39,12 +39,13 @@ public class ReportCheck extends ReportMember {
 	
 	public void addComment(ReportComment comment) {
 		this.comments.add(comment);
-	}
-
-	public ReportCheck(String no, String reportNo, String empId, YN createYn, YN excludeYn, String title, String writer,
-			LocalDate endDate, YN publicYn, YN deptYn, int totalMemberCount, int createCount, int noCreateCount,
-			String empName, String jobTitle, String deptTitle, String detailNo, String content, LocalDate createDate) {
-		super(no, reportNo, empId, createYn, excludeYn);
+	} // addComment() end
+	
+	public ReportCheck(String no, String reportNo, String empId, YN createYn, YN excludeYn, String profileImg,
+			String title, String writer, LocalDate endDate, YN publicYn, YN deptYn, int totalMemberCount,
+			int createCount, int noCreateCount, String empName, String jobTitle, String deptTitle, String detailNo,
+			String content, LocalDate createDate, List<Attachment> attachments, List<ReportComment> comments) {
+		super(no, reportNo, empId, createYn, excludeYn, profileImg);
 		this.title = title;
 		this.writer = writer;
 		this.endDate = endDate;
@@ -59,14 +60,8 @@ public class ReportCheck extends ReportMember {
 		this.detailNo = detailNo;
 		this.content = content;
 		this.createDate = createDate;
-	} // ReportCheck() end
-
-	public ReportCheck(String no, String reportNo, String empId, YN createYn, YN excludeYn, int totalMemberCount,
-			int createCount, int noCreateCount) {
-		super(no, reportNo, empId, createYn, excludeYn);
-		this.totalMemberCount = totalMemberCount;
-		this.createCount = createCount;
-		this.noCreateCount = noCreateCount;
+		this.attachments = attachments;
+		this.comments = comments;
 	} // ReportCheck() end
 	
 } // class end

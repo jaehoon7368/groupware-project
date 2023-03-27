@@ -30,17 +30,17 @@
 																		<tbody>
 																			<tr>
 																				<td>
-																					<span class="sign_rank">차장</span>
+																					<span class="sign_rank">${sessionScope.loginMember.jobTitle}</span>
 																				</td>
 																			</tr>
 																			<tr>
 																				<td>
-																					<span class="sign_wrap">아무개</span>
+																					<span class="sign_wrap">${sessionScope.loginMember.name}</span>
 																				</td>
 																			</tr>
 																			<tr>
 																				<td>
-																					<span class="sign_date">2023-03-15</span>
+																					<span class="sign_date"></span>
 																				</td>
 																			</tr>
 																		</tbody>
@@ -51,7 +51,7 @@
 													</table>
 												</div>
 							
-												
+												<%-- 
 												<div class="sign-div-right">
 													<table class="sign-right-tbl">
 														<tbody>
@@ -83,11 +83,19 @@
 															</tr>
 														</tbody>
 													</table>
-												</div>
+												</div> 
+												--%>
 											</td>
 										</tr>
 									</tbody>
 								</table>
+								<script>
+									const nowDate = Date.now();
+									const dateOff = new Date().getTimezoneOffset() * 60000;
+									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
+									
+									document.querySelector('.sign_date').innerText = today;
+								</script>
 								
 								<br />
 								<div class="div-sign-tbl">

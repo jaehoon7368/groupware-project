@@ -41,5 +41,11 @@ public interface EmpDao {
 
 
 	List<Emp> selectAllEmpAddTitleDept();
+
+	
+	List<Emp> findByMyDeptCodeManagerEmpList(Map<String, Object> param);
+
+	@Select("select * from emp where dept_code = 'd1' and job_code in ('j1', 'j2') order by job_code desc")
+	List<Emp> findByD1ManagerEmpList();
 	
 }
