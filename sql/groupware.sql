@@ -125,8 +125,7 @@ select * from dept;
 select * from emp;
 select * from attachment;
 select * from working_management;
-
-
+delete from working_management where no = '29';
 
 delete from emp where emp_id = '230304';
 

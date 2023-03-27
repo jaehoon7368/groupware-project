@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sh.groupware.emp.model.dto.EmpDetail;
@@ -65,6 +66,7 @@ public class EmpController {
 	DateTimeFormatter dayf = DateTimeFormatter.ofPattern("yy/MM/dd"); //날짜 패턴 변경
 	LocalDateTime now = LocalDateTime.now(); //현재 시간
 	
+	//로그인 기능
 	@PostMapping("/loginSuccess.do")
 	public String loginSuccess(HttpSession session) {
 		log.debug("loginSuccess 핸들러 호출!");
@@ -83,6 +85,16 @@ public class EmpController {
 		session.setAttribute("deptList", deptList);
 		
 		return "redirect:/home/home.do";
+	}
+	
+	//로그아웃 기능
+	@GetMapping("/empLogout.do")
+	public String empLogout(SessionStatus status) {
+		
+//		if(!status.isComplete())
+//			status.setComplete();
+		
+		return "redirect:/";
 	}
 	
 	@GetMapping("/empHome.do")
@@ -173,6 +185,10 @@ public class EmpController {
 		
 		return "redirect:/emp/empInfo.do";
 	}
+	
+	//내 인사정보 페이지 불러오기
+	@GetMapping("/empAnnual.do")
+	public void empAnnual() {}
 	
 	@GetMapping("/passwordEncode.do")
 	public void selectOneEmp() {

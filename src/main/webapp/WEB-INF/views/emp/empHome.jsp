@@ -74,7 +74,7 @@
                                 </div>
                                 <div>
                                     <p class="font-14">이번달 누적</p>
-                                    <h4 class="color-gray" id="main-month-work-time">29h 20m 8s</h4>
+                                    <h4 class="color-gray" id="main-month-work-time">0h 0m 0s</h4>
                                 </div>
                                 <div>
                                     <p class="font-14">이번달 연장</p>
@@ -132,15 +132,10 @@
                     contentType : "application/json; charset=utf-8",
                     success(data){
                         
-                        const {totalMonthTime ,weekDates, workList} = data;
+                        const {weekDates, workList} = data;
                         console.log(weekDates);
                         console.log(workList);
                         
-                        const monthWorkTime = document.querySelector("#main-month-work-time");
-                        monthWorkTime.textContent = chageWorkTime(totalMonthTime);
-         	
-                    
-                		
                         const container = document.querySelector("#work-info-container");
                         
                         const table = document.createElement("table");
@@ -282,6 +277,7 @@
                     error:console.log
                 }); 
             }
+            
 document.querySelector("#work-info-container").addEventListener('click',(e)=>{
  
 		$('[data-open-details]').click(function (e) {
