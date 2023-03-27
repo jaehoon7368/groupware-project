@@ -153,6 +153,7 @@
 						</div>
 						<!-- 결재 문서 end -->
 						<script>
+							/* 사직서 폼 제출 */
 							const signCreate = () => {
 								const frm = document.resignationCreateFrm;
 								const reason = frm.reason;

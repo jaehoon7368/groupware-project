@@ -98,63 +98,168 @@
 								</script>
 								
 								<br />
-								<div class="div-sign-tbl">
-									<table class="sign-tbl-bottom">
-										<tbody>
-											<tr class="sign-tbl-bottom-tr">
-												<th>제목</th>
-												<td colspan="5">
-													<input type="text" name="title" id="title" />
-												</td>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<th rowspan="2">품명</th>
-												<th rowspan="2">수량</th>
-												<th colspan="2">구매예정가격</th>
-												<th rowspan="2">용도</th>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<th>단가</th>
-												<th>금액</th>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<td><input type="text" name="name" id="name" /></td>
-												<td><input type="number" name="amount" id="amount" min="0" /></td>
-												<td><input type="number" name="price" id="price" min="0" /></td>
-												<td><input type="text" name="totalPrice" id="totalPrice" min="0" /></td>
-												<td><input type="text" name="purpose" id="purpose" /></td>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<td><input type="text" name="name" id="name" /></td>
-												<td><input type="number" name="amount" id="amount" min="0" /></td>
-												<td><input type="number" name="price" id="price" min="0" /></td>
-												<td><input type="text" name="totalPrice" id="totalPrice" min="0" /></td>
-												<td><input type="text" name="purpose" id="purpose" /></td>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<td><input type="text" name="name" id="name" /></td>
-												<td><input type="number" name="amount" id="amount" min="0" /></td>
-												<td><input type="number" name="price" id="price" min="0" /></td>
-												<td><input type="text" name="totalPrice" id="totalPrice" min="0" /></td>
-												<td><input type="text" name="purpose" id="purpose" /></td>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<td><input type="text" name="name" id="name" /></td>
-												<td><input type="number" name="amount" id="amount" min="0" /></td>
-												<td><input type="number" name="price" id="price" min="0" /></td>
-												<td><input type="text" name="totalPrice" id="totalPrice" min="0" /></td>
-												<td><input type="text" name="purpose" id="purpose" /></td>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<th colspan="2">합계</th>
-												<td colspan="3"></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
+								<form:form action="${pageContext.request.contextPath}/sign/productCreate.do" method="post" name="productCreateFrm">
+									<div class="div-sign-tbl">
+										<table class="sign-tbl-bottom">
+											<tbody>
+												<tr class="sign-tbl-bottom-tr">
+													<th>제목</th>
+													<td colspan="5">
+														<input type="text" name="title" id="title" />
+													</td>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<th rowspan="2">품명</th>
+													<th rowspan="2">수량</th>
+													<th colspan="2">구매예정가격</th>
+													<th rowspan="2">용도</th>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<th>단가</th>
+													<th>금액</th>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<td><input type="text" name="name" id="name1" /></td>
+													<td><input type="text" name="amount" id="amount1" min="1" /></td>
+													<td><input type="text" name="price" id="price1" min="1" /></td>
+													<td><input type="text" name="totalPrice" id="totalPrice1" min="1" /></td>
+													<td><input type="text" name="purpose" id="purpose1" /></td>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<td><input type="text" name="name" id="name2" /></td>
+													<td><input type="text" name="amount" id="amount2" min="1" /></td>
+													<td><input type="text" name="price" id="price2" min="1" /></td>
+													<td><input type="text" name="totalPrice" id="totalPrice2" min="1" /></td>
+													<td><input type="text" name="purpose" id="purpose2" /></td>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<td><input type="text" name="name" id="name3" /></td>
+													<td><input type="text" name="amount" id="amount3" min="1" /></td>
+													<td><input type="text" name="price" id="price3" min="1" /></td>
+													<td><input type="text" name="totalPrice" id="totalPrice3" min="1" /></td>
+													<td><input type="text" name="purpose" id="purpose3" /></td>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<td><input type="text" name="name" id="name4" /></td>
+													<td><input type="text" name="amount" id="amount4" min="1" /></td>
+													<td><input type="text" name="price" id="price4" min="1" /></td>
+													<td><input type="text" name="totalPrice" id="totalPrice4" min="1" /></td>
+													<td><input type="text" name="purpose" id="purpose4" /></td>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<th colspan="2">합계</th>
+													<td colspan="3" id="finalPrice"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</form:form>
 							</div>
 						</div>
 						<!-- 결재 문서 end -->
+						<script>
+							/* 숫자 입력 칸 문자 입력이나 0 입력 시 1로 세팅 및 , 작성 */
+							const keyupChange = (val, tag) => {
+								val = Number(val.replaceAll(',', ''));
+								
+								if (isNaN(val) || val == 0) {
+									tag.value = 1;
+								} else {
+									const formatValue = val.toLocaleString('ko-KR');
+									tag.value = formatValue;
+								}
+							};
+							
+							
+							/* 수량 input keyup 이벤트핸들러 */
+							document.querySelectorAll('[name=amount]').forEach((amount) => {
+								amount.addEventListener('keyup', (e) => {
+									keyupChange(e.target.value, amount);
+								});
+							});
+							
+							
+							let all = 0;
+							/* 단가 input keyup 이벤트핸들러 */
+							document.querySelectorAll('[name=price]').forEach((price) => {
+								price.addEventListener('keyup', (e) => {
+									keyupChange(e.target.value, price);
+									
+									const amount = e.target.parentElement.previousElementSibling.children[0];
+									const totalPrice = e.target.parentElement.nextElementSibling.children[0];
+									const multi = Number(amount.value.replaceAll(',', '')) * Number(e.target.value.replaceAll(',', ''));
+									
+									if (isNaN(multi) || multi == 0) {
+										totalPrice.value = 1;
+									} else {
+										const formatTotal = multi.toLocaleString('ko-KR');
+										totalPrice.value = formatTotal;
+									}
+								});
+							});
+							
+							
+							/* 비품신청서 폼 제출 */
+							const signCreate = () => {
+								const frm = document.productCreateFrm;
+								const name = frm.name;
+								const amount = frm.amount;
+								const price = frm.price;
+								const totalPrice = frm.totalPrice;
+								const purpose = frm.purpose;
+								
+								for (let i = 0; i < name.length; i++) {
+									if (i == 0) {
+										if (/^\s+$/.test(name[i].value) || !name[i].value) {
+											alert('품명을 입력해주세요.');
+											name[i].select();
+											return false;
+										}
+										
+										if (/^\s+$/.test(amount[i].value) || !amount[i].value) {
+											alert('수량을 입력해주세요.');
+											amount[i].select();
+											return false;
+										}
+
+										if (/^\s+$/.test(price[i].value) || !price[i].value) {
+											alert('단가를 입력해주세요.');
+											price[i].select();
+											return false;
+										}
+
+										if (/^\s+$/.test(purpose[i].value) || !purpose[i].value) {
+											alert('용도를 입력해주세요.');
+											purpose[i].select();
+											return false;
+										}
+									} // if (i == 0)
+									else {
+										if (name[i].value && !/^\s+$/.test(name[i].value)) {
+											if (/^\s+$/.test(amount[i].value) || !amount[i].value) {
+												alert('수량을 입력해주세요.');
+												amount[i].select();
+												return false;
+											}
+	
+											if (/^\s+$/.test(price[i].value) || !price[i].value) {
+												alert('단가를 입력해주세요.');
+												price[i].select();
+												return false;
+											}
+	
+											if (/^\s+$/.test(purpose[i].value) || !purpose[i].value) {
+												alert('용도를 입력해주세요.');
+												purpose[i].select();
+												return false;
+											}
+										} // if end
+									} // else (i != 0)
+								} // for end
+								
+								//frm.submit();
+							};
+						</script>
 						
 						<div class="div-sign-bottom">
 							<div class="div-sign-bottom-title">
