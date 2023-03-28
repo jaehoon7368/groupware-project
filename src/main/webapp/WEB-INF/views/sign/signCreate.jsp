@@ -5,6 +5,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 					<div class="font-small home-container">
 						<!-- 상단 타이틀 -->
@@ -26,7 +28,9 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<button class="my-menu">로그아웃</button>
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="GET">
+											<button class="my-menu" type="submit">로그아웃</button>								
+										</form:form>
 									</div>
 								</div>
 							</div>
