@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sh.groupware.sign.model.dao.SignDao">
+
+	<insert id="insertSign">
+		insert into
+			sign
+		values (
+			's-' || to_char(sysdate, 'yyyymmdd') || '-' || to_char(seq_sign_no.nextval, 'fm000'),
+			#{empId},
+			#{deptCode},
+			#{jobCode},
+			#{type},
+			sysdate,
+			#{emergency},
+			default
+		)
+		
+		<selectKey order="AFTER" resultType="string" keyProperty="no">
+			select
+				's-' || to_char(sysdate, 'yyyymmdd') || '-' || to_char(seq_sign_no.currval, 'fm000')
+			from
+				dual
+		</selectKey>
+	</insert>
+	
+	<select id="findByMyCreateSignList" resultMap="signMap">
+		select
+			s.*,
+			ss.*
+		from
+			sign s right join signStatus ss
+				on s.no = ss.sign_no
+		where
+			s.emp_id = #{empId}
+	</select>
+	<resultMap type="sign" id="signMap">
+		<id column="no" property="no"/>
+		<result column="emp_id" property="empId"/>
+		<result column="dept_code" property="deptCode"/>
+		<result column="job_code" property="jobCode"/>
+		<result column="type" property="type"/>
+		<result column="reg_date" property="regDate"/>
+		<result column="emergency" property="emergency"/>
+		<result column="complete" property="complete"/>
+		
+		<collection property="signStatusList" ofType="signStatus">
+			<id column="signStatus_no" property="no"/>
+			<result column="sign_no" property="signNo"/>
+			<result column="emp_id" property="empId"/>
+			<result column="sign_order" property="signOrder"/>
+			<result column="status" property="status"/>
+			<result column="signStatus_reg_date" property="regDate"/>
+		</collection>
+	</resultMap>
+	
+</mapper>

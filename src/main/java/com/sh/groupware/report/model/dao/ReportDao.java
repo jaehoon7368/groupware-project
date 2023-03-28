@@ -24,10 +24,10 @@ public interface ReportDao {
 	@Insert("insert into reportMember values (seq_reportMember_no.nextval, #{reportNo}, #{empId}, default, default)")
 	int insertReportMember(ReportMember member);
 
-	@Select("select * from reportMember where dept_code = #{deptCode}")
+	@Select("select * from view_reportMember where dept_code = #{deptCode}")
 	List<ReportMember> findByDeptCodeReportMember(String deptCode);
 
-	@Select("select * from reference where dept_code = #{deptCode}")
+	@Select("select * from view_reportReference where dept_code = #{deptCode}")
 	List<Reference> findByDeptCodeReference(String deptCode);
 
 	@Insert("insert into reference values (seq_reference_no.nextval, #{empId}, #{type}, #{referenceNo}, #{referenceType}, #{deptCode})")
@@ -38,10 +38,10 @@ public interface ReportDao {
 	@Select("select * from view_reportCheck where report_no = #{no}")
 	List<ReportCheck> findByReportNoReportCheckList(String no);
 
-	@Select("select * from reportMember where report_no = #{no}")
+	@Select("select * from view_reportMember where report_no = #{no}")
 	List<ReportMember> findByReportNoMemberList(String no);
 
-	@Select("select * from reference where reference_no = #{no}")
+	@Select("select * from view_reportReference where reference_no = #{no}")
 	List<Reference> findByReportNoReference(String no);
 
 	@Update("update reportMember set exclude_yn = 'Y' where report_no = #{no} and emp_id = #{empId}")

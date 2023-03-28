@@ -14,8 +14,13 @@ public class SignStatus {
 	private String no;
 	private String signNo;
 	private String empId;
-	private int sign_order;
+	private int signOrder;
 	private Status status;
 	private LocalDate regDate;
+	
+	public SignStatus(String empId) {
+		super();
+		this.empId = empId;
+	} // SignStatus() end
 	
 } // class end

@@ -2,7 +2,7 @@ package com.sh.groupware.sign.model.dto;
 
 import java.time.LocalDate;
 
-import com.sh.groupware.report.model.dto.YN;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,15 +11,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignEntity {
+public class ResignationForm {
 
 	private String no;
-	private String empId;
-	private String deptCode;
-	private String jobCode;
-	private SignType type;
-	private LocalDate regDate;
-	private YN emergency;
-	private YN complete;
+	private String signNo;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private LocalDate endDate;
+	private String reason;
 	
 } // class end

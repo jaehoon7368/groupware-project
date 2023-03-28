@@ -91,8 +91,8 @@ public class EmpController {
 	@GetMapping("/empLogout.do")
 	public String empLogout(SessionStatus status) {
 		
-//		if(!status.isComplete())
-//			status.setComplete();
+		if(!status.isComplete())
+			status.setComplete();
 		
 		return "redirect:/";
 	}
