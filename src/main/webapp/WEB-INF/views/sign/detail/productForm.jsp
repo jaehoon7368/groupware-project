@@ -14,7 +14,7 @@
 	
 	<jsp:include page="/WEB-INF/views/sign/signLeftBar.jsp" />
 	
-	<jsp:include page="/WEB-INF/views/sign/signCreate.jsp">
+	<jsp:include page="/WEB-INF/views/sign/signDetail.jsp">
 		<jsp:param value="비품신청서" name="title" />
 	</jsp:include>
 								
@@ -146,10 +146,12 @@
 													<td><input type="text" name="totalPrice" id="totalPrice4" min="1" /></td>
 													<td><input type="text" name="purpose" id="purpose4" /></td>
 												</tr>
+												<!-- 
 												<tr class="sign-tbl-bottom-tr">
 													<th colspan="2">합계</th>
 													<td colspan="3" id="finalPrice"></td>
-												</tr>
+												</tr> 
+												-->
 											</tbody>
 										</table>
 									</div>

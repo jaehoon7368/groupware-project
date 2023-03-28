@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import com.sh.groupware.sign.model.dto.DayOffForm;
+import com.sh.groupware.sign.model.dto.ProductForm;
 import com.sh.groupware.sign.model.dto.ResignationForm;
 import com.sh.groupware.sign.model.dto.Sign;
 import com.sh.groupware.sign.model.dto.SignEntity;
 import com.sh.groupware.sign.model.dto.SignStatus;
+import com.sh.groupware.sign.model.dto.TripForm;
 
 @Mapper
 public interface SignDao {
@@ -26,5 +29,21 @@ public interface SignDao {
 
 	@Insert("insert into resignationForm values (seq_resignationForm_no.nextval, #{signNo}, #{endDate}, #{reason}")
 	int insertResignationForm(ResignationForm resignation);
+
+	Sign findByNoSign(String no);
+
+	@Select("select * from dayOffForm where sign_no = #{no}")
+	DayOffForm findBySignNoDayOffForm(String no);
+
+	@Select("select * from tripForm where sign_no = #{no}")
+	TripForm findBySignNoTripForm(String no);
+
+	@Select("select * from productForm where sign_no = #{no}")
+	ProductForm findBySignNoProductForm(String no);
+
+	@Select("select * from resignationForm where sign_no = #{no}")
+	ResignationForm findBySignNoResignationForm(String no);
+
+	List<Sign> findByMySignList(String empId);
 
 } // interface end

@@ -60,7 +60,12 @@
 						<div>
 							<!-- 결재할 문서 -->
 							<div class="div-sign-tobe">
-								<div class="div-sign-tobe-non font-small">결재할 문서가 없습니다.</div> 
+								<c:if test="${empty mySignList}">
+									<div class="div-sign-tobe-non font-small">결재할 문서가 없습니다.</div> 
+								</c:if>
+								<c:if test="${!empty mySignList}">
+									<div class="div-sign-tobe-ok">결재할 거 있음.</div>
+								</c:if>
 							</div>
 							
 							<!-- 기안 진행 문서 -->
@@ -85,7 +90,7 @@
 											<c:if test="${!empty myCreateSignList}">
 												<c:forEach items="${myCreateSignList}" var="sign">
 													<c:if test="${sign.complete == 'N'}">
-														<tr class="">
+														<tr class="div-sign-all-tbl-tr" data-no="${sign.no}" data-type="${sign.type}">
 															<td>${sign.regDate}</td>
 															<td>
 																<c:choose>
@@ -146,7 +151,7 @@
 											<c:if test="${!empty myCreateSignList}">
 												<c:forEach items="${myCreateSignList}" var="sign">
 													<c:if test="${sign.complete == 'Y'}">
-														<tr class="">
+														<tr class="div-sign-all-tbl-tr" data-no="${sign.no}" data-type="${sign.type}">
 															<td>${sign.regDate}</td>
 															<td>
 																<c:choose>
@@ -186,6 +191,25 @@
 							</div>
 							
 						</div>
+						<script>
+							document.querySelectorAll('.div-sign-all-tbl-tr').forEach((tr) => {
+								tr.addEventListener('click', (e) => {
+									let clickTr = e.target;
+                           			
+                           			while (true) {
+   										if (clickTr.tagName == 'TR') {
+   											const no = clickTr.dataset.no;
+	                            			
+	                            			location.href = '${pageContext.request.contextPath}/sign/signDetail.do?no=' + no + '&type=' + clickTr.dataset.type;
+   											break;
+   										} else {
+   											clickTr = clickTr.parentElement;
+   											continue;
+   										}
+   									}
+								});
+							});
+						</script>
 					</div>
 				</div>
 				

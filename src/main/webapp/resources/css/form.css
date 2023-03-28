@@ -78,9 +78,10 @@
 
 /* 우측 상단 */
 .sign-tbl-right {
-	width: 100%;
+	/* width: 100%; */
 	height: 100%;
 	text-align: right;
+	display: flex;
 }
 
 .sign-div-right {
@@ -88,6 +89,12 @@
 	height: 130px;
 	display: inline-block;
 	text-align: right;
+	padding: 0 5px;
+}
+
+.sign-div-tbl {
+	display: flex;
+	width: 100%;
 }
 
 .sign-right-tbl {
@@ -97,7 +104,9 @@
 }
 
 .sign-right-tbl th {
-	width: 20%;
+	/* width: 20%; */
+	min-width: 20px;
+	max-width: 20px;
 	text-align: center;
 	border: solid 1px #000;
 	border-right: none;
@@ -105,7 +114,8 @@
 }
 
 .sign-right-tbl td {
-	width: 100%;
+	/* width: 100%; */
+	min-width: 100px;
 }
 
 .sign-right-tbl-border {

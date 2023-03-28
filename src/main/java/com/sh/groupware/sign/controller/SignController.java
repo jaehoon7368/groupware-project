@@ -17,10 +17,12 @@ import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.emp.model.dto.EmpDetail;
 import com.sh.groupware.report.model.dto.YN;
 import com.sh.groupware.sign.model.dto.DayOffForm;
+import com.sh.groupware.sign.model.dto.ProductForm;
 import com.sh.groupware.sign.model.dto.ResignationForm;
 import com.sh.groupware.sign.model.dto.Sign;
 import com.sh.groupware.sign.model.dto.SignEntity;
 import com.sh.groupware.sign.model.dto.SignType;
+import com.sh.groupware.sign.model.dto.TripForm;
 import com.sh.groupware.sign.model.service.SignService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,14 +39,16 @@ public class SignController {
 	public String sign(Model model, Authentication authentication) {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		List<Sign> myCreateSignList = signService.findByMyCreateSignList(empId);
+		List<Sign> mySignList = signService.findByMySignList(empId);
 		model.addAttribute("myCreateSignList", myCreateSignList);
+		model.addAttribute("mySignList", mySignList);
 		return "sign/signHome";
 	} // sign() end
 	
 	
 	@GetMapping("/form/dayOff.do")
 	public String dayOff() {
-		return "form/dayOffForm";
+		return "sign/form/dayOffForm";
 	} // dayOff() end
 	
 	
@@ -72,19 +76,19 @@ public class SignController {
 	
 	@GetMapping("/form/trip.do")
 	public String trip() {
-		return "form/tripForm";
+		return "sign/form/tripForm";
 	} // trip() end
 	
 	
 	@GetMapping("/form/product.do")
 	public String product() {
-		return "form/productForm";
+		return "sign/form/productForm";
 	} // product() end
 	
 	
 	@GetMapping("/form/resignation.do")
 	public String resignation() {
-		return "form/resignationForm";
+		return "sign/form/resignationForm";
 	} // resignation() end
 	
 	
@@ -108,5 +112,41 @@ public class SignController {
 		
 		return "redirect:/sign/sign.do";
 	} // resignationCreate() end
+	
+	
+	@GetMapping("/signDetail.do")
+	public String signDetail(@RequestParam String no, @RequestParam String type, Model model) {
+		log.debug("no = {}, type = {}", no, type);
+		
+		Sign sign = signService.findByNoSign(no);
+		
+		model.addAttribute("sign", sign);
+		
+		if ("D".equals(type)) {
+			DayOffForm dayOff = signService.findBySignNoDayOffForm(no);
+			model.addAttribute("dayOff", dayOff);
+			return "sign/detail/dayOffDetail";
+		} // 연차신청서
+		
+		if ("T".equals(type)) {
+			TripForm trip = signService.findBySignNoTripForm(no);
+			model.addAttribute("trip", trip);
+			return "sign/detail/tripDetail";
+		} // 출장신청서
+		
+		if ("P".equals(type)) {
+			ProductForm product = signService.findBySignNoProductForm(no);
+			model.addAttribute("product", product);
+			return "sign/detail/productDetail";
+		} // 비품신청서
+		
+		if ("R".equals(type)) {
+			ResignationForm resignation = signService.findBySignNoResignationForm(no);
+			model.addAttribute("resignation", resignation);
+			return "sign/detail/resignationDetail";
+		} // 사직서
+		
+		return "sign/signHome";
+	} // signDetail() end
 	
 } // class end

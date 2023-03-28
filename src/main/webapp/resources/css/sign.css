@@ -57,3 +57,9 @@
 	padding: 5px 8px;
 	color: #fff;
 }
+
+.div-sign-all-tbl-tr:hover {
+	cursor: pointer;
+	box-shadow: 0 0 5px #d7d7d7;
+	background-color: #f8f8f8;
+}

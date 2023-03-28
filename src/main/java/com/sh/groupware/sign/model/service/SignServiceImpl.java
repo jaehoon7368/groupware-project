@@ -13,11 +13,13 @@ import com.sh.groupware.emp.model.dao.EmpDao;
 import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.sign.model.dao.SignDao;
 import com.sh.groupware.sign.model.dto.DayOffForm;
+import com.sh.groupware.sign.model.dto.ProductForm;
 import com.sh.groupware.sign.model.dto.ResignationForm;
 import com.sh.groupware.sign.model.dto.Sign;
 import com.sh.groupware.sign.model.dto.SignEntity;
 import com.sh.groupware.sign.model.dto.SignStatus;
 import com.sh.groupware.sign.model.dto.Status;
+import com.sh.groupware.sign.model.dto.TripForm;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -74,6 +76,36 @@ public class SignServiceImpl implements SignService {
 	public int insertResignationForm(ResignationForm resignation) {
 		return signDao.insertResignationForm(resignation);
 	} // insertResignationForm() end
+	
+	
+	@Override
+	public Sign findByNoSign(String no) {
+		return signDao.findByNoSign(no);
+	} // findByNoSign() end
+	
+	
+	@Override
+	public DayOffForm findBySignNoDayOffForm(String no) {
+		return signDao.findBySignNoDayOffForm(no);
+	} // findBySignNoDayOffForm() end
+	
+	
+	@Override
+	public TripForm findBySignNoTripForm(String no) {
+		return signDao.findBySignNoTripForm(no);
+	} // findBySignNoTripForm() end
+	
+	
+	@Override
+	public ProductForm findBySignNoProductForm(String no) {
+		return signDao.findBySignNoProductForm(no);
+	} // findBySignNoProductForm() end
+	
+	
+	@Override
+	public ResignationForm findBySignNoResignationForm(String no) {
+		return signDao.findBySignNoResignationForm(no);
+	} // findBySignNoResignationForm() end
 	
 	
 	@Override
@@ -170,9 +202,9 @@ public class SignServiceImpl implements SignService {
 			signStatusList.get(i).setSignOrder(i + 1);
 			
 			if (i == 0) {
-				signStatusList.get(i).setStatus(Status.S);
-			} else {
 				signStatusList.get(i).setStatus(Status.W);
+			} else {
+				signStatusList.get(i).setStatus(Status.S);
 			}
 			
 			result = signDao.insertSignStatus(signStatusList.get(i));
@@ -180,5 +212,11 @@ public class SignServiceImpl implements SignService {
 		
 		return result;
 	} // insertSignStatus() end
+	
+	
+	@Override
+	public List<Sign> findByMySignList(String empId) {
+		return signDao.findByMySignList(empId);
+	} // findByMySignList() end
 	
 } // class end
