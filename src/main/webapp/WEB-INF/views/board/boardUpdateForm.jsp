@@ -8,7 +8,7 @@
 
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/boardForm.css">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
@@ -60,7 +60,7 @@
 <section class="content">
 
 
-  <form:form name="boardFrm" action="${pageContext.request.contextPath}/board/boardEnroll.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
+  <form:form name="boardFrm" action="${pageContext.request.contextPath}/board/updateBoard.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
   
 	<div class="target-select">
 		<span>To.</span>
@@ -68,25 +68,39 @@
 			<option value="A">전사 공지</option>
 			<option value="M">주간 식단표</option>
 			<option value="P">사진 게시판</option>
-			<option value="N">이주의 IT뉴스</option>
+			<option value="N">IT뉴스</option>
 		</select>
 	</div>
 
   <hr style="width:1000px;">
   	<table class="write-table">
   		<tr>
+  			<th><input type="hidden" id="no" name="no" value="${board.no}"/></th>
   			<th>
   				<span class="title" id="title" name="title">제목</span>
   			</th>
-  			<td><input type="text" id="title" name="title" required></td>
+  			<td><input type="text" id="title" name="title" value="${board.title}"></td>
   			<td><input type="hidden" id="empId" name="empId" value="${loginMember.empId}"></td>
   			<td><input type="hidden" id="wrtier" name="writer" value="${loginMember.name}"></td>
   		</tr>
   		<tr>
-  			<th>
-  				<span class="file">첨부파일</span>
-  			</th>
-  			<td><input type="file" name="upFile" id="upFile"/></td>
+			<th>
+			  <span class="file">첨부파일</span>
+			</th>
+
+			<td>
+			  <input type="file" name="upFile" id="upFile" onchange="showSelectedFileName()"/>
+			  <span id="selectedFileName">
+			    <c:choose>
+			      <c:when test="${not empty board.attachments}">
+			        ${board.attachments[0].originalFilename}
+			      </c:when>
+			      <c:otherwise>
+			        선택된 파일 없음
+			      </c:otherwise>
+			    </c:choose>
+			  </span>
+			</td>
   		</tr>
   	</table>
   	
@@ -95,7 +109,7 @@
   	<div class="editor">
   		<th>
   			<td>
-			 	 <textarea id="summernote" name="content" required></textarea>  			
+			 	 <textarea id="summernote" name="content">${board.content}</textarea>  			
   			</td>
   		</th>
   	</div>
@@ -118,38 +132,28 @@
   	</table>
   	
 	<div class="div-padding div-report-write-btn">
-		<input type="submit" value="등록"/>
-		<input type="submit" value="취소"/>
+	  <input type="submit" value="수정"/>
+	  <input type="button" value="취소" onclick="history.back()"/>
 	</div>
 </form:form>
 </section>
   </div>
 </div>
 <script>
-$(document).ready(function() {
-     bType = "<%= request.getParameter("bType") %>";
-    if (bType == null || bType == "") {
-        bType = "A"; // 기본값 설정
-    }
-    switch (bType) {
-        case "A":
-            $("#bType").val("A"); 
-            break;
-        case "M":
-            $("#bType").val("M");
-            break;
-        case "P":
-            $("#bType").val("P");
-            break;
-        case "N":
-            $("#bType").val("N");
-            break;
-        default:
-            $("#bType").val("A");
-            break;
-    }
-});
+function showSelectedFileName() {
+  var fileInput = document.getElementById("upFile");
+  var fileNameSpan = document.getElementById("selectedFileName");
+  
+  if (fileInput.files.length > 0) {
+    fileNameSpan.innerText = fileInput.files[0].name;
+  } else if (fileInput.value) {
+    fileNameSpan.innerText = fileInput.value.split("\\").pop();
+  } else {
+    fileNameSpan.innerText = "선택된 파일 없음";
+  }
+}
 </script>
+
 <script>
 document.querySelectorAll("[name=upFile]").forEach((input) => {
     input.addEventListener('change', (e) => {

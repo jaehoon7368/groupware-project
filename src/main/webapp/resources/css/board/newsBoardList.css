@@ -1,3 +1,39 @@
+.content {
+	padding: 0px;
+	margin: 0px;
+}
+.form-wrap {
+	border: 1px solid lightgray;
+	width: 800px;
+	height: 200px;
+	margin-left: 30px;
+	
+}
+.text-wrap {
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  border: 1px solid lightgray;
+  border-top: none;
+}
+
+.text-wrap textarea {
+  width: 100%;
+  height: 130px;
+  border: none;
+  outline: none;
+  padding: 0.5em;
+  resize: none;
+}
+
+.text-wrap textarea:focus {
+  border: 1px solid black;
+}
+
+.button-wrap {
+	text-align: end;
+}
+
 .tool-bar {
 	display: inline-block;
 	padding: 5px;
@@ -99,5 +135,19 @@
 
 .div-report-commend-all form {
 	display:flex;
+}
+
+
+.content-wrap {
+	padding:10px;
+	border-top: 1px solid lightgray;
+	border-bottom: 1px solid lightgray;
+}
+
+.div-report-commend{
+	border: 1px solid lightgray;
+	width: 1000px;
+	margin-left:20px;
+	border-radius: 10px;
 }
 

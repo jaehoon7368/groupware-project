@@ -17,7 +17,7 @@
 					<div class="home-container">
 						<!-- 상단 타이틀 -->
 						<div class="top-container">
-							<div class="container-title">전사 공지</div>
+							<div class="container-title">주간 식단표</div>
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
@@ -56,11 +56,8 @@
  <div class="content">
  
  	<div class="tool-bar">
-		<div class="tool-button">
-			<span id="selectAllBtn">전체선택</span>
-		</div>
  		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=A">
+ 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=M">
 		 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
 		 		<span>새글쓰기</span>
 	 		</a>
@@ -93,21 +90,21 @@
                 </thead>
                 <tbody>
 	                <c:forEach items="${boardList}" var="board">
-					    <tr data-no="${board.no}">
-					        <td><input type="checkbox" name="boardNo" value="${board.no}"/></td>
-					        <td>${empty board.no ? '' : (board.no.startsWith('bo') ? board.no.substring(2).replaceFirst("^0+(?!$)", "") : board.no)}</td>
-					        <td class="board-title">
-					            <a href="#!">${board.title}</a>
-					        </td>
-					        <td>${board.writer}</td>
-					        <td>
-					            <fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate"/>
-					            <fmt:formatDate value="${createdDate}" pattern="yy-MM-dd"/>
-					        </td>
-					        <td>${board.readCount}</td>
-					        <td>${board.likeCount}</td>
-					    </tr>
-					</c:forEach>
+		                <tr data-no="${board.no}">
+		                	<td><input type="checkbox" name="" value=""/></td>
+		                    <td>${board.no}</td>
+		                    <td>
+		                      <a href="#!">${board.title}</a>
+		                    </td>
+		                    <td>${board.writer}</td>
+		                    <td>
+								<fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate"/>
+								<fmt:formatDate value="${createdDate}" pattern="yy-MM-dd"/>
+							</td>
+		                    <td>${board.readCount}</td>
+		                    <td>${board.likeCount}</td>
+		                </tr>
+	                </c:forEach>
                 </tbody>
             </table>
         </div>
@@ -146,43 +143,7 @@
 </c:if>
 
 
-<script>
-/* $(document).ready(function() {
-    // 전체선택 버튼 클릭 시
-    $('#selectAllBtn').click(function() {
-        $('input[name=boardNo]').prop('checked', true);
-    });
 
-    // 체크박스 선택 시
-    $('input[name=boardNo]').change(function() {
-        // 선택된 체크박스의 값 가져오기
-        const boardNo = $(this).val();
-        console.log("Selected boardNo: " + boardNo);
-    });
-
-    // 삭제 버튼 클릭 시
-    $('a[href$="/boardDelete.do"]').click(function(event) {
-        e.preventDefault();
-        const boardNos = [];
-        $('input[name=boardNo]:checked').each(function() {
-            boardNos.push($(this).val());
-        });
-        console.log("Selected boardNos: " + boardNos);
-        
-        $.ajax({
-            url: $(this).attr('href'),
-            type: 'POST',
-            data: {boardNos: boardNos},
-            success: function() {
-                location.href = "${pageContext.request.contextPath}/board/boardList.do";
-            },
-            error: function() {
-                alert("삭제 실패");
-            }
-        });
-    });
-}); */
-</script>
 <script>
 document.querySelectorAll("tr[data-no]").forEach((tr) => {
 	tr.addEventListener('click', (e) => {
@@ -191,17 +152,6 @@ document.querySelectorAll("tr[data-no]").forEach((tr) => {
 		location.href = '${pageContext.request.contextPath}/board/boardDetail.do?no=' + no;
 	});
 });
-</script>
-<script>
-/* $(document).ready(function() {
-    // 체크박스 선택 시
-    $('input[name=boardNo]').change(function() {
-        // 선택된 체크박스의 값 가져오기
-        const boardNo = $(this).val();
-        console.log("Selected boardNo: " + boardNo);
-        // 나중에 테이블 이동시 사용하자
-    });
-}); */
 </script>
 
 

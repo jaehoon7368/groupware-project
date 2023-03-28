@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.RowBounds;
 
 import com.sh.groupware.board.model.dto.Board;
+import com.sh.groupware.board.model.dto.BoardComment;
 import com.sh.groupware.common.dto.Attachment;
 
 public interface BoardService {
@@ -16,5 +17,36 @@ public interface BoardService {
 	Board selectOneBoardCollection(String no);
 
 	Attachment selectOneAttachment(String no);
+
+	int selectBoardCount();
+
+	Board selectBoardByNo(String no);
+
+	int deleteBoard(String no);
+
+	int updateBoard(Board board);
+
+	int insertBoardComment(BoardComment boardComment);
+
+	int updateReadCount(String no);
+
+	List<Board> selectBoardHome(Board board);
+
+//	Board selectNewsBoardList(String no);
+
+	
+
+//	List<Board> selectBoardsByNos(List<String> boardNos);
+
+//	int deleteBoards(List<String> boardNos);
+
+	
+
+	
+
+	
+
+
+
 
 }

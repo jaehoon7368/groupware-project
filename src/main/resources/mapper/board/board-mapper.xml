@@ -14,13 +14,55 @@
 		order by 
 		    no desc
 	</select>
+	
+	<select id="selectBoardCount" resultType="int">
+        select
+        	count(*)
+        from 
+        	board
+    </select>
+    
+    <select id="selectBoardByNo" resultMap="boardMap">
+    	select
+    		*
+    	from
+    		board
+    	where
+    		no = #{no}
+    </select>
+    
+    <delete id="deleteBoard" >
+    	delete from board
+    	where no = #{no}
+    </delete>
+    
+    <!-- <select id="selectBoardsByNos" resultMap="boardMap">
+	    select
+	        *
+	    from
+	        board
+	    where
+	        no in
+	        <foreach collection="nos" item="no" separator="," open="(" close=")">
+	            #{no}
+	        </foreach>
+	</select>
+	
+	<delete id="deleteBoards" parameterType="List">
+	    delete from board
+	    where no in 
+	    <foreach collection="list" item="no" open="(" separator="," close=")">
+	        #{no}
+	    </foreach>
+	</delete> -->
+    
 	<resultMap type="board" id="boardMap"></resultMap>
 	
 	<insert id="insertBoard">
 		insert into 
 			board (no, b_type, title, content, READ_COUNT, LIKE_COUNT, CREATED_DATE, UPDATED_DATE, EMP_ID, WRITER)
 		values (
-			seq_board_no.nextval,
+			'bo'||to_char(seq_board_no.nextval,'fm000'),
 			#{bType},
 			#{title},
 			#{content},
@@ -33,11 +75,41 @@
 		)
 		<selectKey order="AFTER" resultType="String" keyProperty="no">
 			select 
-				seq_board_no.currval
+				'bo'||to_char(seq_board_no.currval,'fm000')
 			from
 				dual
 		</selectKey>
 	</insert>
+	
+	<update id="updateReadCount">
+		update
+			board
+		set
+			read_Count = read_count + 1
+		where
+			no = #{no} 
+	</update>
+	
+	<select id="selectBoardHome" resultMap="boardMap">
+		select
+			*
+		from
+			board
+		order by
+			created_date desc
+	</select>
+	
+	<!-- <select id="selectNewsBoardList" resultMap="boardCollectionMap">
+		SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no 
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'N' 
+		WHERE 
+		    b.no = #{no} 
+	</select> -->
 	
 	<insert id="insertAttachment">
 		insert into 
@@ -98,6 +170,21 @@
 				no = #{no}
 	</select>
 	<resultMap type="attachment" id="attachmentMap"></resultMap>
+	
+	<update id="updateBoard">
+		update
+			board
+		set 
+			b_type = #{bType},
+			title = #{title},
+			content = #{content}, 
+			UPDATED_DATE = sysdate
+		where
+			no = #{no}
+	</update>
+	
+	
+	
 	
 	
 </mapper>
