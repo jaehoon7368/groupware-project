@@ -39,7 +39,7 @@ public interface WorkingManagementDao {
 	@Select("select sum(day_work_time) from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end})+1 order by reg_date")
 	int weekTotalTime(Map<String, Object> param);
 
-	@Select("select nvl(sum(day_work_time),0) from working_management where reg_date like '%' || #{time} || '%' and emp_id = #{empId}")
+	@Select("select nvl(sum(day_work_time),0) from working_management where reg_date like '%' || #{monthTime} || '%' and emp_id = #{empId}")
 	int totalMonthTime(Map<String, Object> param);
 
 	@Select("select nvl(sum(day_work_time),0) from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end})+1 order by reg_date")

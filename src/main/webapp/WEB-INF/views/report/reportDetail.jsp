@@ -41,7 +41,9 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<button class="my-menu">로그아웃</button>
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="GET">
+											<button class="my-menu" type="submit">로그아웃</button>								
+										</form:form>
 									</div>
 								</div>
 							</div>
@@ -60,12 +62,27 @@
 						</script>
 						<!-- 상단 타이틀 end -->
 						
+						
 						<!-- 보고자 제외 버튼 -->
 						<div class="div-report-no">
 							<div class="row">
 								<div class="columns">
 									<c:if test="${reportCheckList[0].writer == sessionScope.loginMember.empId}">
 										<button class="font-small" data-open="exampleModal1">보고자 제외</button>
+										<script>
+											/* 모달 오픈 시 모든 사원 체크되어 있으면 전체선택도 체크 */
+											document.querySelector('[data-open=exampleModal1]').addEventListener('click', (e) => {
+												const unreportes = document.querySelectorAll('[name=unreport]');
+												
+												for (let i = 0; i < unreportes.length; i++) {
+									                if (!unreportes[i].checked) {
+									                    document.getElementById("checkAll").checked = false;
+									                    return; // 조기리턴
+									                }
+									            }
+									            document.getElementById("checkAll").checked = true;
+											});
+										</script>
 									</c:if>
 									<!-- 모달 -->
 									<div class="report-no-modal reveal" id="exampleModal1" data-reveal>
@@ -78,7 +95,8 @@
 														<input type="hidden" name="no" value="${param.no}" />
 														<input id="checkAll" type="checkbox"><label for="checkAll" class="font-small">전체</label><br />
 														<c:forEach items="${reportCheckList}" var="reportCheck">
-															<input id="${reportCheck.empId}" name="unreport" type="checkbox" onchange="checkEach(this);" value="${reportCheck.empId}" data-name="${reportCheck.empName}" data-job-title=" ${reportCheck.jobTitle}" ${reportCheck.excludeYn == 'Y' ? 'checked' : ''}><label for="${reportCheck.empId}" class="font-small">${reportCheck.empName} ${reportCheck.jobTitle}</label><br />
+															<input id="${reportCheck.empId}" name="unreport" type="checkbox" onchange="checkEach(this);" value="${reportCheck.empId}" data-name="${reportCheck.empName}" data-job-title=" ${reportCheck.jobTitle}" ${reportCheck.excludeYn == 'Y' ? 'checked' : ''}>
+															<label for="${reportCheck.empId}" class="font-small">${reportCheck.empName} ${reportCheck.jobTitle}</label><br />
 														</c:forEach>
 													</fieldset>
 												</div>
@@ -124,6 +142,7 @@
 								            document.getElementById("checkAll").checked = true;
 								        };
 								        
+								        /* 보고자 제외 폼 제출 */
 								        document.unreportFrm.addEventListener('submit', (e) => {
 								        	e.preventDefault();
 								        	
@@ -134,7 +153,9 @@
 								    		
 								    		const report = [];
 								    		const unreport = [];
-								    		const unreportes = e.target.unreport;
+								    		const unreportes = e.target.querySelectorAll('[name=unreport]');
+								    		console.log('unreportes', unreportes);
+								    		
 								    		for (let i = 0; i < unreportes.length; i++) {
 								    			if (unreportes[i].checked) {
 								    				unreport.push(unreportes[i].id);
@@ -172,19 +193,35 @@
 						<div>
 							<div class="div-exception-report">
 								<span>제외된 보고자:</span>
-								<span class="div-exclude">
-									<c:if test="${!empty reportCheckList}">
-										없음
-									</c:if>
-									<c:if test="${empty reportCheckList}">
-										<c:forEach items="${reportCheckList}" var="reportCheck">
-											<c:if test="${report.excludeYn == 'Y'}">
-												${report.empId} &nbsp;&nbsp;&nbsp;
-											</c:if>
-										</c:forEach>
-									</c:if>
-								</span>
+								<span class="div-exclude"></span>
 							</div>
+							<script>
+								const div = document.querySelector('.div-exclude');
+								div.innerText = '';
+								const unreport = [];
+								
+								const unreportAll = document.querySelectorAll('[name=unreport]');
+								
+								if (unreportAll.length > 0) {
+									unreportAll.forEach((unrepo, index) => {
+										if (unrepo.checked) {
+											unreport.push({id:unrepo.id, name:unrepo.dataset.name, jobTitle:unrepo.dataset.jobTitle});
+										}
+									});
+								}
+								
+								const size = unreport.length;
+								console.log(size);
+								if (size != 0) {
+									unreport.forEach(({id, name, jobTitle}, index) => {
+										div.innerText += `\${name} \${jobTitle}`;
+										if (index + 1 != size)
+											div.innerText += ', ';
+									});
+								} else {
+									div.innerText = '없음';
+								}
+							</script>
 						</div>
 						
 						<!-- 미보고자 -->
@@ -193,9 +230,41 @@
 							<div class="div-unreport-all">
 								<c:forEach items="${reportCheckList}" var="reportCheck">
 									<c:if test="${reportCheck.createYn == 'N' && reportCheck.excludeYn == 'N'}">
-										<div class="div-unreport-one ${sessionScope.loginMember.empId == reportCheck.empId ? 'div-me' : ''}">
+										<div class="div-unreport-one">
 											<div>
-												<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
+												<c:if test="${empty reportCheck.profileImg}">
+													<img src="${pageContext.request.contextPath}/resources/images/default.png" class="my-img" />
+												</c:if>
+												<c:if test="${!empty reportCheck.profileImg}">
+													<img src="${pageContext.request.contextPath}/resources/upload/emp/${reportCheck.profileImg}" class="my-img" />
+												</c:if>
+											</div>
+											<div class="left">${reportCheck.empName} ${reportCheck.jobTitle}</div>
+											<div class="div-me-btn">
+												<c:if test="${sessionScope.loginMember.empId == reportCheck.empId}">
+													<button class="div-me-btn-create" onclick="clickReportCreate(this);" type="button">보고 작성</button>
+												</c:if>
+											</div>
+										</div>
+									</c:if>
+								</c:forEach>
+							</div>
+						</div>
+						
+						<!-- 보고 작성자 -->
+						<div class="div-okreport font-small">
+							<div class="div-okreport-title"><span>보고자</span></div>
+							<div class="div-okreport-all">
+								<c:forEach items="${reportCheckList}" var="reportCheck" varStatus="vs">
+									<c:if test="${reportCheck.createYn == 'Y' && reportCheck.excludeYn == 'N'}">
+										<div class="div-okreport-one" data-id="${reportCheck.empId}" data-no="${vs.index}">
+											<div>
+												<c:if test="${empty reportCheck.profileImg}">
+													<img src="${pageContext.request.contextPath}/resources/images/default.png" class="my-img" />
+												</c:if>
+												<c:if test="${!empty reportCheck.profileImg}">
+													<img src="${pageContext.request.contextPath}/resources/upload/emp/${reportCheck.profileImg}" class="my-img" />
+												</c:if>
 											</div>
 											<div class="left">${reportCheck.empName} ${reportCheck.jobTitle}</div>
 										</div>
@@ -204,29 +273,128 @@
 							</div>
 						</div>
 						<script>
-							if (!document.querySelector('.div-unreport-one')) {
-								document.querySelector('.div-unreport-all').innerHTML = `
-									<div class="div-unreport-non">
-										<span>없음</span>
-									</div>
+							const okreport = document.querySelectorAll('.div-okreport-one');
+							console.log('okreport', okreport);
+							if (okreport.length == 0) {
+								document.querySelector('.div-okreport-all').innerHTML = `
+									<div class="div-okreport-non"><span>없음</span></div>
 								`;
 							}
 						</script>
 						
-						<!-- 보고 작성자 -->
-						<div class="div-okreport font-small">
-							<div class="div-okreport-title"><span>보고자</span></div>
-							<div class="div-okreport-all">
-								<c:forEach items="${reportCheckList}" var="reportCheck" varStatus="vs">
-									<c:if test="${reportCheck.createYn == 'Y'}">
-										<div class="div-okreport-one" data-id="${reportCheck.empId}" data-no="${vs.index}">
-											<div>
-												<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
-											</div>
-											<div class="left">${reportCheck.empName} ${reportCheck.jobTitle}</div>
-										</div>
-									</c:if>
-								</c:forEach>
+						<!-- 보고 작성 -->
+						<div class="div-report-create">
+							<div class="div-report-write">
+								<div class="div-padding div-report-write-name">${reportCheckList[0].title}</div>
+								<form action="${pageContext.request.contextPath}/report/reportDetailEnroll.do?${_csrf.parameterName}=${_csrf.token}" name="reportDetailFrm" method="POST" enctype="multipart/form-data">
+									<div class="div-padding div-report-write-content">
+										<input type="hidden" name="reportNo" value="${param.no}" />
+										<textarea id="summernote" name="content"></textarea>
+									</div>
+									<div class="div-padding div-report-write-upload">
+										<table class="div-report-write-tbl">
+											<tbody>
+												<tr>
+													<td class="font-small">파일 첨부</td>
+													<td>
+														<div class="div-report-write-file">
+															<label class="td-label" for="exampleFileUpload"><i class="fa-solid fa-up-right-from-square"></i> 이 곳을 클릭하여 파일 업로드</label>
+															<input type="file" name="upFile" id="exampleFileUpload">
+														</div>
+														<div class="div-report-write-file-name"></div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="div-padding div-report-write-btn">
+										<button type="submit">등록</button>
+										<button type="button" onclick="reportCreateNo(this);">취소</button>
+									</div>
+								</form>
+								<script>
+									/* 썸머노트 textarea js */
+									$('#summernote').summernote({
+										placeholder: 'Hello stand alone ui',
+										tabsize: 2,
+										height: 350,
+										width: '100%',
+										toolbar: [
+											['style', ['style']],
+											['font', ['bold', 'underline', 'clear']],
+											['color', ['color']],
+											['para', ['ul', 'ol', 'paragraph']],
+											['table', ['table']],
+											['insert', ['link', 'picture', 'video']],
+											['view', ['fullscreen', 'codeview', 'help']]
+										]
+									});
+	
+									// 첨부파일목록
+									// const fileList = Array.from(exampleFileUpload.files);
+	
+									// 첨부파일 추가
+									document.querySelector('#exampleFileUpload').addEventListener('change', (e) => {
+										const file = e.target.files[0];
+										// const index = fileList.findIndex((files) => {
+										// 	return files[0].name === file.name;
+										// });
+										// if (index < 0) {
+										// 	fileList.push(Array.from(e.target.files));
+	
+											const div = document.querySelector('.div-report-write-file-name');
+											
+											if (file) {
+												div.innerHTML = `
+													<div><input type="button" value="X" data-name="\${file.name}" onclick="cancelFile(this);"/>&nbsp;\${file.name}</div>
+												`;
+											}
+	
+										// }
+										
+										// console.log(fileList);
+									});
+	
+									// 첨부파일 삭제
+									const cancelFile = (btn) => {
+										const name = btn.dataset.name;
+	
+										// input[type=file] value 초기화
+										exampleFileUpload.value = '';
+	
+										// 파일명 출력한 태그 제거
+										btn.parentElement.remove();
+	
+										// fileList의 값 제거
+										// fileList.splice(fileList.findIndex((files) => {
+										// 	console.log(name);
+										// 	return files[0].name === btn.dataset.name;
+										// }), 1);
+										// console.log(fileList);
+									};
+									
+	
+									/* 보고 내용 작성 폼 전송 시 유효성검사 */
+									document.reportDetailFrm.addEventListener('submit', (e) => {
+										e.preventDefault();
+										
+										const content = e.target.content;
+	
+										if (/^\s+$/.test(content.value) || !content.value) {
+											alert('보고내용을 작성해주세요.');
+											content.select();
+											return false;
+										};
+										
+										if (/[']+/.test(content.value) || !content.value) {
+											alert("보고내용에 '는 작성이 불가능합니다.");
+											content.select();
+											return false;
+										};
+										
+										reportDetailFrm.submit();
+									});
+								</script>
 							</div>
 						</div>
 						
@@ -260,7 +428,7 @@
 										<div class="div-padding div-report-write-attach">
 											<c:if test="${reportCheck.attachments.size() > 0}">
 												<c:forEach items="${reportCheck.attachments}" var="attach" varStatus="vs">
-													<button type="button" class="attach-btn" onclick="location.href='${pageContext.request.contextPath}/report/fileDownload.do?no=${attach.no}';">
+													<button type="button" class="attach-btn" data-no="${attach.no}" data-name="${attach.originalFilename}" onclick="location.href='${pageContext.request.contextPath}/report/fileDownload.do?no=${attach.no}';">
 														첨부파일${vs.count} - ${attach.originalFilename}
 													</button>
 												</c:forEach>
@@ -271,9 +439,9 @@
 										<form action="${pageContext.request.contextPath}/report/reportDetailUpdate.do?${_csrf.parameterName}=${_csrf.token}" name="reportDetailUpdateFrm${vs.index}" method="POST" enctype="multipart/form-data">
 											<div class="div-padding div-report-write-content">
 												<input type="hidden" name="no" value="${reportCheck.detailNo}" />
-												<textarea id="summernote${vs.index}" name="content">${reportCheck.content}</textarea>
+												<textarea id="updateSummernote${vs.index}" name="content">${reportCheck.content}</textarea>
 												<script>
-													$('#summernote${vs.index}').summernote({
+													$('#updateSummernote${vs.index}').summernote({
 														placeholder: 'Hello stand alone ui',
 														tabsize: 2,
 														height: 350,
@@ -297,8 +465,8 @@
 															<td class="font-small">파일 첨부</td>
 															<td>
 																<div class="div-report-write-file">
-																	<label class="td-label" for="exampleFileUpload${vs.index}"><i class="fa-solid fa-up-right-from-square"></i> 이 곳을 클릭하여 파일 업로드</label>
-																	<input type="file" name="upFile" id="exampleFileUpload${vs.index}">
+																	<label class="td-label" for="exampleFileUpload${reportCheck.detailNo}"><i class="fa-solid fa-up-right-from-square"></i> 이 곳을 클릭하여 파일 업로드</label>
+																	<input type="file" name="upFile" id="exampleFileUpload${reportCheck.detailNo}" />
 																</div>
 																<div class="div-report-write-file-name">
 																	<c:if test="${reportCheck.attachments.size() > 0}">
@@ -317,15 +485,15 @@
 													<input type="hidden" name="noFile" />
 												</div>
 												<script>
-													document.querySelector('#exampleFileUpload${vs.index}').addEventListener('change', (e) => {
+													document.querySelector('#exampleFileUpload${reportCheck.detailNo}').addEventListener('change', (e) => {
 														const file = e.target.files[0];
 														const div = e.target.parentElement.nextElementSibling;
 														console.log(div);
 														
 														if (file) {
-															div.innerHTML = `
+															div.innerHTML += `
 																<div>
-																	<input type="button" value="X" data-no="0" data-name="\${file.name}" onclick="delFile(this);"/>&nbsp;\${file.name}
+																	<input type="button" value="X" data-no="\${file.no}" data-name="\${file.name}" onclick="delFile(this);"/>&nbsp;\${file.name}
 																</div>
 															`;
 														}
@@ -364,7 +532,7 @@
 									<!-- 보고 댓글 -->
 									<div class="div-report-comment">
 										<div style="font-weight: bold;">댓글</div>
-										<form:form action="${pageContext.request.contextPath}/report/reportCommentEnroll.do" method="POST" name="commentEnrollFrm">
+										<form:form action="${pageContext.request.contextPath}/report/reportCommentEnroll.do" method="post" name="commentEnrollFrm${vs.index}">
 											<div class="div-report-comment-all">
 												<div>
 													<c:if test="${!empty sessionScope.loginMember.attachment}">
@@ -384,6 +552,21 @@
 												</div>
 											</div>
 										</form:form>
+										<script>
+											document.commentEnrollFrm${vs.index}.addEventListener('submit', (e) => {
+												e.preventDefault();
+												
+												const content = e.target.content;
+												
+												if (/^\s+$/.test(content.value) || !content.value) {
+													alert('댓글을 작성해주세요.');
+													content.select();
+													return false;
+												}
+												
+												e.target.submit();
+											});
+										</script>
 										<c:if test="${reportCheck.comments.size() > 0}">
 											<c:forEach items="${reportCheck.comments}" var="comment" varStatus="vs">
 												<div class="div-report-comment-detail">
@@ -405,7 +588,7 @@
 																</div>
 																<c:if test="${sessionScope.loginMember.empId eq comment.writer}">
 																	<div class="div-report-comment-btn">
-																		<form name="reportCommentDeleteFrm${vs.index}">
+																		<form name="reportCommentDeleteFrm${comment.no}">
 																			<input type="hidden" name="no" value="${comment.no}" />
 																			<input type="hidden" name="detailNo" value="${comment.detailNo}" />
 																			<input type="hidden" name="reportNo" value="${param.no}" />
@@ -413,13 +596,38 @@
 																			<button type="submit">삭제</button>
 																		</form>
 																	</div>
+																	<script>
+																		/* 댓글 삭제 */
+																		document.reportCommentDeleteFrm${comment.no}.addEventListener('submit', (e) => {
+																			e.preventDefault();
+																			
+																			const no = e.target.no.value;
+																			
+																			const csrfHeader = "${_csrf.headerName}";
+																	        const csrfToken = "${_csrf.token}";
+																	        const headers = {};
+																	        headers[csrfHeader] = csrfToken;
+																			
+																			$.ajax({
+																				url: '${pageContext.request.contextPath}/report/reportCommentDelete.do?no=' + no,
+																				method: 'POST',
+																				headers,
+																				success(data){
+																					console.log(data);
+																					const commentOne = e.target.parentElement.parentElement.parentElement.parentElement.parentElement;
+																					commentOne.remove();
+																				},
+																				error: console.log
+																			});
+																		});
+																	</script>
 																</c:if>
 															</div>
 															<div class="div-report-comment-content">
 																${comment.content}
 															</div>
 														</div>
-														<form name="reportCommentUpdateFrm${vs.index}">
+														<form name="reportCommentUpdateFrm${comment.no}">
 															<div class="div-report-comment-after">
 																<div>
 																	<div class="div-report-comment-title">
@@ -440,14 +648,14 @@
 															</div>
 														</form>
 														<script>
-															document.reportCommentUpdateFrm${vs.index}.addEventListener('submit', (e) => {
+															document.reportCommentUpdateFrm${comment.no}.addEventListener('submit', (e) => {
 																e.preventDefault();
 																
 																const no = e.target.no;
 																const detailNo = e.target.detailNo;
 																const content = e.target.content;
 																
-																if (/\s+/.test(content.value) || !content.value) {
+																if (/^\s+$/.test(content.value) || !content.value) {
 																	alert('댓글을 작성해주세요.');
 																	content.select();
 																	return false;
@@ -493,31 +701,6 @@
 																});
 																
 															});
-															
-															
-															/* 댓글 삭제 */
-															document.reportCommentDeleteFrm${vs.index}.addEventListener('submit', (e) => {
-																e.preventDefault();
-																
-																const no = e.target.no.value;
-																
-																const csrfHeader = "${_csrf.headerName}";
-														        const csrfToken = "${_csrf.token}";
-														        const headers = {};
-														        headers[csrfHeader] = csrfToken;
-																
-																$.ajax({
-																	url: '${pageContext.request.contextPath}/report/reportCommentDelete.do?no=' + no,
-																	method: 'POST',
-																	headers,
-																	success(data){
-																		console.log(data);
-																		const commentOne = e.target.parentElement.parentElement.parentElement.parentElement.parentElement;
-																		commentOne.remove();
-																	},
-																	error: console.log
-																});
-															});
 														</script>
 													</div>
 												</div>
@@ -530,11 +713,40 @@
 						</c:forEach>
 						
 						<script>
+							/* 미보고자 보고 작성 클릭 */
+							const clickReportCreate = (btn) => {
+								btn.parentElement.parentElement.classList.add('div-me');
+								document.querySelector('.div-report-write').style.display = 'inline-block';
+								
+								document.querySelectorAll('.div-report-write-view').forEach((writeView) => {
+									writeView.style.display = 'none';
+								});
+								
+								document.querySelectorAll('.div-okreport-one').forEach((one) => {
+									one.classList.remove('div-okreport-one-click');
+								});
+							};
+							
+							
+							/* 미보고자 보고 작성 취소 버튼 클릭 */
+							const reportCreateNo = (btn) => {
+								const unreportDiv = document.querySelectorAll('.div-unreport-one');
+								console.log(unreportDiv);
+								
+								unreportDiv.forEach((div) => {
+									div.classList.remove('div-me');
+								});
+								
+								document.querySelector('.div-report-write').style.display = 'none';
+							};
+							
+						
 							/* 클릭한 보고자 및 그의 대한 내용 */
 							document.querySelectorAll('.div-okreport-one').forEach((one) => {
 								one.addEventListener('click', (e) => {
 									let clickDiv = e.target;
 									const allView = document.querySelectorAll('.div-report-write-view');
+									console.log('allView', allView);
 									let no;
 									
 									/* 보고자 div class 지우기 */
@@ -549,12 +761,16 @@
 											clickDiv.classList.add('div-okreport-one-click');
 											
 											no = clickDiv.dataset.no;
+											console.log(no);
 											
-											document.querySelectorAll('.div-report-write-view').forEach((viewDiv) => {
+											allView.forEach((viewDiv) => {
+												if (viewDiv.dataset.no === no)
+													viewDiv.style.display = 'block';
+												else
 													viewDiv.style.display = 'none';
 											});
 											
-											allView[no].style.display = 'block';
+											//allView[no].style.display = 'block';
 											
 											break;
 										} else {
@@ -562,6 +778,16 @@
 											continue;
 										}
 									}
+									
+									
+									/* 미보고자 보고 작성 폼 숨기기 */
+									document.querySelectorAll('.div-report-write').forEach((write) => {
+										write.style.display = 'none';
+									});
+									
+									document.querySelectorAll('.div-unreport-one').forEach((one) => {
+										one.classList.remove('div-me');
+									});
 								});
 							});
 							
@@ -590,7 +816,7 @@
 								if (no !== '0') {
 									const tag = btn.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
 									tag.innerHTML += `
-										<input type="hidden" name="noFile" value="\${no}" />
+										<input type="hidden" name="noFile" data-name="\${name}" value="\${no}" />
 									`;
 									console.log(tag);
 								}
@@ -608,14 +834,29 @@
 							/* 수정폼의 최소버튼 클릭 */
 							const beforeDivOpen = (me) => {
 								console.log(me);
-								const allViewDiv = document.querySelectorAll('.div-report-write-view');
-								const parentDiv = me.parentElement.parentElement.parentElement.parentElement;
-								const no = parentDiv.dataset.no;
-
-								allViewDiv[no].querySelector('.div-report-detail-update').style.display = 'none';
-								allViewDiv[no].querySelector('.div-report-detail').style.display = 'inline-block';
+								const afterDiv = me.parentElement.parentElement.parentElement;
+								const fileNameDiv = afterDiv.querySelector('.div-report-write-file-name');
+								const beforeDiv = afterDiv.previousElementSibling;
+								
+								fileNameDiv.innerHTML = '';
+								const files = beforeDiv.children[1].querySelectorAll('.attach-btn');
+								files.forEach((file) => {
+									fileNameDiv.innerHTML += `
+										<div>
+											<input type="button" value="X" data-no="\${file.dataset.no}" data-name="\${file.dataset.name}" onclick="delFile(this);" />&nbsp;\${file.dataset.name}
+										</div>
+									`;
+								});
+								
+								const noFileDiv = afterDiv.querySelector('.div-report-update-file');
+								noFileDiv.innerHTML = `
+									<input type="hidden" name="noFile" />
+								`;
+								
+								
+								beforeDiv.style.display = 'inline-block';
+								afterDiv.style.display = 'none';
 							};
-							
 							
 							/* 댓글 수정 */
 							const reportCommentUpdateForm = (btn) => {

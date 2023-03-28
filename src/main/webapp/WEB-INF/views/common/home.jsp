@@ -24,14 +24,18 @@
 								</c:if>
 							</a>
 						</div>
+				
 						<div id="home-my-menu-modal">
 							<div class="my-menu-div">
 								<button class="my-menu">기본정보</button>
 							</div>
 							<div class="my-menu-div">
-								<button class="my-menu">로그아웃</button>
+								<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="GET">
+									<button class="my-menu" type="submit">로그아웃</button>								
+								</form:form>
 							</div>
 						</div>
+					
 					</div>
 					<script>
 						document.querySelector('#home-my-img').addEventListener('click', (e) => {
@@ -83,43 +87,37 @@
 							</div>
 							
 							<div id="home-left" class="div-padding div-margin">
-								<table id="home-work-tbl">
-									<thead>
-										<tr>
-											<th colspan="2"><h5>근태관리</h5></th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td colspan="2">2023년 3월 8일 (수)</td>
-										</tr>
-										<tr>
-											<td>출근시간</td>
-											<td>미등록</td>
-										</tr>
-										<tr>
-											<td>퇴근시간</td>
-											<td>미등록</td>
-										</tr>
-										<tr class="btn-tr">
-											<td><button>출근하기</button></td>
-											<td><button>퇴근하기</button></td>
-										</tr>
-										<tr class="btn-tr">
-											<td colspan="2">
-												<select class="work-select">
-													<option selected>상태변경</option>
-													<option value="1">업무</option>
-													<option value="2">업무종료</option>
-													<option value="3">외근</option>
-													<option value="4">출장</option>
-													<option value="5">반차</option>
-												</select>
-											</td>	
-										</tr>
-									</tbody>
-								</table>
-							</div>
+                        <table id="home-work-tbl">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">
+                                        <h4 class="font-bold">근태관리</h4>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="year" colspan="2" class="font-14">clock</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" id="clock" style="color:black;">clock</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-14 font-bold">출근시간</td>
+                                    <td class="text-right font-14" id="startwork-time">미등록</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-14 font-bold">퇴근시간</td>
+                                    <td class="text-right font-14" id="endwork-time">미등록</td>
+                                </tr>
+                                <tr class="btn-tr">
+                                    <td><button class="font-bold" id="btn-startwork">출근하기</button></td>
+                                    <td class="text-right"><button class="font-bold" id="btn-endwork">퇴근하기</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    
+                    </div>
 						</div>
 
 						<!-- 본문 가운데 -->
@@ -191,4 +189,5 @@
 					</div>
 				</div>
 
-	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+<script src="${pageContext.request.contextPath}/resources/js/emp/emp.js"></script>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

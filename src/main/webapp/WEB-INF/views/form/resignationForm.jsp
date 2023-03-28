@@ -14,95 +14,9 @@
 	
 	<jsp:include page="/WEB-INF/views/sign/signLeftBar.jsp" />
 	
-					<div class="font-small home-container">
-						<!-- 상단 타이틀 -->
-						<div class="top-container">
-							<div class="container-title">사직서</div>
-							<div class="home-topbar topbar-div">
-								<div>
-									<a href="#" id="home-my-img">
-										<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
-									</a>
-								</div>
-								<div id="my-menu-modal">
-									<div class="my-menu-div">
-										<button class="my-menu">기본정보</button>
-									</div>
-									<div class="my-menu-div">
-										<button class="my-menu">로그아웃</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="top-container">
-							<div class="div-sign-btn font-small">
-								<button>결재요청</button>
-								<button>취소</button>
-								<button>결재 정보</button>
-							</div>
-						</div>
-						<script>
-							document.querySelector('#home-my-img').addEventListener('click', (e) => {
-								const modal = document.querySelector('#my-menu-modal');
-								const style =  modal.style.display;
-								
-								if (style == 'inline-block') {
-									modal.style.display = 'none';
-								} else {
-									modal.style.display = 'inline-block';
-								}
-							});
-						</script>
-						<!-- 상단 타이틀 end -->
-						
-						<!-- 결재 문서 -->
-						<div class="div-sign-form">
-							<div class="div-sign-form-detail">
-								<table class="sign-tbl">
-									<tbody>
-										<tr>
-											<td colspan="2" class="sign-tbl-title font-large">
-												사직서
-											</td>
-										</tr>
-										<tr>
-											<td class="sign-tbl-left">
-												<table class="sign-tbl-left-tbl">
-													<tbody>
-														<tr>
-															<td class="sign-tbl-left-title">
-																기안자
-															</td>
-															<td class="sign-tbl-left-content">
-																<span>기안자</span>
-															</td>
-														</tr>
-														<tr>
-															<td class="sign-tbl-left-title">
-																기안부서
-															</td>
-															<td class="sign-tbl-left-content">
-																<span>기안부서</span>
-															</td>
-														</tr>
-														<tr>
-															<td class="sign-tbl-left-title">
-																기안일
-															</td>
-															<td class="sign-tbl-left-content">
-																<span>기안일</span>
-															</td>
-														</tr>
-														<tr>
-															<td class="sign-tbl-left-title">
-																문서번호
-															</td>
-															<td class="sign-tbl-left-content">
-																<span>문서번호</span>
-															</td>
-														</tr>
-													</tbody>
-												</table>
+	<jsp:include page="/WEB-INF/views/sign/signCreate.jsp">
+		<jsp:param value="사직서" name="title" />
+	</jsp:include>
 								
 											</td>
 											<td class="sign-tbl-right">
@@ -116,17 +30,17 @@
 																		<tbody>
 																			<tr>
 																				<td>
-																					<span class="sign_rank">차장</span>
+																					<span class="sign_rank">${sessionScope.loginMember.jobTitle}</span>
 																				</td>
 																			</tr>
 																			<tr>
 																				<td>
-																					<span class="sign_wrap">아무개</span>
+																					<span class="sign_wrap">${sessionScope.loginMember.name}</span>
 																				</td>
 																			</tr>
 																			<tr>
 																				<td>
-																					<span class="sign_date">2023-03-15</span>
+																					<span class="sign_date"></span>
 																				</td>
 																			</tr>
 																		</tbody>
@@ -137,7 +51,7 @@
 													</table>
 												</div>
 							
-												
+												<%-- 
 												<div class="sign-div-right">
 													<table class="sign-right-tbl">
 														<tbody>
@@ -169,68 +83,90 @@
 															</tr>
 														</tbody>
 													</table>
-												</div>
+												</div> 
+												--%>
 											</td>
 										</tr>
 									</tbody>
 								</table>
-								
-								<br />
 								<script>
 									const nowDate = Date.now();
 									const dateOff = new Date().getTimezoneOffset() * 60000;
 									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
+									
+									document.querySelector('.sign_date').innerText = today;
 								</script>
-								<div class="div-sign-tbl">
-									<table class="sign-tbl-bottom">
-										<tbody>
-											<tr class="sign-tbl-bottom-tr">
-												<th>제목</th>
-												<td colspan="3">
-													<input type="text" name="title" id="title" />
-												</td>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<th>입사일</th>
-												<td><input type="date" name="start-date" id="start-date" /></td>
-												<th>퇴사일</th>
-												<td>
-													<input type="date" name="end-date" id="end-date" />
-													<script>
-														const endDate = document.querySelector('#end-date');
-														endDate.min = today;
-														endDate.value = today;
-													</script>
-												</td>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<th>직급</th>
-												<th>사번</th>
-												<th>성명</th>
-												<!-- <th>근무기간</th> -->
-												<th>근무부서</th>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<td></td>
-												<td></td>
-												<td></td>
-												<!-- <td></td> -->
-												<td></td>
-											</tr>
-											<tr>
-												<th colspan="4">퇴직 사유</th>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<td colspan="4">
-													<textarea rows="10" id="reason" name="reason"></textarea>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
+								
+								<br />
+								<form:form action="${pageContext.request.contextPath}/sign/resignationCreate.do" method="post" name="resignationCreateFrm">
+									<div class="div-sign-tbl">
+										<table class="sign-tbl-bottom">
+											<tbody>
+												<tr class="sign-tbl-bottom-tr">
+													<th>긴급 문서</th>
+													<td colspan="3">
+														
+														<input type="radio" name="emergency" id="emergencyY" value="Y" /><label for="emergencyY">여</label>
+														<input type="radio" name="emergency" id="emergencyN" value="N" checked /><label for="emergencyN">부</label>
+													</td>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<th>입사일</th>
+													<td><input type="date" name="start-date" id="start-date" value="${sessionScope.loginMember.hireDate}" readonly/></td>
+													<th>퇴사일</th>
+													<td>
+														<input type="date" name="end-date" id="end-date" />
+														<script>
+															const endDate = document.querySelector('#end-date');
+															endDate.min = today;
+															endDate.value = today;
+														</script>
+													</td>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<th>직급</th>
+													<th>사번</th>
+													<th>성명</th>
+													<!-- <th>근무기간</th> -->
+													<th>근무부서</th>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<td>${sessionScope.loginMember.jobTitle}</td>
+													<td>${sessionScope.loginMember.empId}</td>
+													<td>${sessionScope.loginMember.name}</td>
+													<!-- <td></td> -->
+													<td>${sessionScope.loginMember.deptTitle}</td>
+												</tr>
+												<tr>
+													<th colspan="4">퇴직 사유</th>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<td colspan="4">
+														<textarea rows="10" id="reason" name="reason"></textarea>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</form:form>
 							</div>
 						</div>
 						<!-- 결재 문서 end -->
+						<script>
+							/* 사직서 폼 제출 */
+							const signCreate = () => {
+								const frm = document.resignationCreateFrm;
+								const reason = frm.reason;
+								
+								if (/^\s+$/.test(reason.value) || !reason.value) {
+									alert('퇴사 사유를 작성해주세요.');
+									reason.select();
+									return false;
+								}
+								
+								frm.submit();
+							};
+						</script>
 						
 						<div class="div-sign-bottom">
 							<div class="div-sign-bottom-title">

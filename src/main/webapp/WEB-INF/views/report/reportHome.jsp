@@ -35,7 +35,9 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<button class="my-menu">로그아웃</button>
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="GET">
+											<button class="my-menu" type="submit">로그아웃</button>								
+										</form:form>
 									</div>
 								</div>
 							</div>
@@ -111,7 +113,7 @@
 												console.log(data.tagName);
 												console.log(data.classList[0]);
 												console.log(data);
-												location.href = `${pageContext.request.contextPath}/report/reportForm.do?no=\${data.dataset.no}`;
+												location.href = `${pageContext.request.contextPath}/report/reportDetail.do?no=\${data.dataset.no}`;
 												break;
 											} else {
 												data = data.parentElement;

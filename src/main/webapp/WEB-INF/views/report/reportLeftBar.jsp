@@ -26,10 +26,12 @@
 									</div>
 								</li>
 								<li>
-									<p class="title font-medium">그 외 보고서</p>
+									<p class="title font-medium">내가 생성한 보고서</p>
 									<div class="con">
 										<ul class="container-detail font-small">
-											<li><a class="container-a" href="#">어어어</a></li>
+											<c:forEach items="${sessionScope.myReportList}" var="report">
+												<li><a class="container-a" href="${pageContext.request.contextPath}/report/reportDetail.do?no=${report.no}">${report.title}</a></li>
+											</c:forEach>
 										</ul>
 									</div>
 								</li>

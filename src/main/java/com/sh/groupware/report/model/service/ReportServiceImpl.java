@@ -266,4 +266,10 @@ public class ReportServiceImpl implements ReportService {
 		return reportDao.findByNoReportComment(no);
 	} // findByNoReportComment() end
 	
+	
+	@Override
+	public List<Report> findByWriterReportCheckList(String empId) {
+		return reportDao.findByWriterReportCheckList(empId);
+	} // findByWriterReportCheckList() end
+	
 } // class end

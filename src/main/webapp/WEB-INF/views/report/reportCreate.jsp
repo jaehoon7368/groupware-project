@@ -34,7 +34,9 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<button class="my-menu">로그아웃</button>
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="GET">
+											<button class="my-menu" type="submit">로그아웃</button>								
+										</form:form>
 									</div>
 								</div>
 							</div>
@@ -143,7 +145,7 @@
 									return false;
 								};
 
-								if (/\s+/.test(explain.value) || !explain.value) {
+								if (/^\s+$/.test(explain.value) || !explain.value) {
 									alert('설명을 작성해주세요.');
 									explain.select();
 									return false;

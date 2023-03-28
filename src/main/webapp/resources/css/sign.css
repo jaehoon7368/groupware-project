@@ -40,6 +40,20 @@
 .div-sign-all-tbl thead td {
 	font-size: small;
 	padding: 10px 0;
+	font-weight: bold;
 	border-top: solid 1px lightgray;
 	border-bottom: solid 1px lightgray;
+}
+
+.div-sign-all-tbl tbody td {
+	font-size: small;
+	padding: 10px 0;
+	border-top: solid 1px lightgray;
+	border-bottom: solid 1px lightgray;
+}
+
+.div-sign-all-tbl tbody td:last-of-type button {
+	margin: 0;
+	padding: 5px 8px;
+	color: #fff;
 }

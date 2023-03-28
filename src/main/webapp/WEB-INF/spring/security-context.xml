@@ -28,7 +28,7 @@
 			username-parameter="empId"
 			authentication-success-forward-url="/emp/loginSuccess.do"/>
 			<logout
-				logout-url="/member/memberLogout.do"
+				logout-url="/emp/empLogout.do"
 				logout-success-url="/"/>
 				
 		<remember-me 

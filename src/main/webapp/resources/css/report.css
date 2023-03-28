@@ -8,6 +8,8 @@ textarea {
 /* 보고 홈의 진행중인 보고 */
 .div-report-ing {
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
 }
 
 .div-report {
@@ -177,7 +179,7 @@ textarea {
 }
 
 .div-unreport-one {
-	width: 200px;
+	width: 220px;
 	display: flex;
 	align-items: center;
 	background-color: #fff;
@@ -196,10 +198,6 @@ textarea {
 	border-radius: 0;
 }
 
-.div-me {
-	border: solid 2px gray;
-}
-
 .div-unreport-non {
 	margin-right: 10px;
 }
@@ -207,6 +205,21 @@ textarea {
 .div-unreport-non span {
 	margin: 10px;
 	color: gray;
+}
+
+.div-me-btn {
+	padding: 3px;
+}
+
+.div-me-btn-create {
+	display: none;
+	padding: 2px;
+	color: gray;
+	border: solid 1px lightgray;
+}
+
+.div-unreport-one:hover .div-me-btn-create {
+	display: inline-block;
 }
 
 /* 보고자 */
@@ -253,14 +266,29 @@ textarea {
 	border-radius: 0;
 }
 
+.div-okreport-non {
+	padding: 0 20px;
+}
+
+.div-okreport-non span {
+	color: gray;
+}
+
 .div-me {
 	border: solid 2px gray;
 }
 
 /* 보고 작성 */
+.div-report-create {
+	width: 100%;
+	padding: 10px;
+	display: none;
+}
+
 .div-report-write {
-	margin: 10px;
+	width: 100%;
 	border: solid 3px lightgray;
+	display: none;
 }
 
 .div-report-write-top {
