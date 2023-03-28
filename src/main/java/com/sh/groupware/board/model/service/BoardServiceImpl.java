@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.sh.groupware.board.model.dao.BoardDao;
 import com.sh.groupware.board.model.dto.Board;
+import com.sh.groupware.board.model.dto.BoardComment;
 import com.sh.groupware.common.dto.Attachment;
 
 import lombok.extern.slf4j.Slf4j;
@@ -87,5 +88,37 @@ public class BoardServiceImpl implements BoardService {
 				return result;
 	}
 	
+	@Override
+	public int insertBoardComment(BoardComment boardComment) {
+		return boardDao.insertBoardComment(boardComment);
+	}
+	
+	@Override
+	public int updateReadCount(String no) {
+		return boardDao.updateReadCount(no);
+	}
+	
+	@Override
+	public List<Board> selectBoardHome(Board board) {
+		return boardDao.selectBoardHome(board);
+	}
+	
+	
+
+//	@Override
+//	public Board selectNewsBoardList(String no) {
+//		return boardDao.selectNewsBoardList(no);
+//	}
+	
+//	public int deleteBoards(List<String> boardNos) {
+//		return boardDao.deleteBoards(boardNos);
+//	}
+//	
+//	@Override
+//	public List<Board> selectBoardsByNos(List<String> boardNos) {
+//		return boardDao.selectBoardsByNos(boardNos);
+//	}
+	
+
 
 }

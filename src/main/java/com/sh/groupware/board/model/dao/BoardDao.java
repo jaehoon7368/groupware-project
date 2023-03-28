@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import com.sh.groupware.board.model.dto.Board;
+import com.sh.groupware.board.model.dto.BoardComment;
 import com.sh.groupware.common.dto.Attachment;
 
 @Mapper
@@ -28,6 +29,22 @@ public interface BoardDao {
 	int deleteBoard(String no);
 
 	int updateBoard(Board board);
+
+	int insertBoardComment(BoardComment boardComment);
+
+	int updateReadCount(String no);
+
+	List<Board> selectBoardHome(Board board);
+
+//	Board selectNewsBoardList(String no);
+
+//	int deleteBoards(List<String> boardNos);
+//
+//	List<Board> selectBoardsByNos(List<String> boardNos);
+
+
+
+	
 
 
 

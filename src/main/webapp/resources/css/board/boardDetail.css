@@ -1,6 +1,6 @@
 .tool-bar {
 	display: inline-block;
-	padding: 10px;
+	padding: 5px;
 	border-bottom: 1px solid lightgray;
 	width:100%;
 }
@@ -10,7 +10,6 @@
 }
 .tool-button {
 	float: left;
-	padding: 10px;
 }
 
 #write-btn{
@@ -67,6 +66,7 @@
 	width: 100%;
 	display: flex;
 	align-items: baseline;
+	padding:10px;
 }
 
 .div-report-commend-all div {
@@ -83,3 +83,21 @@
 	resize: none;
 	margin: 0;
 }
+
+.tool-wrap .heart-wrap img{
+	height:30px;
+	width:30px;
+}
+.tool-wrap .heart-wrap {
+	padding-right:30px;
+}
+
+.tool-wrap {
+	display: flex;
+	justify-content: space-between;
+}
+
+.div-report-commend-all form {
+	display:flex;
+}
+

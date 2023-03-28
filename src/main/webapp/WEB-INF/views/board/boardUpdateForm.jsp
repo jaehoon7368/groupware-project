@@ -67,6 +67,7 @@
 		<select name="bType" id="bType">
 			<option value="A">전사 공지</option>
 			<option value="M">주간 식단표</option>
+			<option value="P">사진 게시판</option>
 			<option value="N">IT뉴스</option>
 		</select>
 	</div>
@@ -152,30 +153,7 @@ function showSelectedFileName() {
   }
 }
 </script>
-<script>
-  document.querySelector('#deleteBtn').addEventListener("click", (e) => {
-    e.preventDefault();
-    const csrfHeader = "${_csrf.headerName}";
-    const csrfToken = "${_csrf.token}";
-    const headers = {};
-    headers[csrfHeader] = csrfToken;
 
-    if (confirm("게시물을 삭제하시겠습니까?")) {
-      $.ajax({
-        url: '${pageContext.request.contextPath}/board/boardDelete.do',
-        method: "POST",
-        data: {no: "${board.no}"},
-        headers,
-        success(data) {
-          console.log(data);
-          location.href = '${pageContext.request.contextPath}/board/boardList.do';
-        },
-        error: console.log
-         
-      });
-    }
-  });
-</script>
 <script>
 document.querySelectorAll("[name=upFile]").forEach((input) => {
     input.addEventListener('change', (e) => {

@@ -56,87 +56,42 @@
 
 		<section class="left-content">
 			<div class="left-header">
-				<a href="#">즐겨찾기</a>
-				<a href="#">전체게시판</a>
+				<span>전체 게시판</span>
 			</div>
 			
+			<form action="${pageContext.request.contextPath}/board/boardHome.do" method="get">
 			<div class="left-board">
 				<ul class="article-list">
-					<li class="article-data">
-						<div class="article-wrap">
-							<span class="category">다우그룹>Local Policy</span>
-							<span class="title"><h5>Business Trip 규정</h5></span>
-							<span class="article-content">Business Trip 규정은 저도 잘 모르겠네요..</span>
-						
-							<div class="writer-info">
-								<span class="writer-img">
-									<a href="#" id="home-my-img"> <img
-										src="${pageContext.request.contextPath}/resources/images/sample.jpg"
-										alt="" class="my-img">
-									</a>
-								</span>
-								<span class="writer">김상후 대표이사</span>
-								<span class="createDate">2023-03-16</span>
-							</div>
-						</div>
-					</li>
-					
-					<li class="article-data">
-						<div class="article-wrap">
-							<span class="category">다우그룹>Local Policy</span>
-							<span class="title"><h5>Business Trip 규정</h5></span>
-							<span class="article-content">Business Trip 규정은 저도 잘 모르겠네요..</span>
-						
-							<div class="writer-info">
-								<span class="writer-img">
-									<a href="#" id="home-my-img"> <img
-										src="${pageContext.request.contextPath}/resources/images/sample.jpg"
-										alt="" class="my-img">
-									</a>
-								</span>
-								<span class="writer">김상후 대표이사</span>
-								<span class="createDate">2023-03-16</span>
-							</div>
-						</div>
-					</li>
-					
-					<li class="article-data">
-						<div class="article-wrap">
-							<span class="category">다우그룹>Local Policy</span>
-							<span class="title"><h5>Business Trip 규정</h5></span>
-							<span class="article-content">Business Trip 규정은 저도 잘 모르겠네요..</span>
-						
-							<div class="writer-info">
-								<span class="writer-img">
-									<a href="#" id="home-my-img"> <img
-										src="${pageContext.request.contextPath}/resources/images/sample.jpg"
-										alt="" class="my-img">
-									</a>
-								</span>
-								<span class="writer">김상후 대표이사</span>
-								<span class="createDate">2023-03-16</span>
-							</div>
-						</div>
-					</li>
-					
-					<li class="article-data">
-						<div class="article-wrap">
-							<span class="category">다우그룹>Local Policy</span>
-							<span class="title"><h5>Business Trip 규정</h5></span>
-							<span class="article-content">Business Trip 규정은 저도 잘 모르겠네요..</span>
-						
-							<div class="writer-info">
-								<span class="writer-img">
-									<a href="#" id="home-my-img"> <img
-										src="${pageContext.request.contextPath}/resources/images/sample.jpg"
-										alt="" class="my-img">
-									</a>
-								</span>
-								<span class="writer">김상후 대표이사</span>
-								<span class="createDate">2023-03-16</span>
-							</div>
-						</div>
-					</li>
+				
+					<c:forEach var="board" items="${boardList}">
+					  <li class="article-data" onclick="location.href='${pageContext.request.contextPath}/board/boardDetail.do?no=${board.no}'">
+					    <div class="article-wrap">
+					      <span class="bType">
+					        <c:choose>
+					          <c:when test="${board.BType == 'A'}">다우그룹>전체게시판</c:when>
+					          <c:when test="${board.BType == 'M'}">다우그룹>주간 식단표</c:when>
+					          <c:when test="${board.BType == 'N'}">다우그룹>이주의 IT뉴스</c:when>
+					          <c:otherwise>${board.BType}</c:otherwise>
+					        </c:choose>
+					      </span>
+					      <span class="title">${board.title}</span>
+					      <span class="article-content">${board.content}</span>
+					      <div class="writer-info">
+					        <span class="writer-img">
+					          <a href="#" id="home-my-img"> <img
+					            src="${pageContext.request.contextPath}/resources/images/sample.jpg"
+					            alt="" class="my-img">
+					          </a>
+					        </span>
+					        <span class="writer">${board.writer}</span>
+					        <span id="createdDate" class="createdDate">
+					            <fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" />
+					            <fmt:formatDate value="${createdDate}" pattern="yyyy-MM-dd EEE HH:mm"/>
+					        </span>
+					      </div>
+					    </div>
+					  </li>
+					</c:forEach>
 				</ul>
 			</div>
 		</section> <!--  left-content end -->
@@ -146,74 +101,87 @@
 
 		<section class="right-content">
 			<div class="right-header">
-				<a href="">최신글 모음</a>
+				<span>최신글 모음</span>
 			</div>
 			
 			<div class="resent-group">
+
 				<div class="group-list">
-					<a href="#">전사 게시판</a>
+				    <a href="${pageContext.request.contextPath}/board/boardList.do"><span class="group-list-title">전사 공지</span></a>
+				    <ul>
+				        <c:set var="count" value="0"/>
+					        <c:forEach items="${boardList}" var="board">
+					            <c:if test="${board.BType == 'A' && count < 5}">
+					                <c:set var="onclick" value="''" />
+					                <c:if test="${board.title.length() > 13}">
+					                    <c:set var="title" value="${board.title.substring(0, 13)}..." />
+					                </c:if>
+					                <c:if test="${board.title.length() <= 13}">
+					                    <c:set var="title" value="${board.title}" />
+					                </c:if>
+					                <li>
+					                    <a href="${pageContext.request.contextPath}/board/boardDetail.do?no=${board.no}">${title}</a>
+					                    <span class="createdDate">
+					                        <fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" />
+					                        <fmt:formatDate value="${createdDate}" pattern="MM-dd"/>
+					                    </span>
+					                </li>
+					                <c:set var="count" value="${count + 1}" />
+					            </c:if>
+					        </c:forEach>
+					    </ul>
+					</div>
+				
+				<div class="group-list">
+					<a href="${pageContext.request.contextPath}/board/newsBoardList.do"><span class="group-list-title">이주의 IT뉴스</span></a>
 					<ul>
-						<li>
-							<a href="">2017년 하반기 야유회...</a>
-							<span>06-01</span>
-						</li>
-						<li>
-							<a href="">2017년 하반기 야유회...</a>
-							<span>06-01</span>
-						</li>
-						<li>
-							<a href="">2017년 하반기 야유회...</a>
-							<span>06-01</span>
-						</li>
-						<li>
-							<a href="">2017년 하반기 야유회...</a>
-							<span>06-01</span>
-						</li>
-					</ul>
+				        <c:set var="count" value="0"/>
+					        <c:forEach items="${boardList}" var="board">
+					            <c:if test="${board.BType == 'N' && count < 5}">
+					                <c:set var="onclick" value="''" />
+					                <c:if test="${board.title.length() > 13}">
+					                    <c:set var="title" value="${board.title.substring(0, 13)}..." />
+					                </c:if>
+					                <c:if test="${board.title.length() <= 13}">
+					                    <c:set var="title" value="${board.title}" />
+					                </c:if>
+					                <li>
+					                    <a href="${pageContext.request.contextPath}/board/boardDetail.do?no=${board.no}">${title}</a>
+					                    <span class="createdDate">
+					                        <fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" />
+					                        <fmt:formatDate value="${createdDate}" pattern="MM-dd"/>
+					                    </span>
+					                </li>
+					                <c:set var="count" value="${count + 1}" />
+					            </c:if>
+					        </c:forEach>
+					    </ul>
 				</div>
 				
 				<div class="group-list">
-					<a href="#">전사 게시판</a>
+					<a href="${pageContext.request.contextPath}/board/menuBoardList.do"><span class="group-list-title">주간 식단표</span></a>
 					<ul>
-						<li>
-							<a href="">2017년 하반기 야유회...</a>
-							<span>06-01</span>
-						</li>
-						<li>
-							<a href="">2017년 하반기 야유회...</a>
-							<span>06-01</span>
-						</li>
-						<li>
-							<a href="">2017년 하반기 야유회...</a>
-							<span>06-01</span>
-						</li>
-						<li>
-							<a href="">2017년 하반기 야유회...</a>
-							<span>06-01</span>
-						</li>
-					</ul>
-				</div>
-				
-				<div class="group-list">
-					<a href="#">전사 게시판</a>
-					<ul>
-						<li>
-							<a href="">2017년 하반기 야유회...</a>
-							<span>06-01</span>
-						</li>
-						<li>
-							<a href="">2017년 하반기 야유회...</a>
-							<span>06-01</span>
-						</li>
-						<li>
-							<a href="">2017년 하반기 야유회...</a>
-							<span>06-01</span>
-						</li>
-						<li>
-							<a href="">2017년 하반기 야유회...</a>
-							<span>06-01</span>
-						</li>
-					</ul>
+				        <c:set var="count" value="0"/>
+					        <c:forEach items="${boardList}" var="board">
+					            <c:if test="${board.BType == 'M' && count < 5}">
+					                <c:set var="onclick" value="''" />
+					                <c:if test="${board.title.length() > 13}">
+					                    <c:set var="title" value="${board.title.substring(0, 13)}..." />
+					                </c:if>
+					                <c:if test="${board.title.length() <= 13}">
+					                    <c:set var="title" value="${board.title}" />
+					                </c:if>
+					                <li>
+					                    <a href="${pageContext.request.contextPath}/board/boardDetail.do?no=${board.no}">${title}</a>
+					                    <span class="createdDate">
+					                        <fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" />
+					                        <fmt:formatDate value="${createdDate}" pattern="MM-dd"/>
+					                    </span>
+					                </li>
+					                <c:set var="count" value="${count + 1}" />
+					            </c:if>
+					        </c:forEach>
+					    </ul>
 				</div>
 			</div>
 		</section> <!--  right-content end -->

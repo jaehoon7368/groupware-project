@@ -77,32 +77,46 @@
 		 		</button>
 	 		</a>
  		</div>
+ 		<div class="tool-button">
+			  <a href="${pageContext.request.contextPath}/board/boardList.do">
+ 				<button id="write-btn">
+			 		<span><img src="${pageContext.request.contextPath}/resources/images/bar.png" alt="" class="tool-img" /></span>
+			 		<span>목록</span>
+		 		</button>
+	 		</a>
+ 		</div>
  	</div>
 
  <div class="div-padding"></div>
  
  <section class="detail">
  	<div class="title">
- 		<h1 id="title" name="title">${board.title} <span id="readCount" name="readCount">[${board.readCount}]</span></h1>
+ 		<h1 id="title" name="title">${board.title}</h1>
  	</div>
  	
- 	<div class="info-wrap">
- 		<div>
- 			<span><img src="" alt="" />${board.writer}</span>
- 			<a href="">이미지클릭시 정보 팝업</a>
- 			<span id="createdDate" class="createdDate">
-			    <fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" />
-			    <fmt:formatDate value="${createdDate}" pattern="yyyy-MM-dd EEE HH:mm"/>
+ 	<div class="tool-wrap">
+	 	<div class="info-wrap">
+	 		<span class="writer-img">
+				<a href="#" id="home-my-img"> <img src="${pageContext.request.contextPath}/resources/images/sample.jpg"alt="" class="my-img"></a>
 			</span>
- 		</div>
+			<span class="writer">${board.writer}</span>
+			<span id="createdDate" class="createdDate">
+				<fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" />
+				<fmt:formatDate value="${createdDate}" pattern="yyyy-MM-dd EEE HH:mm"/>
+			</span>
+	 	</div>
+	 	<div class="heart-wrap">
+	 		<sapn class="heart">
+	 			<img src="${pageContext.request.contextPath}/resources/images/heart.png" alt="" />
+	 		</sapn>
+	 	</div>
  	</div>
  	
  	<div class="div-padding"></div>
- 	
  	<div class="content-view">
  		<span class="content">${board.content}</span>
  	</div>
- 	
+ 	<div class="div-padding"></div>
  	<div class="file">
  		<c:forEach items="${board.attachments}" var="attach" varStatus="vs">
 			<button type="button" 
@@ -114,7 +128,7 @@
  	</div>
  	
  	<div class="div-padding"></div>
- 	
+ 	<div class="div-padding"></div>
  	<div class="view-option">
  		<div class="comment">
  			<span>말풍선</span>
@@ -135,22 +149,25 @@
  	</div>
  </section>
  
-  <div class="div-report-commend">
-	<div>댓글</div>
-		<div class="div-report-commend-all">
-			<div>
-				<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
-			</div>
-			<div>
-				<textarea rows="1"></textarea>
-			</div>
-			<div>
-				<button class="font-small">댓글작성</button>
-			</div>
-		</div>
-	</div>
-  
+<div class="div-report-commend">
+    <div>댓글</div>
+    <div class="div-report-commend-all">
+        <div>
+            <img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
+        </div>
+        <div>
+            <form action="${pageContext.request.contextPath}/commentWrite.do" method="post">
+                <input type="hidden" name="board_no" value="${board.no}" />
+                <input type="hidden" name="comment_level" value="0" />
+                <textarea rows="1" name="content"></textarea>
+                <div>
+                    <button class="font-small">댓글작성</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+ 
 <div class="div-padding"></div>
 
 

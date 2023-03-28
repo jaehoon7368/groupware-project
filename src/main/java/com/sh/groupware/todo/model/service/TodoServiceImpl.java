@@ -1,6 +1,7 @@
 package com.sh.groupware.todo.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sh.groupware.common.dto.Attachment;
+import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.todo.model.dao.TodoDao;
 import com.sh.groupware.todo.model.dto.Todo;
 import com.sh.groupware.todo.model.dto.TodoBoard;
@@ -33,10 +36,6 @@ public class TodoServiceImpl implements TodoService {
 		return todoDao.selectTodoBoardByempId(empId);
 	}
 	
-	@Override
-	public List<TodoBoard> selectAllTodoBoard() {
-		return todoDao.selectAllTodoBoard();
-	}	
 	
 	@Override
 	public List<TodoList> selectTodoListByNo(String no) {
@@ -68,5 +67,86 @@ public class TodoServiceImpl implements TodoService {
 	public int todoEnroll(Todo todo) {
 		return todoDao.todoEnroll(todo);
 	}
+	@Override
+	public Todo todoSelectByNo(String no) {
+		return todoDao.todoSelectByNo(no);
+	}
+	@Override
+	public int todoListUpdate(TodoList todoList) {
+		return todoDao.todoListUpdate(todoList);
+	}
+	@Override
+	public int todoListDelete(TodoList todoList) {
+		return todoDao.todoListDelete(todoList);
+	}
+	@Override
+	public int todoInfoUpdate(Todo todo) {
+		return todoDao.todoInfoUpdate(todo);
+	}
+	@Override
+	public int todoContentUpdate(Todo todo) {
+		return todoDao.todoContentUpdate(todo);
+	}
+	@Override
+	public int todoDelete(Todo todo) {
+		return todoDao.todoDelete(todo);
+	}
+	@Override
+	public int commentEnroll(Map<String, Object> param) {
+		return todoDao.commentEnroll(param);
+	}
+	@Override
+	public int bookMarkOn(Map<String, Object> param) {
+		return todoDao.bookMarkOn(param);
+	}
+	@Override
+	public TodoBoard selectLastTodoBoardByNo(String todoBoardNo) {
+		return todoDao.selectLastTodoBoardByNo(todoBoardNo);
+	}
+	@Override
+	public Emp selectOneEmpByEmpId(String empId) {
+		
+		Emp emp =todoDao.selectOneEmpByEmpId(empId);
+		Attachment attach = todoDao.selectOneAttachmentByEmpId(empId);
+		emp.setAttachment(attach);
+		return emp;
+	}
+	
+	@Override
+	public int todoAttachDelete(String renameFilename) {
+		return todoDao.todoAttachDelete(renameFilename);
+	}
+	@Override
+	public int todoComentDelete(String no) {
+		return todoDao.todoComentDelete(no);
+	}
+	@Override
+	public List<TodoBoard> selectBookMarkTodoBoard(String empId) {
+		return todoDao.selectBookMarkTodoBoard(empId);
+	}
+	@Override
+	public int bookMarkOff(Map<String, Object> param) {
+		return todoDao.bookMarkOff(param);
+	}
+	@Override
+	public int insertGroupEmp(Map<String, Object> param) {
+		int result = 0;
+		
+		String [] array = (String [])param.get("empIds");
+		
+		Map <String , String > userParam = new HashMap<>();
+		for (int i = 0; i <array.length; i++) {
+			userParam.put("todoBoardNo",(String)param.get("todoBoardNo"));
+			userParam.put("empId",array[i]);
+			result = todoDao.insertGroupEmp(userParam);
+		}
+		
+		return result;
+	}
+	@Override
+	public List<TodoBoard> selectTodoBoardByEmpId(String empId) {
+		return todoDao.selectTodoBoardByEmpId(empId);
+	}
+	
 	
 }

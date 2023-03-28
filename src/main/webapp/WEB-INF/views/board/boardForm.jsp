@@ -8,7 +8,7 @@
 
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/boardForm.css">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
@@ -67,7 +67,8 @@
 		<select name="bType" id="bType">
 			<option value="A">전사 공지</option>
 			<option value="M">주간 식단표</option>
-			<option value="N">IT뉴스</option>
+			<option value="P">사진 게시판</option>
+			<option value="N">이주의 IT뉴스</option>
 		</select>
 	</div>
 
@@ -77,7 +78,7 @@
   			<th>
   				<span class="title" id="title" name="title">제목</span>
   			</th>
-  			<td><input type="text" id="title" name="title"></td>
+  			<td><input type="text" id="title" name="title" required></td>
   			<td><input type="hidden" id="empId" name="empId" value="${loginMember.empId}"></td>
   			<td><input type="hidden" id="wrtier" name="writer" value="${loginMember.name}"></td>
   		</tr>
@@ -91,10 +92,10 @@
   	
 	<hr style="width:1000px;">
 			
-  	<div ="editor">
+  	<div class="editor">
   		<th>
   			<td>
-			 	 <textarea id="summernote" name="content"></textarea>  			
+			 	 <textarea id="summernote" name="content" required></textarea>  			
   			</td>
   		</th>
   	</div>
@@ -124,6 +125,31 @@
 </section>
   </div>
 </div>
+<script>
+$(document).ready(function() {
+     bType = "<%= request.getParameter("bType") %>";
+    if (bType == null || bType == "") {
+        bType = "A"; // 기본값 설정
+    }
+    switch (bType) {
+        case "A":
+            $("#bType").val("A"); 
+            break;
+        case "M":
+            $("#bType").val("M");
+            break;
+        case "P":
+            $("#bType").val("P");
+            break;
+        case "N":
+            $("#bType").val("N");
+            break;
+        default:
+            $("#bType").val("A");
+            break;
+    }
+});
+</script>
 <script>
 document.querySelectorAll("[name=upFile]").forEach((input) => {
     input.addEventListener('change', (e) => {

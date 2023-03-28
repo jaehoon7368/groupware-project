@@ -30,6 +30,21 @@ create table dept (
     dept_title varchar2(20) not null,
     constraint pk_dept primary key (dept_code)
 );
+
+--근태관리
+create table working_management(
+    no varchar2(15) not null,
+    start_work timestamp default TO_TIMESTAMP_TZ(TO_CHAR(SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD HH24:MI:SS.FF3'), 'YYYY-MM-DD HH24:MI:SS.FF3 TZR TZD'),
+    end_work timestamp,
+    overtime timestamp,
+    reg_date date default TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul',
+    state varchar2(15),
+    day_work_time number,
+    emp_id varchar2(20) not null,
+    constraint pk_working_management primary key (no),
+    constraint fk_working_management_emp foreign key (emp_id) references emp (emp_id) on delete cascade
+);
+
 -- 게시판
 create table board (
     no varchar2(15) not null,
@@ -46,6 +61,7 @@ create table board (
     constraint fk_board_emp foreign key (emp_id) references emp (emp_id) on delete cascade,
     constraint fk_board_writer foreign key (writer) references emp (emp_id) on delete cascade
 );
+
 -- 게시판 테이블 컬럼 추가
 alter table board add writer varchar2(20) not null;
 alter table board add foreign key(writer) references emp (emp_id) on delete cascade;
@@ -76,6 +92,7 @@ create table attachment (
     constraint ck_attachment check (category in ('M', 'B', 'T', 'R', 'P'))
 );
 
+create sequence seq_working_management_no;
 create sequence seq_board_no;
 create sequence seq_attachment_no;
 create sequence seq_boardComment_no;
@@ -108,6 +125,8 @@ select * from job;
 select * from dept;
 select * from emp;
 select * from attachment;
+select * from working_management;
+
 
 
 delete from emp where emp_id = '230304';
@@ -197,6 +216,7 @@ FROM
             ON b.no = a.no AND a.category = 'B'
 WHERE b.no = '23';
 
+
 SELECT a.no, a.original_filename, a.rename_filename, a.reg_date
 FROM attachment a
 JOIN board b ON a.pk_no = b.no
@@ -225,3 +245,25 @@ WHERE
 		        on b.emp_id = e.emp_id
 		order by 
 		    no desc;
+
+select*from board order by created_date desc;
+select*from boardcomment;
+
+SELECT
+    b.*,
+    a.*,
+    a.no as attach_no
+FROM
+    board b LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B'
+WHERE
+    b.b_type = 'N';
+    
+    SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no 
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
+		WHERE 
+		    b.no = '1';

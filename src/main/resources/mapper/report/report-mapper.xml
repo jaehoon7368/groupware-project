@@ -58,4 +58,74 @@
 		
 	</insert>
 	
+	
+	<update id="updateReportDetail">
+		update
+			reportDetail
+		set
+			content = #{content}
+		where
+			no = #{no}
+		
+		<selectKey order="AFTER" resultType="string" keyProperty="reportNo">
+			select
+				report_no
+			from
+				reportDetail
+			where
+				no = #{no}
+		</selectKey>
+	</update>
+	
+	
+	<insert id="insertReportComment">
+		insert into
+			reportComment
+		values (
+			seq_reportComment_no.nextval,
+			#{detailNo},
+			#{writer},
+			#{content},
+			default
+		)
+	</insert>
+	
+	
+	<select id="selectAllReportComment" resultMap="reportCommentMap">
+		select
+			c.*,
+			(select name from emp where emp_id = c.writer) writer_name,
+			(select job_title from job where job_code = (select job_code from emp where emp_id = c.writer)) job_title,
+			(select rename_filename from attachment where category = 'P' and pk_no = c.writer) profile_img
+		from
+			reportComment c
+		where
+			detail_no = #{detailNo}
+	</select>
+	<resultMap type="reportComment" id="reportCommentMap"></resultMap>
+	
+	
+	<update id="updateReportComment">
+		update 
+			reportComment
+		set
+			content = #{content},
+			reg_date = sysdate
+		where
+			no = #{no}
+	</update>
+	
+	
+	<select id="findByNoReportComment" resultMap="reportCommentMap">
+		select
+			c.*,
+			(select name from emp where emp_id = c.writer) writer_name,
+			(select job_title from job where job_code = (select job_code from emp where emp_id = c.writer)) job_title,
+			(select rename_filename from attachment where category = 'P' and pk_no = c.writer) profile_img
+		from
+			reportComment c
+		where
+			no = #{no}
+	</select>
+	
 </mapper>

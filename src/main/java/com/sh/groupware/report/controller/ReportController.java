@@ -35,6 +35,7 @@ import com.sh.groupware.report.model.dto.ReferType;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
 import com.sh.groupware.report.model.dto.ReportCheck;
+import com.sh.groupware.report.model.dto.ReportComment;
 import com.sh.groupware.report.model.dto.ReportDetail;
 import com.sh.groupware.report.model.dto.ReportMember;
 import com.sh.groupware.report.model.dto.YN;
@@ -212,7 +213,7 @@ public class ReportController {
 		
 		int result = reportService.insertReportDetail(reportDetail);
 		
-		return  "redirect:/report/report.do";
+		return  "redirect:/report/reportDetail.do?no=" + reportDetail.getReportNo();
 	} // reportDetailEnroll() end@PostMapping("/reportDetailEnroll.do")
 	
 	
@@ -228,7 +229,9 @@ public class ReportController {
 	@GetMapping("/reportDetail.do")
 	public String reportDetail(@RequestParam String no, Model model) {
 		model.addAttribute("no", no);
+		
 		List<ReportCheck> reportCheckList = reportService.findByReportNoReportCheckList(no);
+		
 		for (ReportCheck reportCheck : reportCheckList) {
 			if (reportCheck.getDetailNo() != null) {
 				Map<String, Object> param = new HashMap<>();
@@ -241,6 +244,13 @@ public class ReportController {
 						reportCheck.addAttachment(attach);
 					}
 				} // 첨부파일 있는 경우
+				
+				List<ReportComment> commentList = reportService.selectAllReportComment(reportCheck.getDetailNo());
+				if (commentList.size() > 0) {
+					for (ReportComment comment : commentList) 
+						reportCheck.addComment(comment);
+				} // 댓글 있는 경우
+				
 			} // 작성된 보고 있는 경우 
 		}
 		model.addAttribute("reportCheckList", reportCheckList);
@@ -250,7 +260,7 @@ public class ReportController {
 
 	@ResponseBody
 	@GetMapping("/fileDownload.do")
-	public Resource fileDownload(@RequestParam int no, HttpServletResponse response) {
+	public Resource fileDownload(@RequestParam String no, HttpServletResponse response) {
 		// renamedFilename으로 파일을 찾고, originalFilename으로 파일명 전송
 		Attachment attach = attachService.selectOneAttachment(no);
 		log.debug("attach = {}", attach);
@@ -281,5 +291,114 @@ public class ReportController {
 		
 		return resource;
 	} // fileDownload() end
+	
+	
+	@PostMapping("/reportDetailUpdate.do")
+	public String reportDetailUpdate(ReportDetail reportDetail, @RequestParam("upFile") List<MultipartFile> upFiles, @RequestParam String noFile, Model model) {
+		log.debug("reportDetail = {}", reportDetail);
+		log.debug("noFile = {}", noFile);
+		
+		int result = 0;
+		String saveDirectory = application.getRealPath("/resources/upload/report");
+		log.debug("saveDirectory = {}", saveDirectory);
+		
+		// 첨부파일 저장 (서버 컴퓨터) 및 Attachment 객체 생성
+		for (MultipartFile upFile : upFiles) {
+			log.debug("upFile = {}", upFile);
+			
+			if (upFile.getSize() > 0) {
+				// 1. 저장				
+				String renamedFilename = HelloSpringUtils.renameMultipartFile(upFile);
+				String originalFilename = upFile.getOriginalFilename();
+				File destFile = new File(saveDirectory, renamedFilename);
+				try {
+					upFile.transferTo(destFile); // 첨부파일을 서버컴퓨터에 저장하는 코드
+				} catch (IllegalStateException | IOException e) {
+					log.error(e.getMessage(), e);
+				}
+				
+				// 2. attach 객체 생성 및 Board에 추가
+				Attachment attach = new Attachment();
+				attach.setRenameFilename(renamedFilename);
+				attach.setOriginalFilename(originalFilename);
+				attach.setCategory(Category.R);
+				attach.setPkNo(reportDetail.getNo());
+				reportDetail.addAttachment(attach);
+				log.debug("attach = {}", attach);
+			} // if end
+			
+		} // foreach end
+		
+
+		// 저장된 파일 삭제
+		if (!"".equals(noFile)) {
+			String[] attachNoArr = noFile.split(",");
+			for (int i = 1; i < attachNoArr.length; i++) {
+				Attachment attach = attachService.selectOneAttachment(attachNoArr[i]);
+				
+				File delFile = new File(saveDirectory, attach.getRenameFilename());
+				
+				if (delFile.exists())
+					delFile.delete();
+				
+				result = attachService.deleteOneAttachment(attach.getNo());
+			}
+		}
+		
+		result = reportService.updateReportDetail(reportDetail);
+		
+		return "redirect:/report/reportDetail.do?no=" + reportDetail.getReportNo();
+	} // reportDetailUpdate() end
+	
+	
+	@PostMapping("/reportDetailDelete.do")
+	public String reportDetailDelete(ReportDetail reportDetail) {
+		log.debug("reportDetail = {}", reportDetail);
+		int result = reportService.reportDetailDelete(reportDetail);
+		return "redirect:/report/reportForm.do?no=" + reportDetail.getReportNo();
+	} // reportDetailDelete() end
+	
+	
+	@PostMapping("/reportCommentEnroll.do")
+	public String reportCommentEnroll(ReportComment reportComment, @RequestParam String reportNo, Authentication authentication) {
+		log.debug("reportComment = {}", reportComment);
+		
+		String loginId = ((Emp) authentication.getPrincipal()).getEmpId();
+		reportComment.setWriter(loginId);
+		
+		int result = reportService.insertReportComment(reportComment);
+		
+		return "redirect:/report/reportDetail.do?no=" + reportNo;
+	} // reportCommentEnroll() end
+	
+
+	@ResponseBody
+	@PostMapping("/reportCommentUpdate.do")
+	public ReportComment reportCommentUpdate(@RequestParam String no, @RequestParam String detailNo, @RequestParam String content, Authentication authentication) {
+		ReportComment reportComment = new ReportComment();
+		reportComment.setNo(no);
+		reportComment.setDetailNo(detailNo);
+		reportComment.setContent(content);
+		
+		String loginId = ((Emp) authentication.getPrincipal()).getEmpId();
+		reportComment.setWriter(loginId);
+		
+		int result = reportService.updateReportComment(reportComment);
+		reportComment = reportService.findByNoReportComment(reportComment.getNo());
+		log.debug("reportComment = {}", reportComment);
+		
+		return reportComment;
+	} // reportCommentUpdate() end
+
+	
+	@ResponseBody
+	@PostMapping("/reportCommentDelete.do")
+	public int reportCommentDelete(@RequestParam String no, Authentication authentication) {
+		log.debug("no = {}", no);
+		
+		int result = reportService.deleteReportComment(no);
+		
+		return result;
+	} // reportCommentDelete() end
 	
 } // class end

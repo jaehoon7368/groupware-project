@@ -99,6 +99,11 @@ tr[data-no] {cursor: pointer;}
   text-align: left;
 }
 
+.board-table tbody .board-title{
+	text-align: start;
+	padding-left: 40px;
+}
+
 .board-table tbody th p{
   display: none;
 }

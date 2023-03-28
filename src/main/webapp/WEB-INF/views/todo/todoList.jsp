@@ -8,9 +8,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="Mail" name="title" />
+	<jsp:param value="todoList" name="title" />
 </jsp:include>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/todo/todoList.css">
 <div class="all-container app-dashboard-body-content off-canvas-content"
 	data-off-canvas-content>
 
@@ -51,195 +52,169 @@
 		<!-- 상단 타이틀 end -->
 		<!-- 본문 -->
 		<div class="div-padding">
-			<style>
-.wrap_board ul {
-	list-style: none;
-	list-style: none;
-	display: flex;
-	align-content: center;
-	flex-wrap: wrap;
-}
+<style>
+	.groupEmp ul{
+        display: flex;
+        }
+     .groupEmp li {
+         list-style: none;
+         margin-left: 30px;
+         border-radius: 50%;
+        }
+			
 
-.todo-li {
-	min-width: 300px;
-	width: 20%;
-	min-height: 96px;
-	height: 100%;
-	border: 1px solid rgb(227, 227, 227);
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	padding: 6px;
-	margin-right: 15px;
-	margin-top: 20px;
-	transition-duration: .3s;
-	font-size: 14px;
-	background-color: #e5e5e5;
-}
-
-.board-info {
-	color: rgb(104, 104, 104);
-}
-
-.board-list {
-	background-color: white;
-	padding-left: 7px;
-	margin-top: 5px;
-	display: flex;
-	flex-direction: column;
-}
-
-.top-list {
-	height: 50px;
-	display: flex;
-	align-items: center;
-}
-
-.new-board-list {
-	margin-top: 20px;
-	margin-bottom: 10px;
-	height: 50px;
-	border: 1px dashed gray;
-	display: flex;
-	align-items: center;
-	padding-left: 10px;
-}
-
-.todo-div ul {
-	cursor: auto;
-}
-
-.wrap-todo-detail {
-	margin: 20px;
-}
-
-.todo-header {
-	display: flex;
-	justify-content: flex-start;
-	width: 90%;
-}
-
-.explain-div {
-	margin-left: 50px;
-	height: 20%;
-	min-height: 100px;
-}
-
-.explain-div p:hover {
-	background-color: #D6D9E0;
-	cursor: pointer;
-}
-
-.todo-content ul {
-	margin-bottom: 50px;
-}
-
-.attach-div {
-	height: 100px;
-	width: 100%;
-	border: 2px dashed rgba(128, 128, 128, 0.336);
-	color: gray;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.comment-div {
-	display: flex;
-	align-items: center;
-}
-
-.comment-div input {
-	margin-left: 30px;
-	width: 90%;
-	height: 30px;
-	border: 1px solid #e3dede;
-}
-
-.todo-title {
-	padding-left: 10px;
-	color: gray;
-}
-
-.comment-btn {
-	border: solid gray 1px;
-	padding: 0px;
-	border-radius: 0px;
-	width: 59px;
-	height: 31px;
-	margin-top: 5px;
-	background-color: white;
-	color: black;
-	transform: translate(0, -11px);
-}
-
-.removeView {
-	display: none;
-}
-
-.addView {
-	display: block;
-}
-
-.enrollFrm {
-	height: 130px;
-}
-
-#todoContent {
-	cursor: pointer;
-	margin-left: 10px;
-}
-/*게시판 모달*/
-.board-menu {
-	position: relative;
-	cursor: pointer;
-}
-
-.board-menu-modal {
-	position: absolute;
-	transform: translate(0, -10px);
-	border: 1px solid #dddddd;
-	width: 241px;
-	height: 218px;
-	background-color: white;
-	z-index: 2;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-	transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
-}
-
-.board-menu-modal:hover {
-	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px
-		rgba(0, 0, 0, 0.22);
-}
-
-.board-menu-modal div {
-	font-size: 20px;
-	line-height: 2.7;
-	text-rendering: optimizeLegibility;
-	margin-bottom: 0px;
-}
-
-.modalList:hover {
-	color: white;
-	background-color: #00b6c2;
-}
-
-.modalTitle {
-	text-align: center;
-	color: #c3c3c3;;
-}
-/*게시판 모달*/
 </style>
 			<div class="content-top">
-				<h2 class="board-menu" id="boardMenu">Board .${todoBoard.title}</h2>
+				<h2 class="board-menu" id="boardMenu">Board ${todoBoard.title}</h2>
 				<!-- 게시판 메뉴 모달 -->
+				<div class="groupEmp">
+					<ul>
+						<li><img src="${pageContext.request.contextPath }/resources/upload/emp/${emp.attachment.renameFilename }" alt="" class="my-img"></li>
+						<li><img src="${pageContext.request.contextPath }/resources/upload/emp/${emp.attachment.renameFilename }" alt="" class="my-img"></li>
+						<li><img src="${pageContext.request.contextPath }/resources/upload/emp/${emp.attachment.renameFilename }" alt="" class="my-img"></li>
+					</ul>
+				</div>
 				<div class="removeView board-menu-modal" id="boardMenuModal">
 					<div class="modalTitle">Board</div>
 					<div class="modalList" id="todoHome">Todo홈</div>
-					<div class="modalList">즐겨찾는보드</div>
-					<div class="modalList">내보드</div>
-				</div>
+					<a href="javascript:groupModalOpen('${todoBoard.no }')" data-open="boardModal"><div class="modalList">사원공유설정</div></a>
+					
+ 				</div>
+ 	<!-- 사원공유 모달  -->
+ 										<div class="report-no-modal reveal" id="exampleModal1" data-reveal>
+										<h5>선택</h5>
+										<div>
+											<input type="text" name="search" id="search" placeholder="이름/부서/직급" />
+										</div>
+										<div class="div-emp-group">
+											<div class="accordion-box">
+												<ul class="accordion" ata-accordion data-multi-expand="true" >
+													<c:forEach items="${sessionScope.deptList}" var="dept">
+														<li>
+															<p class="title font-medium">${dept.deptTitle}</p>
+															<div class="">
+																<ul class="container-detail font-small">
+																	<c:forEach items="${emps}" var="emp">
+																		<c:if test="${emp.deptCode eq dept.deptCode}">
+																			 <li class="li-emp" data-id="${emp.empId}" data-dept="${emp.deptCode}" data-job="${emp.jobTitle}" data-name="${emp.name}">${emp.name } ${emp.jobTitle }</li>
+																		</c:if>
+																	</c:forEach>
+																</ul>
+															</div>
+														</li>
+													</c:forEach>
+												</ul>
+											</div>
+										</div>
+										<div class="div-modal-choice"></div>
+										<div class="font-small report-no-modal-btn">
+											<button class="add-btn" data-close aria-label="Close reveal" type="button" id="empAddbtn">추가</button>
+										</div>
+										<form:form action ="${pageContext.request.contextPath }/todo/groupAddEmp.do" method ="POST" id="groupAddFrm">
+											<input type="hidden" name ="todoBoardNo" value="${todoBoard.no }" />
+										</form:form>
+										
+										<button class="btn-close close-button" data-close aria-label="Close reveal" type="button">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+ 	<!-- 사원공유모달끝 -->
+<style>
+.div-modal-choice-emp, .div-modal-choice-dept {
+	display: inline-block;
+	margin: 5px;
+	font-size: small;
+	padding: 5px;
+	border-radius: 50px;
+	border: solid 1px lightgray;
+}
+
+.div-modal-choice-emp:hover, .div-modal-choice-dept:hover {
+	cursor: pointer;
+}
+
+.div-emp-tag {
+	display: inline-block;
+	font-size: small;
+	padding: 5px;
+	border-radius: 50px;
+	border: solid 1px lightgray;
+	color: gray;
+}
+</style>
+ 				
 				<script>
+	document.querySelector("#empAddbtn").addEventListener('click',(event)=>{
+		let  empIds = [];
+		
+		document.querySelectorAll(".div-modal-choice-emp").forEach((div)=>{
+			empIds.push(div.dataset.id);
+			console.log(div.dataset.id);
+		})
+		
+		if(empIds.length<=0){
+			alert('사원을 추가해주세요');
+			return; 
+		}
+		const groupAddFrm = document.querySelector("#groupAddFrm");
+		
+		for(let i = 0 ; i <empIds.length ; i++){
+			const input = document.createElement('input');
+			input.name = 'empId';
+			input.value = empIds[i]
+			input.type = 'hidden';
+			groupAddFrm.append(input);
+		}
+		
+		groupAddFrm.submit();
+		
+		
+	})
+				
+	//사원공유 모달 오픈
+	const groupModalOpen =(boardNo)=>{
+		console.log(boardNo);
+		$('#exampleModal1').foundation('open');
+	}
+	
+	const groupEmp = [];
+	/*부서원 선택시 아래에 띄우기*/
+	document.querySelectorAll(".li-emp").forEach((li)=>{
+	  li.addEventListener('click',(e)=>{
+	    const empId = e.target.dataset.id;
+	    const deptCode = e.target.dataset.dept;
+	    const jobTitle = e.target.dataset.job;
+	    const name = e.target.dataset.name;
+	    
+	   const existingEmp = document.querySelector(`.div-modal-choice-emp[data-id='\${empId}']`);
+	    if (existingEmp) {
+	      return;
+	    }
+	    
+			const div = document.querySelector('.div-modal-choice');
+				div.innerHTML += `
+					<div class='div-modal-choice-emp' data-id='\${empId}' data-dept='\${deptCode}' data-name='\${name}' onclick='deleteTag(this);'>
+						<span>\${name} \${jobTitle}</span>
+					</div>
+				`;
+	  })
+	})
+	
+	/* 선택된 사람 클릭시 삭제*/
+		const deleteTag = (elem) => {
+		  // remove corresponding div element from DOM
+		  elem.remove();
+		
+		  // remove person's data from groupEmp array
+		  const empId = elem.dataset.id;
+		  const empIndex = groupEmp.findIndex((emp) => emp.empId === empId);
+		  if (empIndex > -1) {
+		    groupEmp.splice(empIndex, 1);
+		  }
+		};
+	
+				
+				
 	//todo홈버튼  
 	document.querySelector("#todoHome").addEventListener('click',()=>{
 		location.href='${pageContext.request.contextPath}/todo/todo.do';		
@@ -250,11 +225,13 @@
 	boardMenu.addEventListener('click',()=>{
    		 boardMenuModal.classList.remove('removeView');
 	})
-	//바깥누르면 취소
+	//바깥누르면 취소  and  첨부파일 없애기
 	document.addEventListener('click', (event) => {
     	if (!boardMenuModal.contains(event.target) && event.target !== boardMenu) {
         	boardMenuModal.classList.add('removeView');
+        	
    	 }
+    	document.querySelector("#img-viewer").src = "";
 	});
 </script>
 				<!-- 게시판 메뉴 모달끝 -->
@@ -268,16 +245,22 @@
 								<div class="top-list" id="listTitle${vs.index }"
 									onclick="changeView${vs.index}(event);">${todoList.title}</div>
 								<!-- 제목 -->
-								<form action="" id="updateFrm${vs.index}" class="removeView">
-									<input type="text" placeholder="제목" value="" />
+								<form:form method="POST" action="${pageContext.request.contextPath }/todo/todoListUpdate.do" id="updateFrm${vs.index}" class="removeView">
+									<input type="text" placeholder="제목" value="${todoList.title}"  name="title"/>
+									<input type="hidden"  value="${todoList.no }" name="no" />
+									<input type="hidden" value="${todoBoard.no }" name="todoBoardNo"/>
 									<button class="comment-btn">저장</button>
-									<button class="comment-btn" id="titleCanclebtn${vs.index}">
-										취소</button>
-									<button class="comment-btn">삭제</button>
-								</form>
+									<button class="comment-btn" id="titleCanclebtn${vs.index}">취소</button>
+								</form:form>
+								<form:form method="POST" action="${pageContext.request.contextPath }/todo/todoListDelete.do">
+									<input type="hidden"  value="${todoList.no }" name="no" />
+									<input type="hidden" value="${todoBoard.no }" name="todoBoardNo"/>
+									<button class="comment-btn" onclick="confrm(event);">삭제</button>
+								</form:form>
 								<div class="row">
 									<script>
 // 제목 폼 변경 메소드
+
 
 var changeView${vs.index}=(e)=>{
 const ufrm = document.querySelector("#updateFrm${vs.index}");
@@ -294,156 +277,20 @@ const listTitle = document.querySelector("#listTitle${vs.index}")
 	listTitle.classList.remove('removeView');
 	ufrm.classList.add('removeView');		
 	e.preventDefault();
-}) 
-
-</script>
-
-
-									<!-- 모달시작 -->
+	});
+	</script>
 									<c:forEach items="${todoList.todos }" var="todo">
-									<div class="columns">
-										<p>
-											<a data-open="exampleModal1">
+											<a href="javascript:modalOpen('${todoList.no }','${todo.no}')" data-open="___exampleModal">
 												<div class="board-list">
 													<span>${todo.content } </span>
-													<p>Moreimage</p>
 												</div>
 											</a>
 										</p>
+										</c:forEach>
 
-										<div class="large reveal" id="exampleModal1" data-reveal>
-											<!-- 모달 본문 -->
-
-											<div class="wrap-todo-detail">
-												<div class="todo-header">
-													<div class="todo-header">
-														<i class="fa fa-folder fa-2x" style="color: gray"
-															aria-hidden="true"></i>
-														<h5 id="todoContent${todo.no }">${todo.content }
-															</h5>
-														<form action="" id="updateConFrm${todo.no }"
-															class="removeView">
-															<input type="text" class="" />
-															<button class="comment-btn">저장</button>
-															<button class="comment-btn"
-																id="contentCanclebtn${todo.no }">취소</button>
-															<button class="comment-btn">삭제</button>
-														</form>
-														<p class="todo-title" id="headerText${todo.no }">in
-															할일 제목</p>
-													</div>
-													<div>
-														<!-- 공간용 -->
-													</div>
-												</div>
-
-												<div class="todo-content">
-													<div class="explain-div">
-														<!-- 설명 내용 데이터 -->
-														<p id="epContent${todo.no }">
-															<i class="fa fa-list" aria-hidden="true"
-																style="margin-right: 15px"></i>${todo.info }
-														</p>
-														<!-- 클릭하면 input 내용 보이게   -->
-														<form action="" id="updateEpFrm${todo.no }"
-															class="removeView">
-															<textarea name="" id="" cols="30" rows="5"
-																style="margin-top: 21px;"></textarea>
-															<button class="comment-btn">저장</button>
-															<button class="comment-btn"
-																id="epCanclebtn${todo.no }">취소</button>
-															<button class="comment-btn">삭제</button>
-														</form>
-													</div>
-													<hr>
-													<ul>
-														<h3>
-															<i class="fa fa-paperclip fa-1x" aria-hidden="true"><p>
-																</p></i>파일첨부
-														</h3>
-														<div class="attach-div">
-															<i class="fa fa-paperclip" aria-hidden="true"></i> 이곳에
-															파일을 드래그 하세요. 또는 파일선택
-														</div>
-													</ul>
-													<div>
-														댓글
-														<hr>
-													</div>
-													<div class="comment-div">
-														<div style="width: 50px">
-															<img src="/김현동/joonpark.jpg" alt="" style="width: 100%;">
-														</div>
-														<div style="width: 90%">
-															<input type="text" class="comment-input">
-														</div>
-														<button class="comment-btn">확인</button>
-													</div>
-
-													<div class="comment-div">
-														<div style="width: 50px">
-															<img src="/김현동/joonpark.jpg" alt="" style="width: 100%;">
-														</div>
-														<div style="width: 90%">
-															<input type="text" class="comment-input" readonly>
-														</div>
-														<button style="visibility: hidden;" class="comment-btn">확인</button>
-													</div>
-												</div>
-											</div>
-											<!-- detail end-->
-											<script>
-
-//모달 섫명 폼변경
-let ptag${todo.no } = document.querySelector("#epContent${todo.no }");
-const updateEpFrm${todo.no } = document.querySelector("#updateEpFrm${todo.no }");
-
-	ptag${todo.no }.addEventListener('click',(e)=>{
-	updateEpFrm${todo.no }.classList.remove('removeView');
-	e.target.classList.add("removeView");
-		
-})
-//모달 설명 취소 버튼 
-document.querySelector("#epCanclebtn${todo.no }").addEventListener('click',(e)=>{
-	
-	e.preventDefault();
-    ptag${todo.no }.classList.remove('removeView');
-    updateEpFrm${todo.no }.classList.add('removeView');
-})
-
-// 모달 제목 클릭시 변경 
-	    var todoContent${todo.no } = document.querySelector("#todoContent${todo.no }");
-		var conFrm${todo.no } = document.querySelector("#updateConFrm${todo.no }") ;
-		var headerText${todo.no } = document.querySelector("#headerText${todo.no }");
-	document.querySelector("#todoContent${todo.no }").addEventListener('click',(e)=>{
-		todoContent${todo.no }.classList.add('removeView');
-		conFrm${todo.no }.classList.remove('removeView');
-		conFrm${todo.no }.style.marginLeft = '10px';
-		headerText${todo.no }.classList.add('removeView');
-		conFrm${todo.no }.style.width='100%';
-	})
-	
-	document.querySelector("#contentCanclebtn${todo.no }").addEventListener('click',(e)=>{
-		todoContent${todo.no }.classList.remove("removeView");
-		conFrm${todo.no }.classList.add("removeView");
-		e.preventDefault();
-	})
-	
-	
-
-
-</script>
-
-
-											<!-- 모달 본문 끝 -->
-											<button class="close-button" data-close
-												aria-label="Close reveal" type="button">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-									</div>
-									</c:forEach>
-									<!-- 모달끝 -->
+										
+								
+									
 								</div>
 
 								<div class="new-board-list"onclick="changeView2${vs.index}(event);"id="newboardDiv${vs.index }">
@@ -451,19 +298,28 @@ document.querySelector("#epCanclebtn${todo.no }").addEventListener('click',(e)=>
 										style="font-size: 2em; color: gray;"></i>
 								</div> <!--  -->
 								<div id="enrollFrm${vs.index }" class="removeView">
-									<form:form action="${pageContext.request.contextPath }/todo/todoEnroll.do" method="POST" class="">
-										<input type="hidden" name ="todoListNo" value="${todoList.no }"/>
+									<form:form action="${pageContext.request.contextPath }/todo/todoEnroll.do" method="POST" >
+										<input type="hidden" name ="todoListNo"  value="${todoList.no }"/>
 										<input type="hidden" name ="todoBoardNo" value="${todoList.todoboardNo }"/>
-										<textarea name="content" id="" cols="30" rows="5"
+										<textarea id="todoListcontent${vs.index }"name="content" id="" cols="30" rows="5"
 											style="margin-top: 21px;"></textarea>
-										<button class="comment-btn" >저장</button>
+										<button class="comment-btn" id="todoEnrollbtn" name ="todoEnrollbtn">저장</button>
 										<button class="comment-btn"
 											id="titleContentCanclebtn${vs.index }">취소</button>
-										<button class="comment-btn">삭제</button>
 									</form:form>
 								</div>
 							</li>	
 							<script>
+
+	document.querySelector("#enrollFrm${vs.index }").addEventListener('submit',(e)=>{
+		
+		const todoListcontent${vs.index } = document.querySelector("#todoListcontent${vs.index }");
+		
+		if(/^\s+/.test(todoListcontent${vs.index }.value) || !todoListcontent${vs.index }.value){	
+			e.preventDefault();
+			alert('한글자 이상 입력해주세요');
+		}
+	});
 //등록 폼 변경 이벤트
 const changeView2${vs.index}=(e)=>{
 	console.log('클릭확인')
@@ -490,13 +346,12 @@ document.querySelector("#titleContentCanclebtn${vs.index }").addEventListener('c
 								<i class="fa fa-plus" aria-hidden="true"
 									style="font-size: 2em; color: gray;"></i>
 							</div>
-							<div id="todoListEnrollFrm" class="removeView">
+								<div id="todoListEnrollFrm" class="removeView">
 								<form:form method="POST" action="${pageContext.request.contextPath}/todo/todoListEnroll.do" >
 								<input type="text" name="todoListTitle" id="todoListTitle" />
 								<input type="hidden" name="no" value="${todoBoard.no }" id="todoBoardNo" />
 								<button class="comment-btn" id="todoListEnrollbtn">저장</button>
 								<button class="comment-btn" id="todoListEnrollCancle">취소</button>
-								<button class="comment-btn">삭제</button>
 								</form:form>
 							</div>
 						</li>
@@ -511,6 +366,14 @@ document.querySelector("#titleContentCanclebtn${vs.index }").addEventListener('c
 
 
 <script>
+	//유효성 검사
+	document.querySelector("#todoListEnrollbtn").addEventListener('click',(e)=>{
+		const todoListTitle = document.querySelector("#todoListTitle");
+		if(/^\s+/.test(todoListTitle.value) || !todoListTitle.value){	
+			e.preventDefault();
+			alert('한글자 이상 입력해주세요');
+		}
+	});
 	
 	
 	
@@ -538,8 +401,352 @@ document.querySelector("#titleContentCanclebtn${vs.index }").addEventListener('c
 	
 	
 	</script>
+<style>
+/*모달 CSS 변경*/
+.button {
+  background-color: gray; /* 배경 색상을 회색으로 변경 */
+  color: white; /* 텍스트 색상을 흰색으로 변경 */
+  padding: 10px 20px; /* 선택적으로 패딩 값을 지정할 수 있습니다. */
+}
+/* todo 모달안 삭제 버튼 */
+#todoContent{
+	position:relative;
+}
+#todoDeletebtn{
+	position:absolute;
+	right: 98px;
+    top: 39px;
+}
+.comment-name{
+	width : 68px;
+}
+
+</style>
+	<div class="large reveal" id="exampleModal" data-reveal>
+											<!-- 모달 본문 -->
+							<div class="wrap-todo-detail">
+												<div class="todo-header">
+													<div class="todo-header">
+														<i class="fa fa-folder fa-2x" style="color: gray"
+															aria-hidden="true"></i>
+														<h5 id="todoContent">
+															</h5>
+														<form:form action="${pageContext.request.contextPath }/todo/todoContentUpdate.do" id="updateConFrm"
+															class="removeView">
+															<input type="text"   name="content"  id="todoContentText"/>
+															<input type="hidden" name="todoBoardNo" value="${todoBoard.no }" />
+															<input type="hidden" name="no" id="todoContentinput"/>
+															<button class="comment-btn">수정</button>
+															<button class="comment-btn"
+																id="contentCanclebtn">취소</button>
+														</form:form>
+														<form:form action="${pageContext.request.contextPath }/todo/todoDelete.do" id="deletetodoFrm">
+															<input type="hidden" name="todoBoardNo" value="${todoBoard.no }" />
+															<input type="hidden" name="no" id="todoDeleteinput"/>
+															<button class="comment-btn" onclick="confrm(event);" id="todoDeletebtn">삭제</button>
+														</form:form>
+													</div>
+													<div>
+														<!-- 공간용 -->
+													</div>
+												</div>
+
+												<div class="todo-content" id="tododiv">
+													<div class="explain-div">
+														<!-- 설명 내용 데이터 -->
+														<p id="epContent">
+															
+														</p>
+														<!-- 클릭하면 input 내용 보이게   -->
+														<form:form action="${pageContext.request.contextPath }/todo/todoInfoUpdate.do" id="updateEpFrm" class="removeView">
+															<input type="hidden" name="no" id="todoUpdateinput"/>
+															<input type="hidden" name="todoBoardNo" value="${todoBoard.no }"/>
+															<textarea name="info" id="todoInfo" cols="30" rows="5" style="margin-top: 21px;" ></textarea>
+															<button class="comment-btn">수정</button>
+															<button class="comment-btn" id="epCanclebtn">취소</button>
+														</form:form>
+													</div> <!--  첨부파일 출력  -->
+														<div>
+															<img src="${pagContext.request.contextPath }" alt=""  id="image-print"/>
+														</div>
+														
+													<div id="img-viewer-container" style="display: flex; justify-content: center;">
+														<img id="img-viewer" width="30%">
+														<form:form action="${pageContext.request.contextPath}/todo/todoAttachDelete.do">
+														<input type="hidden" id="attachDelet-input" name ="renameFilename"/>
+														<input type="hidden" name = "todoBoardNo" value="${todoBoard.no }" />
+														<button id="delteattachment" onclick="confrm(event)" class="removeView comment-btn">삭제</button>
+														</form:form>
+													</div>
+													<hr>
+													<ul>
+
+														<h3>
+															<i class="fa fa-paperclip fa-1x" aria-hidden="true"><p>
+																</p></i>파일첨부
+														</h3>
+														<div class="attach-div">
+															<i class="fa fa-paperclip" aria-hidden="true"></i>
+															<label for="exampleFileUpload" class="button">파일첨부를하려면 선택하세요</label>
+															<input type="file" id="exampleFileUpload" class="show-for-sr" name="upFile">
+														</div>
+													</ul>
+													<div>
+														댓글
+														<hr>
+													</div>
+													<div class="comment-div"> <!--  댓글입력창 -->
+														<div style="width: 50px">
+															
+   																 <img src="${pageContext.request.contextPath }/resources/upload/emp/${emp.attachment.renameFilename }" alt="" class="my-img">
+														</div>
+														<div class="comment-name">${emp.name }</div>
+														<div style="width: 90%"> 
+															<form:form action="${pageContext.request.contextPath }/todo/commentEnroll.do">
+																<input type="text" class="comment-input" name="content" id="comment-text-input">
+																<input type="hidden" class="comment-input" name="todoBoardNo" value="${todoBoard.no }">
+																<input type="hidden" id="comment-todo-input" name="todoNo"/>
+														</div>
+														<button class="comment-btn"id="comment-enroll">등록</button>
+															</form:form>
+													</div><!-- 댓글 나오게  -->
+													<div  id="todoComment">
+													</div>
+		
+												</div>
+											</div>
+											<!-- detail end-->
+											<script>
+//설명 update 
+
+
+//모달 섫명 폼변경
+let ptag = document.querySelector("#epContent");
+const updateEpFrm= document.querySelector("#updateEpFrm");
+
+	ptag.addEventListener('click',(e)=>{
+	updateEpFrm.classList.remove('removeView');
+	e.target.classList.add("removeView");
+		
+})
+//모달 설명 취소 버튼 
+document.querySelector("#epCanclebtn").addEventListener('click',(e)=>{
+	
+	e.preventDefault();
+    ptag.classList.remove('removeView');
+    updateEpFrm.classList.add('removeView');
+})
+
+// 모달 제목 클릭시 변경 
+	    var todoContent = document.querySelector("#todoContent");
+		var conFrm= document.querySelector("#updateConFrm") ;
+		var headerText= document.querySelector("#headerText");
+	document.querySelector("#todoContent").addEventListener('click',(e)=>{
+		todoContent.classList.add('removeView');
+		conFrm.classList.remove('removeView');
+		conFrm.style.marginLeft = '10px';
+		headerText.classList.add('removeView');
+		conFrm.style.width='100%';
+	})
+	
+	document.querySelector("#contentCanclebtn").addEventListener('click',(e)=>{
+		todoContent.classList.remove("removeView");
+		conFrm.classList.add("removeView");
+		e.preventDefault();
+	})
+
+const confrm =(e)=>{
+	if(confirm('삭제하시겠습니까')){
+		e.submit();
+	}
+	e.preventDefault();
+}
+
+</script>
 
 
 
+<c:if test="\${empName.textContent} != null">
+</c:if>
+
+											<!-- 모달 본문 끝 -->
+											<button class="close-button" data-close
+												aria-label="Close reveal" type="button">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+									</div><!-- 모달끝 -->
+
+<script>
+//$('#element').foundation('open');
+//$('#element').foundation('close');
+const modalOpen = (todoListNo, todoNo) => {
+	// 해당 정보 비동기 요청
+	console.log(todoListNo, todoNo);
+	$('#exampleModal').foundation('open');
+	
+	
+	
+			$.ajax({
+				url : "${pageContext.request.contextPath}/todo/todoSelectByNo.do?no="+todoNo,
+				success(data){
+					console.log(data);
+					const no = data.querySelector("no");
+					const info = data.querySelector("info");
+					const content = data.querySelector("content");
+					const endDate = data.querySelector("end_date");
+					const comments = data.querySelector("todocomments");
+					const attachments = data.querySelector("attachments")					
+					const renameFilename= attachments.querySelector("renameFilename");
+					
+					
+					
+					let imageName = '';
+					if(renameFilename != null && renameFilename != ""){
+					imageName += renameFilename.textContent;
+					}
+					//todo content info 아이디넣기
+					const todoContentinput = document.querySelector("#todoContentinput");
+					todoContentinput.value = no.textContent;
+					//todo info input  아이디 넣기
+					const todoUpdateinput = document.querySelector("#todoUpdateinput");
+					todoUpdateinput.value = no.textContent; // 수정된 부분				
+					//todo delete input 아이디넣기
+					const todoDeleteinput = document.querySelector("#todoDeleteinput");
+					todoDeleteinput.value = no.textContent;
+					//todo comment no input 아이디 넣기
+					const commenttodoinput =  document.querySelector("#comment-todo-input");
+					commenttodoinput.value = no.textContent;
+	
+					//이미지 넣기
+					const imagePrint = document.querySelector("#image-print")					
+					imagePrint.src = '${pageContext.request.contextPath}/resources/upload/todo/'+imageName;
+					
+					const todoContent = document.querySelector("#todoContent");
+					todoContent.innerHTML='';
+					todoContent.innerHTML= content.textContent;
+					
+					const todoContentText = document.querySelector("#todoContentText");
+					todoContentText.value ='';
+					todoContentText.value = content.textContent;
+					
+					const todoInfo = document.querySelector("#todoInfo");
+					todoInfo.value = '';
+					todoInfo.value = info.textContent;
+					
+					const epContent = document.querySelector("#epContent");
+					epContent.innerHTML= '';
+					epContent.innerHTML+= `<i class="fa fa-list" aria-hidden="true" style="margin-right: 15px"></i>`;
+					epContent.innerHTML+= info.textContent;
+					
+					// 등록된 댓글 뿌리기
+					console.log(comments);
+					// 유사배열 진짜 배열로 만들고 뿌리기
+					const todoComment = document.querySelector("#todoComment");
+					todoComment.innerHTML= "";
+					
+					const realcomments = [...comments.children];
+					if(realcomments !=null && realcomments !=''){
+						realcomments.forEach((comment)=>{
+							const [no,content,regDate,,,,,,empId,todoNo,empfilename,empName] = comment.children;							
+							
+							todoComment.innerHTML+= `
+								<div class="comment-div">  
+							<div style="width: 50px">
+								
+								<img src='${pageContext.request.contextPath}/resources/upload/emp/\${empfilename.textContent}' alt="" class="my-img";>
+							</div>
+							<div class="comment-name"> \${empName.textContent}</div>
+							<div style="width: 90%">
+								<input type="text" class="comment-input" readonly value ="\${content.textContent}" >
+							</div>
+							<form:form action="${pageContext.request.contextPath }/todo/todoComentDelete.do" method="POST">
+							<input type="hidden" name="no" value="\${no.textContent}"/>
+							<input type="hidden" name="todoBoardNo" value="${todoBoard.no}"/>
+							<button class="comment-btn" onclick="confrm(event)" id="comment-delete">삭제</button>
+							</form:form>
+							</div> <!--  댓글  -->
+							`
+							
+							
+						})
+					}
+					 const btn = document.querySelector("#delteattachment");
+					 btn.classList.add('removeView');
+					
+					if(renameFilename != null && renameFilename != ""){
+						// delete 버튼에 no 값 넣기 
+						const attachDeletinput= document.querySelector("#attachDelet-input");
+						attachDeletinput.value = renameFilename.textContent;
+					    btn.classList.remove('removeView');
+						}
+						
+					
+					
+					
+				},
+				error:console.log
+			})
+};
+
+document.querySelector("#exampleFileUpload").addEventListener('change',(e)=>{
+
+	const f = e.target;
+	console.log(f.files);               //배열
+	console.log(f.files[0]);           //보통 0번지에 사진이 들어가있다.
+	if(f.files[0]){//파일 선택한 경우
+		const fr = new FileReader();
+		fr.readAsDataURL(f.files[0]);  //비동기처리  - 백그라운드 작업
+		fr.onload = (e) => {
+			//읽기 작업 완료시 호출될 load이벤트핸들러
+			document.querySelector("#img-viewer").src = e.target.result; // dataUrl		
+			console.log(e.target.result); //파일2진데이터를 인코딩한 결과
+			
+			const todoNo = document.querySelector("#todoContentinput");
+			const formData = new FormData();
+			formData.append('file', f.files[0]); // f는 input[type=file] 엘리먼트
+			formData.append('todoNo',todoNo.value);
+			console.log(formData)
+			console.log(todoNo);
+			
+			const csrfHeader = "${_csrf.headerName}";
+		    const csrfToken = "${_csrf.token}";
+		    const headers = {};
+		    headers[csrfHeader] = csrfToken;
+			
+		    $.ajax({
+				url: "${pageContext.request.contextPath}/todo/todoFileUpload.do",
+				method : "POST",
+				headers,
+				data : formData,
+				dataType : "json",
+				contentType:false,
+				processData:false,
+				success(data){
+					console.log(data);
+					
+				},
+				error : console.log
+				
+			})
+			
+		}
+	}else{ //파일 선택 취소한경우
+		document.querySelector("#img-viewer").src = "";
+		
+	}
+})
+//유효성검사
+	document.querySelector("#comment-enroll").addEventListener('click',(e)=>{
+		const textinput = document.querySelector("#comment-text-input");
+		if(/^\s+/.test(textinput.value) || !textinput .value){	
+			e.preventDefault();
+			alert('한글자 이상 입력해주세요');
+		}
+	});
+	
+	
+
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
