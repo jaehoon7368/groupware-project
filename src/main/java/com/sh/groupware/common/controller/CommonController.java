@@ -14,4 +14,9 @@ public class CommonController {
 		return "common/home";
 	} // home() end
 	
+	//최근 알림 컨트롤러
+	
+	
+	
+	
 } // class end

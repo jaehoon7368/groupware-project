@@ -2,6 +2,8 @@ package com.sh.groupware.todo.model.dto;
 
 import java.util.List;
 
+import com.sh.groupware.common.dto.Attachment;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +18,6 @@ public class TodoBoard {
 	private String empId;
 	private BookMark bookMark;
 	private List<TodoList> todoLists;
-	
+	private List<Attachment> attachmentLists;
 	
 }
