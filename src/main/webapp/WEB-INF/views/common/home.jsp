@@ -180,7 +180,38 @@
 						<!-- 본문 오른쪽 -->
 						<div>
 							<div id="home-right" class="div-padding div-margin">
-								<h5>최근 알림</h5>
+								<h5 style="padding:20px">최근 알림</h5>
+								
+								<c:forEach items ="${reNotis }" var="reNoti" varStatus="vs">
+								<c:if test="${vs.index <4}">
+
+									<c:set  var = "notiType" value=""/>
+									<c:choose>
+										<c:when test="${fn:contains(reNoti.pkNo,'tdb') }">
+											<c:set var="notiType" value="할일게시판"/>
+										</c:when>
+										<c:when test="${fn:contains(reNoti.pkNo,'r') }">
+											<c:set var="notiType" value="보고서"/>
+										</c:when>
+										<c:when test="${fn:contains(reNoti.pkNo,'bo') }">
+											<c:set var="notiType" value="게시판"/>
+										</c:when>
+										<c:when test="${fn:contains(reNoti.pkNo,'s') }">
+											<c:set var="notiType" value="전자결재"/>
+										</c:when>
+									</c:choose>	
+									<div class="notification-list">
+		        						<div class="left-noti">
+		        							<img src="${pageContext.request.contextPath }/resources/upload/emp/${reNoti.attachment.renameFilename}" alt="" class="my-img">
+		        						</div>
+						            	<div class="right-noti">
+						               		<p> ${notiType}등록! '${reNoti.emp.name}' ${reNoti.emp.jobTitle }이 '${notiType}'를 등록하였습니다. !</p>
+						               		<p><span>2시간전 </span> <span>한성준과장</span></p>
+				          				</div>
+				       				</div>
+				       				</c:if>
+								</c:forEach>
+											
 							</div>
 							<div id="home-right" class="div-padding div-margin">
 								<h5>보고</h5>
@@ -188,6 +219,28 @@
 						</div>
 					</div>
 				</div>
+<style>
+/*최근알림*/
+.notification-list{
+    width: 300px;
+   	margin-left : 0px;
+    height: 26%;
+    display: flex;
+    border: 1px solid black;
+}
+.left-noti{
+    width: 20%;
+}
+.right-noti{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top:5px
+}
+
+/*최근알림*/
+</style>
 
 <script src="${pageContext.request.contextPath}/resources/js/emp/emp.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

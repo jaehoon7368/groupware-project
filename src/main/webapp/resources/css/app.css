@@ -426,6 +426,7 @@ button:hover {
   height: 500px;
   border: solid 1px darkgray;
   border-radius: 10px;
+  padding-left: 0px;
 }
 
 /* home.jsp 본문에 왼쪽 첫 번째 div안에 table */
