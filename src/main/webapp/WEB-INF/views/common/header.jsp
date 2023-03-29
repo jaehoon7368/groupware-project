@@ -16,7 +16,6 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/foundation.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css">
 		<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/foundation-icons/foundation-icons.css"> --%>
-		
 		<script src="https://kit.fontawesome.com/cbe4aa3844.js" crossorigin="anonymous"></script>
 			<link rel="stylesheet"
 				href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />

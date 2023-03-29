@@ -15,13 +15,15 @@
 	<select id="selectEmpDetail" resultMap="empDetailMap">
 		select
 			e.*,
-			(select dept_title from dept where dept_code=e.dept_code) dept_title,
-			(select job_title from job where job_code = e.job_code) job_title
+			(select job_title from job where job_code = e.job_code) job_title,
+			(select base_day_off from job where job_code = e.job_code) base_day_off,
+			(select dept_title from dept where dept_code = e.dept_code) dept_title
 		from
 			emp e
 		where
 			emp_id = #{empId}
 	</select>
+	
 	
 	<insert id="insertEmp">
 		insert into
@@ -76,7 +78,19 @@
     		and dept_code = #{deptCode}
 	</select>
 	
-
+	<select id="findByMyDeptCodeManagerEmpList" resultMap="empMap">
+		select
+			*
+		from
+			emp
+		where
+			dept_code = #{deptCode}
+			and
+			job_code in
+			<foreach collection="jobCode" item="code" index="index" open="(" close=")" separator=",">
+				#{code}
+			</foreach>
+	</select>
 	
 	
 	<resultMap type="empDetail" id="empDetailMap"></resultMap>

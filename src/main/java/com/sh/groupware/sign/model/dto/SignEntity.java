@@ -16,8 +16,10 @@ public class SignEntity {
 	private String no;
 	private String empId;
 	private String deptCode;
+	private String jobCode;
 	private SignType type;
 	private LocalDate regDate;
 	private YN emergency;
+	private YN complete;
 	
 } // class end

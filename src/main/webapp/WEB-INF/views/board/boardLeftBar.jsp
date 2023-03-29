@@ -13,25 +13,18 @@
 						<div class="accordion-box">
 							<ul class="container-list">
 								<li>
-									<p class="title font-medium">즐겨찾기</p>
-									<div class="con">
-										<ul class="container-detail font-small">
-											<li><a class="container-a" href="#">Local Policy</a></li>
-										</ul>
-									</div>
-								</li>
-								<li>
-									<p class="title font-medium">전사게시판</p>
+									<p class="title font-medium">전사 게시판</p>
 									<div class="con">
 										<ul class="container-detail font-small">
 											<li><a class="container-a" href="${pageContext.request.contextPath}/board/boardList.do">전사 공지</a></li>
-											<li><a class="container-a" href="#">주간 식단표</a></li>
-											<li><a class="container-a" href="${pageContext.request.contextPath}/board/openBoardForm.do">IT뉴스</a></li>
+											<li><a class="container-a" href="${pageContext.request.contextPath}/board/menuBoardList.do">주간 식단표</a></li>
+											<li><a class="container-a" href="${pageContext.request.contextPath}/board/photoBoardList.do">사진 게시판</a></li>
+											<li><a class="container-a" href="${pageContext.request.contextPath}/board/newsBoardList.do">이주의 IT뉴스</a></li>
 										</ul>
 									</div>
 								</li>
 								<li>
-									<p class="title font-medium">부서게시판</p>
+									<p class="title font-medium">부서 게시판</p>
 									<div class="con">
 										<ul class="container-detail font-small">
 											<li><a class="container-a" href="#">인사부</a></li>

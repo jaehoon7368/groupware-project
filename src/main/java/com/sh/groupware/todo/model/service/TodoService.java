@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
+import com.sh.groupware.common.dto.Attachment;
 import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.todo.model.dto.Todo;
 import com.sh.groupware.todo.model.dto.TodoBoard;
@@ -59,6 +60,8 @@ public interface TodoService {
 	int insertGroupEmp(Map<String, Object> param);
 
 	List<TodoBoard> selectTodoBoardByEmpId(String empId);
+
+	List<Attachment> selectAttachmentByBoardNo(String boardNo);
 	
 
 }

@@ -74,6 +74,7 @@ create table board (
     constraint fk_board_emp foreign key (emp_id) references emp (emp_id) on delete cascade,
     constraint fk_board_writer foreign key (writer) references emp (emp_id) on delete cascade
 );
+
 -- 게시판 테이블 컬럼 추가
 alter table board add writer varchar2(20) not null;
 alter table board add foreign key(writer) references emp (emp_id) on delete cascade;
@@ -234,12 +235,64 @@ FROM
     board b 
         LEFT JOIN attachment a 
             ON b.no = a.no AND a.category = 'B'
-WHERE b.no = '1';
+WHERE b.no = '23';
 
+
+SELECT a.no, a.original_filename, a.rename_filename, a.reg_date
+FROM attachment a
+JOIN board b ON a.pk_no = b.no
+WHERE a.category = 'B'
+AND a.pk_no = '23';
+
+select*from attachment;
 select*from board;
+
 
 select * from working_management where depte_code = 'd1' and reg_date between ? and ?;
 
 select * from working_management w join emp e on w.emp_id = e.emp_id where dept_code = 'd1' order by w.emp_id,reg_date;
 
 update working_management set end_work = null, overtime = null, day_work_time = null,state='업무중' where no = '35';
+
+SELECT 
+    b.*, 
+    a.*, 
+    a.no AS attach_no 
+FROM 
+    board b 
+    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
+WHERE 
+    b.no = '29';
+    
+  
+		select 
+		    b.*,
+		    (select count(*) from attachment where no = b.no and category = 'B') attach_count
+		from
+		    board b left join emp e
+		        on b.emp_id = e.emp_id
+		order by 
+		    no desc;
+
+select*from board order by created_date desc;
+select*from boardcomment;
+
+SELECT
+    b.*,
+    a.*,
+    a.no as attach_no
+FROM
+    board b LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B'
+WHERE
+    b.b_type = 'N';
+    
+    SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no 
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
+		WHERE 
+		    b.no = '1';
+

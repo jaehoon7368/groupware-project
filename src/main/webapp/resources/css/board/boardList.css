@@ -99,6 +99,11 @@ tr[data-no] {cursor: pointer;}
   text-align: left;
 }
 
+.board-table tbody .board-title{
+	text-align: start;
+	padding-left: 40px;
+}
+
 .board-table tbody th p{
   display: none;
 }
@@ -190,20 +195,11 @@ tr[data-no] {cursor: pointer;}
   height: 1px;
 }
 
-<!-- 페이지바 -->
-@media screen and (max-width: 39.9375em) {
-  .pagination:after {
-    display: inline-block;
-    content: attr(data-page) " of " attr(data-total);
-    position: relative;
-    text-align: center;
-    width: 80px;
-    right: 80px;
-  }
-  .pagination-next {
-    position: relative;
-    left: 80px;
-  }
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
   
  
 }

@@ -14,5 +14,6 @@ public class ReportMember {
 	private String empId;
 	private YN createYn;
 	private YN excludeYn;
+	private String profileImg;
 	
 } // class end

@@ -41,7 +41,9 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<button class="my-menu">로그아웃</button>
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="GET">
+											<button class="my-menu" type="submit">로그아웃</button>								
+										</form:form>
 									</div>
 								</div>
 							</div>
@@ -229,8 +231,13 @@
 								<c:forEach items="${reportCheckList}" var="reportCheck">
 									<c:if test="${reportCheck.createYn == 'N' && reportCheck.excludeYn == 'N'}">
 										<div class="div-unreport-one">
-											<div>  
-												<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
+											<div>
+												<c:if test="${empty reportCheck.profileImg}">
+													<img src="${pageContext.request.contextPath}/resources/images/default.png" class="my-img" />
+												</c:if>
+												<c:if test="${!empty reportCheck.profileImg}">
+													<img src="${pageContext.request.contextPath}/resources/upload/emp/${reportCheck.profileImg}" class="my-img" />
+												</c:if>
 											</div>
 											<div class="left">${reportCheck.empName} ${reportCheck.jobTitle}</div>
 											<div class="div-me-btn">
@@ -252,7 +259,12 @@
 									<c:if test="${reportCheck.createYn == 'Y' && reportCheck.excludeYn == 'N'}">
 										<div class="div-okreport-one" data-id="${reportCheck.empId}" data-no="${vs.index}">
 											<div>
-												<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
+												<c:if test="${empty reportCheck.profileImg}">
+													<img src="${pageContext.request.contextPath}/resources/images/default.png" class="my-img" />
+												</c:if>
+												<c:if test="${!empty reportCheck.profileImg}">
+													<img src="${pageContext.request.contextPath}/resources/upload/emp/${reportCheck.profileImg}" class="my-img" />
+												</c:if>
 											</div>
 											<div class="left">${reportCheck.empName} ${reportCheck.jobTitle}</div>
 										</div>
