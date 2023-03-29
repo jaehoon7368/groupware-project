@@ -14,7 +14,7 @@
 	
 	<jsp:include page="/WEB-INF/views/sign/signLeftBar.jsp" />
 	
-	<jsp:include page="/WEB-INF/views/sign/signCreate.jsp">
+	<jsp:include page="/WEB-INF/views/sign/signDetail.jsp">
 		<jsp:param value="비품신청서" name="title" />
 	</jsp:include>
 								
@@ -30,17 +30,20 @@
 																		<tbody>
 																			<tr>
 																				<td>
-																					<span class="sign_rank">${sessionScope.loginMember.jobTitle}</span>
+																					<span class="sign_rank">${sign.jobTitle}</span>
 																				</td>
 																			</tr>
 																			<tr>
 																				<td>
-																					<span class="sign_wrap">${sessionScope.loginMember.name}</span>
+																					<span class="sign_name">${sign.name}</span>
 																				</td>
 																			</tr>
 																			<tr>
 																				<td>
-																					<span class="sign_date"></span>
+																					<span class="sign_date">
+																						<fmt:parseDate value="${sign.regDate}" var="now" pattern="yyyy-MM-dd" />
+																						<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />
+																					</span>
 																				</td>
 																			</tr>
 																		</tbody>
@@ -51,40 +54,53 @@
 													</table>
 												</div>
 							
-												<%-- 
-												<div class="sign-div-right">
+												<div class="sign-div-right sign-div-tbl">
 													<table class="sign-right-tbl">
 														<tbody>
 															<tr>
 																<th>승인</th>
-																<td class="sign-right-tbl-border">
-																	<table class="sign-right-tbl-line">
-																		<tbody>
-																			<tr>
-																				<td>
-																					<span class="sign_rank">차장</span>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>
-																					<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="ok-sign" />
-																					<br />
-																					<span class="sign_name">아무개</span>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>
-																					<span class="sign_date">2023-03-15</span>
-																				</td>
-																			</tr>
-																		</tbody>
-																	</table>
-																</td>
+																<c:forEach items="${sign.signStatusList}" var="signStatus">
+																	<td class="sign-right-tbl-border">
+																		<table class="sign-right-tbl-line">
+																			<tbody>
+																				<tr>
+																					<td>
+																						<span class="sign_rank">${signStatus.jobTitle}</span>
+																					</td>
+																				</tr>
+																				<tr>
+																					<td>
+																						<c:if test="${signStatus.status == 'C'}">
+																							<img src="${pageContext.request.contextPath}/resources/images/ok.png" class="ok-sign" />
+																							<br />
+																							<span class="sign_name">${signStatus.name}</span>
+																						</c:if>
+																						<c:if test="${signStatus.status != 'C'}">
+																							<span class="sign_wrap">${signStatus.name}</span>
+																						</c:if>
+																					</td>
+																				</tr>
+																				<tr>
+																					<td>
+																						<span class="sign_date">
+																							<c:if test="${!empty signStatus.regDate}">
+																								<fmt:parseDate value="${signStatus.regDate}" var="regDate" pattern="yyyy-MM-dd" />
+																								<fmt:formatDate value="${regDate}" pattern="yyyy-MM-dd" />
+																							</c:if>
+																							<c:if test="${empty signStatus.regDate}">
+																								&nbsp;
+																							</c:if>
+																						</span>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</td>
+																</c:forEach>
 															</tr>
 														</tbody>
 													</table>
-												</div> 
-												--%>
+												</div>
 											</td>
 										</tr>
 									</tbody>
@@ -146,10 +162,12 @@
 													<td><input type="text" name="totalPrice" id="totalPrice4" min="1" /></td>
 													<td><input type="text" name="purpose" id="purpose4" /></td>
 												</tr>
+												<!-- 
 												<tr class="sign-tbl-bottom-tr">
 													<th colspan="2">합계</th>
 													<td colspan="3" id="finalPrice"></td>
-												</tr>
+												</tr> 
+												-->
 											</tbody>
 										</table>
 									</div>

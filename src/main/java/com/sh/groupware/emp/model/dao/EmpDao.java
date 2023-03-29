@@ -1,5 +1,6 @@
 package com.sh.groupware.emp.model.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +48,9 @@ public interface EmpDao {
 
 	@Select("select * from emp where dept_code = 'd1' and job_code in ('j1', 'j2') order by job_code desc")
 	List<Emp> findByD1ManagerEmpList();
+
+	@Update("update emp set quit_date = #{endDate}, quit_yn = 'Y' where emp_id = #{empId}")
+	int updateQuit(Map<String, Object> param);
 	
 	//부서별 근태현황 사원조회
 	List<EmpDetail> selectEmpDeptList(String deptCode);

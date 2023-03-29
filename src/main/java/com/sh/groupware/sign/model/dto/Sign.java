@@ -15,15 +15,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Sign extends SignEntity {
 
-	List<SignStatus> signStatusList = new ArrayList<>();
+	private String name;
+	private String deptTitle;
+	private String jobTitle;
+	List<SignStatusDetail> signStatusList = new ArrayList<>();
 	
-	public void addSignStatus(SignStatus signStatus) {
+	public void addSignStatus(SignStatusDetail signStatus) {
 		this.signStatusList.add(signStatus);
 	} // addSignStatus() end
 
 	public Sign(String no, String empId, String deptCode, String jobCode, SignType type, LocalDate regDate,
-			YN emergency, YN complete, List<SignStatus> signStatusList) {
+			YN emergency, YN complete, String name, String deptTitle, String jobTitle,
+			List<SignStatusDetail> signStatusList) {
 		super(no, empId, deptCode, jobCode, type, regDate, emergency, complete);
+		this.name = name;
+		this.deptTitle = deptTitle;
+		this.jobTitle = jobTitle;
 		this.signStatusList = signStatusList;
 	} // Sign() end
 	

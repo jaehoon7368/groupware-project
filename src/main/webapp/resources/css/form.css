@@ -14,6 +14,31 @@
 	border-radius: 5px;
 }
 
+.sign-status-modal {
+	width: 500px;
+}
+
+.sign-status-modal .btn-status {
+	background-color: #00b6c2;
+	border: none;
+	color: #fff;
+}
+
+.sign-status-modal-div {
+	display: flex;
+	padding: 10px;
+}
+
+.sign-status-modal-div span {
+	width: 100px;
+}
+
+.sign-status-modal-div textarea {
+	width: 350px;
+	resize: none;
+}
+
+
 /* 결재 양식 div */
 .div-sign-form {
 	padding-bottom: 10px;
@@ -78,9 +103,11 @@
 
 /* 우측 상단 */
 .sign-tbl-right {
-	width: 100%;
+	/* width: 100%; */
 	height: 100%;
 	text-align: right;
+	display: flex;
+	justify-content: flex-end;
 }
 
 .sign-div-right {
@@ -88,6 +115,12 @@
 	height: 130px;
 	display: inline-block;
 	text-align: right;
+	padding: 0 5px;
+}
+
+.sign-div-tbl {
+	display: flex;
+	width: 100%;
 }
 
 .sign-right-tbl {
@@ -97,7 +130,9 @@
 }
 
 .sign-right-tbl th {
-	width: 20%;
+	/* width: 20%; */
+	min-width: 20px;
+	max-width: 20px;
 	text-align: center;
 	border: solid 1px #000;
 	border-right: none;
@@ -105,7 +140,8 @@
 }
 
 .sign-right-tbl td {
-	width: 100%;
+	/* width: 100%; */
+	min-width: 100px;
 }
 
 .sign-right-tbl-border {
@@ -187,6 +223,10 @@
 	height: 100%;
 	margin: 0;
 	resize: none;
+}
+
+input[id^=boss] {
+	text-align: center;
 }
 
 .sign-tbl-bottom tr[class=sign-tbl-bottom-tr] td[class=sign-tbl-bottom-content] {

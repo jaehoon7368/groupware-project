@@ -83,4 +83,9 @@ public class WorkingManagementServiceImpl implements WorkingManagementService {
 		return workingManagementDao.monthOverTime(startEndMap);
 	}
 	
+	@Override
+	public int insertRegDateState(WorkingManagement working) {
+		return workingManagementDao.insertRegDateState(working);
+	} // insertRegDateState() end
+	
 }

@@ -3,6 +3,7 @@ package com.sh.groupware.workingManagement.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -53,5 +54,8 @@ public interface WorkingManagementDao {
 	//월 연장근무시간 가져오기
 	@Select("select nvl(sum(overtime),0) from working_management where reg_date like '%' || #{monthTime} || '%' and emp_id = #{empId}")
 	int monthOverTime(Map<String, Object> startEndMap);
+	
+	@Insert("insert into working_management values(seq_working_management_no.nextval, null, null, null, #{regDate}, #{state}, null, #{empId})")
+	int insertRegDateState(WorkingManagement working);
 
 }
