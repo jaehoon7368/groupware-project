@@ -260,6 +260,7 @@
 							
 						</div>
 						<script>
+							/* tr 클릭 시 상세 페이지 이동 */
 							document.querySelectorAll('.div-sign-all-tbl-tr').forEach((tr) => {
 								tr.addEventListener('click', (e) => {
 									let clickTr = e.target;
