@@ -17,6 +17,14 @@ create table emp (
     constraint fk_emp_dept foreign key (dept_code) references dept (dept_code) on delete cascade
 );
 
+-- remember-me 관련테이블 persistent_logins
+create table persistent_logins (
+    username varchar2(64) not null,
+    series varchar2(64) primary key,
+    token varchar2(64) not null, -- username, password, expiry time 등을 hashing한 값
+    last_used timestamp not null
+);
+
 -- 직급
 create table job (
     job_code varchar2(15) not null,
@@ -44,6 +52,11 @@ create table working_management(
     constraint pk_working_management primary key (no),
     constraint fk_working_management_emp foreign key (emp_id) references emp (emp_id) on delete cascade
 );
+
+alter table
+    working_management
+modify 
+    overtime number ;
 
 -- 게시판
 create table board (
@@ -124,10 +137,19 @@ select * from job;
 select * from dept;
 select * from emp;
 select * from attachment;
-select * from working_management;
+select * from working_management order by no;
 delete from working_management where no = '29';
 
 delete from emp where emp_id = '230304';
+
+select * from attachment;
+select 
+    nvl(sum(day_work_time),0) day_work_time,
+    nvl(sum(overtime),0) overtime
+from 
+    working_management 
+where 
+    emp_id = '230304' and reg_date between '23/03/15' and to_date('23/03/28')+1 order by reg_date;
 
 select 
 		    b.*,
@@ -216,3 +238,8 @@ WHERE b.no = '1';
 
 select*from board;
 
+select * from working_management where depte_code = 'd1' and reg_date between ? and ?;
+
+select * from working_management w join emp e on w.emp_id = e.emp_id where dept_code = 'd1' order by w.emp_id,reg_date;
+
+update working_management set end_work = null, overtime = null, day_work_time = null,state='업무중' where no = '35';

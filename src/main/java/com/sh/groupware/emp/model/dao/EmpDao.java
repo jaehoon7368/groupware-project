@@ -42,4 +42,7 @@ public interface EmpDao {
 
 	List<Emp> selectAllEmpAddTitleDept();
 	
+	//부서별 근태현황 사원조회
+	List<EmpDetail> selectEmpDeptList(String deptCode);
+	
 }

@@ -25,5 +25,7 @@ public interface EmpService {
 
 
 	List<Emp> selectAllEmpAddTitleDept();
+
+	List<EmpDetail> selectEmpDeptList(String deptCode);
 	
 }
