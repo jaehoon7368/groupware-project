@@ -29,6 +29,11 @@ public interface WorkingManagementService {
 
 	int selectWeekWorkTime(Map<String, Object> startEndMap);
 
+	int selectWeekOverTime(Map<String, Object> startEndMap);
+
+	int monthOverTime(Map<String, Object> startEndMap);
+
+
 	
 
 }

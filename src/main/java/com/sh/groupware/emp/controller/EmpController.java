@@ -88,7 +88,7 @@ public class EmpController {
 	}
 	
 	//로그아웃 기능
-	@GetMapping("/empLogout.do")
+	@PostMapping("/empLogout.do")
 	public String empLogout(SessionStatus status) {
 		
 		if(!status.isComplete())
@@ -97,12 +97,15 @@ public class EmpController {
 		return "redirect:/";
 	}
 	
+	//내 근태현황
 	@GetMapping("/empHome.do")
 	public void empHome() {}
 	
+	//인사정보 등록 페이지
 	@GetMapping("/empEnroll.do")
 	public void empInsertPage() {}
 	
+	//인사정보 등록하기
 	@PostMapping("/empEnroll.do")
 	public String empEnroll(Emp emp,@RequestParam("file") MultipartFile file) {
 		try {

@@ -15,25 +15,30 @@
 	
 	
                 <div class="home-container">
-                    <!-- 상단 타이틀 -->
-                    <div class="top-container">
-                        <div class="container-title font-bold">근태현황</div>
-                        <div class="home-topbar topbar-div">
-                            <div>
-                                <a href="#" id="home-my-img">
-                                    <img src="images/sample.jpg" alt="" class="my-img">
-                                </a>
-                            </div>
-                            <div id="my-menu-modal">
-                                <div class="my-menu-div">
-                                    <button class="my-menu">기본정보</button>
-                                </div>
-                                <div class="my-menu-div">
-                                    <button class="my-menu">로그아웃</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+						<!-- 상단 타이틀 -->
+						<div class="top-container">
+							<div class="container-title font-bold">내 근태 현황</div>
+							<div class="home-topbar topbar-div">
+								<div>
+									<a href="#" id="home-my-img">
+										<c:if test="${!empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+										</c:if>
+										<c:if test="${empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+										</c:if>
+									</a>
+								</div>
+								<div id="my-menu-modal">
+									<div class="my-menu-div">
+										<button class="my-menu">기본정보</button>
+									</div>
+									<div class="my-menu-div">
+										<button class="my-menu">로그아웃</button>
+									</div>
+								</div>
+							</div>
+						</div>
                     <script>
                         document.querySelector('#home-my-img').addEventListener('click', (e) => {
                             const modal = document.querySelector('#my-menu-modal');
@@ -66,7 +71,7 @@
                                 </div>
                                 <div>
                                     <p class="font-14">이번주 초과</p>
-                                    <h4 class="main-color">0h 0m 0s</h4>
+                                    <h4 class="main-color" id="main-week-over-time">0h 0m 0s</h4>
                                 </div>
                                 <div>
                                     <p class="font-14">이번주 잔여</p>
@@ -78,7 +83,7 @@
                                 </div>
                                 <div>
                                     <p class="font-14">이번달 연장</p>
-                                    <h4 class="color-gray">0h 0m 0s</h4>
+                                    <h4 class="color-gray" id="main-month-over-time">0h 0m 0s</h4>
                                 </div>
                             </div>
                         </div>
@@ -131,7 +136,7 @@
                     data : {dateText},
                     contentType : "application/json; charset=utf-8",
                     success(data){
-                        
+                        console.log(data);
                         const {weekDates, workList} = data;
                         console.log(weekDates);
                         console.log(workList);
@@ -181,10 +186,10 @@
 		        								
 		        								const subTd4 = document.createElement("td");
 		        								subTd4.classList.add("font-bold");
-		        								subTd4.textContent = chageWorkTime(dayWorkTime);
+		        								subTd4.textContent = chageWorkTime(dayWorkTime+overtime);
 		        								
 		        								const subTd5 = document.createElement("td");
-		        								subTd5.textContent = "기본 "+ chageWorkTime(dayWorkTime) + " / 연장 " + overtime;
+		        								subTd5.textContent = "기본 "+ chageWorkTime(dayWorkTime) + " / 연장 " + chageWorkTime(overtime);
 		        								
 		        								const subTd6 = document.createElement("td");
 		        								subTd6.textContent = "";
@@ -209,6 +214,7 @@
 	                        const start = weekDates[key].start.substring(5);
 	                        const end = weekDates[key].end.substring(5);
 	                        const workTime = weekDates[key].workTime;
+	                        const workOverTime = weekDates[key].workOverTime;
 	                        const span = document.createElement("span");
 	                        span.classList.add("font-14","color-gray");
 	                        span.textContent = " ( " + start + " ~ " + end + " ) ";
@@ -220,8 +226,12 @@
 	
 	                        const td2 = document.createElement("td");
 	                        td2.classList.add("total-time-info");
-	                        td2.textContent = "누적 근무시간 " + chageWorkTime(workTime) + " (초과 근무시간 0h 0m 0s)";
-	
+	                        td2.textContent = "누적 근무시간 " + chageWorkTime(workTime+workOverTime);
+							const span0 = document.createElement("span");
+							span0.classList.add("font-12","color-gray");
+							span0.textContent = " ( 초과 근무시간 " + chageWorkTime(workOverTime) +" )";
+							td2.append(span0);
+	                        
 	                        const row2 = document.createElement("tr");
 	                        row2.classList.add("table-expand-row-content");
 	
@@ -286,7 +296,7 @@ document.querySelector("#work-info-container").addEventListener('click',(e)=>{
 		});
 });
 
-// 한국 시간으로 변경
+// 시간으로 변경
 function changeTimeText(time) {
 	if(time !== null){
 	  const date = new Date(time); // Epoch 시간을 한국 시간으로 변환한 Date 객체 생성
