@@ -127,4 +127,10 @@ public class EmpServiceImpl implements EmpService {
 	public List<Emp> selectAllEmpAddTitleDept() {
 		return empDao.selectAllEmpAddTitleDept();
 	}
+	
+	@Override
+	public int updateQuit(Map<String, Object> param) {
+		return empDao.updateQuit(param);
+	} // updateQuit() end
+	
 }

@@ -64,9 +64,77 @@
 									<div class="div-sign-tobe-non font-small">결재할 문서가 없습니다.</div> 
 								</c:if>
 								<c:if test="${!empty mySignList}">
-									<div class="div-sign-tobe-ok">결재할 거 있음.</div>
+									<c:forEach items="${mySignList}" var="sign">
+										<div class="div-sign-tobe-ok" data-no="${sign.no}" data-type="${sign.type}">
+											<div class="div-sign-tobe-tbl">
+												<table class="div-sign-tobe-ok-tbl">
+													<thead>
+														<tr>
+															<td colspan="2">
+																<c:if test="${sign.emergency == 'Y'}">
+																	<button class="tiny alert button hollow">긴급</button>
+																</c:if>
+																<c:choose>
+																	<c:when test="${sign.signStatusList[0].status == 'H'}">
+																		<button class="tiny warning button">보류</button>
+																	</c:when>
+																	<c:when test="${sign.signStatusList[0].status == 'R'}">
+																		<button class="tiny warning button">반려</button>
+																	</c:when>
+																	<c:otherwise>
+																		<button class="tiny success button">진행중</button>
+																	</c:otherwise>
+																</c:choose>
+															</td>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td colspan="2">
+																<c:choose>
+																	<c:when test="${sign.type == 'D'}">연차신청서</c:when>
+																	<c:when test="${sign.type == 'P'}">비품신청서</c:when>
+																	<c:when test="${sign.type == 'T'}">출장신청서</c:when>
+																	<c:when test="${sign.type == 'R'}">사직서</c:when>
+																</c:choose>
+															</td>
+														</tr>
+														<tr class="font-small">
+															<td>기안자: ${sign.name} ${sign.jobTitle}</td>
+															<td>기안일: 
+																<fmt:parseDate value="${sign.regDate}" pattern="yyyy-MM-dd" var="regDate" />
+																<fmt:formatDate value="${regDate}" pattern="yyyy-MM-dd" />
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div class="div-sign-tobe-div">
+												결재하기
+											</div>
+										</div>
+									</c:forEach>
 								</c:if>
 							</div>
+							<script>
+								document.querySelectorAll('.div-sign-tobe-ok').forEach((tobe) => {
+									tobe.addEventListener('click', (e) => {
+										let clickDiv = e.target;
+	                           			
+	                           			while (true) {
+	   										if (clickDiv.tagName == 'DIV' && clickDiv.classList[0] == 'div-sign-tobe-ok') {
+	   											const no = clickDiv.dataset.no;
+		                            			
+		                            			location.href = '${pageContext.request.contextPath}/sign/signDetail.do?no=' + no + '&type=' + clickDiv.dataset.type;
+	   											break;
+	   										} else {
+	   											clickDiv = clickDiv.parentElement;
+	   											continue;
+	   										}
+	   									}
+									});
+								});
+							</script>
 							
 							<!-- 기안 진행 문서 -->
 							<div class="div-sign-all">
@@ -102,7 +170,7 @@
 															</td>
 															<td>
 																<c:if test="${sign.emergency == 'Y'}">
-																	<button type="button" class="alert button hollow tiny">긴급</button>
+																	<button type="button" class="small alert button hollow">긴급</button>
 																</c:if>
 															</td>
 															<td>

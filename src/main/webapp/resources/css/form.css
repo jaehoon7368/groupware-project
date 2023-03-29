@@ -14,6 +14,31 @@
 	border-radius: 5px;
 }
 
+.sign-status-modal {
+	width: 500px;
+}
+
+.sign-status-modal .btn-status {
+	background-color: #00b6c2;
+	border: none;
+	color: #fff;
+}
+
+.sign-status-modal-div {
+	display: flex;
+	padding: 10px;
+}
+
+.sign-status-modal-div span {
+	width: 100px;
+}
+
+.sign-status-modal-div textarea {
+	width: 350px;
+	resize: none;
+}
+
+
 /* 결재 양식 div */
 .div-sign-form {
 	padding-bottom: 10px;
@@ -82,6 +107,7 @@
 	height: 100%;
 	text-align: right;
 	display: flex;
+	justify-content: flex-end;
 }
 
 .sign-div-right {
@@ -197,6 +223,10 @@
 	height: 100%;
 	margin: 0;
 	resize: none;
+}
+
+input[id^=boss] {
+	text-align: center;
 }
 
 .sign-tbl-bottom tr[class=sign-tbl-bottom-tr] td[class=sign-tbl-bottom-content] {

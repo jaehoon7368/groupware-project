@@ -37,15 +37,15 @@
 						</div>
 						<div class="top-container">
 							<div class="div-sign-btn font-small">
-								<c:if test="${sign.empId == sessionScope.loginMember.empId}">
+								<c:if test="${sign.empId == sessionScope.loginMember.empId && sign.complete == 'N'}">
 									<button onclick="signUpdate();">문서 수정</button>
 									<button onclick="location.href='${pageContext.request.contextPath}/sign/deleteSign.do?no=${sign.no}';">상신취소</button>
 								</c:if>
 								<c:forEach items="${sign.signStatusList}" var="signStatus">
 									<c:if test="${signStatus.empId == sessionScope.loginMember.empId && signStatus.status == 'W'}">
-										<button onclick="signOk();">결재</button>
-										<button onclick="signNo();">반려</button>
-										<button onclick="signHold();">보류</button>
+										<button onclick="signStatusUpdate('C');" data-open="signStatusUpdateModal">결재</button>
+										<button onclick="signStatusUpdate('R');" data-open="signStatusUpdateModal">반려</button>
+										<button onclick="signStatusUpdate('H');" data-open="signStatusUpdateModal">보류</button>
 									</c:if>
 								</c:forEach>
 							</div>
@@ -63,6 +63,27 @@
 							});
 						</script>
 						<!-- 상단 타이틀 end -->
+						
+						<!-- 결재, 반려, 보류 모달 -->
+						<div class="sign-status-modal reveal" id="signStatusUpdateModal" data-reveal>
+							<h5></h5>
+							<form:form action="${pageContext.request.contextPath}/sign/signStatusUpdate.do" method="POST" name="signStatusUpdateFrm">
+								<input type="hidden" name="signNo" value="${param.no}" />
+								<input type="hidden" name="empId" value="${sessionScope.loginMember.empId}" />
+								<input type="hidden" name="status" />
+								<div class="sign-status-modal-div font-small">
+									<span>결재의견</span>
+									<textarea name="reason" id="reason"></textarea>
+								</div>
+								<div class="font-small report-no-modal-btn">
+									<button class="btn-status" type="submit"></button>
+									<button data-close aria-label="Close reveal" type="button">취소</button>
+								</div>
+								<button class="btn-close close-button" data-close aria-label="Close reveal" type="button">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</form:form>
+						</div>
 						
 						<!-- 결재 문서 -->
 						<div class="div-sign-form">

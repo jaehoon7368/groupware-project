@@ -29,6 +29,8 @@ public interface WorkingManagementService {
 
 	int selectWeekWorkTime(Map<String, Object> startEndMap);
 
+	int insertRegDateState(WorkingManagement working);
+
 	
 
 }

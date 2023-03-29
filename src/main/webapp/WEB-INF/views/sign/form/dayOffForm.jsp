@@ -50,41 +50,6 @@
 														</tbody>
 													</table>
 												</div>
-							
-												<%-- 
-												<div class="sign-div-right">
-													<table class="sign-right-tbl">
-														<tbody>
-															<tr>
-																<th>승인</th>
-																<td class="sign-right-tbl-border">
-																	<table class="sign-right-tbl-line">
-																		<tbody>
-																			<tr>
-																				<td>
-																					<span class="sign_rank">차장</span>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>
-																					<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="ok-sign" />
-																					<br />
-																					<span class="sign_name">아무개</span>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>
-																					<span class="sign_date">2023-03-15</span>
-																				</td>
-																			</tr>
-																		</tbody>
-																	</table>
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</div> 
-												--%>
 											</td>
 										</tr>
 									</tbody>
@@ -158,7 +123,7 @@
 													</td>
 													<td>
 														<span id="restPointArea">
-															잔여연차 : <span id="restPoint">${sessionScope.loginMember.baseDayOff}</span>
+															잔여연차 : <span id="restPoint">${leaveCount}</span>
 														</span>&nbsp;&nbsp;
 														<span id="applyPointArea">
 															신청연차 : <span id="applyPoint"></span>
@@ -188,12 +153,15 @@
 										<script>
 											let start;
 											let end;
+											let type;
 											let diff = 1;
-											let base;
+											
+											const halfType = document.querySelector('#vacationType');
 											const startDate = document.querySelector('#start-date');
 											const endDate = document.querySelector('#end-date');
 											const usingPointArea = document.querySelector('#usingPointArea');
 											const finalDayOff = document.querySelector('#finalPoint');
+											const base = document.querySelector('#restPoint').innerText;
 											
 											const diffDay = (start, end) => {
 												diff = end - start;
@@ -205,8 +173,6 @@
 											};
 											
 											window.addEventListener('load', () => {
-												base = document.querySelector('#restPoint').innerText;
-												
 												startDate.min = today;
 												startDate.value = today;
 												endDate.min = today;
@@ -220,17 +186,24 @@
 											
 											startDate.addEventListener('change', (e) => {
 												endDate.min = startDate.value;
-												
-												end = new Date(endDate.value).getTime();
-												start = new Date(startDate.value).getTime();
-												
-												if (end < start) {
-													endDate.value = startDate.value;
+												console.log(type);
+												if (type == 'D') {
 													end = new Date(endDate.value).getTime();
+													start = new Date(startDate.value).getTime();
+													
+													if (end < start) {
+														endDate.value = startDate.value;
+														end = new Date(endDate.value).getTime();
+													}
+													inner(usingPointArea, diffDay(start, end));
+													inner(applyPoint, diffDay(start, end));
+													inner(finalDayOff, base - diffDay(start, end));
+												} else {
+													endDate.value = startDate.value;
+													inner(usingPointArea, 0.5);
+													inner(applyPoint, 0.5);
+													inner(finalDayOff, base - 0.5);
 												}
-												inner(usingPointArea, diffDay(start, end));
-												inner(applyPoint, diffDay(start, end));
-												inner(finalDayOff, base - diffDay(start, end));
 											});
 											
 											endDate.addEventListener('change', (e) => {
@@ -240,6 +213,31 @@
 												inner(usingPointArea, diffDay(start, end));
 												inner(applyPoint, diffDay(start, end));
 												inner(finalDayOff, base - diffDay(start, end));
+											});
+											
+											halfType.addEventListener('change', (e) => {
+												console.log(e.target);
+												type = e.target.value;
+												console.log(halfType);
+												
+												switch (type) {
+												case 'H':
+													endDate.value = startDate.value;
+													endDate.readOnly = 'readOnly';
+													inner(usingPointArea, 0.5);
+													inner(applyPoint, 0.5);
+													inner(finalDayOff, base - 0.5);
+													break;
+												case 'D':
+													endDate.readOnly = '';
+													end = new Date(endDate.value).getTime();
+													start = new Date(startDate.value).getTime();
+
+													inner(usingPointArea, diffDay(start, end));
+													inner(applyPoint, diffDay(start, end));
+													inner(finalDayOff, base - diffDay(start, end));
+													break;
+												}
 											});
 										</script>
 									</div>

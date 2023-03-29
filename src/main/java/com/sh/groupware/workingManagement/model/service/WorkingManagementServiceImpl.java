@@ -69,4 +69,10 @@ public class WorkingManagementServiceImpl implements WorkingManagementService {
 	public int selectWeekWorkTime(Map<String, Object> startEndMap) {
 		return workingManagementDao.selectWeekWorkTime(startEndMap);
 	}
+	
+	@Override
+	public int insertRegDateState(WorkingManagement working) {
+		return workingManagementDao.insertRegDateState(working);
+	} // insertRegDateState() end
+	
 }

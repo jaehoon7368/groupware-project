@@ -3,6 +3,7 @@ package com.sh.groupware.workingManagement.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -44,5 +45,8 @@ public interface WorkingManagementDao {
 
 	@Select("select nvl(sum(day_work_time),0) from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end})+1 order by reg_date")
 	int selectWeekWorkTime(Map<String, Object> startEndMap);
+
+	@Insert("insert into working_management values(seq_working_management_no.nextval, null, null, null, #{regDate}, #{state}, null, #{empId})")
+	int insertRegDateState(WorkingManagement working);
 
 }

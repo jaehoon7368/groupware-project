@@ -14,7 +14,7 @@ public class ProductForm {
 	private String name;
 	private long amount;
 	private long price;
-	private long total_price;
+	private long totalPrice;
 	private String purpose;
 	
 } // class end

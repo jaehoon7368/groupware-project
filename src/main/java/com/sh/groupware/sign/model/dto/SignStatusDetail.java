@@ -14,13 +14,15 @@ public class SignStatusDetail extends SignStatus {
 	private String name;
 	private String deptTitle;
 	private String jobTitle;
-	
-	public SignStatusDetail(String no, String signNo, String empId, int signOrder, Status status, LocalDate regDate,
-			String name, String deptTitle, String jobTitle) {
-		super(no, signNo, empId, signOrder, status, regDate);
+
+	public SignStatusDetail(String no, String signNo, String empId, int signOrder, Status status, String reason,
+			LocalDate regDate, String name, String deptTitle, String jobTitle) {
+		super(no, signNo, empId, signOrder, status, reason, regDate);
 		this.name = name;
 		this.deptTitle = deptTitle;
 		this.jobTitle = jobTitle;
 	} // SignStatusDetail() end
+	
+	
 	
 } // class end

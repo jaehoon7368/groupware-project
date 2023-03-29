@@ -16,6 +16,7 @@ public class SignStatus {
 	private String empId;
 	private int signOrder;
 	private Status status;
+	private String reason;
 	private LocalDate regDate;
 	
 	public SignStatus(String empId) {

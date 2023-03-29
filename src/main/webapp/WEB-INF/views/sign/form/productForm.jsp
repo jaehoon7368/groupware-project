@@ -50,41 +50,6 @@
 														</tbody>
 													</table>
 												</div>
-							
-												<%-- 
-												<div class="sign-div-right">
-													<table class="sign-right-tbl">
-														<tbody>
-															<tr>
-																<th>승인</th>
-																<td class="sign-right-tbl-border">
-																	<table class="sign-right-tbl-line">
-																		<tbody>
-																			<tr>
-																				<td>
-																					<span class="sign_rank">차장</span>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>
-																					<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="ok-sign" />
-																					<br />
-																					<span class="sign_name">아무개</span>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>
-																					<span class="sign_date">2023-03-15</span>
-																				</td>
-																			</tr>
-																		</tbody>
-																	</table>
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</div> 
-												--%>
 											</td>
 										</tr>
 									</tbody>

@@ -117,6 +117,59 @@
 				on s.no = ss.sign_no
 		where
 			ss.emp_id = #{empId}
+			and
+			ss.status in ('W', 'H', 'R')
+		order by
+			s.complete desc, s.reg_date
+	</select>
+	
+	
+	<update id="updateMySignStatus">
+		update
+			signStatus
+		set
+			status = #{status},
+			reg_date = TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul',
+			reason = #{reason}
+		where
+			emp_id = #{empId}
+			and
+			sign_no = #{signNo}
+	</update>
+	
+	
+	<select id="findByEmpIdLeaveCount" resultType="string">
+		select
+			d.leave_count
+		from
+			(
+				select
+					row_number() over (order by reg_date desc) rnum,
+					leave_count
+				from
+					dayOff
+				where
+					emp_id = #{empId}
+			) d
+		where
+			d.rnum = 1
+	</select>
+	
+	
+	<select id="findByEmpIdBaseDayOff" resultType="_double">
+		select
+			base_day_off
+		from
+			job
+		where
+			job_code = (
+				select 
+					job_code 
+				from 
+					emp 
+				where 
+					emp_id = #{empId}
+			)
 	</select>
 	
 </mapper>
