@@ -21,8 +21,8 @@
 	margin-right: 15px;
 	margin-top: 20px;
 	transition-duration: .3s;
-	font-size: 18px;
-	background-color: #e5e5e5;
+	font-size: 15px;
+	background-color: #d4e8ff;
 }
 
 .board-info {
@@ -35,6 +35,8 @@
 	margin-top: 5px;
 	display: flex;
 	flex-direction: column;
+	width: 90%;
+    margin-left: 5%;
 }
 
 .top-list {
@@ -84,12 +86,12 @@
 
 .attach-div {
 	height: 100px;
-	width: 100%;
-	border: 2px dashed rgba(128, 128, 128, 0.336);
-	color: gray;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    width: 100%;
+    border: 2px dashed rgba(128, 128, 128, 0.336);
+    color: gray;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .comment-div {
@@ -103,7 +105,7 @@
 	margin-top: 12px;
 	width: 90%;
 	height: 30px;
-	border: 1px solid #e3dede;
+	border: 1px solid white;
 }
 
 .todo-title {
@@ -115,12 +117,14 @@
 	border: solid gray 1px;
 	padding: 0px;
 	border-radius: 0px;
-	width: 59px;
-	height: 31px;
-	margin-top: 5px;
+	width: 50px;
+	height: 25px;
+	margin-top: 9px;
 	background-color: white;
 	color: black;
 	transform: translate(0, -11px);
+	font-size: 14px;
+	position:relative;
 }
 
 .removeView {
@@ -178,10 +182,42 @@
 	text-align: center;
 	color: #c3c3c3;;
 }
+.todocontent-span{
+	
+    height: 60px;
+    font-size: small;
+    width: 97%;
+    margin-left: 1px;
+    /* background-color: #367cb8; */
+    color: black;
+    padding-top: 11px;
+}
+.modal-btn{
+    position: absolute;
+    transform: translate(668px, -43px);
+    height: 24px;
+    width: 36px;
+}
+.comment-wrapper{
+}
+
+
+input[readonly]{
+	background-color: white;
+	cursor: auto;
+}
+
 /*게시판 모달*/
 /*  사원 추가 모달 */
-
-
+.close-button, .close-button.medium {
+	right: 1rem;
+    top: 0.5rem;
+    font-size: 1em;
+    line-height: 1;
+}
+#image-print{
+	width :40%;
+}
 
 
 

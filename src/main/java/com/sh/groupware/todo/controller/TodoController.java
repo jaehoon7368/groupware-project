@@ -2,7 +2,6 @@ package com.sh.groupware.todo.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -86,13 +85,17 @@ public class TodoController {
 		
 		Emp emp = todoService.selectOneEmpByEmpId(empId);
 		 // 모든 사원 조회
+		
 		List <Emp> emps = empService.selectAllEmpAddTitleDept();
+		// 보드 안에 사원 얼굴 조회
+		List<Attachment> attachments = todoService.selectAttachmentByBoardNo(no);
 		
 		log.debug("emps = {}",emps);
 		
 		if(todoLists.size() > 0) {
 		model.addAttribute("todoLists",todoLists);
 		}
+		model.addAttribute("attachments",attachments);
 		model.addAttribute("todoBoard",todoBoard);
 		model.addAttribute("emp",emp);
 		model.addAttribute("emps",emps);
@@ -263,14 +266,15 @@ public class TodoController {
 	}
 	
 	
-	
-	@PostMapping("todoComentDelete.do")
-	public String todoComentDelete(@RequestParam String no,@RequestParam String todoBoardNo) {
-		log.debug("todoBoardNo = {}",todoBoardNo);
+	@ResponseBody
+	@PostMapping("todoCommentDelete.do")
+	public void todoComentDelete(@RequestParam String no) {
+		
 		log.debug("no = {}",no);
 		
 		int result = todoService.todoComentDelete(no);
-		return "redirect:/todo/todoList.do?no="+todoBoardNo;
+		
+		
 	}
 	@PostMapping("todoAttachDelete.do")
 	public String todoAttachDelete(@RequestParam String todoBoardNo, @RequestParam String renameFilename) {
