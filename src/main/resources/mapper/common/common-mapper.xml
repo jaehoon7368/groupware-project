@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sh.groupware.common.dao.CommonDao">
+
+
+	<select  id="selectAllReNoti" resultMap="RenoticeMap">
+		select
+			*
+		from
+			recentnotification
+		order by no asc
+	</select>
+	
+	
+	<select  id="selectOneEmpTitleJobByEmpId" resultMap="empDetailMap">
+		select 
+			e.*,
+    		j.job_title,
+    		d.dept_title 
+		from 
+		     emp e join job j
+		    	 on e.job_code = j.job_code 
+		     join dept d
+		    	 on e.dept_code = d.dept_code
+		where e.emp_Id = #{empId}
+	</select>
+
+
+	<resultMap type= "empDetail" id="empDetailMap"></resultMap>
+	<resultMap type="RecentNotification" id="RenoticeMap"></resultMap>
+</mapper>
