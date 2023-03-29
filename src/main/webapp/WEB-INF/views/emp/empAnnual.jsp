@@ -13,25 +13,30 @@
  	<jsp:include page="/WEB-INF/views/emp/empLeftBar.jsp" />
 	
 			<div class="home-container">
-                    <!-- 상단 타이틀 -->
-                    <div class="top-container">
-                        <div class="container-title font-bold">내 연차 내역</div>
-                        <div class="home-topbar topbar-div">
-                            <div>
-                                <a href="#" id="home-my-img">
-                                    <img src="images/sample.jpg" alt="" class="my-img">
-                                </a>
-                            </div>
-                            <div id="my-menu-modal">
-                                <div class="my-menu-div">
-                                    <button class="my-menu">기본정보</button>
-                                </div>
-                                <div class="my-menu-div">
-                                    <button class="my-menu">로그아웃</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+						<!-- 상단 타이틀 -->
+						<div class="top-container">
+							<div class="container-title font-bold">내 연차 내역</div>
+							<div class="home-topbar topbar-div">
+								<div>
+									<a href="#" id="home-my-img">
+										<c:if test="${!empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+										</c:if>
+										<c:if test="${empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+										</c:if>
+									</a>
+								</div>
+								<div id="my-menu-modal">
+									<div class="my-menu-div">
+										<button class="my-menu">기본정보</button>
+									</div>
+									<div class="my-menu-div">
+										<button class="my-menu">로그아웃</button>
+									</div>
+								</div>
+							</div>
+						</div>
                     <script>
                         document.querySelector('#home-my-img').addEventListener('click', (e) => {
                             const modal = document.querySelector('#my-menu-modal');

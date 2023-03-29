@@ -30,7 +30,9 @@ public interface WorkingManagementService {
 	int selectWeekWorkTime(Map<String, Object> startEndMap);
 
 	int insertRegDateState(WorkingManagement working);
-
 	
+	int selectWeekOverTime(Map<String, Object> startEndMap);
+
+	int monthOverTime(Map<String, Object> startEndMap);
 
 }

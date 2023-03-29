@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.sh.groupware.board.model.dao.BoardDao;
 import com.sh.groupware.board.model.dto.Board;
+import com.sh.groupware.board.model.dto.BoardComment;
 import com.sh.groupware.common.dto.Attachment;
 
 import lombok.extern.slf4j.Slf4j;
@@ -54,5 +55,70 @@ public class BoardServiceImpl implements BoardService {
 	public Attachment selectOneAttachment(String no) {
 		return boardDao.selectOneAttachment(no);
 	}
+	
+	@Override
+	public int selectBoardCount() {
+		return boardDao.selectBoardCount();
+	}
+	
+	@Override
+	public Board selectBoardByNo(String no) {
+		return boardDao.selectBoardByNo(no);
+	}
+	
+	@Override
+	public int deleteBoard(String no) {
+		return boardDao.deleteBoard(no);
+	}
+	
+	@Override
+	public int updateBoard(Board board) {
+		// 게시글 등록 - 동시에 채번된 pk를 조회
+				int result = boardDao.updateBoard(board);
+				log.debug("board = {}", board);
+				
+				// 첨부파일 등록
+				List<Attachment> attachments = board.getAttachments();
+				if(attachments.size() > 0) {
+					for(Attachment attach : attachments) {
+						attach.setPkNo(board.getNo());
+						result = insertAttachment(attach);
+					}
+				}
+				return result;
+	}
+	
+	@Override
+	public int insertBoardComment(BoardComment boardComment) {
+		return boardDao.insertBoardComment(boardComment);
+	}
+	
+	@Override
+	public int updateReadCount(String no) {
+		return boardDao.updateReadCount(no);
+	}
+	
+	@Override
+	public List<Board> selectBoardHome(Board board) {
+		return boardDao.selectBoardHome(board);
+	}
+	
+	
+
+//	@Override
+//	public Board selectNewsBoardList(String no) {
+//		return boardDao.selectNewsBoardList(no);
+//	}
+	
+//	public int deleteBoards(List<String> boardNos) {
+//		return boardDao.deleteBoards(boardNos);
+//	}
+//	
+//	@Override
+//	public List<Board> selectBoardsByNos(List<String> boardNos) {
+//		return boardDao.selectBoardsByNos(boardNos);
+//	}
+	
+
 
 }

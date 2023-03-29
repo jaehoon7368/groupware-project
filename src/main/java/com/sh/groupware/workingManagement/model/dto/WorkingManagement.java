@@ -15,7 +15,7 @@ public class WorkingManagement {
 	private String no;
 	private Timestamp startWork;
 	private Timestamp endWork;
-	private Timestamp overtime;
+	private long overtime;
 	private LocalDate regDate;
 	private String state;
 	private long dayWorkTime;

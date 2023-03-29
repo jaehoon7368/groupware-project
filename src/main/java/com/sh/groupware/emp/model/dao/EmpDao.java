@@ -52,4 +52,7 @@ public interface EmpDao {
 	@Update("update emp set quit_date = #{endDate}, quit_yn = 'Y' where emp_id = #{empId}")
 	int updateQuit(Map<String, Object> param);
 	
+	//부서별 근태현황 사원조회
+	List<EmpDetail> selectEmpDeptList(String deptCode);
+	
 }

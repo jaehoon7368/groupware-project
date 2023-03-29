@@ -43,9 +43,18 @@ public interface WorkingManagementDao {
 	@Select("select nvl(sum(day_work_time),0) from working_management where reg_date like '%' || #{monthTime} || '%' and emp_id = #{empId}")
 	int totalMonthTime(Map<String, Object> param);
 
+	//주간 기본근무시간 가져오기
 	@Select("select nvl(sum(day_work_time),0) from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end})+1 order by reg_date")
 	int selectWeekWorkTime(Map<String, Object> startEndMap);
 
+	//주간 연장근무시간 가져오기
+	@Select("select nvl(sum(overtime),0) from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end})+1 order by reg_date")
+	int selectWeekOverTime(Map<String, Object> startEndMap);
+
+	//월 연장근무시간 가져오기
+	@Select("select nvl(sum(overtime),0) from working_management where reg_date like '%' || #{monthTime} || '%' and emp_id = #{empId}")
+	int monthOverTime(Map<String, Object> startEndMap);
+	
 	@Insert("insert into working_management values(seq_working_management_no.nextval, null, null, null, #{regDate}, #{state}, null, #{empId})")
 	int insertRegDateState(WorkingManagement working);
 

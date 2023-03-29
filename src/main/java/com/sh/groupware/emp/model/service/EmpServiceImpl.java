@@ -133,4 +133,8 @@ public class EmpServiceImpl implements EmpService {
 		return empDao.updateQuit(param);
 	} // updateQuit() end
 	
+	@Override
+	public List<EmpDetail> selectEmpDeptList(String deptCode) {
+		return empDao.selectEmpDeptList(deptCode);
+	}
 }

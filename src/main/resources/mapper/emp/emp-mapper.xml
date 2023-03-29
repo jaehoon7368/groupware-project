@@ -65,6 +65,18 @@
 		     join dept d
 		    	 on e.dept_code = d.dept_code
 	</select>
+	<select id="selectEmpDeptList" resultMap="empDetailMap">
+		select 
+		    emp_id,name,
+		    (select job_title from job where e.job_code = job_code) job_title,
+		    (select dept_title from dept where e.dept_code = dept_code) dept_title,
+		    (select rename_filename from attachment where pk_no = e.emp_id) renameFilename
+		from 
+		    emp e
+		where
+		    quit_yn = 'N'
+    		and dept_code = #{deptCode}
+	</select>
 	
 	<select id="findByMyDeptCodeManagerEmpList" resultMap="empMap">
 		select

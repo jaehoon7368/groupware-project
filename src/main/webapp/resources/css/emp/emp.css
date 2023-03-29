@@ -335,6 +335,7 @@ p.title {
     font-size: 14px;
     float : right;
     color : gray;
+    font-weight : bold;
     border-bottom: .5px solid gray;
     margin-top: 7px;
     text-align: end;
@@ -395,12 +396,19 @@ p.title {
 .color-gray{
     color: gray;
 }
+.color-red{
+	color :  rgb(233, 93, 93);
+}
 .text-left {
     text-align: left;
 }
 
 .text-right {
     text-align: right;
+}
+
+.font-12{
+	font-size : 12px;
 }
 
 .font-14 {

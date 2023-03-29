@@ -1,0 +1,153 @@
+.content {
+	padding: 0px;
+	margin: 0px;
+}
+.form-wrap {
+	border: 1px solid lightgray;
+	width: 800px;
+	height: 200px;
+	margin-left: 30px;
+	
+}
+.text-wrap {
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  border: 1px solid lightgray;
+  border-top: none;
+}
+
+.text-wrap textarea {
+  width: 100%;
+  height: 130px;
+  border: none;
+  outline: none;
+  padding: 0.5em;
+  resize: none;
+}
+
+.text-wrap textarea:focus {
+  border: 1px solid black;
+}
+
+.button-wrap {
+	text-align: end;
+}
+
+.tool-bar {
+	display: inline-block;
+	padding: 5px;
+	border-bottom: 1px solid lightgray;
+	width:100%;
+}
+.tool-img {
+	height: 17px;
+	width: 17px;
+}
+.tool-button {
+	float: left;
+}
+
+#write-btn{
+	border: none;
+}
+#deleteBtn{
+	border: none;
+}
+
+#updateBtn{
+	border: none;
+}
+.tool-bar span{
+	padding: 2px;
+	color: black;
+	font-size: 13px;
+}
+.title {
+	display: block;
+}
+.title h1{
+	font-size: 24px;
+}
+
+.detail {
+	padding: 15px;
+	border-bottom: 1px solid lightgray;
+	width:100%;
+}
+
+.info-wrap{
+	padding: 20px;
+}
+
+.view-option {
+	display:flex;
+	padding-left:10px;
+}
+
+.view-option .part {
+	padding: 5px;
+	color: lightgray;
+}
+
+.div-report-commend {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	margin-top: 10px;
+	padding: 20px;
+}
+
+.div-report-commend-all {
+	width: 100%;
+	display: flex;
+	align-items: baseline;
+	padding:10px;
+}
+
+.div-report-commend-all div {
+	margin: 0 5px;
+	flex-shrink: 0;
+}
+
+.div-report-commend-all div:nth-of-type(2) {
+	width: 85%;
+}
+
+.div-report-commend-all textarea {
+	width: 100%;
+	resize: none;
+	margin: 0;
+}
+
+.tool-wrap .heart-wrap img{
+	height:30px;
+	width:30px;
+}
+.tool-wrap .heart-wrap {
+	padding-right:30px;
+}
+
+.tool-wrap {
+	display: flex;
+	justify-content: space-between;
+}
+
+.div-report-commend-all form {
+	display:flex;
+}
+
+
+.content-wrap {
+	padding:10px;
+	border-top: 1px solid lightgray;
+	border-bottom: 1px solid lightgray;
+}
+
+.div-report-commend{
+	border: 1px solid lightgray;
+	width: 1000px;
+	margin-left:20px;
+	border-radius: 10px;
+}
+

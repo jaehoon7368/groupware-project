@@ -120,10 +120,7 @@ public class TodoServiceImpl implements TodoService {
 	public int todoComentDelete(String no) {
 		return todoDao.todoComentDelete(no);
 	}
-	@Override
-	public List<TodoBoard> selectBookMarkTodoBoard(String empId) {
-		return todoDao.selectBookMarkTodoBoard(empId);
-	}
+	
 	@Override
 	public int bookMarkOff(Map<String, Object> param) {
 		return todoDao.bookMarkOff(param);
@@ -145,7 +142,31 @@ public class TodoServiceImpl implements TodoService {
 	}
 	@Override
 	public List<TodoBoard> selectTodoBoardByEmpId(String empId) {
-		return todoDao.selectTodoBoardByEmpId(empId);
+		
+		List<TodoBoard> todoBoardList =todoDao.selectTodoBoardByEmpId(empId);
+			for(TodoBoard todoBoard : todoBoardList) {
+				String boardNo = todoBoard.getNo();
+				List<Attachment> attach = todoDao.selectAttachmentByBoardNo(boardNo);
+				
+				todoBoard.setAttachmentLists(attach);;
+				
+			}
+		
+		return todoBoardList;
+	}
+	@Override
+	public List<TodoBoard> selectBookMarkTodoBoard(String empId) {
+		List<TodoBoard> todoBoardList = todoDao.selectBookMarkTodoBoard(empId);
+			for(TodoBoard todoBoard : todoBoardList) {
+				String boardNo = todoBoard.getNo();
+				List<Attachment> attach = todoDao.selectAttachmentByBoardNo(boardNo);
+				todoBoard.setAttachmentLists(attach);;
+		}
+		return todoBoardList;
+	}
+	@Override
+	public List<Attachment> selectAttachmentByBoardNo(String boardNo) {
+		return todoDao.selectAttachmentByBoardNo(boardNo);
 	}
 	
 	

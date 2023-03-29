@@ -28,4 +28,6 @@ public interface EmpService {
 
 	int updateQuit(Map<String, Object> param);
 	
+	List<EmpDetail> selectEmpDeptList(String deptCode);
+	
 }

@@ -19,7 +19,10 @@ public class EmpDetail extends Emp {
 	private String jobTitle;
 	private int baseDayOff;
 	private String deptTitle;
+	private String renameFilename; // profile 
 	private List<Authority> authorityList = new ArrayList<>();
+	
+	
 	
 	
 	public EmpDetail(String empId, String password, String name, String ssn, String address, String email, String phone,
@@ -48,6 +51,18 @@ public class EmpDetail extends Emp {
 	
 	public void addAuthorityList(Authority auth) {
 		this.authorityList.add(auth);
+	}
+
+
+	public EmpDetail(String empId, String password, String name, String ssn, String address, String email, String phone,
+			LocalDate hireDate, LocalDate quitDate, Quit quitYn, String jobCode, String deptCode,
+			List<SimpleGrantedAuthority> authorities, Attachment attachment, String jobTitle, String deptTitle,
+			String renameFilename) {
+		super(empId, password, name, ssn, address, email, phone, hireDate, quitDate, quitYn, jobCode, deptCode,
+				authorities, attachment);
+		this.jobTitle = jobTitle;
+		this.deptTitle = deptTitle;
+		this.renameFilename = renameFilename;
 	} // addAuthorityList() end
 	
 } // class end
