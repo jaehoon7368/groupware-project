@@ -15,7 +15,7 @@
 	<jsp:include page="/WEB-INF/views/sign/signLeftBar.jsp" />
 	
 	<jsp:include page="/WEB-INF/views/sign/signCreate.jsp">
-		<jsp:param value="연차신청서" name="title" />
+		<jsp:param value="출장신청서" name="title" />
 	</jsp:include>
 								
 											</td>
@@ -50,41 +50,6 @@
 														</tbody>
 													</table>
 												</div>
-							
-												<%-- 
-												<div class="sign-div-right">
-													<table class="sign-right-tbl">
-														<tbody>
-															<tr>
-																<th>승인</th>
-																<td class="sign-right-tbl-border">
-																	<table class="sign-right-tbl-line">
-																		<tbody>
-																			<tr>
-																				<td>
-																					<span class="sign_rank">차장</span>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>
-																					<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="ok-sign" />
-																					<br />
-																					<span class="sign_name">아무개</span>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>
-																					<span class="sign_date">2023-03-15</span>
-																				</td>
-																			</tr>
-																		</tbody>
-																	</table>
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</div> 
-												--%>
 											</td>
 										</tr>
 									</tbody>
@@ -98,33 +63,44 @@
 								</script>
 								
 								<br />
-								<form:form action="${pageContext.request.contextPath}/sign/dayOffCreate.do" method="post" name="dayOffFrm">
+								<form:form action="${pageContext.request.contextPath}/sign/tripCreate.do" method="post" name="tripFrm">
 									<div class="div-sign-tbl">
 										<table class="sign-tbl-bottom">
 											<tbody>
 												<tr>
 													<td>긴급&nbsp;문서</td>
-													<td>
+													<td colspan="3">
 														<input type="radio" name="emergency" id="emergencyY" value="Y" /><label for="emergencyY">여</label>
 														<input type="radio" name="emergency" id="emergencyN" value="N" checked /><label for="emergencyN">부</label>
 													</td>
 												</tr>
-												<tr>
+												<tr class="sign-tbl-bottom-tr">
+													<td colspan="4" class="sign-tbl-bottom-td">
+														아래와 같이 출장신청서를 제출합니다.
+													</td>
+												</tr>
+												<tr class="trip-boss">
+													<td rowspan="2">출장자</td>
+													<td>부서</td>
+													<td>직책</td>
+													<td>성명</td>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
 													<td>
-														휴가&nbsp;종류
+														<input type="text" name="boss-dept" id="boss-dept" value="${sessionScope.loginMember.deptTitle}" readonly />
 													</td>
 													<td>
-														<select class="vacationType" name="type" id="vacationType">
-															<option value="D">연차</option>
-															<option value="H">반차</option>
-														</select>
+														<input type="text" name="boss-job" id="boss-job" value="${sessionScope.loginMember.jobTitle}" readonly />
+													</td>
+													<td>
+														<input type="text" name="boss-name" id="boss-name" value="${sessionScope.loginMember.name}" readonly />
 													</td>
 												</tr>
 												<tr>
 													<td>
 														기간&nbsp;및&nbsp;일시
 													</td>
-													<td>
+													<td colspan="3">
 														<span>
 															<span>
 																<input id="start-date" name="startDate" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
@@ -142,44 +118,18 @@
 												</tr>
 												<tr>
 													<td>
-														반차&nbsp;여부
+														출장지
 													</td>
-													<td>
-														<span id="vacationHalfArea">
-															<input type="radio" name="half" id="A" value="A" /><label for="A">오전</label>
-															<input type="radio" name="half" id="P" value="P" /><label for="P">오후</label>
-															<input type="radio" name="half" id="X" value="X" checked /><label for="X">연차</label>
-														</span> 
+													<td colspan="3">
+														<input type="text" name="location" id="trip-where" />
 													</td>
 												</tr>
 												<tr>
 													<td>
-														연차&nbsp;일수
+														출장 목적
 													</td>
-													<td>
-														<span id="restPointArea">
-															잔여연차 : <span id="restPoint">${sessionScope.loginMember.baseDayOff}</span>
-														</span>&nbsp;&nbsp;
-														<span id="applyPointArea">
-															신청연차 : <span id="applyPoint"></span>
-															<input type="hidden" name="count" />
-														</span> &nbsp;&nbsp;
-														<span id="finalPointArea">
-															최종 남은 연차 : <span id="finalPoint"></span>
-														</span> 
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<b style="color: rgb(255, 0, 0);">*</b>&nbsp;휴가&nbsp;사유 
-													</td>
-													<td>
-														<textarea name="content" class="txta_editor"></textarea>
-													</td>
-												</tr>
-												<tr class="sign-tbl-bottom-tr">
-													<td colspan="2" class="sign-tbl-bottom-content">
-														1. 연차의 사용은 근로기준법에 따라 전년도에 발생한 개인별 잔여 연차에 한하여 사용함을 원칙으로 한다. 단, 최초 입사시에는 근로 기준법에 따라 발생 예정된 연차를 차용하여 월 1회 사용 할 수 있다.<br> 2. 경조사 휴가는 행사일을 증명할 수 있는 가족 관계 증명서 또는 등본, 청첩장 등 제출<br> 3. 공가(예비군/민방위)는 사전에 통지서를, 사후에 참석증을 반드시 제출 
+													<td colspan="3">
+														<textarea name="purpose" class="txta_editor"></textarea>
 													</td>
 												</tr>
 											</tbody>
@@ -189,11 +139,10 @@
 											let start;
 											let end;
 											let diff = 1;
-											let base;
+											
 											const startDate = document.querySelector('#start-date');
 											const endDate = document.querySelector('#end-date');
 											const usingPointArea = document.querySelector('#usingPointArea');
-											const finalDayOff = document.querySelector('#finalPoint');
 											
 											const diffDay = (start, end) => {
 												diff = end - start;
@@ -205,16 +154,12 @@
 											};
 											
 											window.addEventListener('load', () => {
-												base = document.querySelector('#restPoint').innerText;
-												
 												startDate.min = today;
 												startDate.value = today;
 												endDate.min = today;
 												endDate.value = today;
 												
 												inner(usingPointArea, diff);
-												inner(applyPoint, diff);
-												inner(finalDayOff, base - diff);
 											});
 											
 											
@@ -229,17 +174,13 @@
 													end = new Date(endDate.value).getTime();
 												}
 												inner(usingPointArea, diffDay(start, end));
-												inner(applyPoint, diffDay(start, end));
-												inner(finalDayOff, base - diffDay(start, end));
 											});
 											
 											endDate.addEventListener('change', (e) => {
 												end = new Date(endDate.value).getTime();
 												start = new Date(startDate.value).getTime();
-
+	
 												inner(usingPointArea, diffDay(start, end));
-												inner(applyPoint, diffDay(start, end));
-												inner(finalDayOff, base - diffDay(start, end));
 											});
 										</script>
 									</div>
@@ -250,31 +191,26 @@
 						<script>
 							/* 연차신청서 폼 제출 */
 							const signCreate = () => {
-								const frm = document.dayOffFrm;
-								const content = frm.content;
-								const type = frm.type;
-								const half = frm.half;
-								console.log(frm.startDate.value);
-								console.log(frm.endDate.value);
-								console.log(vacationType.value);
-								console.log(half.value);
+								const frm = document.tripFrm;
+								const location = frm.location;
+								const purpose = frm.purpose;
 								
-								frm.count.value = applyPoint.innerText;
-								
-								if (/^\s+$/.test(content.value) || !content.value) {
-									alert('휴가 사유를 작성해주세요.');
-									content.select();
+								if (/^\s+$/.test(location.value) || !location.value) {
+									alert('출장지를 작성해주세요.');
+									location.select();
 									return false;
 								}
 								
-								if (type.value == 'H' && half.value == 'X') {
-									alert('반차 여부를 오전 또는 오후로 선택해주세요.');
+								if (/^\s+$/.test(purpose.value) || !purpose.value) {
+									alert('출장 목적을 작성해주세요.');
+									purpose.select();
 									return false;
 								}
 								
 								frm.submit();
 							};
 						</script>
+						
 						
 						<div class="div-sign-bottom">
 							<div class="div-sign-bottom-title">

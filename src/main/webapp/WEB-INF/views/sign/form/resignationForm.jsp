@@ -50,41 +50,6 @@
 														</tbody>
 													</table>
 												</div>
-							
-												<%-- 
-												<div class="sign-div-right">
-													<table class="sign-right-tbl">
-														<tbody>
-															<tr>
-																<th>승인</th>
-																<td class="sign-right-tbl-border">
-																	<table class="sign-right-tbl-line">
-																		<tbody>
-																			<tr>
-																				<td>
-																					<span class="sign_rank">차장</span>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>
-																					<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="ok-sign" />
-																					<br />
-																					<span class="sign_name">아무개</span>
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>
-																					<span class="sign_date">2023-03-15</span>
-																				</td>
-																			</tr>
-																		</tbody>
-																	</table>
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</div> 
-												--%>
 											</td>
 										</tr>
 									</tbody>
@@ -105,7 +70,6 @@
 												<tr class="sign-tbl-bottom-tr">
 													<th>긴급 문서</th>
 													<td colspan="3">
-														
 														<input type="radio" name="emergency" id="emergencyY" value="Y" /><label for="emergencyY">여</label>
 														<input type="radio" name="emergency" id="emergencyN" value="N" checked /><label for="emergencyN">부</label>
 													</td>
@@ -115,7 +79,7 @@
 													<td><input type="date" name="start-date" id="start-date" value="${sessionScope.loginMember.hireDate}" readonly/></td>
 													<th>퇴사일</th>
 													<td>
-														<input type="date" name="end-date" id="end-date" />
+														<input type="date" name="endDate" id="end-date" />
 														<script>
 															const endDate = document.querySelector('#end-date');
 															endDate.min = today;
@@ -127,14 +91,12 @@
 													<th>직급</th>
 													<th>사번</th>
 													<th>성명</th>
-													<!-- <th>근무기간</th> -->
 													<th>근무부서</th>
 												</tr>
 												<tr class="sign-tbl-bottom-tr">
 													<td>${sessionScope.loginMember.jobTitle}</td>
 													<td>${sessionScope.loginMember.empId}</td>
 													<td>${sessionScope.loginMember.name}</td>
-													<!-- <td></td> -->
 													<td>${sessionScope.loginMember.deptTitle}</td>
 												</tr>
 												<tr>

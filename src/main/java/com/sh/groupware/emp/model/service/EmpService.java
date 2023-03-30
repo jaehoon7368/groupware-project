@@ -25,6 +25,8 @@ public interface EmpService {
 
 	List<Emp> selectAllEmpAddTitleDept();
 
+	int updateQuit(Map<String, Object> param);
+	
 	List<EmpDetail> selectEmpDeptList(String deptCode);
 
 	List<EmpDetail> selectEmpAll();

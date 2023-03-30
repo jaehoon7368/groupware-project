@@ -27,10 +27,9 @@
 									<p class="title font-medium">결재하기</p>
 									<div class="con">
 										<ul class="container-detail font-small">
-											<li><a class="container-a" href="#">결재 예정 문서</a></li>
 											<li><a class="container-a" href="#">결재 대기 문서</a></li>
+											<li><a class="container-a" href="#">결재 예정 문서</a></li>
 											<li><a class="container-a" href="#">결재 수신 문서</a></li>
-											<li><a class="container-a" href="#">참조/열람 대기 문서</a></li>
 										</ul>
 									</div>
 								</li>

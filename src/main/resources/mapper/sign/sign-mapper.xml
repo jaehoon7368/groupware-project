@@ -26,16 +26,59 @@
 		</selectKey>
 	</insert>
 	
-	<select id="findByMyCreateSignList" resultMap="signMap">
+	<select id="findByMyCreateSignListComlete" resultMap="signMap">
 		select
 			s.*,
-			ss.*
+			(select name from emp where emp_id = s.emp_id) name,
+			(select dept_title from dept where dept_code = s.dept_code) dept_title,
+			(select job_title from job where job_code = s.job_code) job_title,
+			ss.no status_no,
+			ss.sign_no,
+			ss.emp_id status_emp_id,
+			ss.sign_order,
+			ss.status,
+			ss.reg_date status_reg_date,
+			(select name from emp where emp_id = ss.emp_id) status_name,
+			(select dept_title from dept where dept_code = (select dept_code from emp where emp_id = ss.emp_id)) status_dept_title,
+			(select job_title from job where job_code = (select job_code from emp where emp_id = ss.emp_id)) status_job_title
 		from
 			sign s right join signStatus ss
 				on s.no = ss.sign_no
 		where
 			s.emp_id = #{empId}
+			and
+			s.complete = 'Y'
+		order by
+			s.reg_date desc
 	</select>
+	
+	
+	<select id="findByMyCreateSignListIng" resultMap="signMap">
+		select
+			s.*,
+			(select name from emp where emp_id = s.emp_id) name,
+			(select dept_title from dept where dept_code = s.dept_code) dept_title,
+			(select job_title from job where job_code = s.job_code) job_title,
+			ss.no status_no,
+			ss.sign_no,
+			ss.emp_id status_emp_id,
+			ss.sign_order,
+			ss.status,
+			ss.reg_date status_reg_date,
+			(select name from emp where emp_id = ss.emp_id) status_name,
+			(select dept_title from dept where dept_code = (select dept_code from emp where emp_id = ss.emp_id)) status_dept_title,
+			(select job_title from job where job_code = (select job_code from emp where emp_id = ss.emp_id)) status_job_title
+		from
+			sign s right join signStatus ss
+				on s.no = ss.sign_no
+		where
+			s.emp_id = #{empId}
+			and
+			s.complete = 'N'
+		order by
+			s.reg_date desc
+	</select>
+	
 	<resultMap type="sign" id="signMap">
 		<id column="no" property="no"/>
 		<result column="emp_id" property="empId"/>
@@ -45,15 +88,120 @@
 		<result column="reg_date" property="regDate"/>
 		<result column="emergency" property="emergency"/>
 		<result column="complete" property="complete"/>
+		<result column="name" property="name"/>
+		<result column="dept_title" property="deptTitle"/>
+		<result column="job_title" property="jobTitle"/>
 		
-		<collection property="signStatusList" ofType="signStatus">
-			<id column="signStatus_no" property="no"/>
+		<collection property="signStatusList" ofType="SignStatusDetail">
+			<id column="status_no" property="no"/>
 			<result column="sign_no" property="signNo"/>
-			<result column="emp_id" property="empId"/>
+			<result column="status_emp_id" property="empId"/>
 			<result column="sign_order" property="signOrder"/>
 			<result column="status" property="status"/>
-			<result column="signStatus_reg_date" property="regDate"/>
+			<result column="status_reg_date" property="regDate"/>
+			<result column="status_name" property="name"/>
+			<result column="status_dept_title" property="deptTitle"/>
+			<result column="status_job_title" property="jobTitle"/>
 		</collection>
 	</resultMap>
+	
+	
+	<select id="findByNoSign" resultMap="signMap">
+		select
+			s.*,
+			(select name from emp where emp_id = s.emp_id) name,
+			(select dept_title from dept where dept_code = s.dept_code) dept_title,
+			(select job_title from job where job_code = s.job_code) job_title,
+			ss.no status_no,
+			ss.sign_no,
+			ss.emp_id status_emp_id,
+			ss.sign_order,
+			ss.status,
+			ss.reg_date status_reg_date,
+			(select name from emp where emp_id = ss.emp_id) status_name,
+			(select dept_title from dept where dept_code = (select dept_code from emp where emp_id = ss.emp_id)) status_dept_title,
+			(select job_title from job where job_code = (select job_code from emp where emp_id = ss.emp_id)) status_job_title
+		from
+			sign s right join signStatus ss
+				on s.no = ss.sign_no
+		where
+			s.no = #{no}
+	</select>
+	
+	
+	<select id="findByMySignList" resultMap="signMap">
+		select
+			s.*,
+			(select name from emp where emp_id = s.emp_id) name,
+			(select dept_title from dept where dept_code = s.dept_code) dept_title,
+			(select job_title from job where job_code = s.job_code) job_title,
+			ss.no status_no,
+			ss.sign_no,
+			ss.emp_id status_emp_id,
+			ss.sign_order,
+			ss.status,
+			ss.reg_date status_reg_date,
+			(select name from emp where emp_id = ss.emp_id) status_name,
+			(select dept_title from dept where dept_code = (select dept_code from emp where emp_id = ss.emp_id)) status_dept_title,
+			(select job_title from job where job_code = (select job_code from emp where emp_id = ss.emp_id)) status_job_title
+		from
+			sign s right join signStatus ss
+				on s.no = ss.sign_no
+		where
+			ss.emp_id = #{empId}
+			and
+			ss.status in ('W', 'H', 'R')
+		order by
+			s.complete desc, s.reg_date
+	</select>
+	
+	
+	<update id="updateMySignStatus">
+		update
+			signStatus
+		set
+			status = #{status},
+			reg_date = TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul',
+			reason = #{reason}
+		where
+			emp_id = #{empId}
+			and
+			sign_no = #{signNo}
+	</update>
+	
+	
+	<select id="findByEmpIdLeaveCount" resultType="string">
+		select
+			d.leave_count
+		from
+			(
+				select
+					row_number() over (order by reg_date desc) rnum,
+					leave_count
+				from
+					dayOff
+				where
+					emp_id = #{empId}
+			) d
+		where
+			d.rnum = 1
+	</select>
+	
+	
+	<select id="findByEmpIdBaseDayOff" resultType="_double">
+		select
+			base_day_off
+		from
+			job
+		where
+			job_code = (
+				select 
+					job_code 
+				from 
+					emp 
+				where 
+					emp_id = #{empId}
+			)
+	</select>
 	
 </mapper>
