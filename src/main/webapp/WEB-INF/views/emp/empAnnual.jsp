@@ -60,7 +60,14 @@
                         <div id="annual-container">
                             <div id="annual-info-box">
                                 <div id="annual-user-box">
-                                    <img src="images/sample.jpg" alt="" class="my-img" /> <span> 유사원</span>
+                                    <c:if test="${!empty sessionScope.loginMember.attachment}">
+										<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+										<span> ${loginMember.name}</span>
+									</c:if>
+									<c:if test="${empty sessionScope.loginMember.attachment}">
+										<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+										<span> ${loginMember.name}</span>
+									</c:if>
                                 </div>
                                 <div>
                                     <p class="font-14">총연차</p>
@@ -101,22 +108,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td width="100">유사원</td>
-                                            <td width="100">개발</td>
-                                            <td width="100">연차</td>
-                                            <td width="200">2023-03-21 ~ 2023-03-21</td>
-                                            <td width="100">1</td>
-                                            <td width="100">2023-03-21</td>
-                                        </tr>
-                                        <tr>
-                                            <td width="100">유사원</td>
-                                            <td width="100">개발</td>
-                                            <td width="100">연차</td>
-                                            <td width="200">2023-03-21 ~ 2023-03-21</td>
-                                            <td width="100">1</td>
-                                            <td width="100">2023-03-21</td>
-                                        </tr>
+                                    	<c:forEach items="${ dayoffList}" var="day">
+	                                        <tr>
+	                                            <td width="100">${loginMember.name}</td>
+	                                            <td width="100">${loginMember.deptTitle} </td>
+	                                            <td width="100">연차</td>
+	                                            <td width="200">${day.startDate} ~ ${day.endDate }</td>
+	                                            <td width="100">${day.count }</td>
+	                                            <td width="100">${day.regDate }</td>
+	                                        </tr>
+                                       </c:forEach>
                         
                                     </tbody>
                                 </table>

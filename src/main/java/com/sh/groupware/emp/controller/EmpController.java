@@ -34,6 +34,8 @@ import com.sh.groupware.workingManagement.model.service.WorkingManagementService
 import com.sh.groupware.common.HelloSpringUtils;
 import com.sh.groupware.common.attachment.model.service.AttachmentService;
 import com.sh.groupware.common.dto.Attachment;
+import com.sh.groupware.dayOff.model.dto.DayOff;
+import com.sh.groupware.dayOff.model.service.DayOffService;
 import com.sh.groupware.dept.model.dto.Dept;
 import com.sh.groupware.dept.model.service.DeptService;
 
@@ -42,7 +44,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping("/emp")
-@SessionAttributes({"loginEmp"})
+@SessionAttributes({"loginMember"})
 public class EmpController {
 	
 	@Autowired
@@ -56,6 +58,9 @@ public class EmpController {
 	
 	@Autowired
 	private WorkingManagementService workingManagementService;
+	
+	@Autowired
+	private DayOffService dayOffService;
 	
 	@Autowired
 	private ServletContext application;
@@ -196,6 +201,8 @@ public class EmpController {
 		
 		String empId = principal.getEmpId();
 		
+		List<DayOff> dayoffList = dayOffService.selectOneEmpDayOffList(empId);
+		model.addAttribute("dayoffList", dayoffList);
 	}
 	
 	//전사 인사정보
