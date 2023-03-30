@@ -124,9 +124,15 @@ public class SignServiceImpl implements SignService {
 
 
 	@Override
-	public List<Sign> findByMyCreateSignList(String empId) {
-		return signDao.findByMyCreateSignList(empId);
-	} // findByMyCreateSignList() end
+	public List<Sign> findByMyCreateSignListComlete(String empId) {
+		return signDao.findByMyCreateSignListComlete(empId);
+	} // findByMyCreateSignListComlete() end
+
+	
+	@Override
+	public List<Sign> findByMyCreateSignListIng(String empId) {
+		return signDao.findByMyCreateSignListIng(empId);
+	} // findByMyCreateSignListIng() end
 	
 	
 	@Override

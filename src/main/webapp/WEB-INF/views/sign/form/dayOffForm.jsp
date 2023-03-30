@@ -80,7 +80,7 @@
 													</td>
 													<td>
 														<select class="vacationType" name="type" id="vacationType">
-															<option value="D">연차</option>
+															<option value="D" selected>연차</option>
 															<option value="H">반차</option>
 														</select>
 													</td>
@@ -153,7 +153,7 @@
 										<script>
 											let start;
 											let end;
-											let type;
+											let type = vacationType.value;
 											let diff = 1;
 											
 											const halfType = document.querySelector('#vacationType');
@@ -224,6 +224,10 @@
 												case 'H':
 													endDate.value = startDate.value;
 													endDate.readOnly = 'readOnly';
+													A.disabled = '';
+													P.disabled = '';
+													X.disabled = 'disabled';
+													A.checked = 'checked';
 													inner(usingPointArea, 0.5);
 													inner(applyPoint, 0.5);
 													inner(finalDayOff, base - 0.5);
@@ -233,6 +237,11 @@
 													end = new Date(endDate.value).getTime();
 													start = new Date(startDate.value).getTime();
 
+													A.disabled = 'disabled';
+													P.disabled = 'disabled';
+													X.disabled = '';
+													X.checked = 'checked';
+													
 													inner(usingPointArea, diffDay(start, end));
 													inner(applyPoint, diffDay(start, end));
 													inner(finalDayOff, base - diffDay(start, end));
@@ -267,6 +276,11 @@
 								
 								if (type.value == 'H' && half.value == 'X') {
 									alert('반차 여부를 오전 또는 오후로 선택해주세요.');
+									return false;
+								}
+								
+								if (type.value == 'D' && half.value != 'X') {
+									alert('반차 여부를 연차로 선택해주세요.');
 									return false;
 								}
 								

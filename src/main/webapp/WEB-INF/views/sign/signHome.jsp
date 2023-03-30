@@ -35,7 +35,7 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="GET">
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
 											<button class="my-menu" type="submit">로그아웃</button>								
 										</form:form>
 									</div>
@@ -150,52 +150,56 @@
 											</tr>
 										</thead>
 										<tbody>
-											<c:if test="${empty myCreateSignList}">
+											<c:if test="${empty myCreateSignListIng}">
 												<tr>
 													<td colspan="4">기안 진행 중인 문서가 없습니다.</td>
 												</tr>
 											</c:if>
-											<c:if test="${!empty myCreateSignList}">
-												<c:forEach items="${myCreateSignList}" var="sign">
-													<c:if test="${sign.complete == 'N'}">
-														<tr class="div-sign-all-tbl-tr" data-no="${sign.no}" data-type="${sign.type}">
-															<td>${sign.regDate}</td>
-															<td>
-																<c:choose>
-																	<c:when test="${sign.type == 'D'}">연차신청서</c:when>
-																	<c:when test="${sign.type == 'P'}">비품신청서</c:when>
-																	<c:when test="${sign.type == 'T'}">출장신청서</c:when>
-																	<c:when test="${sign.type == 'R'}">사직서</c:when>
-																</c:choose>
-															</td>
-															<td>
-																<c:if test="${sign.emergency == 'Y'}">
-																	<button type="button" class="small alert button hollow">긴급</button>
+											<c:if test="${!empty myCreateSignListIng}">
+												<c:forEach items="${myCreateSignListIng}" var="sign">
+													<tr class="div-sign-all-tbl-tr" data-no="${sign.no}" data-type="${sign.type}">
+														<td>${sign.regDate}</td>
+														<td>
+															<c:choose>
+																<c:when test="${sign.type == 'D'}">연차신청서</c:when>
+																<c:when test="${sign.type == 'P'}">비품신청서</c:when>
+																<c:when test="${sign.type == 'T'}">출장신청서</c:when>
+																<c:when test="${sign.type == 'R'}">사직서</c:when>
+															</c:choose>
+														</td>
+														<td>
+															<c:if test="${sign.emergency == 'Y'}">
+																<button type="button" class="small alert button hollow">긴급</button>
+															</c:if>
+														</td>
+														<td class="div-sign-all-tbl-td-btn">
+															<c:forEach items="${sign.signStatusList}" var="signStatus" varStatus="vs">
+																<c:if test="${signStatus.status == 'H'}">
+																	<button class="small warning button">보류</button>
 																</c:if>
-															</td>
-															<td>
-																<c:forEach items="${sign.signStatusList}" var="signStatus" varStatus="vs">
-																	<c:if test="${vs.last}">
-																		<c:if test="${signStatus.status == 'S' || signStatus.status == 'W'}">
-																			<button class="small success button">진행중</button>
-																		</c:if>
-																		<c:if test="${signStatus.status == 'C'}">
-																			<button class="small secondary button">완료</button>
-																		</c:if>
-																		<c:if test="${signStatus.status == 'H' || signStatus.status == 'R'}">
-																			<button class="small warning button">보류/반려</button>
-																		</c:if>
-																	</c:if>
-																</c:forEach>
-															</td>
-														</tr>
-													</c:if>
+																<c:if test="${signStatus.status == 'R'}">
+																	<button class="small warning button">반려</button>
+																</c:if>
+															</c:forEach>
+														</td>
+													</tr>
 												</c:forEach>
 											</c:if>
 										</tbody>
 									</table>
 								</div>
 							</div>
+							<script>
+								window.addEventListener('load', (e) => {
+									document.querySelectorAll('.div-sign-all-tbl-td-btn').forEach((btnTd) => {
+										if (!btnTd.innerText) {
+											btnTd.innerHTML = `
+												<button class="small success button">진행중</button>
+											`;
+										}
+									});
+								});
+							</script>
 							
 							<!-- 완료 문서 -->
 							<div class="div-sign-all">
@@ -211,46 +215,32 @@
 											</tr>
 										</thead>
 										<tbody>
-											<c:if test="${empty myCreateSignList}">
+											<c:if test="${empty myCreateSignListComlete}">
 												<tr>
 													<td colspan="4">기안이 완료된 문서가 없습니다.</td>
 												</tr>
 											</c:if>
-											<c:if test="${!empty myCreateSignList}">
-												<c:forEach items="${myCreateSignList}" var="sign">
-													<c:if test="${sign.complete == 'Y'}">
-														<tr class="div-sign-all-tbl-tr" data-no="${sign.no}" data-type="${sign.type}">
-															<td>${sign.regDate}</td>
-															<td>
-																<c:choose>
-																	<c:when test="${sign.type == 'D'}">연차신청서</c:when>
-																	<c:when test="${sign.type == 'P'}">비품신청서</c:when>
-																	<c:when test="${sign.type == 'T'}">출장신청서</c:when>
-																	<c:when test="${sign.type == 'R'}">사직서</c:when>
-																</c:choose>
-															</td>
-															<td>
-																<c:if test="${sign.emergency == 'Y'}">
-																	<button type="button" class="alert button hollow tiny">긴급</button>
-																</c:if>
-															</td>
-															<td>
-																<c:forEach items="${sign.signStatusList}" var="signStatus" varStatus="vs">
-																	<c:if test="${vs.last}">
-																		<c:if test="${signStatus.status == 'S' || signStatus.status == 'W'}">
-																			<button class="small success button">진행중</button>
-																		</c:if>
-																		<c:if test="${signStatus.status == 'C'}">
-																			<button class="small secondary button">완료</button>
-																		</c:if>
-																		<c:if test="${signStatus.status == 'H' || signStatus.status == 'R'}">
-																			<button class="small warning button">보류/반려</button>
-																		</c:if>
-																	</c:if>
-																</c:forEach>
-															</td>
-														</tr>
-													</c:if>
+											<c:if test="${!empty myCreateSignListComlete}">
+												<c:forEach items="${myCreateSignListComlete}" var="sign">
+													<tr class="div-sign-all-tbl-tr" data-no="${sign.no}" data-type="${sign.type}">
+														<td>${sign.regDate}</td>
+														<td>
+															<c:choose>
+																<c:when test="${sign.type == 'D'}">연차신청서</c:when>
+																<c:when test="${sign.type == 'P'}">비품신청서</c:when>
+																<c:when test="${sign.type == 'T'}">출장신청서</c:when>
+																<c:when test="${sign.type == 'R'}">사직서</c:when>
+															</c:choose>
+														</td>
+														<td>
+															<c:if test="${sign.emergency == 'Y'}">
+																<button type="button" class="alert button hollow tiny">긴급</button>
+															</c:if>
+														</td>
+														<td>
+															<button class="small secondary button">완료</button>
+														</td>
+													</tr>
 												</c:forEach>
 											</c:if>
 										</tbody>

@@ -118,10 +118,11 @@
 									<div class="div-sign-tbl">
 										<table class="sign-tbl-bottom">
 											<tbody>
-												<tr class="sign-tbl-bottom-tr">
-													<th>제목</th>
-													<td colspan="5">
-														<input type="text" name="title" id="title" />
+												<tr>
+													<td>긴급&nbsp;문서</td>
+													<td>
+														<input type="radio" name="emergency" id="emergencyY" value="Y" /><label for="emergencyY">여</label>
+														<input type="radio" name="emergency" id="emergencyN" value="N" checked /><label for="emergencyN">부</label>
 													</td>
 												</tr>
 												<tr class="sign-tbl-bottom-tr">

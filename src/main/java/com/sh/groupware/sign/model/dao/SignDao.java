@@ -35,7 +35,9 @@ public interface SignDao {
 	@Insert("insert into signStatus values (seq_signStatus_no.nextval, #{signNo}, #{empId}, #{signOrder}, #{status}, null, null)")
 	int insertSignStatus(SignStatus signStatus);
 
-	List<Sign> findByMyCreateSignList(String empId);
+	List<Sign> findByMyCreateSignListComlete(String empId);
+
+	List<Sign> findByMyCreateSignListIng(String empId);
 
 	Sign findByNoSign(String no);
 

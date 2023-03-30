@@ -28,7 +28,9 @@ public interface SignService {
 	
 	int insertProductForm(ProductForm productForm);
 
-	List<Sign> findByMyCreateSignList(String empId);
+	List<Sign> findByMyCreateSignListComlete(String empId);
+
+	List<Sign> findByMyCreateSignListIng(String empId);
 
 	int insertSignStatus(SignEntity sign);
 

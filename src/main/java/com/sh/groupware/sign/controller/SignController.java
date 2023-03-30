@@ -59,9 +59,11 @@ public class SignController {
 	public String sign(Model model, Authentication authentication) {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		
-		List<Sign> myCreateSignList = signService.findByMyCreateSignList(empId);
+		List<Sign> myCreateSignListComlete = signService.findByMyCreateSignListComlete(empId);
+		List<Sign> myCreateSignListIng = signService.findByMyCreateSignListIng(empId);
 		List<Sign> mySignList = signService.findByMySignList(empId);
-		model.addAttribute("myCreateSignList", myCreateSignList);
+		model.addAttribute("myCreateSignListIng", myCreateSignListIng);
+		model.addAttribute("myCreateSignListComlete", myCreateSignListComlete);
 		model.addAttribute("mySignList", mySignList);
 		return "sign/signHome";
 	} // sign() end
@@ -148,7 +150,13 @@ public class SignController {
 			YN.valueOf(emergency),
 			null
 		);
-		int result = signService.insertSignProductForm(productForm, sign);
+		
+		int result = 0;
+		List<ProductForm> productFormList = productForm.getProductFormList();
+		for (ProductForm product : productFormList) {
+			if (product.getName() != null)
+				result = signService.insertSignProductForm(product, sign);
+		}
 		
 		
 		return "redirect:/sign/sign.do";

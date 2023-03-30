@@ -28,7 +28,7 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="GET">
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
 											<button class="my-menu" type="submit">로그아웃</button>								
 										</form:form>
 									</div>
@@ -42,10 +42,12 @@
 									<button onclick="location.href='${pageContext.request.contextPath}/sign/deleteSign.do?no=${sign.no}';">상신취소</button>
 								</c:if>
 								<c:forEach items="${sign.signStatusList}" var="signStatus">
-									<c:if test="${signStatus.empId == sessionScope.loginMember.empId && signStatus.status == 'W'}">
+									<c:if test="${signStatus.empId == sessionScope.loginMember.empId && signStatus.status != 'C' && signStatus.status != 'S'}">
 										<button onclick="signStatusUpdate('C');" data-open="signStatusUpdateModal">결재</button>
+										<c:if test="${signStatus.status != 'H'}">
+											<button onclick="signStatusUpdate('H');" data-open="signStatusUpdateModal">보류</button>
+										</c:if>
 										<button onclick="signStatusUpdate('R');" data-open="signStatusUpdateModal">반려</button>
-										<button onclick="signStatusUpdate('H');" data-open="signStatusUpdateModal">보류</button>
 									</c:if>
 								</c:forEach>
 							</div>

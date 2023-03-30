@@ -67,10 +67,14 @@
 									<div class="div-sign-tbl">
 										<table class="sign-tbl-bottom">
 											<tbody>
-												<tr class="sign-tbl-bottom-tr">
-													<th>제목</th>
-													<td colspan="5">
-														<input type="text" name="title" id="title" />
+												<tr>
+													<td>긴급&nbsp;문서</td>
+													<td>
+														<input type="radio" name="emergency" id="emergencyY" value="Y" /><label for="emergencyY">여</label>
+														<input type="radio" name="emergency" id="emergencyN" value="N" checked /><label for="emergencyN">부</label>
+														<input type="hidden" name="amount" value=0 />
+														<input type="hidden" name="price" value=0 />
+														<input type="hidden" name="totalPrice" value=0 />
 													</td>
 												</tr>
 												<tr class="sign-tbl-bottom-tr">
@@ -84,39 +88,85 @@
 													<th>금액</th>
 												</tr>
 												<tr class="sign-tbl-bottom-tr">
-													<td><input type="text" name="name" id="name1" /></td>
-													<td><input type="text" name="amount" id="amount1" min="1" /></td>
-													<td><input type="text" name="price" id="price1" min="1" /></td>
-													<td><input type="text" name="totalPrice" id="totalPrice1" min="1" /></td>
-													<td><input type="text" name="purpose" id="purpose1" /></td>
+													<td>
+														<input type="text" name="productFormList[0].name" id="name1" />
+													</td>
+													<td>
+														<input type="text" name="_amount" id="amount1" min="1" />
+														<input type="hidden" name="productFormList[0].amount" id="amount1" min="1" />
+													</td>
+													<td>
+														<input type="text" name="_price" id="price1" min="1" />
+														<input type="hidden" name="productFormList[0].price" />
+													</td>
+													<td>
+														<input type="text" name="_totalPrice" id="totalPrice1" min="1" />
+														<input type="hidden" name="productFormList[0].totalPrice" />
+													</td>
+													<td>
+														<input type="text" name="productFormList[0].purpose" id="purpose1" />
+													</td>
 												</tr>
 												<tr class="sign-tbl-bottom-tr">
-													<td><input type="text" name="name" id="name2" /></td>
-													<td><input type="text" name="amount" id="amount2" min="1" /></td>
-													<td><input type="text" name="price" id="price2" min="1" /></td>
-													<td><input type="text" name="totalPrice" id="totalPrice2" min="1" /></td>
-													<td><input type="text" name="purpose" id="purpose2" /></td>
+													<td>
+														<input type="text" name="productFormList[1].name" id="name2" />
+													</td>
+													<td>
+														<input type="text" name="_amount" id="amount2" min="1" />
+														<input type="hidden" name="productFormList[1].amount" id="amount2" min="1" />
+													</td>
+													<td>
+														<input type="text" name="_price" id="price2" min="1" />
+														<input type="hidden" name="productFormList[1].price" />
+													</td>
+													<td>
+														<input type="text" name="_totalPrice" id="totalPrice2" min="1" />
+														<input type="hidden" name="productFormList[1].totalPrice" />
+													</td>
+													<td>
+														<input type="text" name="productFormList[1].purpose" id="purpose2" />
+													</td>
 												</tr>
 												<tr class="sign-tbl-bottom-tr">
-													<td><input type="text" name="name" id="name3" /></td>
-													<td><input type="text" name="amount" id="amount3" min="1" /></td>
-													<td><input type="text" name="price" id="price3" min="1" /></td>
-													<td><input type="text" name="totalPrice" id="totalPrice3" min="1" /></td>
-													<td><input type="text" name="purpose" id="purpose3" /></td>
+													<td>
+														<input type="text" name="productFormList[2].name" id="name3" />
+													</td>
+													<td>
+														<input type="text" name="_amount" id="amount3" min="1" />
+														<input type="hidden" name="productFormList[2].amount" id="amount3" min="1" />
+													</td>
+													<td>
+														<input type="text" name="_price" id="price3" min="1" />
+														<input type="hidden" name="productFormList[2].price" />
+													</td>
+													<td>
+														<input type="text" name="_totalPrice" id="totalPrice3" min="1" />
+														<input type="hidden" name="productFormList[2].totalPrice" />
+													</td>
+													<td>
+														<input type="text" name="productFormList[2].purpose" id="purpose3" />
+													</td>
 												</tr>
 												<tr class="sign-tbl-bottom-tr">
-													<td><input type="text" name="name" id="name4" /></td>
-													<td><input type="text" name="amount" id="amount4" min="1" /></td>
-													<td><input type="text" name="price" id="price4" min="1" /></td>
-													<td><input type="text" name="totalPrice" id="totalPrice4" min="1" /></td>
-													<td><input type="text" name="purpose" id="purpose4" /></td>
+													<td>
+														<input type="text" name="productFormList[3].name" id="name4" />
+													</td>
+													<td>
+														<input type="text" name="_amount" id="amount4" min="1" />
+														<input type="hidden" name="productFormList[3].amount" id="amount4" min="1" />
+													</td>
+													<td>
+														<input type="text" name="_price" id="price4" min="1" />
+														<input type="hidden" name="productFormList[3].price" />
+													</td>
+													<td>
+														<input type="text" name="_totalPrice" id="totalPrice4" min="1" />
+														<input type="hidden" name="productFormList[3].totalPrice" />
+													</td>
+													<td>
+														<input type="text" name="productFormList[3].purpose" id="purpose4" />
+													</td>
 												</tr>
-												<!-- 
-												<tr class="sign-tbl-bottom-tr">
-													<th colspan="2">합계</th>
-													<td colspan="3" id="finalPrice"></td>
-												</tr> 
-												-->
 											</tbody>
 										</table>
 									</div>
@@ -139,7 +189,7 @@
 							
 							
 							/* 수량 input keyup 이벤트핸들러 */
-							document.querySelectorAll('[name=amount]').forEach((amount) => {
+							document.querySelectorAll('[name=_amount]').forEach((amount) => {
 								amount.addEventListener('keyup', (e) => {
 									keyupChange(e.target.value, amount);
 								});
@@ -148,7 +198,7 @@
 							
 							let all = 0;
 							/* 단가 input keyup 이벤트핸들러 */
-							document.querySelectorAll('[name=price]').forEach((price) => {
+							document.querySelectorAll('[name=_price]').forEach((price) => {
 								price.addEventListener('keyup', (e) => {
 									keyupChange(e.target.value, price);
 									
@@ -169,11 +219,11 @@
 							/* 비품신청서 폼 제출 */
 							const signCreate = () => {
 								const frm = document.productCreateFrm;
-								const name = frm.name;
-								const amount = frm.amount;
-								const price = frm.price;
-								const totalPrice = frm.totalPrice;
-								const purpose = frm.purpose;
+								const name = frm.querySelectorAll('[name$=name]');
+								const amount = frm.querySelectorAll('[name=_amount]');
+								const price = frm.querySelectorAll('[name=_price]');
+								const totalPrice = frm.querySelectorAll('[name=_totalPrice]');
+								const purpose = frm.querySelectorAll('[name$=purpose]');
 								
 								for (let i = 0; i < name.length; i++) {
 									if (i == 0) {
@@ -214,7 +264,7 @@
 												price[i].select();
 												return false;
 											}
-	
+											
 											if (/^\s+$/.test(purpose[i].value) || !purpose[i].value) {
 												alert('용도를 입력해주세요.');
 												purpose[i].select();
@@ -222,9 +272,13 @@
 											}
 										} // if end
 									} // else (i != 0)
+									
+									amount[i].nextElementSibling.value = Number(amount[i].value);
+									price[i].nextElementSibling.value = Number(price[i].value.replaceAll(',', ''));
+									totalPrice[i].nextElementSibling.value = Number(totalPrice[i].value.replaceAll(',', ''));
 								} // for end
 								
-								//frm.submit();
+								frm.submit();
 							};
 						</script>
 						
