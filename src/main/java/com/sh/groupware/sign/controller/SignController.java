@@ -23,6 +23,7 @@ import com.sh.groupware.emp.model.dto.EmpDetail;
 import com.sh.groupware.emp.model.service.EmpService;
 import com.sh.groupware.report.model.dto.YN;
 import com.sh.groupware.sign.model.dto.DayOffForm;
+import com.sh.groupware.sign.model.dto.DayOffType;
 import com.sh.groupware.sign.model.dto.ProductForm;
 import com.sh.groupware.sign.model.dto.ResignationForm;
 import com.sh.groupware.sign.model.dto.Sign;
@@ -254,6 +255,8 @@ public class SignController {
 				// 내가 마지막 결재자인 경우
 				if (i == signStatusList.size() - 1) {
 					result = signService.updateSignComplete(sign.getNo());
+
+					WorkingManagement working = new WorkingManagement();
 					
 					// 결재 양식에 따라 해당 테이블 업데이트
 					switch (sign.getType()) {
@@ -275,15 +278,32 @@ public class SignController {
 						);
 						log.debug("dayOff = {}", dayOff);
 						
+						working.setEmpId(sign.getEmpId());
+						
+						if (dayOffForm.getType() == DayOffType.D) {
+							working.setState("연차");
+							working.setDayWorkTime(28800000);
+							
+							for (int d = 0; d < dayOffForm.getCount(); d++) {								
+								working.setRegDate(dayOffForm.getStartDate().plusDays(d));
+								result = workingService.insertRegDateState(working);
+							}
+						} else {
+							working.setState("반차");
+							working.setDayWorkTime(14400000);
+							working.setRegDate(dayOffForm.getStartDate());
+							result = workingService.insertRegDateState(working);
+						}
+						
 						result = dayOffService.insertDayOff(dayOff);
 						break;
 					case T:
 						TripForm trip = signService.findBySignNoTripForm(sign.getNo());
 						log.debug("trip = {}", trip);
 						
-						WorkingManagement working = new WorkingManagement();
 						working.setState("출장");
 						working.setEmpId(sign.getEmpId());
+						working.setDayWorkTime(28800000);
 						
 						int betweenDays = (int) Duration.between(trip.getStartDate().atStartOfDay(), trip.getEndDate().atStartOfDay()).toDays();
 						log.debug("betweenDays = {}", betweenDays);
