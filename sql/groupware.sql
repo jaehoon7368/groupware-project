@@ -141,10 +141,10 @@ select * from attachment;
 select * from working_management order by no;
 select * from dayoff;
 select * from dayoffform;
-delete from working_management where no = '29';
+delete from working_management where no = '45';
 update working_management set end_work = null, state = '연차',overtime = null where no = '49';
 
-
+select day_off_year from dayoff group by day_off_year order by day_off_year;
     
 delete from emp where emp_id = '230304';
 
@@ -311,10 +311,15 @@ from(
         d.count,
         d.leave_count,
         df.type,
-        df.content
+        df.content,
+        (select base_day_off from job where job_code = e.job_code) base_day_off
     from 
         dayoff d join dayoffform df
         on d.form_no = df.no
+        join emp e
+        on d.emp_id = e.emp_id
+    where
+        d.emp_id = '230304'
     order by 
         d.no desc
 )d

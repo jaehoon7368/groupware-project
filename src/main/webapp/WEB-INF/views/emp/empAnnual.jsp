@@ -54,32 +54,30 @@
                     <!-- 본문 -->
                     <div class="div-padding">
                         <div id="date-box">
-                            <h4>2023.03.26</h4>
+                            <h4 id="yearAnnual"></h4>
                         </div>
 
                         <div id="annual-container">
                             <div id="annual-info-box">
                                 <div id="annual-user-box">
                                     <c:if test="${!empty sessionScope.loginMember.attachment}">
-										<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
-										<span> ${loginMember.name}</span>
+										<p class="font-bold"><span><img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img"></span> ${loginMember.name } <span>${loginMember.jobTitle }</span></p>
 									</c:if>
 									<c:if test="${empty sessionScope.loginMember.attachment}">
-										<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
-										<span> ${loginMember.name}</span>
+										<p class="font-bold"><span><img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img"></span> ${loginMember.name} <span>${loginMember.jobTitle }</span></p>
 									</c:if>
                                 </div>
                                 <div>
-                                    <p class="font-14">총연차</p>
-                                    <h4 class="main-color">15</h4>
+                                    <p class="font-14 font-bold">총연차</p>
+                                    <h4 class="main-color">${dayOffDetail.baseDayOff }</h4>
                                 </div>
                                 <div>
-                                    <p class="font-14">사용 연차</p>
-                                    <h4 class="main-color">8</h4>
+                                    <p class="font-14 font-bold">사용 연차</p>
+                                    <h4 class="main-color">${dayOffDetail.baseDayOff - dayOffDetail.leaveCount}</h4>
                                 </div>
                                 <div>
-                                    <p class="font-14">잔여 연차</p>
-                                    <h4 class="main-color">7</h4>
+                                    <p class="font-14 font-bold">잔여 연차</p>
+                                    <h4 class="main-color">${dayOffDetail.leaveCount}</h4>
                                 </div>
                             </div>
                         </div>
@@ -87,9 +85,10 @@
                         <div id="search-box">
                             <label for="search-year">연차 사용기간 :</label>
                                 <select id="search-year" name="search-year">
-                                    <option value="1">2023</option>
-                                    <option value="2">2022</option>
-                                    <option value="3">2021</option>
+                                	<option selected>선택</option>
+                                <c:forEach items="${dayOffYear }" var="year">
+                                    <option value="${year.dayOffYear }">${year.dayOffYear }</option>
+                                </c:forEach>
                                 </select>
                         </div>
 
@@ -104,7 +103,7 @@
                                             <th width="100">휴가 종류</th>
                                             <th width="200">연차 사용기간</th>
                                             <th width="100">사용 연차</th>
-                                            <th width="100">연차 신청일</th>
+                                            <th width="300">내용</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -112,10 +111,15 @@
 	                                        <tr>
 	                                            <td width="100">${loginMember.name}</td>
 	                                            <td width="100">${loginMember.deptTitle} </td>
-	                                            <td width="100">연차</td>
+	                                            <c:if test='${day.type == "D" }'>
+		                                            <td width="100">연차</td>
+	                                            </c:if>
+	                                            <c:if test='${day.type == "H" }'>
+		                                            <td width="100">반차</td>
+	                                            </c:if>
 	                                            <td width="200">${day.startDate} ~ ${day.endDate }</td>
 	                                            <td width="100">${day.count }</td>
-	                                            <td width="100">${day.regDate }</td>
+	                                            <td width="300">${day.content }</td>
 	                                        </tr>
                                        </c:forEach>
                         
@@ -129,6 +133,19 @@
                     <!-- 본문 end -->
                 </div>
             </div>
+<script>
+var yearNow = document.getElementById("yearAnnual");
+        function clock() {
+            var time = new Date();
 
+            var year = time.getFullYear();
+            var month = time.getMonth();
+            var date = time.getDate();
+           
+           yearNow.innerHTML = `\${year}.\${month + 1}.\${date}`;
+                
+        }
+ clock();
+</script>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	<script src="${pageContext.request.contextPath}/resources/js/emp/emp.js"></script>			

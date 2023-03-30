@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.sh.groupware.dayOff.model.dao.DayOffDao;
 import com.sh.groupware.dayOff.model.dto.DayOff;
+import com.sh.groupware.dayOff.model.dto.DayOffDetail;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,8 +24,18 @@ public class DayOffServiceImpl implements DayOffService {
 	} // insertDayOff() end
 	
 	@Override
-	public List<DayOff> selectOneEmpDayOffList(String empId) {
+	public List<DayOffDetail> selectOneEmpDayOffList(String empId) {
 		return dayOffDao.selectOneEmpDayOffList(empId);
 	} //selectOneEmpDayOffList() end
+	
+	@Override
+	public DayOffDetail selectLastLeaveCount(String empId) {
+		return dayOffDao.selectLastLeaveCount(empId);
+	} //selectLastLeaveCount() end
+	
+	@Override
+	public List<DayOff> selectDayOffYear() {
+		return dayOffDao.selectDayOffYear();
+	} //selectDayOffYear() end
 	
 } // class end

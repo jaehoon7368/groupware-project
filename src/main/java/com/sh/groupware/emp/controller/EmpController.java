@@ -35,6 +35,7 @@ import com.sh.groupware.common.HelloSpringUtils;
 import com.sh.groupware.common.attachment.model.service.AttachmentService;
 import com.sh.groupware.common.dto.Attachment;
 import com.sh.groupware.dayOff.model.dto.DayOff;
+import com.sh.groupware.dayOff.model.dto.DayOffDetail;
 import com.sh.groupware.dayOff.model.service.DayOffService;
 import com.sh.groupware.dept.model.dto.Dept;
 import com.sh.groupware.dept.model.service.DeptService;
@@ -201,8 +202,17 @@ public class EmpController {
 		
 		String empId = principal.getEmpId();
 		
-		List<DayOff> dayoffList = dayOffService.selectOneEmpDayOffList(empId);
+		//내 전체 연차 내역
+		List<DayOffDetail> dayoffList = dayOffService.selectOneEmpDayOffList(empId);
 		model.addAttribute("dayoffList", dayoffList);
+		
+		//마지막 연차내역 (남은연차 계산용)
+		DayOffDetail dayoffDetail = dayOffService.selectLastLeaveCount(empId);
+		model.addAttribute("dayOffDetail", dayoffDetail);
+		
+		// 연차 사용기간 년도
+		List<DayOff> dayOffYear = dayOffService.selectDayOffYear();
+		model.addAttribute("dayOffYear", dayOffYear);
 	}
 	
 	//전사 인사정보
