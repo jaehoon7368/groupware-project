@@ -61,6 +61,48 @@
 	border-bottom: solid 1px lightgray;
 }
 
+.div-sign-bottom-content {
+	width: 100%;
+}
+
+.div-sign-bottom-tbl {
+	width: 100%;
+	padding: 10px 20px;
+}
+
+.div-sign-bottom-tbl.signStatusHere {
+	background-color: #eff8f8;
+	border-left: 4px solid #00b6c2;
+}
+
+.div-sign-bottom-tbl.signStatusHere .tr-reason td {
+	padding: 3px 5px;
+	color: #fff;
+	background-color: #00b6c2;
+}
+
+.div-sign-bottom-content-tbl {
+	width: 100%;
+}
+
+.div-sign-bottom-content-tbl th {
+	text-align: left;
+}
+
+.div-sign-bottom-content-tbl td {
+	color: gray;
+}
+
+.div-sign-bottom-content-tbl .td-img {
+	vertical-align: top;
+}
+
+.div-sign-bottom-content-tbl .tr-reason td {
+	padding: 3px 5px;
+	color: #000;
+	background-color: #eaeaea;
+}
+
 
 /* dayOffForm.jsp */
 /* 전체 표 */
