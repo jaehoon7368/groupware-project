@@ -294,6 +294,12 @@ p.title {
 .text-right {
     text-align: right;
 }
+.color-red{
+	color :  rgb(233, 93, 93);
+}
+.color-black{
+	color : black;
+}
 
 .font-11{
     font-size: 11px;

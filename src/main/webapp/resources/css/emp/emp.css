@@ -399,6 +399,9 @@ p.title {
 .color-red{
 	color :  rgb(233, 93, 93);
 }
+.color-black{
+	color : black;
+}
 .text-left {
     text-align: left;
 }
