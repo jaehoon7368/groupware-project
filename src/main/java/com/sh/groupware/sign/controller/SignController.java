@@ -152,10 +152,14 @@ public class SignController {
 		);
 		
 		int result = 0;
+		String signNo = signService.insertSign(sign);
+		sign.setNo(signNo);
 		List<ProductForm> productFormList = productForm.getProductFormList();
 		for (ProductForm product : productFormList) {
-			if (product.getName() != null)
-				result = signService.insertSignProductForm(product, sign);
+			product.setSignNo(signNo);
+			log.debug("product = {}", product);
+			if (product.getName() != "")
+				result = signService.insertProductForm(product);
 		}
 		
 		
@@ -215,8 +219,9 @@ public class SignController {
 		} // 출장신청서
 		
 		if ("P".equals(type)) {
-			ProductForm product = signService.findBySignNoProductForm(no);
-			model.addAttribute("product", product);
+			List<ProductForm> productList = signService.findBySignNoProductForm(no);
+			log.debug("productList = {}", productList);
+			model.addAttribute("productList", productList);
 			return "sign/detail/productDetail";
 		} // 비품신청서
 		

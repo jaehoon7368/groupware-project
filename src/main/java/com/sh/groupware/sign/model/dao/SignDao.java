@@ -48,7 +48,7 @@ public interface SignDao {
 	TripForm findBySignNoTripForm(String no);
 
 	@Select("select * from productForm where sign_no = #{no}")
-	ProductForm findBySignNoProductForm(String no);
+	List<ProductForm> findBySignNoProductForm(String no);
 
 	@Select("select * from resignationForm where sign_no = #{no}")
 	ResignationForm findBySignNoResignationForm(String no);

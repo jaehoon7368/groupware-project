@@ -69,7 +69,7 @@
 											<tbody>
 												<tr>
 													<td>긴급&nbsp;문서</td>
-													<td>
+													<td colspan="4">
 														<input type="radio" name="emergency" id="emergencyY" value="Y" /><label for="emergencyY">여</label>
 														<input type="radio" name="emergency" id="emergencyN" value="N" checked /><label for="emergencyN">부</label>
 														<input type="hidden" name="amount" value=0 />
@@ -93,7 +93,7 @@
 													</td>
 													<td>
 														<input type="text" name="_amount" id="amount1" min="1" />
-														<input type="hidden" name="productFormList[0].amount" id="amount1" min="1" />
+														<input type="hidden" name="productFormList[0].amount" />
 													</td>
 													<td>
 														<input type="text" name="_price" id="price1" min="1" />
@@ -113,7 +113,7 @@
 													</td>
 													<td>
 														<input type="text" name="_amount" id="amount2" min="1" />
-														<input type="hidden" name="productFormList[1].amount" id="amount2" min="1" />
+														<input type="hidden" name="productFormList[1].amount" />
 													</td>
 													<td>
 														<input type="text" name="_price" id="price2" min="1" />
@@ -133,7 +133,7 @@
 													</td>
 													<td>
 														<input type="text" name="_amount" id="amount3" min="1" />
-														<input type="hidden" name="productFormList[2].amount" id="amount3" min="1" />
+														<input type="hidden" name="productFormList[2].amount" />
 													</td>
 													<td>
 														<input type="text" name="_price" id="price3" min="1" />
@@ -153,7 +153,7 @@
 													</td>
 													<td>
 														<input type="text" name="_amount" id="amount4" min="1" />
-														<input type="hidden" name="productFormList[3].amount" id="amount4" min="1" />
+														<input type="hidden" name="productFormList[3].amount" />
 													</td>
 													<td>
 														<input type="text" name="_price" id="price4" min="1" />
@@ -273,7 +273,7 @@
 										} // if end
 									} // else (i != 0)
 									
-									amount[i].nextElementSibling.value = Number(amount[i].value);
+									amount[i].nextElementSibling.value = Number(amount[i].value.replaceAll(',', ''));
 									price[i].nextElementSibling.value = Number(price[i].value.replaceAll(',', ''));
 									totalPrice[i].nextElementSibling.value = Number(totalPrice[i].value.replaceAll(',', ''));
 								} // for end

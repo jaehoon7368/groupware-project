@@ -120,9 +120,9 @@
 											<tbody>
 												<tr>
 													<td>긴급&nbsp;문서</td>
-													<td>
-														<input type="radio" name="emergency" id="emergencyY" value="Y" /><label for="emergencyY">여</label>
-														<input type="radio" name="emergency" id="emergencyN" value="N" checked /><label for="emergencyN">부</label>
+													<td colspan="4">
+														<input type="radio" name="emergency" id="emergencyY" value="Y" ${sign.emergency == 'Y' ? 'checked' : 'disabled'} /><label for="emergencyY">여</label>
+														<input type="radio" name="emergency" id="emergencyN" value="N" ${sign.emergency == 'N' ? 'checked' : 'disabled'} /><label for="emergencyN">부</label>
 													</td>
 												</tr>
 												<tr class="sign-tbl-bottom-tr">
@@ -135,14 +135,25 @@
 													<th>단가</th>
 													<th>금액</th>
 												</tr>
-												<tr class="sign-tbl-bottom-tr">
-													<td><input type="text" name="name" id="name1" /></td>
-													<td><input type="text" name="amount" id="amount1" min="1" /></td>
-													<td><input type="text" name="price" id="price1" min="1" /></td>
-													<td><input type="text" name="totalPrice" id="totalPrice1" min="1" /></td>
-													<td><input type="text" name="purpose" id="purpose1" /></td>
-												</tr>
-												<tr class="sign-tbl-bottom-tr">
+												<c:forEach items="${productList}" var="product" varStatus="vs">
+													<tr class="sign-tbl-bottom-tr">
+														<td><input type="text" name="name" id="name${vs.count}" value="${product.name}" readOnly /></td>
+														<td><input type="text" name="amount" id="amount${vs.count}" min="1" value="<fmt:formatNumber value='${product.amount}' pattern='#,##0' />" readOnly/></td>
+														<td><input type="text" name="price" id="price${vs.count}" min="1" value="<fmt:formatNumber value='${product.price}' pattern='#,##0' />" readOnly/></td>
+														<td><input type="text" name="totalPrice" id="totalPrice${vs.count}" min="1" value="<fmt:formatNumber value='${product.totalPrice}' pattern='#,##0' />" readOnly/></td>
+														<td><input type="text" name="purpose" id="purpose${vs.count}" value="${product.purpose}" readOnly/></td>
+													</tr>
+												</c:forEach>
+												<c:forEach begin="${productList.size() + 1}" end="4" var="n">
+													<tr class="sign-tbl-bottom-tr">
+														<td><input type="text" name="name" id="name${n}" readOnly /></td>
+														<td><input type="text" name="amount" id="amount${n}" min="1" readOnly/></td>
+														<td><input type="text" name="price" id="price${n}" min="1" readOnly/></td>
+														<td><input type="text" name="totalPrice" id="totalPrice${n}" min="1" readOnly/></td>
+														<td><input type="text" name="purpose" id="purpose${n}" readOnly/></td>
+													</tr>
+												</c:forEach>
+												<!-- <tr class="sign-tbl-bottom-tr">
 													<td><input type="text" name="name" id="name2" /></td>
 													<td><input type="text" name="amount" id="amount2" min="1" /></td>
 													<td><input type="text" name="price" id="price2" min="1" /></td>
@@ -162,7 +173,7 @@
 													<td><input type="text" name="price" id="price4" min="1" /></td>
 													<td><input type="text" name="totalPrice" id="totalPrice4" min="1" /></td>
 													<td><input type="text" name="purpose" id="purpose4" /></td>
-												</tr>
+												</tr> -->
 												<!-- 
 												<tr class="sign-tbl-bottom-tr">
 													<th colspan="2">합계</th>

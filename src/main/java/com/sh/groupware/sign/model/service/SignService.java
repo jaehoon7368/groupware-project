@@ -12,13 +12,13 @@ import com.sh.groupware.sign.model.dto.TripForm;
 
 public interface SignService {
 
+	String insertSign(SignEntity sign);
+	
 	int insertSignDayOffForm(DayOffForm dayOffForm, SignEntity sign);
 	
 	int insertSignResignationForm(ResignationForm resignation, SignEntity sign);
 
 	int insertSignTripForm(TripForm tripForm, SignEntity sign);
-	
-	int insertSignProductForm(ProductForm productForm, SignEntity sign);
 
 	int insertDayOffForm(DayOffForm dayOffForm);
 	
@@ -40,7 +40,7 @@ public interface SignService {
 
 	TripForm findBySignNoTripForm(String no);
 
-	ProductForm findBySignNoProductForm(String no);
+	List<ProductForm> findBySignNoProductForm(String no);
 
 	ResignationForm findBySignNoResignationForm(String no);
 
