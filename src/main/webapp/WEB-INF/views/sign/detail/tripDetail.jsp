@@ -239,8 +239,98 @@
 							<div class="div-sign-bottom-title">
 								<div class="font-large">결재선</div>
 							</div>
-							<div>
-								<div>ddd</div>
+							<div class="div-sign-bottom-content">
+								<!-- 기안자 -->
+								<div class="div-sign-bottom-tbl">
+									<table class="div-sign-bottom-content-tbl">
+										<colgroup>
+                                               <col width="5%" />
+                                               <col width="95%" />
+                                           </colgroup>
+										<thead>
+											<tr>
+												<td rowspan="4" class="td-img">
+													<c:if test="${empty sign.profileImg}">
+														<img src="${pageContext.request.contextPath}/resources/images/default.png" class="my-img" />
+													</c:if>
+													<c:if test="${!empty sign.profileImg}">
+														<img src="${pageContext.request.contextPath}/resources/upload/emp/${sign.profileImg}" class="my-img" />
+													</c:if>
+												</td>
+												<th>${sign.name} ${sign.jobTitle}</th>
+											</tr>
+											<tr>
+												<td>${sign.deptTitle}</td>
+											</tr>
+											<tr>
+												<td>
+													기안 상신 |&nbsp;
+													<fmt:parseDate value="${sign.regDate}" var="regDate" pattern="yyyy-MM-dd" />
+													<fmt:formatDate value="${regDate}" pattern="yyyy-MM-dd(E)" />
+												</td>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								
+								<!-- 결재자 -->
+								<c:forEach items="${sign.signStatusList}" var="signStatus">
+									<div class="div-sign-bottom-tbl ${(signStatus.status == 'W' || signStatus.status == 'H' || signStatus.status == 'R') ? 'signStatusHere' : ''}">
+										<table class="div-sign-bottom-content-tbl">
+											<colgroup>
+                                                <col width="5%" />
+                                                <col width="95%" />
+                                            </colgroup>
+											<thead>
+												<tr>
+													<td rowspan="4" class="td-img">
+														<c:if test="${empty signStatus.profileImg}">
+															<img src="${pageContext.request.contextPath}/resources/images/default.png" class="my-img" />
+														</c:if>
+														<c:if test="${!empty signStatus.profileImg}">
+															<img src="${pageContext.request.contextPath}/resources/upload/emp/${signStatus.profileImg}" class="my-img" />
+														</c:if>
+													</td>
+													<th>${signStatus.name} ${signStatus.jobTitle}</th>
+												</tr>
+												<tr>
+													<td>${signStatus.deptTitle}</td>
+												</tr>
+												<tr>
+													<td>
+														<c:choose>
+															<c:when test="${signStatus.status == 'W'}">
+																결재 대기
+															</c:when>
+															<c:when test="${signStatus.status == 'S'}">
+																결재 예정
+															</c:when>
+															<c:when test="${signStatus.status == 'C'}">
+																결재 승인
+															</c:when>
+															<c:when test="${signStatus.status == 'H'}">
+																결재 보류
+															</c:when>
+															<c:when test="${signStatus.status == 'R'}">
+																결재 반려
+															</c:when>
+														</c:choose>
+														<c:if test="${!empty signStatus.regDate}">
+															&nbsp;|&nbsp;
+															<fmt:parseDate value="${signStatus.regDate}" var="regDate" pattern="yyyy-MM-dd" />
+															<fmt:formatDate value="${regDate}" pattern="yyyy-MM-dd(E)" />
+														</c:if>
+													</td>
+												</tr>
+												<c:if test="${!empty signStatus.reason}">
+													<tr class="tr-reason">
+														<td>${signStatus.reason}</td>
+													</tr>
+												</c:if>
+											</thead>
+										</table>
+									</div>
+								</c:forEach>
 							</div>
 						</div>
 					</div>

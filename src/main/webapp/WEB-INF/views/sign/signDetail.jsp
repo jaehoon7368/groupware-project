@@ -39,7 +39,19 @@
 							<div class="div-sign-btn font-small">
 								<c:if test="${sign.empId == sessionScope.loginMember.empId && sign.complete == 'N'}">
 									<button onclick="signUpdate();">문서 수정</button>
-									<button onclick="location.href='${pageContext.request.contextPath}/sign/deleteSign.do?no=${sign.no}';">상신취소</button>
+									<form:form action="${pageContext.request.contextPath}/sign/deleteSign.do" method="post" name="signDeleteFrm">
+										<input type="hidden" name="no" value="${sign.no}" />
+										<input type="hidden" name="type" value="${sign.type}" />
+										<button type="submit">상신취소</button>
+									</form:form>
+									<script>
+										document.signDeleteFrm.addEventListener('submit', (e) => {
+											e.preventDefault();
+											
+											if (confirm('정말로 상신취소하시겠습니까?'))
+												e.target.submit();
+										});
+									</script>
 								</c:if>
 								<c:forEach items="${sign.signStatusList}" var="signStatus">
 									<c:if test="${signStatus.empId == sessionScope.loginMember.empId && signStatus.status != 'C' && signStatus.status != 'S'}">

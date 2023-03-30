@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class DayOff {
 
 	private String no;
+	private String formNo;
 	private String empId;
 	private int dayOffYear;
 	private LocalDate startDate;

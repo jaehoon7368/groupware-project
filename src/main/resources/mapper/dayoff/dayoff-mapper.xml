@@ -9,6 +9,7 @@
 			dayoff
 		values (
 			seq_dayoff_no.nextval, 
+			#{formNo},
 			#{empId}, 
 			#{dayOffYear}, 
 			#{startDate}, 

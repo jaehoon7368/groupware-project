@@ -1,7 +1,9 @@
 package com.sh.groupware.sign.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -69,5 +71,16 @@ public interface SignDao {
 	String findByEmpIdLeaveCount(String empId);
 
 	double findByEmpIdBaseDayOff(String empId);
+
+	@Delete("delete from sign where no = #{no}")
+	int deleteOneSign(Object no);
+
+	@Delete("delete from signStatus where sign_no = #{no}")
+	int deleteSignStatus(Object no);
+
+	@Delete("delete from ${form} where sign_no = #{no}")
+	int deleteSignForm(Map<String, Object> param);
+	
+	List<Sign> findByEmpIdMySignStatus(Map<String, Object> param);
 
 } // interface end

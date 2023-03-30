@@ -1,6 +1,7 @@
 package com.sh.groupware.sign.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.sh.groupware.sign.model.dto.DayOffForm;
 import com.sh.groupware.sign.model.dto.ProductForm;
@@ -46,7 +47,7 @@ public interface SignService {
 
 	List<Sign> findByMySignList(String empId);
 
-	int signStatusUpdate(SignStatus signStatus);
+//	int signStatusUpdate(SignStatus signStatus);
 	
 	int updateMySignStatus(SignStatus signStatus);
 	
@@ -55,5 +56,13 @@ public interface SignService {
 	int updateSignComplete(String no);
 	
 	double findByEmpIdTotalCount(String empId);
+
+	int deleteOneSign(Map<String, Object> param);
+	
+	int deleteSignStatus(Object no);
+	
+	int deleteSignForm(Map<String, Object> param);
+
+	List<Sign> findByEmpIdMySignStatus(Map<String, Object> param);
 
 } // interface end

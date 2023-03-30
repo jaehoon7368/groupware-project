@@ -41,12 +41,6 @@ public class SignServiceImpl implements SignService {
 	@Autowired
 	private EmpDao empDao;
 	
-	@Autowired
-	private DayOffDao dayOffDao;
-	
-	@Autowired
-	private WorkingManagementDao workingDao;
-	
 
 	@Override
 	public String insertSign(SignEntity sign) {
@@ -271,87 +265,6 @@ public class SignServiceImpl implements SignService {
 	public List<Sign> findByMySignList(String empId) {
 		return signDao.findByMySignList(empId);
 	} // findByMySignList() end
-	
-	
-	@Override
-	public int signStatusUpdate(SignStatus signStatus) {
-		int result = 0;
-		
-		Sign sign = signDao.findByNoSign(signStatus.getSignNo());
-		List<SignStatusDetail> signStatusList = sign.getSignStatusList();
-		
-		for (int i = 0; i < signStatusList.size(); i++) {
-			if (signStatus.getEmpId().equals(signStatusList.get(i).getEmpId())) {
-				// 내 결제 상태 업데이트
-				result = updateMySignStatus(signStatus);
-				
-				// 내가 마지막 결재자인 경우
-				if (i == signStatusList.size() - 1) {
-					result = updateSignComplete(sign.getNo());
-					
-					// 결재 양식에 따라 해당 테이블 업데이트
-					switch (sign.getType()) {
-					case D:
-						DayOffForm dayOffForm = findBySignNoDayOffForm(sign.getNo());
-						double leaveCount = findByEmpIdTotalCount(sign.getEmpId());
-						DayOff dayOff = new DayOff(
-							null, 
-							signStatus.getEmpId(), 
-							dayOffForm.getStartDate().getYear(),
-							dayOffForm.getStartDate(),
-							dayOffForm.getEndDate(),
-							dayOffForm.getCount(),
-							leaveCount - dayOffForm.getCount(),
-							null
-						);
-						
-						result = dayOffDao.insertDayOff(dayOff);
-						break;
-					case T:
-						TripForm trip = findBySignNoTripForm(sign.getNo());
-						WorkingManagement working = new WorkingManagement();
-						working.setState("출장");
-						working.setEmpId(signStatus.getEmpId());
-						
-						int betweenDays = (int) Duration.between(trip.getStartDate().atStartOfDay(), trip.getEndDate().atStartOfDay()).toDays();
-						log.debug("betweenDays = {}", betweenDays);
-						
-						working.setRegDate(trip.getStartDate());
-						result = workingDao.insertRegDateState(working);
-						
-						if (betweenDays > 1) {
-							for (int j = 1; j < betweenDays; j++) {
-								working.setRegDate(trip.getStartDate().plusDays(j));
-								result = workingDao.insertRegDateState(working);
-							}
-						}
-						
-						break;
-					case R:
-						ResignationForm resignation = findBySignNoResignationForm(sign.getNo());
-						
-						Map<String, Object> param = new HashMap<>();
-						param.put("endDate", resignation.getEndDate());
-						param.put("empId", signStatus.getEmpId());
-						
-						result = empDao.updateQuit(param);
-						break;
-					} // switch end
-					
-				} // if end
-				// 내가 마지막 결재자가 아닌 경우
-				else {
-					// 결재인 경우에만 다음 결재자 결재 상태 업데이트
-					if (Status.C == signStatus.getStatus()) {
-						result = updateNextSignStatus(signStatusList.get(i + 1).getNo());
-					} // if end
-				} // else end
-				
-			} // if end
-		} // for end
-		
-		return result;
-	} // signStatusUpdate() end
 
 
 	@Override
@@ -385,5 +298,32 @@ public class SignServiceImpl implements SignService {
 		}
 		return totalCount;
 	} // findByEmpIdTotalCount() end
+	
+	
+	@Override
+	public int deleteOneSign(Map<String, Object> param) {
+		int result = signDao.deleteOneSign(param.get("no"));
+		result = deleteSignStatus(param.get("no"));
+		result = deleteSignForm(param);
+		return result;
+	} // deleteOneSign() end
+	
+	
+	@Override
+	public int deleteSignStatus(Object no) {
+		return signDao.deleteSignStatus(no);
+	} // deleteSignStatus() end
+	
+	
+	@Override
+	public int deleteSignForm(Map<String, Object> param) {
+		return signDao.deleteSignForm(param);
+	} // deleteSignForm() end
+	
+	
+	@Override
+	public List<Sign> findByEmpIdMySignStatus(Map<String, Object> param) {
+		return signDao.findByEmpIdMySignStatus(param);
+	} // findByEmpIdMySignStatus() end
 	
 } // class end
