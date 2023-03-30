@@ -14,8 +14,8 @@
 	
 	<jsp:include page="/WEB-INF/views/sign/signLeftBar.jsp" />
 	
-	<jsp:include page="/WEB-INF/views/sign/signDetail.jsp">
-		<jsp:param value="사직서" name="title" />
+	<jsp:include page="/WEB-INF/views/sign/signUpdate.jsp">
+		<jsp:param value="비품신청서" name="title" />
 	</jsp:include>
 								
 											</td>
@@ -109,98 +109,57 @@
 									const nowDate = Date.now();
 									const dateOff = new Date().getTimezoneOffset() * 60000;
 									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
+									
+									document.querySelector('.sign_date').innerText = today;
 								</script>
 								
 								<br />
-								<div class="div-sign-tbl">
-									<table class="sign-tbl-bottom">
-										<tbody>
-											<tr class="sign-tbl-bottom-tr">
-												<th>긴급 문서</th>
-												<td colspan="3">
-													<input type="radio" name="emergency" id="emergencyY" value="Y" ${sign.emergency == 'Y' ? 'checked' : 'disabled'} /><label for="emergencyY">여</label>
-													<input type="radio" name="emergency" id="emergencyN" value="N" ${sign.emergency == 'N' ? 'checked' : 'disabled'} /><label for="emergencyN">부</label>
-												</td>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<th>입사일</th>
-												<td><input type="date" name="start-date" id="start-date" value="${sessionScope.loginMember.hireDate}" readonly/></td>
-												<th>퇴사일</th>
-												<td>
-													<input type="date" name="end-date" id="endDate" value="${resignation.endDate}" readOnly />
-												</td>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<th>직급</th>
-												<th>사번</th>
-												<th>성명</th>
-												<th>근무부서</th>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<td>${sign.jobTitle}</td>
-												<td>${sign.empId}</td>
-												<td>${sign.name}</td>
-												<td>${sign.deptTitle}</td>
-											</tr>
-											<tr>
-												<th colspan="4">퇴직 사유</th>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<td colspan="4">
-													<textarea rows="10" id="reason" name="reason" readOnly>${resignation.reason}</textarea>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
+								<form:form action="${pageContext.request.contextPath}/sign/productUpdate.do" method="post" name="productUpdateFrm">
+									<div class="div-sign-tbl">
+										<table class="sign-tbl-bottom">
+											<tbody>
+												<tr>
+													<td>긴급&nbsp;문서</td>
+													<td colspan="4">
+														<input type="radio" name="emergency" id="emergencyY" value="Y" ${sign.emergency == 'Y' ? 'checked' : ''} /><label for="emergencyY">여</label>
+														<input type="radio" name="emergency" id="emergencyN" value="N" ${sign.emergency == 'N' ? 'checked' : ''} /><label for="emergencyN">부</label>
+													</td>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<th rowspan="2">품명</th>
+													<th rowspan="2">수량</th>
+													<th colspan="2">구매예정가격</th>
+													<th rowspan="2">용도</th>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<th>단가</th>
+													<th>금액</th>
+												</tr>
+												<c:forEach items="${productList}" var="product" varStatus="vs">
+													<tr class="sign-tbl-bottom-tr">
+														<td><input type="text" name="name" id="name${vs.count}" value="${product.name}" /></td>
+														<td><input type="text" name="amount" id="amount${vs.count}" min="1" value="<fmt:formatNumber value='${product.amount}' pattern='#,##0' />" /></td>
+														<td><input type="text" name="price" id="price${vs.count}" min="1" value="<fmt:formatNumber value='${product.price}' pattern='#,##0' />" /></td>
+														<td><input type="text" name="totalPrice" id="totalPrice${vs.count}" min="1" value="<fmt:formatNumber value='${product.totalPrice}' pattern='#,##0' />" /></td>
+														<td><input type="text" name="purpose" id="purpose${vs.count}" value="${product.purpose}" /></td>
+													</tr>
+												</c:forEach>
+												<c:forEach begin="${productList.size() + 1}" end="4" var="n">
+													<tr class="sign-tbl-bottom-tr">
+														<td><input type="text" name="name" id="name${n}" /></td>
+														<td><input type="text" name="amount" id="amount${n}" min="1" /></td>
+														<td><input type="text" name="price" id="price${n}" min="1" /></td>
+														<td><input type="text" name="totalPrice" id="totalPrice${n}" min="1" /></td>
+														<td><input type="text" name="purpose" id="purpose${n}" /></td>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</div>
+								</form:form>
 							</div>
 						</div>
 						<!-- 결재 문서 end -->
-						<script>
-							const signStatusUpdate = (status) => {
-								const modal = signStatusUpdateModal;
-								const h5 = modal.querySelector('h5');
-								const btn = modal.querySelector('.btn-status');
-								const frmStatus = document.signStatusUpdateFrm.status;
-								
-								switch (status) {
-								case 'C' :
-									h5.innerText = '결재하기';
-									btn.innerText = '결재';
-									break;
-								case 'R' :
-									h5.innerText = '반려하기';
-									btn.innerText = '반려';
-									break;
-								case 'H' :
-									h5.innerText = '보류하기';
-									btn.innerText = '보류';
-									break;
-								} // switch end
-								
-								frmStatus.value = status;
-							};
-							
-							
-							/* 결재, 반려, 보류 폼 제출 */
-							document.signStatusUpdateFrm.addEventListener('submit', (e) => {
-								e.preventDefault();
-								console.log(e.target);
-								
-								const status = e.target.status;
-								const reason = e.target.reason;
-								
-								if (status.value == 'R' || status.value == 'H') {
-									if (/^\s+$/.test(reason.value) || !reason.value) {
-										alert('결재 의견을 작성해주세요.');
-										reason.select();
-										return false;
-									}
-								}
-								
-								e.target.submit();
-							});
-						</script>
 						
 						
 						<div class="div-sign-bottom">

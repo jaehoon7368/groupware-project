@@ -412,4 +412,44 @@ public class SignController {
 		return "sign/signStatus";
 	} // signStatus() end
 	
+	
+	@GetMapping("/signUpdate.do")
+	public String signUpdate(@RequestParam String no, @RequestParam String type, Model model) {
+log.debug("no = {}, type = {}", no, type);
+		
+		Sign sign = signService.findByNoSign(no);
+		
+		model.addAttribute("sign", sign);
+		
+		if ("D".equals(type)) {
+			double leaveCount = signService.findByEmpIdTotalCount(sign.getEmpId());
+			log.debug("leaveCount = {}", leaveCount);
+			DayOffForm dayOff = signService.findBySignNoDayOffForm(no);
+			model.addAttribute("dayOff", dayOff);
+			model.addAttribute("leaveCount", leaveCount);
+			return "sign/update/dayOffUpdate";
+		} // 연차신청서
+		
+		if ("T".equals(type)) {
+			TripForm trip = signService.findBySignNoTripForm(no);
+			model.addAttribute("trip", trip);
+			return "sign/update/tripUpdate";
+		} // 출장신청서
+		
+		if ("P".equals(type)) {
+			List<ProductForm> productList = signService.findBySignNoProductForm(no);
+			log.debug("productList = {}", productList);
+			model.addAttribute("productList", productList);
+			return "sign/update/productUpdate";
+		} // 비품신청서
+		
+		if ("R".equals(type)) {
+			ResignationForm resignation = signService.findBySignNoResignationForm(no);
+			model.addAttribute("resignation", resignation);
+			return "sign/update/resignationUpdate";
+		} // 사직서
+		
+		return "sign/signHome";
+	} // signUpdate() end
+	
 } // class end

@@ -14,7 +14,7 @@
 	
 	<jsp:include page="/WEB-INF/views/sign/signLeftBar.jsp" />
 	
-	<jsp:include page="/WEB-INF/views/sign/signDetail.jsp">
+	<jsp:include page="/WEB-INF/views/sign/signUpdate.jsp">
 		<jsp:param value="사직서" name="title" />
 	</jsp:include>
 								
@@ -112,94 +112,54 @@
 								</script>
 								
 								<br />
-								<div class="div-sign-tbl">
-									<table class="sign-tbl-bottom">
-										<tbody>
-											<tr class="sign-tbl-bottom-tr">
-												<th>긴급 문서</th>
-												<td colspan="3">
-													<input type="radio" name="emergency" id="emergencyY" value="Y" ${sign.emergency == 'Y' ? 'checked' : 'disabled'} /><label for="emergencyY">여</label>
-													<input type="radio" name="emergency" id="emergencyN" value="N" ${sign.emergency == 'N' ? 'checked' : 'disabled'} /><label for="emergencyN">부</label>
-												</td>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<th>입사일</th>
-												<td><input type="date" name="start-date" id="start-date" value="${sessionScope.loginMember.hireDate}" readonly/></td>
-												<th>퇴사일</th>
-												<td>
-													<input type="date" name="end-date" id="endDate" value="${resignation.endDate}" readOnly />
-												</td>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<th>직급</th>
-												<th>사번</th>
-												<th>성명</th>
-												<th>근무부서</th>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<td>${sign.jobTitle}</td>
-												<td>${sign.empId}</td>
-												<td>${sign.name}</td>
-												<td>${sign.deptTitle}</td>
-											</tr>
-											<tr>
-												<th colspan="4">퇴직 사유</th>
-											</tr>
-											<tr class="sign-tbl-bottom-tr">
-												<td colspan="4">
-													<textarea rows="10" id="reason" name="reason" readOnly>${resignation.reason}</textarea>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
+								<form:form action="${pageContext.request.contextPath}/sign/resignationUpdate.do" method="post" name="resignationUpdateFrm">
+									<div class="div-sign-tbl">
+										<table class="sign-tbl-bottom">
+											<tbody>
+												<tr class="sign-tbl-bottom-tr">
+													<th>긴급 문서</th>
+													<td colspan="3">
+														<input type="radio" name="emergency" id="emergencyY" value="Y" ${sign.emergency == 'Y' ? 'checked' : ''} /><label for="emergencyY">여</label>
+														<input type="radio" name="emergency" id="emergencyN" value="N" ${sign.emergency == 'N' ? 'checked' : ''} /><label for="emergencyN">부</label>
+													</td>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<th>입사일</th>
+													<td><input type="date" name="start-date" id="start-date" value="${sessionScope.loginMember.hireDate}" /></td>
+													<th>퇴사일</th>
+													<td>
+														<input type="date" name="end-date" id="endDate" value="${resignation.endDate}" />
+													</td>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<th>직급</th>
+													<th>사번</th>
+													<th>성명</th>
+													<th>근무부서</th>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<td>${sign.jobTitle}</td>
+													<td>${sign.empId}</td>
+													<td>${sign.name}</td>
+													<td>${sign.deptTitle}</td>
+												</tr>
+												<tr>
+													<th colspan="4">퇴직 사유</th>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<td colspan="4">
+														<textarea rows="10" id="reason" name="reason" >${resignation.reason}</textarea>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</form:form>
 							</div>
 						</div>
 						<!-- 결재 문서 end -->
 						<script>
-							const signStatusUpdate = (status) => {
-								const modal = signStatusUpdateModal;
-								const h5 = modal.querySelector('h5');
-								const btn = modal.querySelector('.btn-status');
-								const frmStatus = document.signStatusUpdateFrm.status;
-								
-								switch (status) {
-								case 'C' :
-									h5.innerText = '결재하기';
-									btn.innerText = '결재';
-									break;
-								case 'R' :
-									h5.innerText = '반려하기';
-									btn.innerText = '반려';
-									break;
-								case 'H' :
-									h5.innerText = '보류하기';
-									btn.innerText = '보류';
-									break;
-								} // switch end
-								
-								frmStatus.value = status;
-							};
 							
-							
-							/* 결재, 반려, 보류 폼 제출 */
-							document.signStatusUpdateFrm.addEventListener('submit', (e) => {
-								e.preventDefault();
-								console.log(e.target);
-								
-								const status = e.target.status;
-								const reason = e.target.reason;
-								
-								if (status.value == 'R' || status.value == 'H') {
-									if (/^\s+$/.test(reason.value) || !reason.value) {
-										alert('결재 의견을 작성해주세요.');
-										reason.select();
-										return false;
-									}
-								}
-								
-								e.target.submit();
-							});
 						</script>
 						
 						
