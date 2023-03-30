@@ -23,11 +23,12 @@ public interface EmpService {
 
 	int empUpdate(Emp emp);
 
-
 	List<Emp> selectAllEmpAddTitleDept();
 
 	int updateQuit(Map<String, Object> param);
 	
 	List<EmpDetail> selectEmpDeptList(String deptCode);
+
+	List<EmpDetail> selectEmpAll();
 	
 }

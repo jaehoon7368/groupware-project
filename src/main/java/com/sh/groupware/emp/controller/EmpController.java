@@ -34,6 +34,9 @@ import com.sh.groupware.workingManagement.model.service.WorkingManagementService
 import com.sh.groupware.common.HelloSpringUtils;
 import com.sh.groupware.common.attachment.model.service.AttachmentService;
 import com.sh.groupware.common.dto.Attachment;
+import com.sh.groupware.dayOff.model.dto.DayOff;
+import com.sh.groupware.dayOff.model.dto.DayOffDetail;
+import com.sh.groupware.dayOff.model.service.DayOffService;
 import com.sh.groupware.dept.model.dto.Dept;
 import com.sh.groupware.dept.model.service.DeptService;
 
@@ -42,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping("/emp")
-@SessionAttributes({"loginEmp"})
+@SessionAttributes({"loginMember"})
 public class EmpController {
 	
 	@Autowired
@@ -56,6 +59,9 @@ public class EmpController {
 	
 	@Autowired
 	private WorkingManagementService workingManagementService;
+	
+	@Autowired
+	private DayOffService dayOffService;
 	
 	@Autowired
 	private ServletContext application;
@@ -189,22 +195,32 @@ public class EmpController {
 		return "redirect:/emp/empInfo.do";
 	}
 	
-	//내 인사정보 페이지 불러오기
+	//내 연차내역 페이지 불러오기
 	@GetMapping("/empAnnual.do")
-	public void empAnnual() {}
-	
-	@GetMapping("/passwordEncode.do")
-	public void selectOneEmp() {
-		Emp emp = empService.selectEmp();
-		log.debug("enp = {}",emp);
-		log.debug("empPassword={}",emp.getPassword());
-		String rawPassword = emp.getPassword();
-		String encodedPassword = passwordEncoder.encode(rawPassword);
-		log.debug("encodedPassword = {}", encodedPassword);
+	public void empAnnual(Model model,Authentication authentication) {
+		Emp principal = (Emp) authentication.getPrincipal();
 		
+		String empId = principal.getEmpId();
+		
+		//내 전체 연차 내역
+		List<DayOffDetail> dayoffList = dayOffService.selectOneEmpDayOffList(empId);
+		model.addAttribute("dayoffList", dayoffList);
+		
+		//마지막 연차내역 (남은연차 계산용)
+		DayOffDetail dayoffDetail = dayOffService.selectLastLeaveCount(empId);
+		model.addAttribute("dayOffDetail", dayoffDetail);
+		
+		// 연차 사용기간 년도
+		List<DayOff> dayOffYear = dayOffService.selectDayOffYear();
+		model.addAttribute("dayOffYear", dayOffYear);
 	}
 	
-	
-	
+	//전사 인사정보
+	@GetMapping("/empAllInfo.do")
+	public void empAllInfo(Model model) {
+		List<EmpDetail> empList = empService.selectEmpAll();
+		
+		model.addAttribute("empList", empList);
+	}
 
 }
