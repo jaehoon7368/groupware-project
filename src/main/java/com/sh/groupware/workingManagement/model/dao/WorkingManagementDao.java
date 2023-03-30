@@ -55,7 +55,7 @@ public interface WorkingManagementDao {
 	@Select("select nvl(sum(overtime),0) from working_management where reg_date like '%' || #{monthTime} || '%' and emp_id = #{empId}")
 	int monthOverTime(Map<String, Object> startEndMap);
 	
-	@Insert("insert into working_management values(seq_working_management_no.nextval, null, null, null, #{regDate}, #{state}, null, #{empId})")
+	@Insert("insert into working_management values(seq_working_management_no.nextval, null, null, null, #{regDate}, #{state}, #{dayWorkTime}, #{empId})")
 	int insertRegDateState(WorkingManagement working);
 
 }
