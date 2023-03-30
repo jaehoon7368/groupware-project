@@ -224,6 +224,7 @@ p.title {
     justify-content: space-around;
     text-align: center;
     height: 100%;
+    width: 80%;
 }
 #annual-info-box div{
     width: 110px;
@@ -291,6 +292,13 @@ p.title {
 }
 .color-gray{
     color: gray;
+}
+
+.color-red{
+	color :  rgb(233, 93, 93);
+}
+.color-black{
+	color : black;
 }
 .text-left {
     text-align: left;

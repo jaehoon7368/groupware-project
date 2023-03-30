@@ -139,8 +139,10 @@ select * from dept;
 select * from emp;
 select * from attachment;
 select * from working_management order by no;
+select * from dayoff;
+select * from dayoffform;
 delete from working_management where no = '29';
-
+update working_management set end_work = null, state = '연차',overtime = null where no = '49';
 delete from emp where emp_id = '230304';
 
 select * from attachment;

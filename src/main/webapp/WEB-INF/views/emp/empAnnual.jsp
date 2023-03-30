@@ -62,19 +62,6 @@
                                 <div id="annual-user-box">
                                     <img src="images/sample.jpg" alt="" class="my-img" /> <span> 유사원</span>
                                 </div>
-                                <div></div>
-                                <div>
-                                    <p class="font-14">발생연차</p>
-                                    <h4 class="color-gray">15</h4>
-                                </div>
-                                <div>
-                                    <p class="font-14">발생월차</p>
-                                    <h4 class="color-gray">0</h4>
-                                </div>
-                                <div>
-                                    <p class="font-14">이월 연차</p>
-                                    <h4 class="color-gray">0</h4>
-                                </div>
                                 <div>
                                     <p class="font-14">총연차</p>
                                     <h4 class="main-color">15</h4>
@@ -107,10 +94,10 @@
                                         <tr>
                                             <th width="100">이름</th>
                                             <th width="100">부서명</th>
-                                            <th width="100">휴가종류</th>
+                                            <th width="100">휴가 종류</th>
                                             <th width="200">연차 사용기간</th>
-                                            <th width="100">사용연차</th>
-                                            <th width="300">내용</th>
+                                            <th width="100">사용 연차</th>
+                                            <th width="100">연차 신청일</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -120,7 +107,7 @@
                                             <td width="100">연차</td>
                                             <td width="200">2023-03-21 ~ 2023-03-21</td>
                                             <td width="100">1</td>
-                                            <td width="300">개인사정으로 인한 연차사용</td>
+                                            <td width="100">2023-03-21</td>
                                         </tr>
                                         <tr>
                                             <td width="100">유사원</td>
@@ -128,7 +115,7 @@
                                             <td width="100">연차</td>
                                             <td width="200">2023-03-21 ~ 2023-03-21</td>
                                             <td width="100">1</td>
-                                            <td width="300">개인사정으로 인한 연차사용</td>
+                                            <td width="100">2023-03-21</td>
                                         </tr>
                         
                                     </tbody>
@@ -136,29 +123,6 @@
                            </div>
                         </div>
 
-                        <div id="annual-detail-box">
-                            <p>생성내역</p>
-                            <div>
-                                <table id="annual-detail-table">
-                                    <thead>
-                                        <tr>
-                                            <th width="100">등록일</th>
-                                            <th width="100">사용기간</th>
-                                            <th width="100">발생일수</th>
-                                            <th width="200">내용</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td width="100">2023-01-01</td>
-                                            <td width="100">2023-12-31</td>
-                                            <td width="100">15</td>
-                                            <td width="200">연차</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
 
                     </div>
                     <!-- 본문 end -->

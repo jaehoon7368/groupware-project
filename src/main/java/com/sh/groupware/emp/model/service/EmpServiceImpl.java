@@ -132,4 +132,9 @@ public class EmpServiceImpl implements EmpService {
 	public List<EmpDetail> selectEmpDeptList(String deptCode) {
 		return empDao.selectEmpDeptList(deptCode);
 	}
+	
+	@Override
+	public List<EmpDetail> selectEmpAll() {
+		return empDao.selectEmpAll();
+	}
 }

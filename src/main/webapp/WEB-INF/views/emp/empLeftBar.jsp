@@ -72,7 +72,10 @@
                                 </div>
                             </li>
                             <li>
-                                <p class="title font-medium font-bold a-font"><a href="${pageContext.request.contextPath }/emp/empEnroll.do">인사정보 등록</a></p>
+                                <p class="title font-medium font-bold a-font"><a class=" color-black" href="${pageContext.request.contextPath }/emp/empEnroll.do">인사정보 등록</a></p>
+                            </li>
+                            <li>
+                                <p class="title font-medium font-bold a-font"><a class=" color-black" href="${pageContext.request.contextPath }/emp/empAllInfo.do">전사 인사정보</a></p>
                             </li>
                         </ul>
                     </div>
@@ -245,7 +248,7 @@ function getStartAndEndDateOfWeek() {
 			  const monthWorkTime = document.querySelector("#main-month-work-time");
 			  const monthOverTime = document.querySelector("#main-month-over-time")
 			  
-			  let times = 144000000 - weekTotalTime; // 40시간 - 주간 기본 근무시간
+			  let times = 144000000 - (weekTotalTime + weekOverTime); // 40시간 - 주간 기본 근무시간
 			  totalWorkTime.textContent = chageWorkTime(weekTotalTime + weekOverTime);
 			  mainTotalWorkTime.textContent = chageWorkTime(weekTotalTime + weekOverTime);
 			  mainWeekOverTime.textContent = chageWorkTime(weekOverTime);

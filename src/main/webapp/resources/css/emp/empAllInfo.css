@@ -1,4 +1,17 @@
+/* 태그 css */
+button {
+    border: solid 1px #bebebe;
+    padding: 10px;
+    border-radius: 30px;
+}
 
+button:hover {
+    cursor: pointer;
+}
+
+ul:hover {
+    cursor: pointer;
+}
 
 /* a태그 사용 시 파란 글씨를 검정으로 바꾸는 css */
 .container-a {
@@ -10,20 +23,6 @@
     color: #00b6c2;
 }
 
-
-
-/* font */
-.font-small {
-    font-size: small;
-}
-
-.font-medium {
-    font-size: 14px;
-}
-
-.font-large {
-    font-size: large;
-}
 
 /* home.jsp */
 .home-content {
@@ -61,13 +60,7 @@
     border-radius: 50%;
 }
 
-/* home.jsp 본문에 가운데 */
-#home-center {
-    width: 500px;
-    height: 300px;
-    border: solid 1px darkgray;
-    border-radius: 10px;
-}
+
 
 /* home.jsp 본문에 오른쪽 */
 #home-right {
@@ -97,9 +90,11 @@ select {
     color: #00b6c2;
 }
 
-.work-select {
+#work-state-div {
+    border: 1px solid black;
+    color: black;
+    height: 30px;
     width: 100%;
-    border-radius: 20px;
     text-align: center;
     margin: 0px;
 }
@@ -208,40 +203,71 @@ p.title {
 }
 
 /* 메인내용 */
-#empInfo{
-    /* border: 1px solid black; */
-    margin-left: 20px;
-    margin-top: 20px;
-}
-#empInfo table{
-    border-collapse: collapse;
-}
-#empInfo th{
-    width: 150px;
-    height: 30px;
-    background-color: #e8e8e8;
-    border: 1px solid black;
-}
-#empInfo td {
-    width: 150px;
-    height: 50px;
-    border: 1px solid black;
-    padding: 2px;
+#date-box {
     text-align: center;
 }
-#empInfo td input{
-    width: 150px;
-    height: 40px;
-    margin-bottom: 0;
-    margin: auto;
+
+#date-box i {
+    font-size: 18px;
+    color: gray;
 }
-#btn-empEnroll{
+
+#search-box {
+    margin-top: 30px;
+    margin-left: 5px;
+    display: flex;
+}
+
+#search-box label {
+    color: gray;
+    font-weight: bold;
+}
+
+#search-box select {
     width: 100px;
-    height: 30px;
-    margin: 20px 40%;
-    border-radius: 5px;
-    background-color: white;
+    height: 20px;
+    border: .5px solid gray;
+    color: black;
+    margin-left: 10px;
+    margin-top: 3px;
+    font-size: 14px;
+    text-align: center;
 }
+
+#emp-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: .5px solid gray;
+    border-bottom: .5px solid gray;
+    padding-left: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#dept-name {
+    margin-top: 18px;
+}
+
+#emp-detail-table p{
+    margin: 10px 0;
+}
+
+#emp-detail-table img {
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+#emp-detail-table th {
+    font-size: 14px;
+    border-bottom: .5px solid gray;
+}
+
+#emp-detail-table td {
+    font-size: 14px;
+    margin: auto;
+    
+}
+
 
 /* 메인내용 end */
 
@@ -269,8 +295,19 @@ p.title {
     text-align: right;
 }
 
+.font-11 {
+    font-size: 11px;
+    margin-bottom: 0;
+}
+
+.font-12 {
+    font-size: 12px;
+    margin-bottom: 0;
+}
+
 .font-14 {
     font-size: 14px;
+    margin-bottom: 3px;
 }
 
 .font-18 {
@@ -283,4 +320,8 @@ p.title {
 
 .border-bottom {
     border-bottom: .5px solid gray;
+}
+
+.margin-buttom0 {
+    margin-bottom: 0;
 }

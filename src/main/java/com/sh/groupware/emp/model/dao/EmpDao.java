@@ -50,5 +50,8 @@ public interface EmpDao {
 	
 	//부서별 근태현황 사원조회
 	List<EmpDetail> selectEmpDeptList(String deptCode);
+
+	// 전사 인사정보
+	List<EmpDetail> selectEmpAll();
 	
 }

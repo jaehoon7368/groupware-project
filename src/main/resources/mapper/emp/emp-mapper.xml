@@ -92,6 +92,19 @@
 			</foreach>
 	</select>
 	
+	<select id="selectEmpAll" resultMap="empDetailMap">
+		select 
+		    e.*,
+		    (select job_title from job where e.job_code = job_code) job_title,
+		    (select dept_title from dept where e.dept_code = dept_code) dept_title,
+		    (select rename_filename from attachment where pk_no = e.emp_id) renameFilename
+		from 
+		    emp e
+		where
+		    quit_yn = 'N'
+		order by
+			dept_code,job_code		
+	</select>
 	
 	<resultMap type="empDetail" id="empDetailMap"></resultMap>
 </mapper>

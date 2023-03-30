@@ -189,22 +189,21 @@ public class EmpController {
 		return "redirect:/emp/empInfo.do";
 	}
 	
-	//내 인사정보 페이지 불러오기
+	//내 연차내역 페이지 불러오기
 	@GetMapping("/empAnnual.do")
-	public void empAnnual() {}
-	
-	@GetMapping("/passwordEncode.do")
-	public void selectOneEmp() {
-		Emp emp = empService.selectEmp();
-		log.debug("enp = {}",emp);
-		log.debug("empPassword={}",emp.getPassword());
-		String rawPassword = emp.getPassword();
-		String encodedPassword = passwordEncoder.encode(rawPassword);
-		log.debug("encodedPassword = {}", encodedPassword);
+	public void empAnnual(Model model,Authentication authentication) {
+		Emp principal = (Emp) authentication.getPrincipal();
+		
+		String empId = principal.getEmpId();
 		
 	}
 	
-	
-	
+	//전사 인사정보
+	@GetMapping("/empAllInfo.do")
+	public void empAllInfo(Model model) {
+		List<EmpDetail> empList = empService.selectEmpAll();
+		
+		model.addAttribute("empList", empList);
+	}
 
 }

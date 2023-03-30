@@ -23,9 +23,10 @@ public interface EmpService {
 
 	int empUpdate(Emp emp);
 
-
 	List<Emp> selectAllEmpAddTitleDept();
 
 	List<EmpDetail> selectEmpDeptList(String deptCode);
+
+	List<EmpDetail> selectEmpAll();
 	
 }
