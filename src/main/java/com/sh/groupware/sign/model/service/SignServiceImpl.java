@@ -47,6 +47,15 @@ public class SignServiceImpl implements SignService {
 	@Autowired
 	private WorkingManagementDao workingDao;
 	
+
+	@Override
+	public String insertSign(SignEntity sign) {
+		int result = signDao.insertSign(sign);
+		result = insertSignStatus(sign);
+		return sign.getNo();
+	} // insertSign() end
+	
+	
 	@Override
 	public int insertSignDayOffForm(DayOffForm dayOffForm, SignEntity sign) {
 		int result = signDao.insertSign(sign);
@@ -105,28 +114,21 @@ public class SignServiceImpl implements SignService {
 	
 	
 	@Override
-	public int insertSignProductForm(ProductForm productForm, SignEntity sign) {
-		int result = signDao.insertSign(sign);
-		productForm.setSignNo(sign.getNo());
-		
-		result = insertProductForm(productForm);
-		
-		result = insertSignStatus(sign);
-		
-		return result;
-	} // insertSignProductForm() end
-	
-	
-	@Override
 	public int insertProductForm(ProductForm productForm) {
 		return signDao.insertProductForm(productForm);
 	} // insertProductForm() end
 
 
 	@Override
-	public List<Sign> findByMyCreateSignList(String empId) {
-		return signDao.findByMyCreateSignList(empId);
-	} // findByMyCreateSignList() end
+	public List<Sign> findByMyCreateSignListComlete(String empId) {
+		return signDao.findByMyCreateSignListComlete(empId);
+	} // findByMyCreateSignListComlete() end
+
+	
+	@Override
+	public List<Sign> findByMyCreateSignListIng(String empId) {
+		return signDao.findByMyCreateSignListIng(empId);
+	} // findByMyCreateSignListIng() end
 	
 	
 	@Override
@@ -148,7 +150,7 @@ public class SignServiceImpl implements SignService {
 	
 	
 	@Override
-	public ProductForm findBySignNoProductForm(String no) {
+	public List<ProductForm> findBySignNoProductForm(String no) {
 		return signDao.findBySignNoProductForm(no);
 	} // findBySignNoProductForm() end
 	

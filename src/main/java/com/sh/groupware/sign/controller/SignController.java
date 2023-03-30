@@ -59,9 +59,11 @@ public class SignController {
 	public String sign(Model model, Authentication authentication) {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		
-		List<Sign> myCreateSignList = signService.findByMyCreateSignList(empId);
+		List<Sign> myCreateSignListComlete = signService.findByMyCreateSignListComlete(empId);
+		List<Sign> myCreateSignListIng = signService.findByMyCreateSignListIng(empId);
 		List<Sign> mySignList = signService.findByMySignList(empId);
-		model.addAttribute("myCreateSignList", myCreateSignList);
+		model.addAttribute("myCreateSignListIng", myCreateSignListIng);
+		model.addAttribute("myCreateSignListComlete", myCreateSignListComlete);
 		model.addAttribute("mySignList", mySignList);
 		return "sign/signHome";
 	} // sign() end
@@ -148,7 +150,17 @@ public class SignController {
 			YN.valueOf(emergency),
 			null
 		);
-		int result = signService.insertSignProductForm(productForm, sign);
+		
+		int result = 0;
+		String signNo = signService.insertSign(sign);
+		sign.setNo(signNo);
+		List<ProductForm> productFormList = productForm.getProductFormList();
+		for (ProductForm product : productFormList) {
+			product.setSignNo(signNo);
+			log.debug("product = {}", product);
+			if (product.getName() != "")
+				result = signService.insertProductForm(product);
+		}
 		
 		
 		return "redirect:/sign/sign.do";
@@ -207,8 +219,9 @@ public class SignController {
 		} // 출장신청서
 		
 		if ("P".equals(type)) {
-			ProductForm product = signService.findBySignNoProductForm(no);
-			model.addAttribute("product", product);
+			List<ProductForm> productList = signService.findBySignNoProductForm(no);
+			log.debug("productList = {}", productList);
+			model.addAttribute("productList", productList);
 			return "sign/detail/productDetail";
 		} // 비품신청서
 		

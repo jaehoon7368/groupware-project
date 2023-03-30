@@ -1,5 +1,7 @@
 package com.sh.groupware.sign.model.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +18,7 @@ public class ProductForm {
 	private long price;
 	private long totalPrice;
 	private String purpose;
+	
+	private List<ProductForm> productFormList;
 	
 } // class end

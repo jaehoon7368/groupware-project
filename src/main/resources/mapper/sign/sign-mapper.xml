@@ -26,7 +26,7 @@
 		</selectKey>
 	</insert>
 	
-	<select id="findByMyCreateSignList" resultMap="signMap">
+	<select id="findByMyCreateSignListComlete" resultMap="signMap">
 		select
 			s.*,
 			(select name from emp where emp_id = s.emp_id) name,
@@ -46,7 +46,39 @@
 				on s.no = ss.sign_no
 		where
 			s.emp_id = #{empId}
+			and
+			s.complete = 'Y'
+		order by
+			s.reg_date desc
 	</select>
+	
+	
+	<select id="findByMyCreateSignListIng" resultMap="signMap">
+		select
+			s.*,
+			(select name from emp where emp_id = s.emp_id) name,
+			(select dept_title from dept where dept_code = s.dept_code) dept_title,
+			(select job_title from job where job_code = s.job_code) job_title,
+			ss.no status_no,
+			ss.sign_no,
+			ss.emp_id status_emp_id,
+			ss.sign_order,
+			ss.status,
+			ss.reg_date status_reg_date,
+			(select name from emp where emp_id = ss.emp_id) status_name,
+			(select dept_title from dept where dept_code = (select dept_code from emp where emp_id = ss.emp_id)) status_dept_title,
+			(select job_title from job where job_code = (select job_code from emp where emp_id = ss.emp_id)) status_job_title
+		from
+			sign s right join signStatus ss
+				on s.no = ss.sign_no
+		where
+			s.emp_id = #{empId}
+			and
+			s.complete = 'N'
+		order by
+			s.reg_date desc
+	</select>
+	
 	<resultMap type="sign" id="signMap">
 		<id column="no" property="no"/>
 		<result column="emp_id" property="empId"/>
