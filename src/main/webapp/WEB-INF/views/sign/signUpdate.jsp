@@ -62,7 +62,7 @@
 																기안자
 															</td>
 															<td class="sign-tbl-left-content">
-																<span>${sessionScope.loginMember.name}</span>
+																<span>${sign.name}</span>
 															</td>
 														</tr>
 														<tr>
@@ -70,7 +70,7 @@
 																기안부서
 															</td>
 															<td class="sign-tbl-left-content">
-																<span>${sessionScope.loginMember.deptTitle}</span>
+																<span>${sign.deptTitle}</span>
 															</td>
 														</tr>
 														<tr>
@@ -79,7 +79,7 @@
 															</td>
 															<td class="sign-tbl-left-content">
 																<span>
-																	<c:set var="now" value="<%= new Date() %>" />
+																	<fmt:parseDate value="${sign.regDate}" var="now" pattern="yyyy-MM-dd" />
 																	<fmt:formatDate value="${now}" pattern="yyyy-MM-dd (E)" />
 																</span>
 															</td>
