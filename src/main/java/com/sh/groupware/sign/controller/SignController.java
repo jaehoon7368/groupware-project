@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.sh.groupware.dayOff.model.dto.DayOff;
 import com.sh.groupware.dayOff.model.service.DayOffService;
 import com.sh.groupware.emp.model.dto.Emp;
-import com.sh.groupware.emp.model.dto.EmpDetail;
 import com.sh.groupware.emp.model.service.EmpService;
 import com.sh.groupware.report.model.dto.YN;
 import com.sh.groupware.sign.model.dto.DayOffForm;
@@ -60,12 +57,17 @@ public class SignController {
 	public String sign(Model model, Authentication authentication) {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		
+		// 내가 작성한 결재 완료 목록
 		List<Sign> myCreateSignListComlete = signService.findByMyCreateSignListComlete(empId);
+		// 내가 작성한 결재 중인 목록
 		List<Sign> myCreateSignListIng = signService.findByMyCreateSignListIng(empId);
+		// 내가 결재해야 하는 목록
 		List<Sign> mySignList = signService.findByMySignList(empId);
+		
 		model.addAttribute("myCreateSignListIng", myCreateSignListIng);
 		model.addAttribute("myCreateSignListComlete", myCreateSignListComlete);
 		model.addAttribute("mySignList", mySignList);
+		
 		return "sign/signHome";
 	} // sign() end
 	
@@ -163,7 +165,6 @@ public class SignController {
 				result = signService.insertProductForm(product);
 		}
 		
-		
 		return "redirect:/sign/sign.do";
 	} // productCreate() end
 	
@@ -190,7 +191,6 @@ public class SignController {
 			null
 		);
 		int result = signService.insertSignResignationForm(resignation, sign);
-		
 		
 		return "redirect:/sign/sign.do";
 	} // resignationCreate() end
@@ -236,11 +236,41 @@ public class SignController {
 	} // signDetail() end
 	
 	
+	@PostMapping("/deleteSign.do")
+	public String signDelete(@RequestParam String no, @RequestParam String type, Authentication authentication) {
+		log.debug("no = {}, type = {}", no, type);
+		
+		String form = null;
+		
+		switch (type) {
+		case "D":
+			form = "dayOffForm";
+			break;
+		case "T":
+			form = "tripForm";
+			break;
+		case "P":
+			form = "productForm";
+			break;
+		case "R":
+			form = "resignationForm";
+			break;
+		}
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("no", no);
+		param.put("form", form);
+		
+		int result = signService.deleteOneSign(param);
+		
+		return "redirect:/sign/sign.do";
+	} // signDelete() end
+	
+	
 	@PostMapping("/signStatusUpdate.do")
 	public String signStatusUpdate(SignStatus signStatus) {
 		log.debug("signStatus = {}", signStatus);
 		int result = 0;
-//		int result = signService.signStatusUpdate(signStatus);
 		
 		Sign sign = signService.findByNoSign(signStatus.getSignNo());
 		log.debug("sign = {}", sign);
@@ -268,6 +298,7 @@ public class SignController {
 						
 						DayOff dayOff = new DayOff(
 							null, 
+							dayOffForm.getNo(),
 							sign.getEmpId(), 
 							dayOffForm.getStartDate().getYear(),
 							dayOffForm.getStartDate(),
@@ -342,8 +373,43 @@ public class SignController {
 				
 			} // if end
 		} // for end
-		
+
 		return "redirect:/sign/sign.do";
 	} // signStatusUpdate() end
+	
+	
+	@GetMapping("/signStatus.do")
+	public String signStatus(String status, Model model, Authentication authentication) {
+		log.debug("status = {}", status);
+		
+		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("empId", empId);
+		
+		switch (status) {
+		// 결재 대기 문서
+		case "W":
+			String[] statusWH = {"W", "H"};
+			param.put("inStatus", statusWH);
+			break;
+		// 결재 예정 문서
+		case "S":
+			String[] statusS = {"S"};
+			param.put("inStatus", statusS);
+			break;
+		// 결재 수신 문서
+		case "C":
+			String[] statusC = {"C", "R"};
+			param.put("inStatus", statusC);
+			break;
+		} // switch end
+		
+		// 내가 결재한(할) 모든 목록
+		List<Sign> mySignStatusList = signService.findByEmpIdMySignStatus(param);
+		model.addAttribute("mySignStatusList", mySignStatusList);
+		
+		return "sign/signStatus";
+	} // signStatus() end
 	
 } // class end

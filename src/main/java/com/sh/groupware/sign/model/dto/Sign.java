@@ -18,6 +18,7 @@ public class Sign extends SignEntity {
 	private String name;
 	private String deptTitle;
 	private String jobTitle;
+	private String profileImg;
 	List<SignStatusDetail> signStatusList = new ArrayList<>();
 	
 	public void addSignStatus(SignStatusDetail signStatus) {
@@ -26,11 +27,12 @@ public class Sign extends SignEntity {
 
 	public Sign(String no, String empId, String deptCode, String jobCode, SignType type, LocalDate regDate,
 			YN emergency, YN complete, String name, String deptTitle, String jobTitle,
-			List<SignStatusDetail> signStatusList) {
+			String profileImg, List<SignStatusDetail> signStatusList) {
 		super(no, empId, deptCode, jobCode, type, regDate, emergency, complete);
 		this.name = name;
 		this.deptTitle = deptTitle;
 		this.jobTitle = jobTitle;
+		this.profileImg = profileImg;
 		this.signStatusList = signStatusList;
 	} // Sign() end
 	
