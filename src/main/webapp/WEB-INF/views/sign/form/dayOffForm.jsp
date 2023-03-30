@@ -1,3 +1,4 @@
+<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -55,10 +56,12 @@
 									</tbody>
 								</table>
 								<script>
-									const nowDate = Date.now();
+									const nowDate = new Date();
+									const newDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 2);
 									const dateOff = new Date().getTimezoneOffset() * 60000;
-									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
-									
+									const today = new Date(newDate - dateOff).toISOString().split('T')[0];
+									console.log(today);
+
 									document.querySelector('.sign_date').innerText = today;
 								</script>
 								
@@ -288,14 +291,6 @@
 							};
 						</script>
 						
-						<div class="div-sign-bottom">
-							<div class="div-sign-bottom-title">
-								<div class="font-large">결재선</div>
-							</div>
-							<div>
-								<div>ddd</div>
-							</div>
-						</div>
 					</div>
 				</div>
 				

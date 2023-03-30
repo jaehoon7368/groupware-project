@@ -37,67 +37,11 @@
 						</div>
 						<div class="top-container">
 							<div class="div-sign-btn font-small">
-								<c:if test="${sign.empId == sessionScope.loginMember.empId && sign.complete == 'N'}">
-									<button onclick="location.href='${pageContext.request.contextPath}/sign/signUpdate.do?no=${sign.no}&type=${sign.type}'">문서 수정</button>
-									<form:form action="${pageContext.request.contextPath}/sign/deleteSign.do" method="post" name="signDeleteFrm">
-										<input type="hidden" name="no" value="${sign.no}" />
-										<input type="hidden" name="type" value="${sign.type}" />
-										<button type="submit">상신취소</button>
-									</form:form>
-									<script>
-										document.signDeleteFrm.addEventListener('submit', (e) => {
-											e.preventDefault();
-											
-											if (confirm('정말로 상신취소하시겠습니까?'))
-												e.target.submit();
-										});
-									</script>
-								</c:if>
-								<c:forEach items="${sign.signStatusList}" var="signStatus">
-									<c:if test="${signStatus.empId == sessionScope.loginMember.empId && signStatus.status != 'C' && signStatus.status != 'S'}">
-										<button onclick="signStatusUpdate('C');" data-open="signStatusUpdateModal">결재</button>
-										<c:if test="${signStatus.status != 'H'}">
-											<button onclick="signStatusUpdate('H');" data-open="signStatusUpdateModal">보류</button>
-										</c:if>
-										<button onclick="signStatusUpdate('R');" data-open="signStatusUpdateModal">반려</button>
-									</c:if>
-								</c:forEach>
+								<button onclick="signUpdate();">수정하기</button>
+								<button onclick="location.href='${pageContext.request.contextPath}/sign/signDetail.do?no=${sign.no}&type=${sign.type}';">취소</button>
 							</div>
 						</div>
-						<script>
-							document.querySelector('#home-my-img').addEventListener('click', (e) => {
-								const modal = document.querySelector('#my-menu-modal');
-								const style =  modal.style.display;
-								
-								if (style == 'inline-block') {
-									modal.style.display = 'none';
-								} else {
-									modal.style.display = 'inline-block';
-								}
-							});
-						</script>
 						<!-- 상단 타이틀 end -->
-						
-						<!-- 결재, 반려, 보류 모달 -->
-						<div class="sign-status-modal reveal" id="signStatusUpdateModal" data-reveal>
-							<h5></h5>
-							<form:form action="${pageContext.request.contextPath}/sign/signStatusUpdate.do" method="POST" name="signStatusUpdateFrm">
-								<input type="hidden" name="signNo" value="${param.no}" />
-								<input type="hidden" name="empId" value="${sessionScope.loginMember.empId}" />
-								<input type="hidden" name="status" />
-								<div class="sign-status-modal-div font-small">
-									<span>결재의견</span>
-									<textarea name="reason" id="reason"></textarea>
-								</div>
-								<div class="font-small report-no-modal-btn">
-									<button class="btn-status" type="submit"></button>
-									<button data-close aria-label="Close reveal" type="button">취소</button>
-								</div>
-								<button class="btn-close close-button" data-close aria-label="Close reveal" type="button">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</form:form>
-						</div>
 						
 						<!-- 결재 문서 -->
 						<div class="div-sign-form">
@@ -118,7 +62,7 @@
 																기안자
 															</td>
 															<td class="sign-tbl-left-content">
-																<span>${sign.name}</span>
+																<span>${sessionScope.loginMember.name}</span>
 															</td>
 														</tr>
 														<tr>
@@ -126,7 +70,7 @@
 																기안부서
 															</td>
 															<td class="sign-tbl-left-content">
-																<span>${sign.deptTitle}</span>
+																<span>${sessionScope.loginMember.deptTitle}</span>
 															</td>
 														</tr>
 														<tr>
@@ -135,7 +79,7 @@
 															</td>
 															<td class="sign-tbl-left-content">
 																<span>
-																	<fmt:parseDate value="${sign.regDate}" var="now" pattern="yyyy-MM-dd" />
+																	<c:set var="now" value="<%= new Date() %>" />
 																	<fmt:formatDate value="${now}" pattern="yyyy-MM-dd (E)" />
 																</span>
 															</td>

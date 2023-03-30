@@ -39,7 +39,6 @@
 							<div class="div-sign-btn font-small">
 								<button onclick="signCreate();">결재요청</button>
 								<button onclick="location.href='${pageContext.request.contextPath}/sign/sign.do';">취소</button>
-								<button>결재 정보</button>
 							</div>
 						</div>
 						<script>

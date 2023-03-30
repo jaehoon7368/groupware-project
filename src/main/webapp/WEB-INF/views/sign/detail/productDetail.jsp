@@ -114,53 +114,51 @@
 								</script>
 								
 								<br />
-								<form:form action="${pageContext.request.contextPath}/sign/productCreate.do" method="post" name="productCreateFrm">
-									<div class="div-sign-tbl">
-										<table class="sign-tbl-bottom">
-											<tbody>
-												<tr>
-													<td>긴급&nbsp;문서</td>
-													<td colspan="4">
-														<input type="radio" name="emergency" id="emergencyY" value="Y" ${sign.emergency == 'Y' ? 'checked' : 'disabled'} /><label for="emergencyY">여</label>
-														<input type="radio" name="emergency" id="emergencyN" value="N" ${sign.emergency == 'N' ? 'checked' : 'disabled'} /><label for="emergencyN">부</label>
-													</td>
-												</tr>
+								<div class="div-sign-tbl">
+									<table class="sign-tbl-bottom">
+										<tbody>
+											<tr>
+												<td>긴급&nbsp;문서</td>
+												<td colspan="4">
+													<input type="radio" name="emergency" id="emergencyY" value="Y" ${sign.emergency == 'Y' ? 'checked' : 'disabled'} /><label for="emergencyY">여</label>
+													<input type="radio" name="emergency" id="emergencyN" value="N" ${sign.emergency == 'N' ? 'checked' : 'disabled'} /><label for="emergencyN">부</label>
+												</td>
+											</tr>
+											<tr class="sign-tbl-bottom-tr">
+												<th rowspan="2">품명</th>
+												<th rowspan="2">수량</th>
+												<th colspan="2">구매예정가격</th>
+												<th rowspan="2">용도</th>
+											</tr>
+											<tr class="sign-tbl-bottom-tr">
+												<th>단가</th>
+												<th>금액</th>
+											</tr>
+											<c:forEach items="${productList}" var="product" varStatus="vs">
 												<tr class="sign-tbl-bottom-tr">
-													<th rowspan="2">품명</th>
-													<th rowspan="2">수량</th>
-													<th colspan="2">구매예정가격</th>
-													<th rowspan="2">용도</th>
+													<td><input type="text" name="name" id="name${vs.count}" value="${product.name}" readOnly /></td>
+													<td><input type="text" name="amount" id="amount${vs.count}" min="1" value="<fmt:formatNumber value='${product.amount}' pattern='#,##0' />" readOnly/></td>
+													<td><input type="text" name="price" id="price${vs.count}" min="1" value="<fmt:formatNumber value='${product.price}' pattern='#,##0' />" readOnly/></td>
+													<td><input type="text" name="totalPrice" id="totalPrice${vs.count}" min="1" value="<fmt:formatNumber value='${product.totalPrice}' pattern='#,##0' />" readOnly/></td>
+													<td><input type="text" name="purpose" id="purpose${vs.count}" value="${product.purpose}" readOnly/></td>
 												</tr>
+											</c:forEach>
+											<c:forEach begin="${productList.size() + 1}" end="4" var="n">
 												<tr class="sign-tbl-bottom-tr">
-													<th>단가</th>
-													<th>금액</th>
+													<td><input type="text" name="name" id="name${n}" readOnly /></td>
+													<td><input type="text" name="amount" id="amount${n}" min="1" readOnly/></td>
+													<td><input type="text" name="price" id="price${n}" min="1" readOnly/></td>
+													<td><input type="text" name="totalPrice" id="totalPrice${n}" min="1" readOnly/></td>
+													<td><input type="text" name="purpose" id="purpose${n}" readOnly/></td>
 												</tr>
-												<c:forEach items="${productList}" var="product" varStatus="vs">
-													<tr class="sign-tbl-bottom-tr">
-														<td><input type="text" name="name" id="name${vs.count}" value="${product.name}" readOnly /></td>
-														<td><input type="text" name="amount" id="amount${vs.count}" min="1" value="<fmt:formatNumber value='${product.amount}' pattern='#,##0' />" readOnly/></td>
-														<td><input type="text" name="price" id="price${vs.count}" min="1" value="<fmt:formatNumber value='${product.price}' pattern='#,##0' />" readOnly/></td>
-														<td><input type="text" name="totalPrice" id="totalPrice${vs.count}" min="1" value="<fmt:formatNumber value='${product.totalPrice}' pattern='#,##0' />" readOnly/></td>
-														<td><input type="text" name="purpose" id="purpose${vs.count}" value="${product.purpose}" readOnly/></td>
-													</tr>
-												</c:forEach>
-												<c:forEach begin="${productList.size() + 1}" end="4" var="n">
-													<tr class="sign-tbl-bottom-tr">
-														<td><input type="text" name="name" id="name${n}" readOnly /></td>
-														<td><input type="text" name="amount" id="amount${n}" min="1" readOnly/></td>
-														<td><input type="text" name="price" id="price${n}" min="1" readOnly/></td>
-														<td><input type="text" name="totalPrice" id="totalPrice${n}" min="1" readOnly/></td>
-														<td><input type="text" name="purpose" id="purpose${n}" readOnly/></td>
-													</tr>
-												</c:forEach>
-												<tr class="sign-tbl-bottom-tr">
-													<th colspan="2">합계</th>
-													<td colspan="3" id="finalPrice"></td>
-												</tr> 
-											</tbody>
-										</table>
-									</div>
-								</form:form>
+											</c:forEach>
+											<tr class="sign-tbl-bottom-tr">
+												<th colspan="2">합계</th>
+												<td colspan="3" id="finalPrice"></td>
+											</tr> 
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 						<!-- 결재 문서 end -->
