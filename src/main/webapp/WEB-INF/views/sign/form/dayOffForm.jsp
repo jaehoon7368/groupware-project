@@ -153,6 +153,7 @@
 											</tbody>
 										</table>
 										${noDateList}
+										${toBeNoDateList}
 										<script>
 											let start;
 											let end;
