@@ -106,5 +106,28 @@
 			dept_code,job_code		
 	</select>
 	
+	<select id="empFinderList" resultMap="empDetailMap">
+		select 
+		    e.*,
+		    (select job_title from job where e.job_code = job_code) job_title,
+		    d.dept_title,
+		    (select rename_filename from attachment where pk_no = e.emp_id) renameFilename
+		from 
+		    emp e join dept d
+		    on e.dept_code = d.dept_code
+		where
+		    quit_yn = 'N'
+		    <if test="searchType == 'dept_title'">
+			    and
+				d.dept_title like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="searchType == 'name'">
+			    and
+				e.name like '%' || #{searchKeyword} ||'%'
+		    </if>		    
+		order by
+			e.dept_code,e.job_code		
+	</select>
+	
 	<resultMap type="empDetail" id="empDetailMap"></resultMap>
 </mapper>
