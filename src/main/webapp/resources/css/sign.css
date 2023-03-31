@@ -94,7 +94,21 @@
 
 .div-sign-all-title {
 	padding: 30px 30px 20px 30px;
+	display: flex;
+	justify-content: space-between;
+    align-items: flex-end;
+}
+
+.div-sign-all-title .title {
 	font-size: large;
+}
+
+.div-sign-all-title .link {
+	font-size: small;
+}
+
+.div-sign-all-title .link a {
+	color: gray;
 }
 
 .div-sign-all-tbl {

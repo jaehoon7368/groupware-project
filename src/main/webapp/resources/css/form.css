@@ -14,6 +14,14 @@
 	border-radius: 5px;
 }
 
+.div-sign-btn-update {
+	display: none;
+}
+
+.div-sign-tbl-update {
+	display: none;
+}
+
 .sign-status-modal {
 	width: 500px;
 }
