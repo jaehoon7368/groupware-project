@@ -193,6 +193,13 @@
 							document.querySelectorAll('[name=_amount]').forEach((amount) => {
 								amount.addEventListener('keyup', (e) => {
 									keyupChange(e.target.value, amount);
+									
+									const price = e.target.parentElement.nextElementSibling.children[0];
+									const totalPrice = e.target.parentElement.nextElementSibling.nextElementSibling.children[0];
+									if (price.value) {
+										const multi = Number(e.target.value.replaceAll(',', '')) * Number(price.value.replaceAll(',', ''));
+										totalPrice.value = multi.toLocaleString('ko-KR');
+									}
 								});
 							});
 							

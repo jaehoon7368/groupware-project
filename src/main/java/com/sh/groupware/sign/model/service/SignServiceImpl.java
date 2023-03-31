@@ -70,6 +70,12 @@ public class SignServiceImpl implements SignService {
 	
 	
 	@Override
+	public int updateDayOffForm(DayOffForm dayOff) {
+		return signDao.updateDayOffForm(dayOff);
+	} // updateDayOffForm() end
+	
+	
+	@Override
 	public int insertSignTripForm(TripForm tripForm, SignEntity sign) {
 		int result = signDao.insertSign(sign);
 		tripForm.setSignNo(sign.getNo());
@@ -89,6 +95,12 @@ public class SignServiceImpl implements SignService {
 	
 	
 	@Override
+	public int updateTripForm(TripForm trip) {
+		return signDao.updateTripForm(trip);
+	} // updateTripForm() end
+	
+	
+	@Override
 	public int insertSignResignationForm(ResignationForm resignation, SignEntity sign) {
 		int result = signDao.insertSign(sign);
 		resignation.setSignNo(sign.getNo());
@@ -99,6 +111,12 @@ public class SignServiceImpl implements SignService {
 		
 		return result;
 	} // insertSignResignationForm() end
+	
+	
+	@Override
+	public int updateResignationForm(ResignationForm resignation) {
+		return signDao.updateResignationForm(resignation);
+	} // updateResignationForm() end
 
 	
 	@Override
@@ -111,6 +129,12 @@ public class SignServiceImpl implements SignService {
 	public int insertProductForm(ProductForm productForm) {
 		return signDao.insertProductForm(productForm);
 	} // insertProductForm() end
+	
+	
+	@Override
+	public int updateProductForm(ProductForm product) {
+		return signDao.updateProductForm(product);
+	} // updateProductForm() end
 
 
 	@Override
@@ -325,5 +349,17 @@ public class SignServiceImpl implements SignService {
 	public List<Sign> findByEmpIdMySignStatus(Map<String, Object> param) {
 		return signDao.findByEmpIdMySignStatus(param);
 	} // findByEmpIdMySignStatus() end
+	
+	
+	@Override
+	public List<Map<String, Object>> findByEmpIdToBeNoDateDayOff(String empId) {
+		return signDao.findByEmpIdToBeNoDateDayOff(empId);
+	} // findByEmpIdToBeNoDateDayOff() end
+	
+	
+	@Override
+	public List<Map<String, Object>> findByEmpIdToBeNoDateTrip(String empId) {
+		return signDao.findByEmpIdToBeNoDateTrip(empId);
+	} // findByEmpIdToBeNoDateTrip() end
 	
 } // class end

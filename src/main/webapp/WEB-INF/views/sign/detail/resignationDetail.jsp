@@ -112,14 +112,14 @@
 								</script>
 								
 								<br />
-								<div class="div-sign-tbl">
+								<div class="div-sign-tbl div-sign-tbl-detail">
 									<table class="sign-tbl-bottom">
 										<tbody>
 											<tr class="sign-tbl-bottom-tr">
 												<th>긴급 문서</th>
 												<td colspan="3">
-													<input type="radio" name="emergency" id="emergencyY" value="Y" ${sign.emergency == 'Y' ? 'checked' : 'disabled'} /><label for="emergencyY">여</label>
-													<input type="radio" name="emergency" id="emergencyN" value="N" ${sign.emergency == 'N' ? 'checked' : 'disabled'} /><label for="emergencyN">부</label>
+													<input type="radio" name="emergency" id="_emergencyY" value="Y" ${sign.emergency == 'Y' ? 'checked' : 'disabled'} /><label for="_emergencyY">여</label>
+													<input type="radio" name="emergency" id="_emergencyN" value="N" ${sign.emergency == 'N' ? 'checked' : 'disabled'} /><label for="_emergencyN">부</label>
 												</td>
 											</tr>
 											<tr class="sign-tbl-bottom-tr">
@@ -153,10 +153,88 @@
 										</tbody>
 									</table>
 								</div>
+								
+								<div class="div-sign-tbl div-sign-tbl-update">
+									<form:form action="${pageContext.request.contextPath}/sign/resignationUpdate.do" method="post" name="resignationUpdateFrm">
+										<table class="sign-tbl-bottom">
+											<tbody>
+											<tr class="sign-tbl-bottom-tr">
+												<th>긴급 문서</th>
+												<td colspan="3">
+													<input type="radio" name="emergency" id="emergencyY" value="Y" ${sign.emergency == 'Y' ? 'checked' : ''} /><label for="emergencyY">여</label>
+													<input type="radio" name="emergency" id="emergencyN" value="N" ${sign.emergency == 'N' ? 'checked' : ''} /><label for="emergencyN">부</label>
+												</td>
+											</tr>
+											<tr class="sign-tbl-bottom-tr">
+												<th>입사일</th>
+												<td><input type="date" name="start-date" id="start-date" value="${sessionScope.loginMember.hireDate}" readOnly/></td>
+												<th>퇴사일</th>
+												<td>
+													<input type="hidden" name="no" value="${resignation.no}" />
+													<input type="hidden" name="signNo" value="${sign.no}" />
+													<input type="date" name="end-date" id="endDate" value="${resignation.endDate}" />
+												</td>
+											</tr>
+											<tr class="sign-tbl-bottom-tr">
+												<th>직급</th>
+												<th>사번</th>
+												<th>성명</th>
+												<th>근무부서</th>
+											</tr>
+											<tr class="sign-tbl-bottom-tr">
+												<td>${sign.jobTitle}</td>
+												<td>${sign.empId}</td>
+												<td>${sign.name}</td>
+												<td>${sign.deptTitle}</td>
+											</tr>
+											<tr>
+												<th colspan="4">퇴직 사유</th>
+											</tr>
+											<tr class="sign-tbl-bottom-tr">
+												<td colspan="4">
+													<input type="hidden" name="no" value="${resignation.no}" />
+													<input type="hidden" name="signNo" value="${sign.no}" />
+													<textarea rows="10" id="reason" name="reason">${resignation.reason}</textarea>
+												</td>
+											</tr>
+										</tbody>
+										</table>
+									</form:form>
+								</div>
 							</div>
 						</div>
 						<!-- 결재 문서 end -->
 						<script>
+							const detailBtn = document.querySelector('.div-sign-btn-detail');
+							const detailDiv = document.querySelector('.div-sign-tbl-detail');
+							const updateBtn = document.querySelector('.div-sign-btn-update');
+							const updateDiv = document.querySelector('.div-sign-tbl-update');
+							
+							/* 문서 수정 버튼 클릭 */
+							const signUpdateFrm = () => {
+								detailBtn.style.display = 'none';
+								detailDiv.style.display = 'none';
+								updateBtn.style.display = 'inline-block';
+								updateDiv.style.display = 'inline-block';
+							}; // signUpdateFrm end
+							
+							
+							/* 사직서 수정 폼 제출 */
+							const signUpdateOk = () => {
+								const frm = document.resignationUpdateFrm;
+								const reason = frm.reason;
+								
+								if (/^\s+$/.test(reason.value) || !reason.value) {
+									alert('퇴사 사유를 작성해주세요.');
+									reason.select();
+									return false;
+								}
+								
+								frm.submit();
+							};
+							
+							
+							/* 결재, 보류, 수정 */
 							const signStatusUpdate = (status) => {
 								const modal = signStatusUpdateModal;
 								const h5 = modal.querySelector('h5');

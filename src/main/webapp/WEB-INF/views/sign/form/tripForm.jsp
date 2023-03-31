@@ -192,7 +192,7 @@
 						</div>
 						<!-- 결재 문서 end -->
 						<script>
-							/* 연차신청서 폼 제출 */
+							/* 출장신청서 폼 제출 */
 							const signCreate = () => {
 								const frm = document.tripFrm;
 								const location = frm.location;

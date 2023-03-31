@@ -114,8 +114,8 @@
 								</script>
 								
 								<br />
-								<form:form action="${pageContext.request.contextPath}/sign/productUpdate.do" method="post" name="productUpdateFrm">
-									<div class="div-sign-tbl">
+								<div class="div-sign-tbl">
+									<form:form action="${pageContext.request.contextPath}/sign/productUpdate.do" method="post" name="productUpdateFrm">
 										<table class="sign-tbl-bottom">
 											<tbody>
 												<tr>
@@ -155,8 +155,8 @@
 												</c:forEach>
 											</tbody>
 										</table>
-									</div>
-								</form:form>
+									</form:form>
+								</div>
 							</div>
 						</div>
 						<!-- 결재 문서 end -->

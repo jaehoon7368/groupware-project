@@ -28,4 +28,18 @@
 			emp_id = #{empId}
 			and TRUNC(reg_date) = TO_DATE(#{time})
 	</update>
+	
+	
+	<select id="findByEmpIdNoDate" resultType="hashMap">
+		select
+			state,
+			reg_date
+		from
+			working_management
+		where
+			emp_id = #{empId}
+			and
+			state in ('출장', '반차', '연차')
+	</select>
+	
 </mapper>

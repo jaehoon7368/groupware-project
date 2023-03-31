@@ -101,7 +101,7 @@
 		where
 			status_emp_id = #{empId}
 			and
-			status in ('W', 'H', 'R')
+			status in ('W', 'H')
 		order by
 			complete desc, reg_date
 	</select>
@@ -170,6 +170,35 @@
 				where 
 					emp_id = #{empId}
 			)
+	</select>
+	
+	
+	<select id="findByEmpIdToBeNoDateDayOff" resultType="hashMap">
+		select
+		    d.type,
+		    d.start_date,
+		    d.end_date
+		from
+		    dayoffform d left join sign s
+		        on d.sign_no = s.no
+		where
+		    s.complete = 'N'
+		    and
+		    s.emp_id = #{empId}
+	</select>
+	
+	
+	<select id="findByEmpIdToBeNoDateTrip" resultType="hashMap">
+		select
+		    t.start_date,
+		    t.end_date
+		from
+		    tripform t left join sign s
+		        on t.sign_no = s.no
+		where
+		    s.complete = 'N'
+		    and
+		    s.emp_id = #{empId}
 	</select>
 	
 </mapper>

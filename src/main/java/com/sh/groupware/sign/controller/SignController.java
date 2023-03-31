@@ -1,6 +1,9 @@
 package com.sh.groupware.sign.controller;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,11 +75,117 @@ public class SignController {
 	} // sign() end
 	
 	
+	public List<Map<String, Object>> noDateList(String empId) {
+		List<Map<String, Object>> noDateList = new ArrayList<>();
+		
+		List<Map<String, Object>> list = workingService.findByEmpIdNoDate(empId);
+		Map<String, Object> param = new HashMap<>();
+		
+		if (list.size() > 0) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+			for (Map<String, Object> map : list) {
+				param.put("state", map.get("STATE"));
+				String reg = String.valueOf(map.get("REG_DATE"));
+				log.debug("reg = {}", reg);
+				
+				LocalDate regDate = LocalDate.parse(reg, formatter);
+				log.debug("regDate = {}", regDate);
+				
+				param.put("reg_date", regDate);
+				noDateList.add(param);
+			}
+		}
+		
+		return noDateList;
+	} // noDateList() end
+	
+	
+	public List<Map<String, Object>> toBeNoDateList(String empId) {
+		List<Map<String, Object>> toBeNoDateList = new ArrayList<>();
+		Map<String, Object> param = new HashMap<>();
+		
+		// 예정된 연차 및 반차 날짜
+		List<Map<String, Object>> toBeNoDateDayOffList = signService.findByEmpIdToBeNoDateDayOff(empId);
+		log.debug("toBeNoDateDayOffList = {}", toBeNoDateDayOffList);
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+		if (toBeNoDateDayOffList.size() > 0) {
+			for (Map<String, Object> map : toBeNoDateDayOffList) {
+				switch (String.valueOf(map.get("TYPE"))) {
+				case "D":
+					param.put("state", "연차 예정");
+					break;
+				case "H":
+					param.put("state", "반차 예정");
+					break;
+				}
+				
+				String start = String.valueOf(map.get("START_DATE"));
+				String end = String.valueOf(map.get("END_DATE"));
+				log.debug("start = {}, end = {}", start, end);
+				
+				LocalDate startDate = LocalDate.parse(start, formatter);
+				LocalDate endDate = LocalDate.parse(end, formatter);
+				log.debug("startDate = {}, endDate = {}", startDate, endDate);
+				
+				int betweenDays = (int) Duration.between(startDate.atStartOfDay(), endDate.atStartOfDay()).toDays();
+				log.debug("betweenDays = {}", betweenDays);
+				
+				for (int j = 0; j <= betweenDays; j++) {
+					param.put("reg_date", startDate.plusDays(j));
+					toBeNoDateList.add(param);
+				}
+				
+			}
+		}
+		
+		
+		// 예정된 출장 날짜
+		List<Map<String, Object>> toBeNoDateTripList = signService.findByEmpIdToBeNoDateTrip(empId);
+		log.debug("toBeNoDateTripList = {}", toBeNoDateTripList);
+		
+		if (toBeNoDateTripList.size() > 0) {
+			param.put("state", "출장 예정");
+			for (Map<String, Object> map : toBeNoDateDayOffList) {
+				String start = String.valueOf(map.get("START_DATE"));
+				String end = String.valueOf(map.get("END_DATE"));
+				log.debug("start = {}, end = {}", start, end);
+				
+				LocalDate startDate = LocalDate.parse(start, formatter);
+				LocalDate endDate = LocalDate.parse(end, formatter);
+				log.debug("startDate = {}, endDate = {}", startDate, endDate);
+				
+				int betweenDays = (int) Duration.between(startDate.atStartOfDay(), endDate.atStartOfDay()).toDays();
+				log.debug("betweenDays = {}", betweenDays);
+				
+				for (int j = 0; j <= betweenDays; j++) {
+					param.put("reg_date", startDate.plusDays(j));
+					toBeNoDateList.add(param);
+				}
+			}
+		}
+		
+		return toBeNoDateList;
+	} // toBeNoDateList() end
+	
+	
 	@GetMapping("/form/dayOff.do")
 	public String dayOff(Authentication authentication, Model model) {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		double leaveCount = signService.findByEmpIdTotalCount(empId);
 		
+		Map<String, Object> param = new HashMap<>();
+		
+		// 확정된 연차 및 반차, 출장 날짜
+		List<Map<String, Object>> noDateList = noDateList(empId);
+		log.debug("noDateList = {}", noDateList);
+		
+		// 예정된 연차 및 반차, 출장 날짜
+		List<Map<String, Object>> toBeNoDateList = toBeNoDateList(empId);
+		log.debug("toBeNoDateList = {}", toBeNoDateList);
+		
+		model.addAttribute("noDateList", noDateList);
+		model.addAttribute("toBeNoDateList", toBeNoDateList);
 		model.addAttribute("leaveCount", leaveCount);
 		return "sign/form/dayOffForm";
 	} // dayOff() end
@@ -102,6 +211,16 @@ public class SignController {
 		
 		return "redirect:/sign/sign.do";
 	} // dayOffCreate() end
+	
+	
+	@PostMapping("/dayOffUpdate.do")
+	public String dayOffUpdate(DayOffForm dayOff) {
+		log.debug("dayOff = {}", dayOff);
+		
+		int result = signService.updateDayOffForm(dayOff);
+		
+		return "redirect:/sign/signDetail.do?no=" + dayOff.getSignNo() + "&type=D";
+	} // dayOffUpdate() end
 	
 	
 	@GetMapping("/form/trip.do")
@@ -130,6 +249,16 @@ public class SignController {
 		
 		return "redirect:/sign/sign.do";
 	} // tripCreate() end
+	
+	
+	@PostMapping("/tripUpdate.do")
+	public String tripUpdate(TripForm trip) {
+		log.debug("trip = {}", trip);
+		
+		int result = signService.updateTripForm(trip);
+		
+		return "redirect:/sign/signDetail.do?no=" + trip.getSignNo() + "&type=T";
+	} // tripUpdate() end
 	
 	
 	@GetMapping("/form/product.do")
@@ -169,6 +298,30 @@ public class SignController {
 	} // productCreate() end
 	
 	
+	@PostMapping("/productUpdate.do")
+	public String productUpdate(ProductForm productForm) {
+		log.debug("productForm = {}", productForm);
+		
+		int result = 0;
+		String signNo = productForm.getSignNo();
+		
+		List<ProductForm> productFormList = productForm.getProductFormList();
+		for (ProductForm product : productFormList) {
+			product.setSignNo(signNo);
+			log.debug("product = {}", product);
+			
+			if (product.getName() != "") {
+				if (product.getNo() != null)
+					result = signService.updateProductForm(product);
+				else
+					result = signService.insertProductForm(product);
+			}
+		}
+		
+		return "redirect:/sign/signDetail.do?no=" + signNo + "&type=P";
+	} // productUpdate() end
+	
+	
 	@GetMapping("/form/resignation.do")
 	public String resignation() {
 		return "sign/form/resignationForm";
@@ -194,6 +347,16 @@ public class SignController {
 		
 		return "redirect:/sign/sign.do";
 	} // resignationCreate() end
+	
+	
+	@PostMapping("/resignationUpdate.do")
+	public String resignationUpdate(ResignationForm resignation) {
+		log.debug("resignation = {}", resignation);
+		
+		int result = signService.updateResignationForm(resignation);
+		
+		return "redirect:/sign/signDetail.do?no=" + resignation.getSignNo() + "&type=R";
+	} // resignationUpdate() end
 	
 	
 	@GetMapping("/signDetail.do")
@@ -281,6 +444,11 @@ public class SignController {
 			if (signStatus.getEmpId().equals(signStatusList.get(i).getEmpId())) {
 				// 내 결제 상태 업데이트
 				result = signService.updateMySignStatus(signStatus);
+				
+				// 결재상태가 반려인 경우
+				if (Status.R == signStatus.getStatus()) {
+					result = signService.updateSignComplete(sign.getNo());
+				} // if end
 				
 				// 내가 마지막 결재자인 경우
 				if (i == signStatusList.size() - 1) {
@@ -415,7 +583,7 @@ public class SignController {
 	
 	@GetMapping("/signUpdate.do")
 	public String signUpdate(@RequestParam String no, @RequestParam String type, Model model) {
-log.debug("no = {}, type = {}", no, type);
+		log.debug("no = {}, type = {}", no, type);
 		
 		Sign sign = signService.findByNoSign(no);
 		
@@ -451,5 +619,26 @@ log.debug("no = {}, type = {}", no, type);
 		
 		return "sign/signHome";
 	} // signUpdate() end
+	
+	
+	@GetMapping("/mySign.do")
+	public String mySign(@RequestParam String status, Authentication authentication, Model model) {
+		log.debug("status = {}", status);
+		
+		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+		
+		List<Sign> myCreateSignList;
+		
+		if ("end".equals(status)) {
+			// 내가 작성한 결재 완료 목록
+			myCreateSignList = signService.findByMyCreateSignListComlete(empId);
+		} else {
+			// 내가 작성한 결재 중인 목록
+			myCreateSignList = signService.findByMyCreateSignListIng(empId);
+		}
+		
+		model.addAttribute("myCreateSignList", myCreateSignList);
+		return "sign/mySign";
+	} // mySign() end
 	
 } // class end
