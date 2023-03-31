@@ -1,6 +1,7 @@
 package com.sh.groupware.dayOff.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -21,5 +22,7 @@ public interface DayOffDao {
 	// 연차 사용기간 년도
 	@Select("select day_off_year from dayoff group by day_off_year order by day_off_year")
 	List<DayOff> selectDayOffYear();
+
+	List<DayOffDetail> selectOneEmpDayOffListYear(Map<String, Object> param);
 
 } // interface end

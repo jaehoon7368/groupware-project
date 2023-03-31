@@ -30,5 +30,7 @@ public interface EmpService {
 	List<EmpDetail> selectEmpDeptList(String deptCode);
 
 	List<EmpDetail> selectEmpAll();
+
+	double selectBaseDayOff(String empId);
 	
 }

@@ -38,6 +38,25 @@
 	        d.no desc
 	</select>
 	
+	<select id="selectOneEmpDayOffListYear" resultMap="dayOffDetailMap">
+		select 
+	        d.day_off_year,
+	        d.start_date,
+	        d.end_date,
+	        d.count,
+	        d.leave_count,
+	        df.type,
+	        df.content
+	    from 
+	        dayoff d join dayoffform df
+	        on d.form_no = df.no
+	    where
+	    	d.emp_id = #{empId}
+	    	and day_off_year = #{year}
+	    order by 
+	        d.no desc
+	</select>
+	
 	<select id="selectLastLeaveCount" resultMap="dayOffDetailMap">
 		select  
 		  d.*  

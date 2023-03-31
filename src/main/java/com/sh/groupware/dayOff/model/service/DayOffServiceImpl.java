@@ -1,6 +1,7 @@
 package com.sh.groupware.dayOff.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,10 @@ public class DayOffServiceImpl implements DayOffService {
 	public List<DayOff> selectDayOffYear() {
 		return dayOffDao.selectDayOffYear();
 	} //selectDayOffYear() end
+	
+	@Override
+	public List<DayOffDetail> selectOneEmpDayOffListYear(Map<String, Object> param) {
+		return dayOffDao.selectOneEmpDayOffListYear(param);
+	}
 	
 } // class end
