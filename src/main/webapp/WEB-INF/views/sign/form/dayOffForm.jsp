@@ -337,7 +337,7 @@
 									return false;
 								}
 								
-								const noDateStart = noDateList.findIndex((noDate) => {
+								/* const noDateStart = noDateList.findIndex((noDate) => {
 									return noDate.regDate == startDate.value;
 								});
 								
@@ -376,7 +376,21 @@
 									alert('현재 선택된 종료 날짜는 ' + toBeNoDateList[tobeStart].state + ' (으)로 불가합니다.');
 									end.select();
 									return false;
-								}
+								} */
+								
+								noDateList.some((noDate) => {
+									if (new Date(startDate.value) <= new Date(noDate.regDate) && new Date(endDate.value) >= new Date(noDate.regDate)) {
+										alert('현재 선택된 기간에는 다른 일정이 있는 날짜가 존재합니다. 확인 후 날짜를 다시 선택해주세요.');
+										return true;
+									}
+								});
+								
+								toBeNoDateList.some((tobe) => {
+									if (new Date(startDate.value) <= new Date(tobe.regDate) && new Date(endDate.value) >= new Date(tobe.regDate)) {
+										alert('현재 선택된 기간에는 다른 일정이 있는 날짜가 존재합니다. 확인 후 날짜를 다시 선택해주세요.');
+										return true;
+									}
+								});
 								
 								//frm.submit();
 							};
