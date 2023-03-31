@@ -1,5 +1,7 @@
 package com.sh.groupware.common.controller;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +33,21 @@ public class CommonController {
 		List<RecentNotification> reNotis = commonService.selectAllReNoti(); 
 		log.debug("reNotis={} ",reNotis);
 		
+		// 남은 시간 계산 
+		for(RecentNotification reNoti :reNotis ) {
+			LocalDateTime past = reNoti.getRegDate();
+			LocalDateTime now = LocalDateTime.now();
+			Duration diff = Duration.between(past, now);
+			long hours = diff.toHours();
+			long minutes = diff.toMinutes();
+			reNoti.setHour(hours);
+			reNoti.setMin(minutes);
+		}
+		
+		
 		model.addAttribute("reNotis",reNotis);
 		return "common/home";
 	} // home() end
-	
 	
 	
 	

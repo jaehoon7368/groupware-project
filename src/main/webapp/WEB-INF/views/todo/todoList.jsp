@@ -28,9 +28,6 @@
 			<div class="container-title"></div>
 			<div class="home-topbar topbar-div">
 				<div>
-					<a href="#" id="home-my-img"> <img
-						src="${pageContext.request.contextPath}/resources/images/sample.jpg"
-						alt="" class="my-img">
 					</a>
 				</div>
 				<div id="my-menu-modal">
