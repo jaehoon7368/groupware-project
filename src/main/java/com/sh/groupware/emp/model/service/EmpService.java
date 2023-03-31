@@ -32,5 +32,7 @@ public interface EmpService {
 	List<EmpDetail> selectEmpAll();
 
 	double selectBaseDayOff(String empId);
+
+	List<EmpDetail> empFinderList(Map<String, Object> param);
 	
 }

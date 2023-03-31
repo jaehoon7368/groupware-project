@@ -219,6 +219,7 @@ public class EmpController {
 		model.addAttribute("dayOffYear", dayOffYear);
 	}
 	
+	//내 연차내역 검색
 	@GetMapping("/selectAnnualYear.do")
 	public String selectAnnualYear(String year,Model model,Authentication authentication) {
 		log.debug("year = {}",year);
@@ -253,6 +254,19 @@ public class EmpController {
 		List<EmpDetail> empList = empService.selectEmpAll();
 		
 		model.addAttribute("empList", empList);
+	}
+	
+	//전사 인사정보 검색
+	@GetMapping("/empFinder.do")
+	public String empFinder(String searchType, String searchKeyword,Model model) {
+		Map<String,Object> param = new HashMap<>();
+		param.put("searchType", searchType);
+		param.put("searchKeyword", searchKeyword);
+		
+		List<EmpDetail> empList = empService.empFinderList(param);
+		model.addAttribute("empList", empList);
+		
+		return "emp/empAllInfo";
 	}
 
 }
