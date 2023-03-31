@@ -17,11 +17,9 @@
 	<div class="home-container">
 		<!-- 상단 타이틀 -->
 		<div class="top-container">
-			<div class="container-title">각자 기능</div>
 			<div class="home-topbar topbar-div">
 				<div>
 					<a href="#" id="home-my-img"> <img
-						src="${pageContext.request.contextPath}/resources/images/sample.jpg"
 						alt="" class="my-img">
 					</a>
 				</div>
