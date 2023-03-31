@@ -212,9 +212,18 @@ p.title {
     font-size: 18px;
     color: gray;
 }
+#insert-Annual-box{
+    height: 30px;
+}
+#insert-Annual-box a{
+    float: right;
+    color: black;
+    font-size: 14px;
+    margin-right: 5px;
+}
 #annual-container{
     position: relative;
-    border: 1px solid gray;
+    border: .5px solid gray;
     height: 100px;
     width: 100%;
 }
