@@ -19,5 +19,11 @@ public class RecentNotification {
 	private LocalDateTime regDate;
 	private Emp emp;
 	private Attachment attachment;
+	private long hour;
+	private long min;
+	
+	
+	
+	
 	
 }

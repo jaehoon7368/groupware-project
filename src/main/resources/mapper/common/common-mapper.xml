@@ -10,7 +10,7 @@
 			*
 		from
 			recentnotification
-		order by no asc
+		order by no desc
 	</select>
 	
 	

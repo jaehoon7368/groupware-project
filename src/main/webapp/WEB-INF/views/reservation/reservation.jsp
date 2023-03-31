@@ -87,18 +87,20 @@
 	  background-color: #3e8e41;
 	}
 /* 테이블*/
+.left-container {
+    display: flex;
+    flex-direction: row;
+    align-content: space-around;
+    flex-wrap: wrap;
+}
 </style>
 	<!-- 왼쪽 추가 메뉴 -->
 	<div class="left-container">
-		<div class="container-title"></div>
-		<div class="container-btn">
-		<h2>예약</h2>
-		</div>
 		<div class="accordion-box">
 			<ul class="container-list">
 				<li>
-					<p class="title font-medium">기능별 메뉴1 <a href="${pageContext.request.contextPath }/reservation/asset1.do">본사1층회의실</a></p>
-					<div class="con">
+					<p class="title font-medium">기능별 메뉴1 </p>
+					<div class="con"> 
 						<ul class="container-detail font-small">
 							<li><a class="container-a" href="#">본사 1층 도회의실</a></li>
 							<li><a class="container-a" href="#">오오오</a></li>

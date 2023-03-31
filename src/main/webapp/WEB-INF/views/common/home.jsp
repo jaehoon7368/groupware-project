@@ -186,9 +186,10 @@
 								<c:if test="${vs.index <4}">
 
 									<c:set  var = "notiType" value=""/>
+									        <c:set var="notiType" value="전자결재"/>
 									<c:choose>
 										<c:when test="${fn:contains(reNoti.pkNo,'tdb') }">
-											<c:set var="notiType" value="할일게시판"/>
+											<c:set var="notsiType" value="할일게시판"/>
 										</c:when>
 										<c:when test="${fn:contains(reNoti.pkNo,'r') }">
 											<c:set var="notiType" value="보고서"/>
@@ -205,8 +206,9 @@
 		        							<img src="${pageContext.request.contextPath }/resources/upload/emp/${reNoti.attachment.renameFilename}" alt="" class="my-img">
 		        						</div>
 						            	<div class="right-noti">
-						               		<p> ${notiType}등록! '${reNoti.emp.name}' ${reNoti.emp.jobTitle }이 '${notiType}'를 등록하였습니다. !</p>
-						               		<p><span>2시간전 </span> <span>한성준과장</span></p>
+						               		<p> [<span class="noti-type-span">${notiType}등록</span>] '${reNoti.emp.name}' ${reNoti.emp.jobTitle }님 (이)가 <br />'${notiType}'를 등록하였습니다.</p>
+  										<p><span class="noti-time-span">${reNoti.regDate }</span><span> </span></p>
+    
 				          				</div>
 				       				</div>
 				       				</c:if>
@@ -219,28 +221,6 @@
 						</div>
 					</div>
 				</div>
-<style>
-/*최근알림*/
-.notification-list{
-    width: 300px;
-   	margin-left : 0px;
-    height: 26%;
-    display: flex;
-    border: 1px solid black;
-}
-.left-noti{
-    width: 20%;
-}
-.right-noti{
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding-top:5px
-}
-
-/*최근알림*/
-</style>
 
 <script src="${pageContext.request.contextPath}/resources/js/emp/emp.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
