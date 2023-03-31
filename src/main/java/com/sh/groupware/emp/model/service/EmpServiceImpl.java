@@ -147,4 +147,9 @@ public class EmpServiceImpl implements EmpService {
 	public double selectBaseDayOff(String empId) {
 		return empDao.selectBaseDayOff(empId);
 	}
+	
+	@Override
+	public List<EmpDetail> empFinderList(Map<String, Object> param) {
+		return empDao.empFinderList(param);
+	} //empFinderList() end
 }

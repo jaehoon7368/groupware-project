@@ -6,10 +6,44 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+<%
+	
+	String searchType = request.getParameter("searchType");
+	String searchKeyword = request.getParameter("searchKeyword");
+%>   
+
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="Emp" name="title"/>
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/emp/empAllInfo.css">
+<style>
+div#search-memberDept {display: <%= searchType == null || "dept_title".equals(searchType) ? "inline-block" : "none" %>;}
+div#search-memberJob {display: <%= "job_title".equals(searchType) ? "inline-block" : "none" %>;}
+div#search-memberName {display: <%= "name".equals(searchType) ? "inline-block" : "none" %>;}
+</style>
+<script>
+window.addEventListener('load', () => {
+	document.querySelector("#searchType").addEventListener('change', (e) => {
+		console.log(e.target.value); // member_id, member_name, gender
+		
+		// 모두 숨김
+		document.querySelectorAll(".search-type").forEach((div) => {
+			div.style.display = "none";
+		});
+		
+		// 현재선택된 값에 상응하는 div만 노출
+		let id; 
+		switch(e.target.value){
+		case "dept_title" : id = "search-memberDept"; break; 
+		case "job_title" : id = "search-memberJob"; break; 
+		case "name" : id = "search-memberName"; break; 
+		}
+		
+		document.querySelector("#" + id).style.display = "inline-block";
+	});
+});
+
+</script>
  <jsp:include page="/WEB-INF/views/emp/empLeftBar.jsp" />
 <sec:authentication property="principal" var="loginEmp"/>
 	
@@ -57,14 +91,38 @@
                     <!-- 본문 -->
                     <div class="div-padding">
 
-                        <div id="search-box">
-                            <label for="search-year">검색 조건 :</label>
-                                <select id="search-year" name="search-year">
-                                	<option selected>선택</option>
-                                    <option value="1">이름</option>
-                                    <option value="2">부서</option>
-                                </select>
-                        </div>
+                        <div id="search-container">
+						    <select id="searchType">
+						        <option value="dept_title" <%= "dept_title".equals(searchType) ? "selected" : "" %>>부서명</option>
+						        <option value="job_title" <%= "job_title".equals(searchType) ? "selected" : "" %>>직급</option>				
+						        <option value="name" <%= "name".equals(searchType) ? "selected" : "" %>>이름</option>
+						    </select>
+						    <div id="search-memberDept" class="search-type">
+						        <form action="<%=request.getContextPath()%>/emp/empFinder.do">
+							            <input type="hidden" name="searchType" value="dept_title"/>
+							            <input type="text" name="searchKeyword"  placeholder="검색할 부서명을 입력하세요." 
+							            	value="<%= "dept_title".equals(searchType) ? searchKeyword : "" %>"/>
+							            <button type="submit">검색</button>			
+						        </form>	
+						    </div>
+						    <div id="search-memberJob" class="search-type">
+						        <form action="<%=request.getContextPath()%>/emp/empFinder.do">
+							            <input type="hidden" name="searchType" value="job_title"/>
+							            <input type="text" name="searchKeyword"  placeholder="검색할 직급을 입력하세요." 
+							            	value="<%= "job_title".equals(searchType) ? searchKeyword : "" %>"/>
+							            <button type="submit">검색</button>			
+						        </form>	
+						    </div>
+						    <div id="search-memberName" class="search-type">
+						        <form action="<%=request.getContextPath()%>/emp/empFinder.do">
+							            <input type="hidden" name="searchType" value="name"/>
+							            <input type="text" name="searchKeyword" placeholder="검색할 이름을 입력하세요."
+							            	value="<%= "name".equals(searchType) ? searchKeyword : "" %>" />
+							            <button type="submit">검색</button>			
+						        </form>	
+						    </div>
+						  
+					    </div> <!-- search-container end -->
 
                         <div>
                         
@@ -82,28 +140,35 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<c:forEach items="${empList}" var="emp">
-                                        <tr>
-                                            <td width="70">
-                                                <p class="font-bold" id="dept-name"><span>
-                                                <c:if test="${!empty emp.renameFilename}">
-				                                    <img src="${pageContext.request.contextPath}/resources/upload/emp/${emp.renameFilename}"
-				                                        alt="" class="my-img">
-				                                </c:if>
-				                                <c:if test="${empty emp.renameFilename}">
-				                                    <img src="${pageContext.request.contextPath}/resources/images/default.png" alt=""
-				                                        class="my-img">
-				                                </c:if>
-                                                </span>${emp.name }</p>
-                                            </td>
-                                            <td width="100">${emp.empId }</td>
-                                            <td width="100">${emp.deptTitle }</td>
-                                            <td width="100">${emp.jobTitle }</td>
-                                            <td width="100">${emp.email }</td>
-                                            <td width="100">${emp.phone }</td>
-                                            <td width="100">${emp.hireDate }</td>  
-                                        </tr>
-                                        </c:forEach>
+                                    	<c:if test="${empty empList }">
+                                    		<tr>
+                                    			<td colspan="7">조회된 회원이 없습니다.</td>
+                                    		</tr>
+                                    	</c:if>
+                                    	<c:if test="${!empty empList }">
+	                                    	<c:forEach items="${empList}" var="emp">
+	                                        <tr>
+	                                            <td width="70">
+	                                                <p class="font-bold" id="dept-name"><span>
+	                                                <c:if test="${!empty emp.renameFilename}">
+					                                    <img src="${pageContext.request.contextPath}/resources/upload/emp/${emp.renameFilename}"
+					                                        alt="" class="my-img">
+					                                </c:if>
+					                                <c:if test="${empty emp.renameFilename}">
+					                                    <img src="${pageContext.request.contextPath}/resources/images/default.png" alt=""
+					                                        class="my-img">
+					                                </c:if>
+	                                                </span>${emp.name }</p>
+	                                            </td>
+	                                            <td width="100">${emp.empId }</td>
+	                                            <td width="100">${emp.deptTitle }</td>
+	                                            <td width="100">${emp.jobTitle }</td>
+	                                            <td width="100">${emp.email }</td>
+	                                            <td width="100">${emp.phone }</td>
+	                                            <td width="100">${emp.hireDate }</td>  
+	                                        </tr>
+	                                        </c:forEach>
+                                    	</c:if>
                                     </tbody>
                                 </table>
                             </div>

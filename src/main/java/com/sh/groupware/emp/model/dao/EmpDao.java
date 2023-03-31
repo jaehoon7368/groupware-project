@@ -61,5 +61,7 @@ public interface EmpDao {
 	//사원 기본 연차 가져오기
 	@Select("select base_day_off  from job j join emp e on j.job_code = e.job_code where e.emp_id = #{empId}" )
 	double selectBaseDayOff(String empId);
+
+	List<EmpDetail> empFinderList(Map<String, Object> param);
 	
 }

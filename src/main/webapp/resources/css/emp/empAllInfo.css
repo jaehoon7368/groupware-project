@@ -203,7 +203,48 @@ p.title {
 }
 
 /* 메인내용 */
-#date-box {
+#search-container {
+	width: 600px; 
+	margin-top: 30px;
+	padding:3px;
+	display: flex;
+}
+#search-container label{
+	color : gray;
+	font-weight: bold;
+}
+#search-container select{
+	width: 100px;
+    height: 30px;
+    border: .5px solid gray;
+    color: black;
+    margin-top: 3px;
+    font-size: 14px;
+    text-align: center;
+}
+#search-container input{
+	font-weight: bold;
+	width: 200px;
+	height : 30px;
+	font-size : 14px;
+	margin-left: 5px;
+	margin-top : 3px;
+    display: inline-block;
+}
+#search-container button{
+	font-size : 12px;
+	width: 50px;
+	height: 30px;
+	border: .5px solid gray;
+	display: inline-block;
+}
+#search-memberId{
+	width : 300px;
+	height: 30px;
+}
+
+
+date-box {
     text-align: center;
 }
 
@@ -212,27 +253,8 @@ p.title {
     color: gray;
 }
 
-#search-box {
-    margin-top: 30px;
-    margin-left: 5px;
-    display: flex;
-}
 
-#search-box label {
-    color: gray;
-    font-weight: bold;
-}
 
-#search-box select {
-    width: 100px;
-    height: 20px;
-    border: .5px solid gray;
-    color: black;
-    margin-left: 10px;
-    margin-top: 3px;
-    font-size: 14px;
-    text-align: center;
-}
 
 #emp-detail-table {
     width: 100%;
