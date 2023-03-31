@@ -202,6 +202,10 @@ public class EmpController {
 		
 		String empId = principal.getEmpId();
 		
+		// 사원 기본 연차 가져오기
+		double baseDayOff = empService.selectBaseDayOff(empId);
+		model.addAttribute("baseDayOff", baseDayOff);
+		
 		//내 전체 연차 내역
 		List<DayOffDetail> dayoffList = dayOffService.selectOneEmpDayOffList(empId);
 		model.addAttribute("dayoffList", dayoffList);
@@ -213,6 +217,34 @@ public class EmpController {
 		// 연차 사용기간 년도
 		List<DayOff> dayOffYear = dayOffService.selectDayOffYear();
 		model.addAttribute("dayOffYear", dayOffYear);
+	}
+	
+	@GetMapping("/selectAnnualYear.do")
+	public String selectAnnualYear(String year,Model model,Authentication authentication) {
+		log.debug("year = {}",year);
+		Emp principal = (Emp) authentication.getPrincipal();
+		
+		String empId = principal.getEmpId();
+		Map<String,Object> param = new HashMap<>();
+		param.put("empId", empId);
+		param.put("year", year);
+		
+		// 사원 기본 연차 가져오기
+		double baseDayOff = empService.selectBaseDayOff(empId);
+		model.addAttribute("baseDayOff", baseDayOff);
+		
+		//내 전체 연차 내역
+		List<DayOffDetail> dayoffList = dayOffService.selectOneEmpDayOffListYear(param);
+		model.addAttribute("dayoffList", dayoffList);
+		
+		//마지막 연차내역 (남은연차 계산용)
+		DayOffDetail dayoffDetail = dayOffService.selectLastLeaveCount(empId);
+		model.addAttribute("dayOffDetail", dayoffDetail);
+		
+		// 연차 사용기간 년도
+		List<DayOff> dayOffYear = dayOffService.selectDayOffYear();
+		model.addAttribute("dayOffYear", dayOffYear);
+		return "emp/empAnnual";
 	}
 	
 	//전사 인사정보

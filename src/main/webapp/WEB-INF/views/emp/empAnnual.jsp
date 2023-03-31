@@ -56,6 +56,9 @@
                         <div id="date-box">
                             <h4 id="yearAnnual"></h4>
                         </div>
+                         <div id="insert-Annual-box">
+                            <p><a href="${pageContext.request.contextPath}/sign/form/dayOff.do"><span><i class="fa-regular fa-pen-to-square"></i></span> 연차신청</a></p>
+                        </div>
 
                         <div id="annual-container">
                             <div id="annual-info-box">
@@ -69,15 +72,25 @@
                                 </div>
                                 <div>
                                     <p class="font-14 font-bold">총연차</p>
-                                    <h4 class="main-color">${dayOffDetail.baseDayOff }</h4>
+                                    <h4 class="main-color">${baseDayOff}</h4>
                                 </div>
                                 <div>
                                     <p class="font-14 font-bold">사용 연차</p>
-                                    <h4 class="main-color">${dayOffDetail.baseDayOff - dayOffDetail.leaveCount}</h4>
+                                    <c:if test="${empty dayOffDetail }">
+                                    	<h4 class="main-color">0.0</h4>
+                                    </c:if>
+                                    <c:if test="${!empty dayOffDetail }">
+	                                    <h4 class="main-color">${baseDayOff - dayOffDetail.leaveCount}</h4>
+                                    </c:if>
                                 </div>
                                 <div>
                                     <p class="font-14 font-bold">잔여 연차</p>
-                                    <h4 class="main-color">${dayOffDetail.leaveCount}</h4>
+                                     <c:if test="${empty dayOffDetail }">
+                                     	<h4 class="main-color">${baseDayOff}</h4>
+                                     </c:if>
+                                     <c:if test="${!empty dayOffDetail }">
+                                    	<h4 class="main-color">${dayOffDetail.leaveCount}</h4>
+                                     </c:if>                                     
                                 </div>
                             </div>
                         </div>
@@ -107,21 +120,28 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<c:forEach items="${ dayoffList}" var="day">
-	                                        <tr>
-	                                            <td width="100">${loginMember.name}</td>
-	                                            <td width="100">${loginMember.deptTitle} </td>
-	                                            <c:if test='${day.type == "D" }'>
-		                                            <td width="100">연차</td>
-	                                            </c:if>
-	                                            <c:if test='${day.type == "H" }'>
-		                                            <td width="100">반차</td>
-	                                            </c:if>
-	                                            <td width="200">${day.startDate} ~ ${day.endDate }</td>
-	                                            <td width="100">${day.count }</td>
-	                                            <td width="300">${day.content }</td>
-	                                        </tr>
-                                       </c:forEach>
+                                    	<c:if test="${empty dayoffList }">
+                                    		<tr>
+	                                    		<td colspan="6">조회된 내역이 없습니다.</td>
+                                    		</tr>
+                                    	</c:if>
+                                    	<c:if test="${!empty dayoffList }">
+	                                    	<c:forEach items="${ dayoffList}" var="day">
+		                                        <tr>
+		                                            <td width="100">${loginMember.name}</td>
+		                                            <td width="100">${loginMember.deptTitle} </td>
+		                                            <c:if test='${day.type == "D" }'>
+			                                            <td width="100">연차</td>
+		                                            </c:if>
+		                                            <c:if test='${day.type == "H" }'>
+			                                            <td width="100">반차</td>
+		                                            </c:if>
+		                                            <td width="200">${day.startDate} ~ ${day.endDate }</td>
+		                                            <td width="100">${day.count }</td>
+		                                            <td width="300">${day.content }</td>
+		                                        </tr>
+	                                       </c:forEach>
+                                    	</c:if>
                         
                                     </tbody>
                                 </table>
@@ -133,7 +153,20 @@
                     <!-- 본문 end -->
                 </div>
             </div>
+<form name="selectYearFrm" action="${pageContext.request.contextPath}/emp/selectAnnualYear.do" method="GET">
+	<input type="hidden" name="year"/>
+</form>
 <script>
+document.querySelector("#search-year").addEventListener('change', (e) => {
+		const yearAnnual = e.target;
+		console.log(yearAnnual.value);
+		
+		const frm = document.selectYearFrm;
+		frm.year.value = yearAnnual.value;
+		frm.submit(); 
+		
+});
+
 var yearNow = document.getElementById("yearAnnual");
         function clock() {
             var time = new Date();

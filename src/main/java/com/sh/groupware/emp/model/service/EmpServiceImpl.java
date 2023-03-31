@@ -142,4 +142,9 @@ public class EmpServiceImpl implements EmpService {
 	public List<EmpDetail> selectEmpAll() {
 		return empDao.selectEmpAll();
 	}
+	
+	@Override
+	public double selectBaseDayOff(String empId) {
+		return empDao.selectBaseDayOff(empId);
+	}
 }
