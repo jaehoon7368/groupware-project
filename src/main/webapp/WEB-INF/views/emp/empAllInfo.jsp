@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/emp/empAllInfo.css">
 <style>
 div#search-memberDept {display: <%= searchType == null || "dept_title".equals(searchType) ? "inline-block" : "none" %>;}
+div#search-memberJob {display: <%= "job_title".equals(searchType) ? "inline-block" : "none" %>;}
 div#search-memberName {display: <%= "name".equals(searchType) ? "inline-block" : "none" %>;}
 </style>
 <script>
@@ -34,6 +35,7 @@ window.addEventListener('load', () => {
 		let id; 
 		switch(e.target.value){
 		case "dept_title" : id = "search-memberDept"; break; 
+		case "job_title" : id = "search-memberJob"; break; 
 		case "name" : id = "search-memberName"; break; 
 		}
 		
@@ -91,7 +93,8 @@ window.addEventListener('load', () => {
 
                         <div id="search-container">
 						    <select id="searchType">
-						        <option value="dept_title" <%= "dept_title".equals(searchType) ? "selected" : "" %>>부서명</option>		
+						        <option value="dept_title" <%= "dept_title".equals(searchType) ? "selected" : "" %>>부서명</option>
+						        <option value="job_title" <%= "job_title".equals(searchType) ? "selected" : "" %>>직급</option>				
 						        <option value="name" <%= "name".equals(searchType) ? "selected" : "" %>>이름</option>
 						    </select>
 						    <div id="search-memberDept" class="search-type">
@@ -99,6 +102,14 @@ window.addEventListener('load', () => {
 							            <input type="hidden" name="searchType" value="dept_title"/>
 							            <input type="text" name="searchKeyword"  placeholder="검색할 부서명을 입력하세요." 
 							            	value="<%= "dept_title".equals(searchType) ? searchKeyword : "" %>"/>
+							            <button type="submit">검색</button>			
+						        </form>	
+						    </div>
+						    <div id="search-memberJob" class="search-type">
+						        <form action="<%=request.getContextPath()%>/emp/empFinder.do">
+							            <input type="hidden" name="searchType" value="job_title"/>
+							            <input type="text" name="searchKeyword"  placeholder="검색할 직급을 입력하세요." 
+							            	value="<%= "job_title".equals(searchType) ? searchKeyword : "" %>"/>
 							            <button type="submit">검색</button>			
 						        </form>	
 						    </div>
