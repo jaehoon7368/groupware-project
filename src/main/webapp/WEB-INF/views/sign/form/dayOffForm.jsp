@@ -13,6 +13,10 @@
 	
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/form.css">
 	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	
 	<jsp:include page="/WEB-INF/views/sign/signLeftBar.jsp" />
 	
 	<jsp:include page="/WEB-INF/views/sign/signCreate.jsp">
@@ -95,10 +99,12 @@
 													<td>
 														<span>
 															<span>
+																<!-- <input type="text" id="datepicker" name="startDate" class="dayoff-date" /> -->
 																<input id="start-date" name="startDate" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
 															</span>
 															&nbsp;~&nbsp; 
 															<span>
+																<!-- <input type="text" id="datepicker" name="endDate" class="dayoff-date" /> -->
 																<input id="end-date" name="endDate" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
 															</span>
 															&nbsp;&nbsp;
@@ -106,6 +112,16 @@
 																<span id="usingPointArea"></span>
 															</span>
 														</span>
+														<!-- <script>
+															const noDateList = [];
+															<c:forEach items="${noDateList}" var="noDate">
+																noDateList.push("${noDate.reg_date}");
+															</c:forEach>
+															<c:forEach items="${toBeNoDateList}" var="toBeNoDate">
+																noDateList.push("${toBeNoDate.reg_date}");
+															</c:forEach>
+															console.log(noDateList);
+														</script> -->
 													</td>
 												</tr>
 												<tr>
@@ -114,8 +130,8 @@
 													</td>
 													<td>
 														<span id="vacationHalfArea">
-															<input type="radio" name="half" id="A" value="A" /><label for="A">오전</label>
-															<input type="radio" name="half" id="P" value="P" /><label for="P">오후</label>
+															<input type="radio" name="half" id="A" value="A" disabled/><label for="A">오전</label>
+															<input type="radio" name="half" id="P" value="P" disabled/><label for="P">오후</label>
 															<input type="radio" name="half" id="X" value="X" checked /><label for="X">연차</label>
 														</span> 
 													</td>
@@ -155,6 +171,26 @@
 										${noDateList}
 										${toBeNoDateList}
 										<script>
+											/* 확정된 연차, 반차, 출장 날짜 목록 */
+											const noDateList = [];
+											<c:forEach items="${noDateList}" var="noDate">
+												noDateList.push({
+													regDate: "${noDate.reg_date}",
+													state: "${noDate.state}"
+												});
+											</c:forEach>
+											console.log(noDateList); 
+											
+											/* 예정된 연차, 반차, 출장 날짜 목록 */
+											const toBeNoDateList = [];
+											<c:forEach items="${toBeNoDateList}" var="toBeNoDate">
+												toBeNoDateList.push({
+													regDate: "${toBeNoDate.reg_date}",
+													state: "${toBeNoDate.state}"
+												});
+											</c:forEach>
+											console.log(toBeNoDateList); 
+											
 											let start;
 											let end;
 											let type = vacationType.value;
@@ -174,6 +210,17 @@
 											
 											const inner = (tag, val) => {
 												return tag.innerText = val;
+											};
+											
+											const checkDate = (choiceDate) => {
+												noDate.forEach((no) => {
+													if (choiceDate == no.regDate)
+														alert('해당 날짜는 ${no.state}(으)로 불가합니다.');
+												});
+												toBeNoDateList.forEach((tobe) => {
+													if (choiceDate == tobe.regDate)
+														alert('해당 날짜는 ${tobe.state}(으)로 불가합니다.');
+												});
 											};
 											
 											window.addEventListener('load', () => {
@@ -265,6 +312,8 @@
 								const content = frm.content;
 								const type = frm.type;
 								const half = frm.half;
+								const start = frm.startDate;
+								const end = frm.endDate;
 								console.log(frm.startDate.value);
 								console.log(frm.endDate.value);
 								console.log(vacationType.value);
@@ -288,7 +337,48 @@
 									return false;
 								}
 								
-								frm.submit();
+								const noDateStart = noDateList.findIndex((noDate) => {
+									return noDate.regDate == startDate.value;
+								});
+								
+								const noDateEnd = noDateList.findIndex((noDate) => {
+									return noDate.regDate == endDate.value;
+								});
+								
+								const tobeStart = toBeNoDateList.findIndex((tobe) => {
+									return tobe.regDate == startDate.value;
+								});
+								
+								const tobeEnd = toBeNoDateList.findIndex((tobe) => {
+									return tobe.regDate == endDate.value;
+								});
+								
+								if (noDateStart > 0) {
+									alert('현재 선택된 시작 날짜는 ' + noDateList[noDateStart].state + ' (으)로 불가합니다.');
+									start.select();
+									return false;
+								}
+
+								if (noDateEnd > 0) {
+									state = '\${}';
+									alert('현재 선택된 종료 날짜는 ' + noDateList[noDateEnd].state + ' (으)로 불가합니다.');
+									end.select();
+									return false;
+								}
+								
+								if (tobeStart > 0) {
+									alert('현재 선택된 시작 날짜는 ' + toBeNoDateList[tobeStart].state + ' (으)로 불가합니다.');
+									start.select();
+									return false;
+								}
+
+								if (tobeEnd > 0) {
+									alert('현재 선택된 종료 날짜는 ' + toBeNoDateList[tobeStart].state + ' (으)로 불가합니다.');
+									end.select();
+									return false;
+								}
+								
+								//frm.submit();
 							};
 						</script>
 						

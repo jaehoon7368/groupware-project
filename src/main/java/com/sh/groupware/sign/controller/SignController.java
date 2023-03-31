@@ -79,11 +79,11 @@ public class SignController {
 		List<Map<String, Object>> noDateList = new ArrayList<>();
 		
 		List<Map<String, Object>> list = workingService.findByEmpIdNoDate(empId);
-		Map<String, Object> param = new HashMap<>();
 		
 		if (list.size() > 0) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
 			for (Map<String, Object> map : list) {
+				Map<String, Object> param = new HashMap<>();
 				param.put("state", map.get("STATE"));
 				String reg = String.valueOf(map.get("REG_DATE"));
 				log.debug("reg = {}", reg);
@@ -102,7 +102,6 @@ public class SignController {
 	
 	public List<Map<String, Object>> toBeNoDateList(String empId) {
 		List<Map<String, Object>> toBeNoDateList = new ArrayList<>();
-		Map<String, Object> param = new HashMap<>();
 		
 		// 예정된 연차 및 반차 날짜
 		List<Map<String, Object>> toBeNoDateDayOffList = signService.findByEmpIdToBeNoDateDayOff(empId);
@@ -111,15 +110,6 @@ public class SignController {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
 		if (toBeNoDateDayOffList.size() > 0) {
 			for (Map<String, Object> map : toBeNoDateDayOffList) {
-				switch (String.valueOf(map.get("TYPE"))) {
-				case "D":
-					param.put("state", "연차 예정");
-					break;
-				case "H":
-					param.put("state", "반차 예정");
-					break;
-				}
-				
 				String start = String.valueOf(map.get("START_DATE"));
 				String end = String.valueOf(map.get("END_DATE"));
 				log.debug("start = {}, end = {}", start, end);
@@ -132,6 +122,16 @@ public class SignController {
 				log.debug("betweenDays = {}", betweenDays);
 				
 				for (int j = 0; j <= betweenDays; j++) {
+					Map<String, Object> param = new HashMap<>();
+					switch (String.valueOf(map.get("TYPE"))) {
+					case "D":
+						param.put("state", "연차 예정");
+						break;
+					case "H":
+						param.put("state", "반차 예정");
+						break;
+					}
+					
 					param.put("reg_date", startDate.plusDays(j));
 					toBeNoDateList.add(param);
 				}
@@ -145,8 +145,7 @@ public class SignController {
 		log.debug("toBeNoDateTripList = {}", toBeNoDateTripList);
 		
 		if (toBeNoDateTripList.size() > 0) {
-			param.put("state", "출장 예정");
-			for (Map<String, Object> map : toBeNoDateDayOffList) {
+			for (Map<String, Object> map : toBeNoDateTripList) {
 				String start = String.valueOf(map.get("START_DATE"));
 				String end = String.valueOf(map.get("END_DATE"));
 				log.debug("start = {}, end = {}", start, end);
@@ -159,6 +158,8 @@ public class SignController {
 				log.debug("betweenDays = {}", betweenDays);
 				
 				for (int j = 0; j <= betweenDays; j++) {
+					Map<String, Object> param = new HashMap<>();
+					param.put("state", "출장 예정");
 					param.put("reg_date", startDate.plusDays(j));
 					toBeNoDateList.add(param);
 				}
