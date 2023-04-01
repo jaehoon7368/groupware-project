@@ -137,7 +137,7 @@ public class SignController {
 				}
 				
 			}
-		}
+		} // 예정된 연차 및 반차 날짜 있는 경우
 		
 		
 		// 예정된 출장 날짜
@@ -164,18 +164,99 @@ public class SignController {
 					toBeNoDateList.add(param);
 				}
 			}
-		}
+		}// 예정된 출장 날짜 있는 경우
 		
 		return toBeNoDateList;
 	} // toBeNoDateList() end
+	
+	
+	public List<Map<String, Object>> thisNotoBeNoDateList(String empId, String no, String type) {
+		List<Map<String, Object>> toBeNoDateList = new ArrayList<>();
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+		Map<String, Object> mapParam = new HashMap<>();
+		mapParam.put("empId", empId);
+		mapParam.put("no", no);
+		
+		// 예정된 연차 및 반차 날짜
+		List<Map<String, Object>> toBeNoDateDayOffList = new ArrayList<>();
+		if ("D".equals(type)) {
+			toBeNoDateDayOffList = signService.findByEmpIdSignNoToBeNoDateDayOff(mapParam);
+		} else {
+			toBeNoDateDayOffList = signService.findByEmpIdToBeNoDateDayOff(empId);
+		}
+		log.debug("toBeNoDateDayOffList = {}", toBeNoDateDayOffList);
+		
+		if (toBeNoDateDayOffList.size() > 0) {
+			for (Map<String, Object> map : toBeNoDateDayOffList) {
+				String start = String.valueOf(map.get("START_DATE"));
+				String end = String.valueOf(map.get("END_DATE"));
+				log.debug("start = {}, end = {}", start, end);
+				
+				LocalDate startDate = LocalDate.parse(start, formatter);
+				LocalDate endDate = LocalDate.parse(end, formatter);
+				log.debug("startDate = {}, endDate = {}", startDate, endDate);
+				
+				int betweenDays = (int) Duration.between(startDate.atStartOfDay(), endDate.atStartOfDay()).toDays();
+				log.debug("betweenDays = {}", betweenDays);
+				
+				for (int j = 0; j <= betweenDays; j++) {
+					Map<String, Object> param = new HashMap<>();
+					switch (String.valueOf(map.get("TYPE"))) {
+					case "D":
+						param.put("state", "연차 예정");
+						break;
+					case "H":
+						param.put("state", "반차 예정");
+						break;
+					}
+					
+					param.put("reg_date", startDate.plusDays(j));
+					toBeNoDateList.add(param);
+				}
+				
+			}
+		}
+		
+		// 예정된 출장 날짜
+		List<Map<String, Object>> toBeNoDateTripList = new ArrayList<>();
+		if ("T".equals(type)) {
+			toBeNoDateTripList = signService.findByEmpIdSignNoToBeNoDateTrip(mapParam);
+		} else {
+			toBeNoDateTripList = signService.findByEmpIdToBeNoDateTrip(empId);
+		}
+		log.debug("toBeNoDateTripList = {}", toBeNoDateTripList);
+		
+		if (toBeNoDateTripList.size() > 0) {
+			for (Map<String, Object> map : toBeNoDateTripList) {
+				String start = String.valueOf(map.get("START_DATE"));
+				String end = String.valueOf(map.get("END_DATE"));
+				log.debug("start = {}, end = {}", start, end);
+				
+				LocalDate startDate = LocalDate.parse(start, formatter);
+				LocalDate endDate = LocalDate.parse(end, formatter);
+				log.debug("startDate = {}, endDate = {}", startDate, endDate);
+				
+				int betweenDays = (int) Duration.between(startDate.atStartOfDay(), endDate.atStartOfDay()).toDays();
+				log.debug("betweenDays = {}", betweenDays);
+				
+				for (int j = 0; j <= betweenDays; j++) {
+					Map<String, Object> param = new HashMap<>();
+					param.put("state", "출장 예정");
+					param.put("reg_date", startDate.plusDays(j));
+					toBeNoDateList.add(param);
+				}
+			}
+		}
+		
+		return toBeNoDateList;
+	} // thisNotoBeNoDateList() end
 	
 	
 	@GetMapping("/form/dayOff.do")
 	public String dayOff(Authentication authentication, Model model) {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		double leaveCount = signService.findByEmpIdTotalCount(empId);
-		
-		Map<String, Object> param = new HashMap<>();
 		
 		// 확정된 연차 및 반차, 출장 날짜
 		List<Map<String, Object>> noDateList = noDateList(empId);
@@ -225,7 +306,19 @@ public class SignController {
 	
 	
 	@GetMapping("/form/trip.do")
-	public String trip() {
+	public String trip(Authentication authentication, Model model) {
+		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+		
+		// 확정된 연차 및 반차, 출장 날짜
+		List<Map<String, Object>> noDateList = noDateList(empId);
+		log.debug("noDateList = {}", noDateList);
+		
+		// 예정된 연차 및 반차, 출장 날짜
+		List<Map<String, Object>> toBeNoDateList = toBeNoDateList(empId);
+		log.debug("toBeNoDateList = {}", toBeNoDateList);
+		
+		model.addAttribute("noDateList", noDateList);
+		model.addAttribute("toBeNoDateList", toBeNoDateList);
 		return "sign/form/tripForm";
 	} // trip() end
 	
@@ -371,15 +464,38 @@ public class SignController {
 		if ("D".equals(type)) {
 			double leaveCount = signService.findByEmpIdTotalCount(sign.getEmpId());
 			log.debug("leaveCount = {}", leaveCount);
+			
 			DayOffForm dayOff = signService.findBySignNoDayOffForm(no);
+
+			// 확정된 연차 및 반차, 출장 날짜
+			List<Map<String, Object>> noDateList = noDateList(sign.getEmpId());
+			log.debug("noDateList = {}", noDateList);
+			
+			// 예정된 연차 및 반차, 출장 날짜
+			List<Map<String, Object>> toBeNoDateList = thisNotoBeNoDateList(sign.getEmpId(), no, type);
+			log.debug("toBeNoDateList = {}", toBeNoDateList);
+			
 			model.addAttribute("dayOff", dayOff);
 			model.addAttribute("leaveCount", leaveCount);
+			model.addAttribute("noDateList", noDateList);
+			model.addAttribute("toBeNoDateList", toBeNoDateList);
 			return "sign/detail/dayOffDetail";
 		} // 연차신청서
 		
 		if ("T".equals(type)) {
 			TripForm trip = signService.findBySignNoTripForm(no);
+			
+			// 확정된 연차 및 반차, 출장 날짜
+			List<Map<String, Object>> noDateList = noDateList(sign.getEmpId());
+			log.debug("noDateList = {}", noDateList);
+			
+			// 예정된 연차 및 반차, 출장 날짜
+			List<Map<String, Object>> toBeNoDateList = thisNotoBeNoDateList(sign.getEmpId(), no, type);
+			log.debug("toBeNoDateList = {}", toBeNoDateList);
+			
 			model.addAttribute("trip", trip);
+			model.addAttribute("noDateList", noDateList);
+			model.addAttribute("toBeNoDateList", toBeNoDateList);
 			return "sign/detail/tripDetail";
 		} // 출장신청서
 		

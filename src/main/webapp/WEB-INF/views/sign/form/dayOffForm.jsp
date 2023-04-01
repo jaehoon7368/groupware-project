@@ -168,10 +168,9 @@
 												</tr>
 											</tbody>
 										</table>
-										${noDateList}
-										${toBeNoDateList}
+										
 										<script>
-											/* 확정된 연차, 반차, 출장 날짜 목록 */
+											/* 확정 또는 예정된 연차, 반차, 출장 날짜 목록 */
 											const noDateList = [];
 											<c:forEach items="${noDateList}" var="noDate">
 												noDateList.push({
@@ -179,17 +178,20 @@
 													state: "${noDate.state}"
 												});
 											</c:forEach>
-											console.log(noDateList); 
 											
-											/* 예정된 연차, 반차, 출장 날짜 목록 */
-											const toBeNoDateList = [];
 											<c:forEach items="${toBeNoDateList}" var="toBeNoDate">
-												toBeNoDateList.push({
+												noDateList.push({
 													regDate: "${toBeNoDate.reg_date}",
 													state: "${toBeNoDate.state}"
 												});
 											</c:forEach>
-											console.log(toBeNoDateList); 
+											console.log(noDateList);
+											
+											noDateList.sort((a, b) => {
+												if (a.regDate > b.regDate) return 1;
+												if (a.regDate < b.regDate) return -1;
+												return 0;
+											});
 											
 											let start;
 											let end;
@@ -213,13 +215,9 @@
 											};
 											
 											const checkDate = (choiceDate) => {
-												noDate.forEach((no) => {
+												noDateList.forEach((no) => {
 													if (choiceDate == no.regDate)
 														alert('해당 날짜는 ${no.state}(으)로 불가합니다.');
-												});
-												toBeNoDateList.forEach((tobe) => {
-													if (choiceDate == tobe.regDate)
-														alert('해당 날짜는 ${tobe.state}(으)로 불가합니다.');
 												});
 											};
 											
@@ -327,72 +325,28 @@
 									return false;
 								}
 								
-								if (type.value == 'H' && half.value == 'X') {
-									alert('반차 여부를 오전 또는 오후로 선택해주세요.');
-									return false;
-								}
-								
-								if (type.value == 'D' && half.value != 'X') {
-									alert('반차 여부를 연차로 선택해주세요.');
-									return false;
-								}
-								
-								/* const noDateStart = noDateList.findIndex((noDate) => {
-									return noDate.regDate == startDate.value;
-								});
-								
-								const noDateEnd = noDateList.findIndex((noDate) => {
-									return noDate.regDate == endDate.value;
-								});
-								
-								const tobeStart = toBeNoDateList.findIndex((tobe) => {
-									return tobe.regDate == startDate.value;
-								});
-								
-								const tobeEnd = toBeNoDateList.findIndex((tobe) => {
-									return tobe.regDate == endDate.value;
-								});
-								
-								if (noDateStart > 0) {
-									alert('현재 선택된 시작 날짜는 ' + noDateList[noDateStart].state + ' (으)로 불가합니다.');
-									start.select();
-									return false;
-								}
-
-								if (noDateEnd > 0) {
-									state = '\${}';
-									alert('현재 선택된 종료 날짜는 ' + noDateList[noDateEnd].state + ' (으)로 불가합니다.');
-									end.select();
-									return false;
-								}
-								
-								if (tobeStart > 0) {
-									alert('현재 선택된 시작 날짜는 ' + toBeNoDateList[tobeStart].state + ' (으)로 불가합니다.');
-									start.select();
-									return false;
-								}
-
-								if (tobeEnd > 0) {
-									alert('현재 선택된 종료 날짜는 ' + toBeNoDateList[tobeStart].state + ' (으)로 불가합니다.');
-									end.select();
-									return false;
-								} */
-								
-								noDateList.some((noDate) => {
-									if (new Date(startDate.value) <= new Date(noDate.regDate) && new Date(endDate.value) >= new Date(noDate.regDate)) {
-										alert('현재 선택된 기간에는 다른 일정이 있는 날짜가 존재합니다. 확인 후 날짜를 다시 선택해주세요.');
-										return true;
+								let dateList = [];
+								let text = '현재 선택된 기간에는 다른 일정이 있는 날짜가 존재합니다.\n';
+								for (let i = 0; i < noDateList.length; i++) {
+									let noDate = noDateList[i];
+									
+									let no = new Date(noDate.regDate);
+									if (new Date(startDate.value) <= no && new Date(endDate.value) >= no) {
+										dateList.push(noDate);
 									}
-								});
+									
+									if (i === noDateList.length - 1) {
+										if (dateList.length > 0) {
+											dateList.forEach((date) => {
+												text += date.regDate + ' (' + date.state + ')\n';
+											});
+											alert(text);
+											return false;
+										} // 신청하면 안되는 날짜가 존재하는 경우
+									} // noDateList의 마지막 인덱스인 경우
+								};
 								
-								toBeNoDateList.some((tobe) => {
-									if (new Date(startDate.value) <= new Date(tobe.regDate) && new Date(endDate.value) >= new Date(tobe.regDate)) {
-										alert('현재 선택된 기간에는 다른 일정이 있는 날짜가 존재합니다. 확인 후 날짜를 다시 선택해주세요.');
-										return true;
-									}
-								});
-								
-								//frm.submit();
+								frm.submit();
 							};
 						</script>
 						

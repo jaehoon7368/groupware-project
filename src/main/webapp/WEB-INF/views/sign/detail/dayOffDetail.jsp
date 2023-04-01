@@ -288,8 +288,30 @@
 											</tbody>
 										</table>
 										
-										
 										<script>
+											/* 확정 또는 예정된 연차, 반차, 출장 날짜 목록 */
+											const noDateList = [];
+											<c:forEach items="${noDateList}" var="noDate">
+												noDateList.push({
+													regDate: "${noDate.reg_date}",
+													state: "${noDate.state}"
+												});
+											</c:forEach>
+											
+											<c:forEach items="${toBeNoDateList}" var="toBeNoDate">
+												noDateList.push({
+													regDate: "${toBeNoDate.reg_date}",
+													state: "${toBeNoDate.state}"
+												});
+											</c:forEach>
+											console.log(noDateList);
+											
+											noDateList.sort((a, b) => {
+												if (a.regDate > b.regDate) return 1;
+												if (a.regDate < b.regDate) return -1;
+												return 0;
+											});
+											
 											let start;
 											let end;
 											let type = vacationType.value;
@@ -426,6 +448,27 @@
 									alert('반차 여부를 연차로 선택해주세요.');
 									return false;
 								}
+								
+								let dateList = [];
+								let text = '현재 선택된 기간에는 다른 일정이 있는 날짜가 존재합니다.\n';
+								for (let i = 0; i < noDateList.length; i++) {
+									let noDate = noDateList[i];
+									
+									let no = new Date(noDate.regDate);
+									if (new Date(startDate.value) <= no && new Date(endDate.value) >= no) {
+										dateList.push(noDate);
+									}
+									
+									if (i === noDateList.length - 1) {
+										if (dateList.length > 0) {
+											dateList.forEach((date) => {
+												text += date.regDate + ' (' + date.state + ')\n';
+											});
+											alert(text);
+											return false;
+										} // 신청하면 안되는 날짜가 존재하는 경우
+									} // noDateList의 마지막 인덱스인 경우
+								};
 								
 								frm.submit();
 							};

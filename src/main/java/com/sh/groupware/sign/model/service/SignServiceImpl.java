@@ -362,4 +362,16 @@ public class SignServiceImpl implements SignService {
 		return signDao.findByEmpIdToBeNoDateTrip(empId);
 	} // findByEmpIdToBeNoDateTrip() end
 	
+	
+	@Override
+	public List<Map<String, Object>> findByEmpIdSignNoToBeNoDateDayOff(Map<String, Object> param) {
+		return signDao.findByEmpIdSignNoToBeNoDateDayOff(param);
+	} // findByEmpIdSignNoToBeNoDateDayOff() end
+	
+	
+	@Override
+	public List<Map<String, Object>> findByEmpIdSignNoToBeNoDateTrip(Map<String, Object> param) {
+		return signDao.findByEmpIdSignNoToBeNoDateTrip(param);
+	} // findByEmpIdSignNoToBeNoDateTrip() end
+	
 } // class end

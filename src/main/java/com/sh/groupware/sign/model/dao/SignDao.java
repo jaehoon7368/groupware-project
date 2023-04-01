@@ -99,4 +99,8 @@ public interface SignDao {
 
 	List<Map<String, Object>> findByEmpIdToBeNoDateTrip(String empId);
 
+	List<Map<String, Object>> findByEmpIdSignNoToBeNoDateDayOff(Map<String, Object> param);
+
+	List<Map<String, Object>> findByEmpIdSignNoToBeNoDateTrip(Map<String, Object> param);
+
 } // interface end
