@@ -65,4 +65,20 @@ public interface SignService {
 
 	List<Sign> findByEmpIdMySignStatus(Map<String, Object> param);
 
+	int updateProductForm(ProductForm product);
+
+	int updateResignationForm(ResignationForm resignation);
+
+	int updateDayOffForm(DayOffForm dayOff);
+
+	int updateTripForm(TripForm trip);
+
+	List<Map<String, Object>> findByEmpIdToBeNoDateDayOff(String empId);
+
+	List<Map<String, Object>> findByEmpIdToBeNoDateTrip(String empId);
+
+	List<Map<String, Object>> findByEmpIdSignNoToBeNoDateDayOff(Map<String, Object> param);
+
+	List<Map<String, Object>> findByEmpIdSignNoToBeNoDateTrip(Map<String, Object> param);
+
 } // interface end

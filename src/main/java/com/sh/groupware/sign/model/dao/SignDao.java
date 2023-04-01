@@ -83,4 +83,24 @@ public interface SignDao {
 	
 	List<Sign> findByEmpIdMySignStatus(Map<String, Object> param);
 
+	@Update("update productForm set name = #{name}, amount = #{amount}, price = #{price}, total_price = #{totalPrice}, purpose = #{purpose} where no = #{no}")
+	int updateProductForm(ProductForm product);
+
+	@Update("update resignationForm set end_date = #{endDate}, reason = #{reason} where no = #{no}")
+	int updateResignationForm(ResignationForm resignation);
+
+	@Update("update tripForm set start_date = #{startDate}, end_date = #{endDate}, location = #{location}, purpose = #{purpose} where no = #{no}")
+	int updateTripForm(TripForm trip);
+
+	@Update("update dayOffForm set type = #{type}, half = #{half}, start_date = #{startDate}, end_date = #{endDate}, count = #{count}, content = #{content} where no = #{no}")
+	int updateDayOffForm(DayOffForm dayOff);
+
+	List<Map<String, Object>> findByEmpIdToBeNoDateDayOff(String empId);
+
+	List<Map<String, Object>> findByEmpIdToBeNoDateTrip(String empId);
+
+	List<Map<String, Object>> findByEmpIdSignNoToBeNoDateDayOff(Map<String, Object> param);
+
+	List<Map<String, Object>> findByEmpIdSignNoToBeNoDateTrip(Map<String, Object> param);
+
 } // interface end

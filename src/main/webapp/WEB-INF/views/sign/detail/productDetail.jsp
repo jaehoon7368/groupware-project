@@ -106,22 +106,23 @@
 									</tbody>
 								</table>
 								<script>
-									const nowDate = Date.now();
+									const nowDate = new Date();
+									const newDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 2);
 									const dateOff = new Date().getTimezoneOffset() * 60000;
-									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
+									const today = new Date(newDate - dateOff).toISOString().split('T')[0];
 									
 									document.querySelector('.sign_date').innerText = today;
 								</script>
 								
 								<br />
-								<div class="div-sign-tbl">
+								<div class="div-sign-tbl div-sign-tbl-detail">
 									<table class="sign-tbl-bottom">
 										<tbody>
 											<tr>
 												<td>긴급&nbsp;문서</td>
 												<td colspan="4">
-													<input type="radio" name="emergency" id="emergencyY" value="Y" ${sign.emergency == 'Y' ? 'checked' : 'disabled'} /><label for="emergencyY">여</label>
-													<input type="radio" name="emergency" id="emergencyN" value="N" ${sign.emergency == 'N' ? 'checked' : 'disabled'} /><label for="emergencyN">부</label>
+													<input type="radio" name="emergency" id="_emergencyY" value="Y" ${sign.emergency == 'Y' ? 'checked' : 'disabled'} /><label for="_emergencyY">여</label>
+													<input type="radio" name="emergency" id="_emergencyN" value="N" ${sign.emergency == 'N' ? 'checked' : 'disabled'} /><label for="_emergencyN">부</label>
 												</td>
 											</tr>
 											<tr class="sign-tbl-bottom-tr">
@@ -139,7 +140,7 @@
 													<td><input type="text" name="name" id="name${vs.count}" value="${product.name}" readOnly /></td>
 													<td><input type="text" name="amount" id="amount${vs.count}" min="1" value="<fmt:formatNumber value='${product.amount}' pattern='#,##0' />" readOnly/></td>
 													<td><input type="text" name="price" id="price${vs.count}" min="1" value="<fmt:formatNumber value='${product.price}' pattern='#,##0' />" readOnly/></td>
-													<td><input type="text" name="totalPrice" id="totalPrice${vs.count}" min="1" value="<fmt:formatNumber value='${product.totalPrice}' pattern='#,##0' />" readOnly/></td>
+													<td><input type="text" name="totalPrice" id="_totalPrice${vs.count}" min="1" value="<fmt:formatNumber value='${product.totalPrice}' pattern='#,##0' />" readOnly/></td>
 													<td><input type="text" name="purpose" id="purpose${vs.count}" value="${product.purpose}" readOnly/></td>
 												</tr>
 											</c:forEach>
@@ -148,7 +149,7 @@
 													<td><input type="text" name="name" id="name${n}" readOnly /></td>
 													<td><input type="text" name="amount" id="amount${n}" min="1" readOnly/></td>
 													<td><input type="text" name="price" id="price${n}" min="1" readOnly/></td>
-													<td><input type="text" name="totalPrice" id="totalPrice${n}" min="1" readOnly/></td>
+													<td><input type="text" name="totalPrice" id="_totalPrice${n}" min="1" readOnly/></td>
 													<td><input type="text" name="purpose" id="purpose${n}" readOnly/></td>
 												</tr>
 											</c:forEach>
@@ -159,16 +160,267 @@
 										</tbody>
 									</table>
 								</div>
+								
+								<div class="div-sign-tbl div-sign-tbl-update">
+									<form:form action="${pageContext.request.contextPath}/sign/productUpdate.do" method="post" name="productUpdateFrm">
+										<table class="sign-tbl-bottom">
+											<tbody>
+												<tr>
+													<td>긴급&nbsp;문서</td>
+													<td colspan="4">
+														<input type="radio" name="emergency" id="emergencyY" value="Y" ${sign.emergency == 'Y' ? 'checked' : ''} /><label for="emergencyY">여</label>
+														<input type="radio" name="emergency" id="emergencyN" value="N" ${sign.emergency == 'N' ? 'checked' : ''} /><label for="emergencyN">부</label>
+														
+														<input type="hidden" name="signNo" value="${sign.no}" />
+														<input type="hidden" name="amount" value=0 />
+														<input type="hidden" name="price" value=0 />
+														<input type="hidden" name="totalPrice" value=0 />
+													</td>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<th rowspan="2">품명</th>
+													<th rowspan="2">수량</th>
+													<th colspan="2">구매예정가격</th>
+													<th rowspan="2">용도</th>
+												</tr>
+												<tr class="sign-tbl-bottom-tr">
+													<th>단가</th>
+													<th>금액</th>
+												</tr>
+												<c:forEach items="${productList}" var="product" varStatus="vs">
+													<tr class="sign-tbl-bottom-tr">
+														<td>
+															<input type="hidden" name="productFormList[${vs.index}].no" value="${product.no}" />
+															<input type="text" name="productFormList[${vs.index}].name" id="name${vs.count}" value="${product.name}" />
+														</td>
+														<td>
+															<input type="text" name="_amount" id="amount${vs.count}" min="1" value="<fmt:formatNumber value='${product.amount}' pattern='#,##0' />"/>
+															<input type="hidden" name="productFormList[${vs.index}].amount" />
+														</td>
+														<td>
+															<input type="text" name="_price" id="price${vs.count}" min="1" value="<fmt:formatNumber value='${product.price}' pattern='#,##0' />"/>
+															<input type="hidden" name="productFormList[${vs.index}].price" />
+														</td>
+														<td>
+															<input type="text" name="_totalPrice" id="totalPrice${vs.count}" min="1" value="<fmt:formatNumber value='${product.totalPrice}' pattern='#,##0' />"/>
+															<input type="hidden" name="productFormList[${vs.index}].totalPrice" />
+														</td>
+														<td>
+															<input type="text" name="productFormList[${vs.index}].purpose" id="purpose${vs.count}" value="${product.purpose}" />
+														</td>
+													</tr>
+												</c:forEach>
+												<c:forEach begin="${productList.size() + 1}" end="4" var="n">
+													<tr class="sign-tbl-bottom-tr">
+														<td>
+															<input type="text" name="productFormList[${n - 1}].name" id="name${n}" />
+														</td>
+														<td>
+															<input type="text" name="_amount" id="amount${n}" min="1" />
+															<input type="hidden" name="productFormList[${n - 1}].amount" />
+														</td>
+														<td>
+															<input type="text" name="_price" id="price${n}" min="1" />
+															<input type="hidden" name="productFormList[${n - 1}].price" />
+														</td>
+														<td>
+															<input type="text" name="_totalPrice" id="totalPrice${n}" min="1" />
+															<input type="hidden" name="productFormList[${n - 1}].totalPrice" />
+														</td>
+														<td>
+															<input type="text" name="productFormList[${n - 1}].purpose" id="purpose${n}" />
+														</td>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</form:form>
+								</div>
+								
 							</div>
 						</div>
 						<!-- 결재 문서 end -->
 						<script>
 							let all = 0;
-							document.querySelectorAll('[name=totalPrice]').forEach((price) => {
+							/* 상세조회 시 합계 띄우기 */
+							document.querySelectorAll('[name^=_totalPrice]').forEach((price) => {
 								if (price.value) {
 									all = all + Number(price.value.replaceAll(',', ''));
 								}
 								finalPrice.innerText = all.toLocaleString('ko-KR');
+							});
+							
+							
+							const detailBtn = document.querySelector('.div-sign-btn-detail');
+							const detailDiv = document.querySelector('.div-sign-tbl-detail');
+							const updateBtn = document.querySelector('.div-sign-btn-update');
+							const updateDiv = document.querySelector('.div-sign-tbl-update');
+							
+							/* 문서 수정 버튼 클릭 */
+							const signUpdateFrm = () => {
+								detailBtn.style.display = 'none';
+								detailDiv.style.display = 'none';
+								updateBtn.style.display = 'inline-block';
+								updateDiv.style.display = 'inline-block';
+							}; // signUpdateFrm end
+							
+							
+							/* 숫자 입력 칸 문자 입력이나 0 입력 시 1로 세팅 및 , 작성 */
+							const keyupChange = (val, tag) => {
+								val = Number(val.replaceAll(',', ''));
+								
+								if (isNaN(val) || val == 0) {
+									tag.value = 1;
+								} else {
+									const formatValue = val.toLocaleString('ko-KR');
+									tag.value = formatValue;
+								}
+							}; // keyupChange end
+							
+							
+							/* 수량 input keyup 이벤트핸들러 */
+							document.querySelectorAll('[name=_amount]').forEach((amount) => {
+								amount.addEventListener('keyup', (e) => {
+									keyupChange(e.target.value, amount);
+									
+									const price = e.target.parentElement.nextElementSibling.children[0];
+									const totalPrice = e.target.parentElement.nextElementSibling.nextElementSibling.children[0];
+									if (price.value) {
+										const multi = Number(e.target.value.replaceAll(',', '')) * Number(price.value.replaceAll(',', ''));
+										totalPrice.value = multi.toLocaleString('ko-KR');
+									}
+								});
+							});
+							
+							
+							/* 단가 input keyup 이벤트핸들러 */
+							document.querySelectorAll('[name=_price]').forEach((price) => {
+								price.addEventListener('keyup', (e) => {
+									keyupChange(e.target.value, price);
+									
+									const amount = e.target.parentElement.previousElementSibling.children[0];
+									const totalPrice = e.target.parentElement.nextElementSibling.children[0];
+									const multi = Number(amount.value.replaceAll(',', '')) * Number(e.target.value.replaceAll(',', ''));
+									
+									if (isNaN(multi) || multi == 0) {
+										totalPrice.value = 1;
+									} else {
+										const formatTotal = multi.toLocaleString('ko-KR');
+										totalPrice.value = formatTotal;
+									}
+								});
+							});
+							
+							
+							/* 비품신청서 폼 제출 */
+							const signUpdateOk = () => {
+								const frm = document.productUpdateFrm;
+								const name = frm.querySelectorAll('[name$=name]');
+								const amount = frm.querySelectorAll('[name=_amount]');
+								const price = frm.querySelectorAll('[name=_price]');
+								const totalPrice = frm.querySelectorAll('[name=_totalPrice]');
+								const purpose = frm.querySelectorAll('[name$=purpose]');
+								
+								for (let i = 0; i < name.length; i++) {
+									if (i == 0) {
+										if (/^\s+$/.test(name[i].value) || !name[i].value) {
+											alert('품명을 입력해주세요.');
+											name[i].select();
+											return false;
+										}
+										
+										if (/^\s+$/.test(amount[i].value) || !amount[i].value) {
+											alert('수량을 입력해주세요.');
+											amount[i].select();
+											return false;
+										}
+
+										if (/^\s+$/.test(price[i].value) || !price[i].value) {
+											alert('단가를 입력해주세요.');
+											price[i].select();
+											return false;
+										}
+
+										if (/^\s+$/.test(purpose[i].value) || !purpose[i].value) {
+											alert('용도를 입력해주세요.');
+											purpose[i].select();
+											return false;
+										}
+									} // if (i == 0)
+									else {
+										if (name[i].value && !/^\s+$/.test(name[i].value)) {
+											if (/^\s+$/.test(amount[i].value) || !amount[i].value) {
+												alert('수량을 입력해주세요.');
+												amount[i].select();
+												return false;
+											}
+	
+											if (/^\s+$/.test(price[i].value) || !price[i].value) {
+												alert('단가를 입력해주세요.');
+												price[i].select();
+												return false;
+											}
+											
+											if (/^\s+$/.test(purpose[i].value) || !purpose[i].value) {
+												alert('용도를 입력해주세요.');
+												purpose[i].select();
+												return false;
+											}
+										} // if end
+									} // else (i != 0)
+									
+									amount[i].nextElementSibling.value = Number(amount[i].value.replaceAll(',', ''));
+									price[i].nextElementSibling.value = Number(price[i].value.replaceAll(',', ''));
+									totalPrice[i].nextElementSibling.value = Number(totalPrice[i].value.replaceAll(',', ''));
+								} // for end
+								
+								frm.submit();
+							};
+							
+							
+							/* 결재, 보류, 수정 */
+							const signStatusUpdate = (status) => {
+								const modal = signStatusUpdateModal;
+								const h5 = modal.querySelector('h5');
+								const btn = modal.querySelector('.btn-status');
+								const frmStatus = document.signStatusUpdateFrm.status;
+								
+								switch (status) {
+								case 'C' :
+									h5.innerText = '결재하기';
+									btn.innerText = '결재';
+									break;
+								case 'R' :
+									h5.innerText = '반려하기';
+									btn.innerText = '반려';
+									break;
+								case 'H' :
+									h5.innerText = '보류하기';
+									btn.innerText = '보류';
+									break;
+								} // switch end
+								
+								frmStatus.value = status;
+							};
+							
+							
+							/* 결재, 반려, 보류 폼 제출 */
+							document.signStatusUpdateFrm.addEventListener('submit', (e) => {
+								e.preventDefault();
+								console.log(e.target);
+								
+								const status = e.target.status;
+								const reason = e.target.reason;
+								
+								if (status.value == 'R' || status.value == 'H') {
+									if (/^\s+$/.test(reason.value) || !reason.value) {
+										alert('결재 의견을 작성해주세요.');
+										reason.select();
+										return false;
+									}
+								}
+								
+								e.target.submit();
 							});
 						</script>
 						

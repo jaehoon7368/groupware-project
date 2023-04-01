@@ -41,7 +41,10 @@
 																			</tr>
 																			<tr>
 																				<td>
-																					<span class="sign_date"></span>
+																					<span class="sign_date">
+																						<c:set var="now" value="<%= new Date() %>" />
+																						<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />
+																					</span>
 																				</td>
 																			</tr>
 																		</tbody>
@@ -56,11 +59,10 @@
 									</tbody>
 								</table>
 								<script>
-									const nowDate = Date.now();
+									const nowDate = new Date();
+									const newDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 2);
 									const dateOff = new Date().getTimezoneOffset() * 60000;
-									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
-									
-									document.querySelector('.sign_date').innerText = today;
+									const today = new Date(newDate - dateOff).toISOString().split('T')[0];
 								</script>
 								
 								<br />
@@ -193,6 +195,13 @@
 							document.querySelectorAll('[name=_amount]').forEach((amount) => {
 								amount.addEventListener('keyup', (e) => {
 									keyupChange(e.target.value, amount);
+									
+									const price = e.target.parentElement.nextElementSibling.children[0];
+									const totalPrice = e.target.parentElement.nextElementSibling.nextElementSibling.children[0];
+									if (price.value) {
+										const multi = Number(e.target.value.replaceAll(',', '')) * Number(price.value.replaceAll(',', ''));
+										totalPrice.value = multi.toLocaleString('ko-KR');
+									}
 								});
 							});
 							

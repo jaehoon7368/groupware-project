@@ -35,4 +35,6 @@ public interface WorkingManagementService {
 
 	int monthOverTime(Map<String, Object> startEndMap);
 
+	List<Map<String, Object>> findByEmpIdNoDate(String empId);
+
 }

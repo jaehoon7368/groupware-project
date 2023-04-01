@@ -78,9 +78,6 @@
 																	<c:when test="${sign.signStatusList[0].status == 'H'}">
 																		<button class="tiny warning button">보류</button>
 																	</c:when>
-																	<c:when test="${sign.signStatusList[0].status == 'R'}">
-																		<button class="tiny warning button">반려</button>
-																	</c:when>
 																	<c:otherwise>
 																		<button class="tiny success button">진행중</button>
 																	</c:otherwise>
@@ -138,7 +135,10 @@
 							
 							<!-- 기안 진행 문서 -->
 							<div class="div-sign-all">
-								<div class="div-sign-all-title">기안 진행 문서</div>
+								<div class="div-sign-all-title">
+									<div class="title">기안 진행 문서</div>
+									<div class="link"><a href="${pageContext.request.contextPath}/sign/mySign.do?status=ing">+더보기</a></div>
+								</div>
 								<div class="div-sign-all-tbl">
 									<table class="div-sign-all-tbl-ing">
 										<thead>
@@ -156,33 +156,35 @@
 												</tr>
 											</c:if>
 											<c:if test="${!empty myCreateSignListIng}">
-												<c:forEach items="${myCreateSignListIng}" var="sign">
-													<tr class="div-sign-all-tbl-tr" data-no="${sign.no}" data-type="${sign.type}">
-														<td>${sign.regDate}</td>
-														<td>
-															<c:choose>
-																<c:when test="${sign.type == 'D'}">연차신청서</c:when>
-																<c:when test="${sign.type == 'P'}">비품신청서</c:when>
-																<c:when test="${sign.type == 'T'}">출장신청서</c:when>
-																<c:when test="${sign.type == 'R'}">사직서</c:when>
-															</c:choose>
-														</td>
-														<td>
-															<c:if test="${sign.emergency == 'Y'}">
-																<button type="button" class="small alert button hollow">긴급</button>
-															</c:if>
-														</td>
-														<td class="div-sign-all-tbl-td-btn">
-															<c:forEach items="${sign.signStatusList}" var="signStatus" varStatus="vs">
-																<c:if test="${signStatus.status == 'H'}">
-																	<button class="small warning button">보류</button>
+												<c:forEach items="${myCreateSignListIng}" var="sign" varStatus="vs">
+													<c:if test="${vs.index < 5}">
+														<tr class="div-sign-all-tbl-tr" data-no="${sign.no}" data-type="${sign.type}">
+															<td>${sign.regDate}</td>
+															<td>
+																<c:choose>
+																	<c:when test="${sign.type == 'D'}">연차신청서</c:when>
+																	<c:when test="${sign.type == 'P'}">비품신청서</c:when>
+																	<c:when test="${sign.type == 'T'}">출장신청서</c:when>
+																	<c:when test="${sign.type == 'R'}">사직서</c:when>
+																</c:choose>
+															</td>
+															<td>
+																<c:if test="${sign.emergency == 'Y'}">
+																	<button type="button" class="small alert button hollow">긴급</button>
 																</c:if>
-																<c:if test="${signStatus.status == 'R'}">
-																	<button class="small warning button">반려</button>
-																</c:if>
-															</c:forEach>
-														</td>
-													</tr>
+															</td>
+															<td class="div-sign-all-tbl-td-btn">
+																<c:forEach items="${sign.signStatusList}" var="signStatus" varStatus="vs">
+																	<c:if test="${signStatus.status == 'H'}">
+																		<button class="small warning button">보류</button>
+																	</c:if>
+																	<c:if test="${signStatus.status == 'R'}">
+																		<button class="small warning button">반려</button>
+																	</c:if>
+																</c:forEach>
+															</td>
+														</tr>
+													</c:if>
 												</c:forEach>
 											</c:if>
 										</tbody>
@@ -203,7 +205,10 @@
 							
 							<!-- 완료 문서 -->
 							<div class="div-sign-all">
-								<div class="div-sign-all-title">완료 문서</div>
+								<div class="div-sign-all-title">
+									<div class="title">완료 문서</div>
+									<div class="link"><a href="${pageContext.request.contextPath}/sign/mySign.do?status=end">+더보기</a></div>
+								</div>
 								<div class="div-sign-all-tbl">
 									<table>
 										<thead>
@@ -221,26 +226,28 @@
 												</tr>
 											</c:if>
 											<c:if test="${!empty myCreateSignListComlete}">
-												<c:forEach items="${myCreateSignListComlete}" var="sign">
-													<tr class="div-sign-all-tbl-tr" data-no="${sign.no}" data-type="${sign.type}">
-														<td>${sign.regDate}</td>
-														<td>
-															<c:choose>
-																<c:when test="${sign.type == 'D'}">연차신청서</c:when>
-																<c:when test="${sign.type == 'P'}">비품신청서</c:when>
-																<c:when test="${sign.type == 'T'}">출장신청서</c:when>
-																<c:when test="${sign.type == 'R'}">사직서</c:when>
-															</c:choose>
-														</td>
-														<td>
-															<c:if test="${sign.emergency == 'Y'}">
-																<button type="button" class="alert button hollow tiny">긴급</button>
-															</c:if>
-														</td>
-														<td>
-															<button class="small secondary button">완료</button>
-														</td>
-													</tr>
+												<c:forEach items="${myCreateSignListComlete}" var="sign" varStatus="vs">
+													<c:if test="${vs.index < 5}">
+														<tr class="div-sign-all-tbl-tr" data-no="${sign.no}" data-type="${sign.type}">
+															<td>${sign.regDate}</td>
+															<td>
+																<c:choose>
+																	<c:when test="${sign.type == 'D'}">연차신청서</c:when>
+																	<c:when test="${sign.type == 'P'}">비품신청서</c:when>
+																	<c:when test="${sign.type == 'T'}">출장신청서</c:when>
+																	<c:when test="${sign.type == 'R'}">사직서</c:when>
+																</c:choose>
+															</td>
+															<td>
+																<c:if test="${sign.emergency == 'Y'}">
+																	<button type="button" class="alert button hollow tiny">긴급</button>
+																</c:if>
+															</td>
+															<td>
+																<button class="small secondary button">완료</button>
+															</td>
+														</tr>
+													</c:if>
 												</c:forEach>
 											</c:if>
 										</tbody>
