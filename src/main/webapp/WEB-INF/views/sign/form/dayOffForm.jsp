@@ -13,10 +13,6 @@
 	
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/form.css">
 	
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-	<script src="//code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	
 	<jsp:include page="/WEB-INF/views/sign/signLeftBar.jsp" />
 	
 	<jsp:include page="/WEB-INF/views/sign/signCreate.jsp">
@@ -45,7 +41,10 @@
 																			</tr>
 																			<tr>
 																				<td>
-																					<span class="sign_date"></span>
+																					<span class="sign_date">
+																						<c:set var="now" value="<%= new Date() %>" />
+																						<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />
+																					</span>
 																				</td>
 																			</tr>
 																		</tbody>
@@ -64,9 +63,6 @@
 									const newDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 2);
 									const dateOff = new Date().getTimezoneOffset() * 60000;
 									const today = new Date(newDate - dateOff).toISOString().split('T')[0];
-									console.log(today);
-
-									document.querySelector('.sign_date').innerText = today;
 								</script>
 								
 								<br />

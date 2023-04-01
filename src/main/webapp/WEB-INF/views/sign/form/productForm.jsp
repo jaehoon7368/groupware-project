@@ -41,7 +41,10 @@
 																			</tr>
 																			<tr>
 																				<td>
-																					<span class="sign_date"></span>
+																					<span class="sign_date">
+																						<c:set var="now" value="<%= new Date() %>" />
+																						<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />
+																					</span>
 																				</td>
 																			</tr>
 																		</tbody>
@@ -60,8 +63,6 @@
 									const newDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 2);
 									const dateOff = new Date().getTimezoneOffset() * 60000;
 									const today = new Date(newDate - dateOff).toISOString().split('T')[0];
-									
-									document.querySelector('.sign_date').innerText = today;
 								</script>
 								
 								<br />
