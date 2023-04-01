@@ -106,9 +106,10 @@
 									</tbody>
 								</table>
 								<script>
-									const nowDate = Date.now();
+									const nowDate = new Date();
+									const newDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 2);
 									const dateOff = new Date().getTimezoneOffset() * 60000;
-									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
+									const today = new Date(newDate - dateOff).toISOString().split('T')[0];
 								</script>
 								
 								<br />
@@ -172,7 +173,7 @@
 												<td>
 													<input type="hidden" name="no" value="${resignation.no}" />
 													<input type="hidden" name="signNo" value="${sign.no}" />
-													<input type="date" name="end-date" id="endDate" value="${resignation.endDate}" />
+													<input type="date" name="end-date" id="endDate" value="${resignation.endDate}" onKeyPress="noKey(event);"/>
 												</td>
 											</tr>
 											<tr class="sign-tbl-bottom-tr">
@@ -205,6 +206,13 @@
 						</div>
 						<!-- 결재 문서 end -->
 						<script>
+							/* 날짜 키보드 입력 막기 */
+							const noKey = (event) => {
+								event.preventDefault();
+								return false;
+							};
+							
+							
 							const detailBtn = document.querySelector('.div-sign-btn-detail');
 							const detailDiv = document.querySelector('.div-sign-tbl-detail');
 							const updateBtn = document.querySelector('.div-sign-btn-update');

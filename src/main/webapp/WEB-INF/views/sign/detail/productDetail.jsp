@@ -106,9 +106,10 @@
 									</tbody>
 								</table>
 								<script>
-									const nowDate = Date.now();
+									const nowDate = new Date();
+									const newDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 2);
 									const dateOff = new Date().getTimezoneOffset() * 60000;
-									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
+									const today = new Date(newDate - dateOff).toISOString().split('T')[0];
 									
 									document.querySelector('.sign_date').innerText = today;
 								</script>

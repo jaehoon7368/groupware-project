@@ -106,11 +106,11 @@
 													<td colspan="3">
 														<span>
 															<span>
-																<input id="start-date" name="startDate" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
+																<input id="start-date" name="startDate" class="dayoff-date" type="date" onKeyPress="noKey(event);"/>
 															</span>
 															&nbsp;~&nbsp; 
 															<span>
-																<input id="end-date" name="endDate" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
+																<input id="end-date" name="endDate" class="dayoff-date" type="date" onKeyPress="noKey(event);"/>
 															</span>
 															&nbsp;&nbsp;
 															<span>선택일수 : 
@@ -161,6 +161,13 @@
 												if (a.regDate < b.regDate) return -1;
 												return 0;
 											});
+											
+
+											/* 날짜 키보드 입력 막기 */
+											const noKey = (event) => {
+												event.preventDefault();
+												return false;
+											};
 											
 											let start;
 											let end;

@@ -106,9 +106,10 @@
 									</tbody>
 								</table>
 								<script>
-									const nowDate = Date.now();
+									const nowDate = new Date();
+									const newDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 2);
 									const dateOff = new Date().getTimezoneOffset() * 60000;
-									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
+									const today = new Date(newDate - dateOff).toISOString().split('T')[0];
 								</script>
 								
 								<br />
@@ -230,11 +231,11 @@
 													<td>
 														<span>
 															<span>
-																<input id="start-date" name="startDate" class="dayoff-date" type="date" value="${dayOff.startDate}" />
+																<input id="start-date" name="startDate" class="dayoff-date" type="date" value="${dayOff.startDate}" onKeyPress="noKey(event);"/>
 															</span>
 															&nbsp;~&nbsp; 
 															<span>
-																<input id="end-date" name="endDate" class="dayoff-date" type="date" value="${dayOff.endDate}" />
+																<input id="end-date" name="endDate" class="dayoff-date" type="date" value="${dayOff.endDate}" onKeyPress="noKey(event);"/>
 															</span>
 															&nbsp;&nbsp;
 															<span>선택일수 : 
@@ -311,6 +312,13 @@
 												if (a.regDate < b.regDate) return -1;
 												return 0;
 											});
+											
+											
+											/* 날짜 키보드 입력 막기 */
+											const noKey = (event) => {
+												event.preventDefault();
+												return false;
+											};
 											
 											let start;
 											let end;

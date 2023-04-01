@@ -56,9 +56,10 @@
 									</tbody>
 								</table>
 								<script>
-									const nowDate = Date.now();
+									const nowDate = new Date();
+									const newDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 2);
 									const dateOff = new Date().getTimezoneOffset() * 60000;
-									const today = new Date(nowDate - dateOff).toISOString().split('T')[0];
+									const today = new Date(newDate - dateOff).toISOString().split('T')[0];
 									
 									document.querySelector('.sign_date').innerText = today;
 								</script>
@@ -80,7 +81,7 @@
 													<td><input type="date" name="start-date" id="start-date" value="${sessionScope.loginMember.hireDate}" readonly/></td>
 													<th>퇴사일</th>
 													<td>
-														<input type="date" name="endDate" id="end-date" />
+														<input type="date" name="endDate" id="end-date" onKeyPress="noKey(event);"/>
 														<script>
 															const endDate = document.querySelector('#end-date');
 															endDate.min = today;
@@ -116,6 +117,12 @@
 						</div>
 						<!-- 결재 문서 end -->
 						<script>
+							/* 날짜 키보드 입력 막기 */
+							const noKey = (event) => {
+								event.preventDefault();
+								return false;
+							};
+							
 							/* 사직서 폼 제출 */
 							const signCreate = () => {
 								const frm = document.resignationCreateFrm;
