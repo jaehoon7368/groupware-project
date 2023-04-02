@@ -41,7 +41,10 @@
 																			</tr>
 																			<tr>
 																				<td>
-																					<span class="sign_date"></span>
+																					<span class="sign_date">
+																						<c:set var="now" value="<%= new Date() %>" />
+																						<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />
+																					</span>
 																				</td>
 																			</tr>
 																		</tbody>
@@ -60,9 +63,6 @@
 									const newDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 2);
 									const dateOff = new Date().getTimezoneOffset() * 60000;
 									const today = new Date(newDate - dateOff).toISOString().split('T')[0];
-									console.log(today);
-
-									document.querySelector('.sign_date').innerText = today;
 								</script>
 								
 								<br />
@@ -106,11 +106,11 @@
 													<td colspan="3">
 														<span>
 															<span>
-																<input id="start-date" name="startDate" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
+																<input id="start-date" name="startDate" class="dayoff-date" type="date" onKeyPress="noKey(event);"/>
 															</span>
 															&nbsp;~&nbsp; 
 															<span>
-																<input id="end-date" name="endDate" class="dayoff-date" type="date" min="2023-03-16" value="2023-03-16">
+																<input id="end-date" name="endDate" class="dayoff-date" type="date" onKeyPress="noKey(event);"/>
 															</span>
 															&nbsp;&nbsp;
 															<span>선택일수 : 
@@ -139,6 +139,36 @@
 										</table>
 										
 										<script>
+											/* 확정 또는 예정된 연차, 반차, 출장 날짜 목록 */
+											const noDateList = [];
+											<c:forEach items="${noDateList}" var="noDate">
+												noDateList.push({
+													regDate: "${noDate.reg_date}",
+													state: "${noDate.state}"
+												});
+											</c:forEach>
+											
+											<c:forEach items="${toBeNoDateList}" var="toBeNoDate">
+												noDateList.push({
+													regDate: "${toBeNoDate.reg_date}",
+													state: "${toBeNoDate.state}"
+												});
+											</c:forEach>
+											console.log(noDateList);
+											
+											noDateList.sort((a, b) => {
+												if (a.regDate > b.regDate) return 1;
+												if (a.regDate < b.regDate) return -1;
+												return 0;
+											});
+											
+
+											/* 날짜 키보드 입력 막기 */
+											const noKey = (event) => {
+												event.preventDefault();
+												return false;
+											};
+											
 											let start;
 											let end;
 											let diff = 1;
@@ -192,7 +222,7 @@
 						</div>
 						<!-- 결재 문서 end -->
 						<script>
-							/* 연차신청서 폼 제출 */
+							/* 출장신청서 폼 제출 */
 							const signCreate = () => {
 								const frm = document.tripFrm;
 								const location = frm.location;
@@ -209,6 +239,27 @@
 									purpose.select();
 									return false;
 								}
+
+								let dateList = [];
+								let text = '현재 선택된 기간에는 다른 일정이 있는 날짜가 존재합니다.\n';
+								for (let i = 0; i < noDateList.length; i++) {
+									let noDate = noDateList[i];
+									
+									let no = new Date(noDate.regDate);
+									if (new Date(startDate.value) <= no && new Date(endDate.value) >= no) {
+										dateList.push(noDate);
+									}
+									
+									if (i === noDateList.length - 1) {
+										if (dateList.length > 0) {
+											dateList.forEach((date) => {
+												text += date.regDate + ' (' + date.state + ')\n';
+											});
+											alert(text);
+											return false;
+										} // 신청하면 안되는 날짜가 존재하는 경우
+									} // noDateList의 마지막 인덱스인 경우
+								};
 								
 								frm.submit();
 							};

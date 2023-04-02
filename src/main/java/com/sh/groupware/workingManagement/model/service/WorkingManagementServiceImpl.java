@@ -88,4 +88,10 @@ public class WorkingManagementServiceImpl implements WorkingManagementService {
 		return workingManagementDao.insertRegDateState(working);
 	} // insertRegDateState() end
 	
+	
+	@Override
+	public List<Map<String, Object>> findByEmpIdNoDate(String empId) {
+		return workingManagementDao.findByEmpIdNoDate(empId);
+	} // findByEmpIdNoDate() end
+	
 }

@@ -58,4 +58,6 @@ public interface WorkingManagementDao {
 	@Insert("insert into working_management values(seq_working_management_no.nextval, null, null, null, #{regDate}, #{state}, #{dayWorkTime}, #{empId})")
 	int insertRegDateState(WorkingManagement working);
 
+	List<Map<String, Object>> findByEmpIdNoDate(String empId);
+
 }

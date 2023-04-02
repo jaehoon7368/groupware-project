@@ -36,9 +36,10 @@
 							</div>
 						</div>
 						<div class="top-container">
-							<div class="div-sign-btn font-small">
+							<div class="div-sign-btn div-sign-btn-detail font-small">
 								<c:if test="${sign.empId == sessionScope.loginMember.empId && sign.complete == 'N'}">
-									<button onclick="location.href='${pageContext.request.contextPath}/sign/signUpdate.do?no=${sign.no}&type=${sign.type}'">문서 수정</button>
+									<%-- <button onclick="location.href='${pageContext.request.contextPath}/sign/signUpdate.do?no=${sign.no}&type=${sign.type}'">문서 수정</button> --%>
+									<button onclick="signUpdateFrm();">문서 수정</button>
 									<form:form action="${pageContext.request.contextPath}/sign/deleteSign.do" method="post" name="signDeleteFrm">
 										<input type="hidden" name="no" value="${sign.no}" />
 										<input type="hidden" name="type" value="${sign.type}" />
@@ -54,7 +55,7 @@
 									</script>
 								</c:if>
 								<c:forEach items="${sign.signStatusList}" var="signStatus">
-									<c:if test="${signStatus.empId == sessionScope.loginMember.empId && signStatus.status != 'C' && signStatus.status != 'S'}">
+									<c:if test="${signStatus.empId == sessionScope.loginMember.empId && signStatus.status != 'C' && signStatus.status != 'S' && signStatus.status != 'R'}">
 										<button onclick="signStatusUpdate('C');" data-open="signStatusUpdateModal">결재</button>
 										<c:if test="${signStatus.status != 'H'}">
 											<button onclick="signStatusUpdate('H');" data-open="signStatusUpdateModal">보류</button>
@@ -62,6 +63,12 @@
 										<button onclick="signStatusUpdate('R');" data-open="signStatusUpdateModal">반려</button>
 									</c:if>
 								</c:forEach>
+							</div>
+							
+							<div class="div-sign-btn div-sign-btn-update font-small">
+								<button onclick="signUpdateOk();">수정하기</button>
+								<button onclick="location.reload();">취소</button>
+								<!-- <button onclick="signUpdateNo();">취소</button> -->
 							</div>
 						</div>
 						<script>
