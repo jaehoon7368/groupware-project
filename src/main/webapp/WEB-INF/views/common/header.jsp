@@ -20,6 +20,11 @@
 			<link rel="stylesheet"
 				href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
 	</head>
+<c:if test="${not empty msg}">
+	<script>
+	alert('${msg}');
+	</script>	
+</c:if>
 	<body>
 		<div class="app-dashboard shrink-medium">
 			<div class="app-dashboard-body off-canvas-wrapper">
