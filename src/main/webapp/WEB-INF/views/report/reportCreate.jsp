@@ -121,7 +121,7 @@
 										<tr>
 											<td colspan="2">
 												<button type="submit">확인</button>
-												<button type="reset">취소</button>
+												<button type="button" onClick="location.href='${pageContext.request.contextPath}/report/report.do';">취소</button>
 											</td>
 										</tr>
 									</tbody>

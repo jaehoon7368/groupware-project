@@ -19,9 +19,7 @@
 						<!-- 상단 타이틀 -->
 						<div class="top-container">
 							<div class="container-title">
-								<c:forEach items="${sessionScope.deptList}" var="dept">
-									<c:if test="${dept.deptCode == param.code}">${dept.deptTitle} 보고서</c:if>
-								</c:forEach>
+								참조 보고서
 							</div>
 							<div class="home-topbar topbar-div">
 								<div>
@@ -64,7 +62,6 @@
 						<div>
                             <div>
                                 <div class="div-report-list">
-                                    <!-- <div class="container-title"></div> -->
                                     <div class="report-list-tbl">
                                         <table>
                                             <thead>
@@ -77,13 +74,13 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            	<c:if test="${empty reportList}">
+                                            	<c:if test="${empty myReportReferenceList}">
                                            			<tr>
-                                           				<td colspan="5">작성된 부서 보고가 없습니다.</td>
+                                           				<td colspan="5">참조 가능한 보고가 없습니다.</td>
                                            			</tr>
                                             	</c:if>
-                                            	<c:if test="${!empty reportList}">
-	                                            	<c:forEach items="${reportList}" var="report">
+                                            	<c:if test="${!empty myReportReferenceList}">
+	                                            	<c:forEach items="${myReportReferenceList}" var="report">
 	                                            		<tr class="report-tr" data-no="${report.no}">
 	                                            			<td>${report.title}</td>
 	                                            			<td>${report.explain}</td>

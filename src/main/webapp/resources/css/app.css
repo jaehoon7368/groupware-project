@@ -503,9 +503,18 @@ button:hover {
 .left-container {
   width: 250px;
   height: 100%;
-  /* overflow-y: none; */
+  overflow-y: scroll;
   flex-shrink: 0;
   border-right: solid 2px #e3e3e3;
+}
+
+/* 스크롤 숨기기 */
+.left-container::-webkit-scrollbar {
+  display: none;
+}
+.left-container {
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
 }
 
 /* 왼쪽 추가 메뉴 새로만들기 btn */
