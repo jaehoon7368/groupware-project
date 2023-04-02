@@ -109,6 +109,7 @@ create sequence seq_working_management_no;
 create sequence seq_board_no;
 create sequence seq_attachment_no;
 create sequence seq_boardComment_no;
+create sequence seq_emp_id_no;
 
 
 insert into dept values('d1','인사총무팀');
