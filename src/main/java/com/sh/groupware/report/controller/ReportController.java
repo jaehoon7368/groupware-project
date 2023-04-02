@@ -48,7 +48,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 @RequestMapping("/report")
-@SessionAttributes({"myReportList", "myReportMemberList", "myReportReferenceList"})
 public class ReportController {
 
 	@Autowired
@@ -77,34 +76,23 @@ public class ReportController {
 		model.addAttribute("reportList", reportList);
 		
 		List<ReportCheck> newReportList = reportService.selectMyReportCheck(empId);
-		
-		List<Report> myReportList = reportService.findByWriterReportCheckList(empId);
-		model.addAttribute("myReportList", myReportList);
-		
-		List<Report> myReportMemberList = reportService.findByMemberReportCheckList(empId);
-		model.addAttribute("myReportMemberList", myReportMemberList);
-		
-		Map<String, Object> param = new HashMap<>();
-		param.put("empId", empId);
-		param.put("deptCode", deptCode);
-		List<Report> myReportReferenceList = reportService.findByReferenceReportCheckList(param);
-		model.addAttribute("myReportReferenceList", myReportReferenceList);
+		model.addAttribute("newReportList", newReportList);
 		
 		return "report/reportHome";
 	} // report() end
 	
 	
-	@GetMapping("/reportForm.do")
-	public String reportForm(@RequestParam String no, Model model) {
-		log.debug("no = {}", no);
-		
-		List<ReportCheck> reportCheckList = reportService.findByReportNoReportCheckList(no);
-		List<Reference> referList = reportService.findByReportNoReference(no);
-		
-		model.addAttribute("reportCheckList", reportCheckList);
-		model.addAttribute("referList", referList);
-		return "report/reportForm";
-	} // reportForm() end
+//	@GetMapping("/reportForm.do")
+//	public String reportForm(@RequestParam String no, Model model) {
+//		log.debug("no = {}", no);
+//		
+//		List<ReportCheck> reportCheckList = reportService.findByReportNoReportCheckList(no);
+//		List<Reference> referList = reportService.findByReportNoReference(no);
+//		
+//		model.addAttribute("reportCheckList", reportCheckList);
+//		model.addAttribute("referList", referList);
+//		return "report/reportForm";
+//	} // reportForm() end
 	
 	
 	@GetMapping("/reportCreateView.do")
@@ -234,7 +222,7 @@ public class ReportController {
 		int result = reportService.insertReportDetail(reportDetail);
 		
 		return  "redirect:/report/reportDetail.do?no=" + reportDetail.getReportNo();
-	} // reportDetailEnroll() end@PostMapping("/reportDetailEnroll.do")
+	} // reportDetailEnroll() end
 	
 	
 	@GetMapping("/reportDeptView.do")
@@ -244,6 +232,43 @@ public class ReportController {
 		model.addAttribute("reportList", reportList);
 		return "report/reportDept";
 	} // reportDeptView() end
+	
+	
+	@GetMapping("/reportElseView.do")
+	public String reportElseView(Authentication authentication, Model model) {
+		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+		
+		List<Report> myReportMemberList = reportService.findByMemberReportCheckList(empId);
+		model.addAttribute("myReportMemberList", myReportMemberList);
+		
+		return "report/reportElse";
+	} // reportElseView() end
+	
+	
+	@GetMapping("/reportReferView.do")
+	public String reportReferView(Authentication authentication, Model model) {
+		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+
+		List<Report> myReportList = reportService.findByWriterReportCheckList(empId);
+		model.addAttribute("myReportList", myReportList);
+		
+		return "report/reportRefer";
+	} // reportReferView() end
+	
+	
+	@GetMapping("/myListView.do")
+	public String myListView(Authentication authentication, Model model) {
+		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+		String deptCode = ((Emp) authentication.getPrincipal()).getDeptCode();
+
+		Map<String, Object> param = new HashMap<>();
+		param.put("empId", empId);
+		param.put("deptCode", deptCode);
+		List<Report> myReportReferenceList = reportService.findByReferenceReportCheckList(param);
+		model.addAttribute("myReportReferenceList", myReportReferenceList);
+		
+		return "report/reportMyList";
+	} // myListView() end
 	
 	
 	@GetMapping("/reportDetail.do")
@@ -274,7 +299,7 @@ public class ReportController {
 			} // 작성된 보고 있는 경우 
 		}
 		
-		List<Reference> referList = reportService.findByReportNoReference(no);
+		List<Emp> referList = reportService.findByReportNoReference(no);
 		
 		model.addAttribute("reportCheckList", reportCheckList);
 		model.addAttribute("referList", referList);

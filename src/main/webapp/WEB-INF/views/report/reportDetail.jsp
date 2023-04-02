@@ -714,6 +714,12 @@
 						</c:forEach>
 						
 						<script>
+							let referList = [];
+							<c:forEach items="${referList}" var="refer">
+								referList.push('${refer.empId}');
+							</c:forEach>
+							console.log("referList", referList);
+						
 							/* 미보고자 보고 작성 클릭 */
 							const clickReportCreate = (btn) => {
 								btn.parentElement.parentElement.classList.add('div-me');
@@ -762,7 +768,13 @@
 											no = clickDiv.dataset.no;
 											console.log(no);
 											
-											if (yn === 'Y' || (yn === 'N' && clickDiv.dataset.id == loginEmpId)) {
+											id = clickDiv.dataset.id;
+											const index = referList.findIndex((refer) => {
+												return refer === loginEmpId;
+											});
+											console.log(index);
+											
+											if (yn === 'Y' || ((yn === 'N' && id == loginEmpId) || yn === 'N' && index >= 0)) {
 
 												/* 보고자 div class 지우기 */
 												document.querySelectorAll('.div-okreport-one').forEach((one) => {
@@ -889,8 +901,6 @@
 								before.style.display = 'block';
 							};
 						</script>
-						${reportCheckList}
-						${referList}
 					</div>
 				</div>
 				

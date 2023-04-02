@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sh.groupware.common.attachment.model.dao.AttachmentDao;
 import com.sh.groupware.common.dto.Attachment;
 import com.sh.groupware.common.dto.Category;
+import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.report.model.dao.ReportDao;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
@@ -97,8 +98,14 @@ public class ReportServiceImpl implements ReportService {
 	} // findByReportNoMemberList
 	
 	
+//	@Override
+//	public List<Reference> findByReportNoReference(String no) {
+//		return reportDao.findByReportNoReference(no);
+//	} // findByReportNoReference() end
+	
+	
 	@Override
-	public List<Reference> findByReportNoReference(String no) {
+	public List<Emp> findByReportNoReference(String no) {
 		return reportDao.findByReportNoReference(no);
 	} // findByReportNoReference() end
 	
@@ -181,12 +188,12 @@ public class ReportServiceImpl implements ReportService {
 					}
 				} // memberList report에 저장
 				
-				List<Reference> referList = findByReportNoReference(repo.getNo());
-				if (referList.size() > 0) {
-					for (Reference refer : referList) {
-						repo.addReference(refer);
-					}
-				} // referList report에 저장
+//				List<Reference> referList = findByReportNoReference(repo.getNo());
+//				if (referList.size() > 0) {
+//					for (Reference refer : referList) {
+//						repo.addReference(refer);
+//					}
+//				} // referList report에 저장
 			}
 		}
 		return reportList;

@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
 import com.sh.groupware.report.model.dto.ReportCheck;
@@ -35,14 +36,16 @@ public interface ReportDao {
 
 	List<ReportCheck> selectMyReportCheck(String loginMember);
 
-	@Select("select * from view_reportCheck where report_no = #{no}")
+	@Select("select * from view_reportCheck where report_no = #{no} order by end_date desc")
 	List<ReportCheck> findByReportNoReportCheckList(String no);
 
 	@Select("select * from view_reportMember where report_no = #{no}")
 	List<ReportMember> findByReportNoMemberList(String no);
 
-	@Select("select * from view_reportReference where reference_no = #{no}")
-	List<Reference> findByReportNoReference(String no);
+//	@Select("select * from view_reportReference where reference_no = #{no}")
+//	List<Reference> findByReportNoReference(String no);
+	
+	List<Emp> findByReportNoReference(String no);
 
 	@Update("update reportMember set exclude_yn = 'Y' where report_no = #{no} and emp_id = #{empId}")
 	int updateExcludeYnY(Map<String, Object> param);
@@ -80,7 +83,7 @@ public interface ReportDao {
 
 	ReportComment findByNoReportComment(String no);
 
-	@Select("select * from report where writer = #{empId}")
+	@Select("select * from report where writer = #{empId} order by end_date desc")
 	List<Report> findByWriterReportCheckList(String empId);
 
 	List<Report> findByMemberReportCheckList(String empId);
