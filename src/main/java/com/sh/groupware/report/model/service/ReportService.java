@@ -3,6 +3,7 @@ package com.sh.groupware.report.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
 import com.sh.groupware.report.model.dto.ReportCheck;
@@ -24,7 +25,9 @@ public interface ReportService {
 	
 	List<ReportMember> findByReportNoMemberList(String no);
 	
-	List<Reference> findByReportNoReference(String no);
+//	List<Reference> findByReportNoReference(String no);
+
+	List<Emp> findByReportNoReference(String no);
 
 	int updateExcludeYnY(Map<String, Object> param);
 
@@ -53,5 +56,9 @@ public interface ReportService {
 	ReportComment findByNoReportComment(String no);
 
 	List<Report> findByWriterReportCheckList(String empId);
+
+	List<Report> findByMemberReportCheckList(String empId);
+
+	List<Report> findByReferenceReportCheckList(Map<String, Object> param);
 
 } // interface end

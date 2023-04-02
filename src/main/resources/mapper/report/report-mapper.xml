@@ -101,6 +101,8 @@
 			reportComment c
 		where
 			detail_no = #{detailNo}
+		order by
+			c.reg_date desc
 	</select>
 	<resultMap type="reportComment" id="reportCommentMap"></resultMap>
 	
@@ -126,6 +128,52 @@
 			reportComment c
 		where
 			no = #{no}
+		order by
+			c.reg_date desc
 	</select>
+	
+	
+	 <select id="findByMemberReportCheckList" resultType="report">
+	 	select
+	 		 r.* 
+	 	from
+	 		report r right join reportMember rm
+	 			on r.no = rm.report_no
+	 	where
+	 		rm.emp_id = #{empId}
+	 	order by
+	 		r.reg_date desc
+	 </select>
+	 
+	 
+	 <select id="findByReferenceReportCheckList" resultType="report">
+	 	select
+	 		r.*
+	 	from
+	 		report r right join reference re
+	 			on r.no = re.reference_no
+	 	where
+	 		re.type = 'R'
+	 		and
+	 		(re.emp_id = #{empId}
+	 		or
+	 		re.dept_code = #{deptCode})
+	 	order by
+	 		r.reg_date desc
+	 </select>
+	 
+	 
+	 <select id="findByReportNoReference" resultType="emp">
+	 	select
+		    *
+		from
+		    emp
+		where
+		    dept_code in (select dept_code from view_reportReference where reference_no = #{no})
+		    or
+		    emp_id in (select emp_id from view_reportReference where reference_no = #{no})
+		order by
+			emp_id
+	 </select>
 	
 </mapper>
