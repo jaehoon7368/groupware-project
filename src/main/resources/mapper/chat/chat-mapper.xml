@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sh.groupware.chat.model.dao.ChatDao">
+
+<select  id="findChattroomIdbyMemberId" resultType="String">
+	SELECT 
+		chatroom_id
+	FROM chat_room
+		WHERE emp_id IN (#{empId}, #{myEmpId})
+	GROUP BY chatroom_id
+	HAVING COUNT(DISTINCT emp_id) = 2
+</select>
+
+<insert id="createChatroom">
+
+	insert into 
+		chat_room 
+		
+	values 
+		(#{chatroomId},#{empId},0,default,default)
+	
+</insert>
+
+
+
+<select  id="findChatLogBychatroomId" resultMap="chatLogMap">
+	select
+		*
+	from
+		chat_log
+	where 
+		chatroom_id = #{chatroomId} 
+		order by no
+		
+</select>
+
+<insert id="insertChatLog">
+
+	insert into
+		chat_log
+	values(
+		seq_chat_log_no.nextval,#{chatroomId},#{empId},#{msg},
+		#{time},#{type}
+	)
+
+</insert>
+
+
+
+
+
+
+<resultMap type="ChatRoom" id="chatRoomMap"></resultMap>
+<resultMap type="ChatLog" id="chatLogMap"> </resultMap>
+</mapper>
