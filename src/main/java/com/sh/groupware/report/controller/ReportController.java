@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sh.groupware.common.HelloSpringUtils;
@@ -47,6 +48,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 @RequestMapping("/report")
+@SessionAttributes({"myReportList", "myReportMemberList", "myReportReferenceList"})
 public class ReportController {
 
 	@Autowired
@@ -66,8 +68,9 @@ public class ReportController {
 	
 	
 	@GetMapping("/report.do")
-	public String report(Model model, Authentication authentication, HttpSession session) {
+	public String report(Model model, Authentication authentication) {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+		String deptCode = ((Emp) authentication.getPrincipal()).getDeptCode();
 		model.addAttribute("empId", empId);
 		
 		List<ReportCheck> reportList = reportService.selectMyReportCheck(empId);
@@ -76,7 +79,16 @@ public class ReportController {
 		List<ReportCheck> newReportList = reportService.selectMyReportCheck(empId);
 		
 		List<Report> myReportList = reportService.findByWriterReportCheckList(empId);
-		session.setAttribute("myReportList", myReportList);
+		model.addAttribute("myReportList", myReportList);
+		
+		List<Report> myReportMemberList = reportService.findByMemberReportCheckList(empId);
+		model.addAttribute("myReportMemberList", myReportMemberList);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("empId", empId);
+		param.put("deptCode", deptCode);
+		List<Report> myReportReferenceList = reportService.findByReferenceReportCheckList(param);
+		model.addAttribute("myReportReferenceList", myReportReferenceList);
 		
 		return "report/reportHome";
 	} // report() end
@@ -107,7 +119,7 @@ public class ReportController {
 	
 	
 	@PostMapping("/reportCreate.do")
-	public String reportCreate(Report report, Authentication authentication, @RequestParam String _endDate, @RequestParam String reference, HttpSession session) {
+	public String reportCreate(Report report, Authentication authentication, @RequestParam String _endDate, @RequestParam String reference, Model model) {
 		log.debug("_endDate = {}", _endDate);
 		log.debug("reference = {}", reference);
 		log.debug("authentiation, {}", authentication);
@@ -142,7 +154,7 @@ public class ReportController {
 		int result = reportService.insertReport(report);
 		
 		List<Report> myReportList = reportService.findByWriterReportCheckList(loginMember.getEmpId());
-		session.setAttribute("myReportList", myReportList);
+		model.addAttribute("myReportList", myReportList);
 		
 		return "redirect:/report/reportCreateView.do";
 	} // reportCreate() end
@@ -261,7 +273,11 @@ public class ReportController {
 				
 			} // 작성된 보고 있는 경우 
 		}
+		
+		List<Reference> referList = reportService.findByReportNoReference(no);
+		
 		model.addAttribute("reportCheckList", reportCheckList);
+		model.addAttribute("referList", referList);
 		return "report/reportDetail";
 	}; // reportDetail() end
 	

@@ -257,7 +257,7 @@
 							<div class="div-okreport-all">
 								<c:forEach items="${reportCheckList}" var="reportCheck" varStatus="vs">
 									<c:if test="${reportCheck.createYn == 'Y' && reportCheck.excludeYn == 'N'}">
-										<div class="div-okreport-one" data-id="${reportCheck.empId}" data-no="${vs.index}">
+										<div class="div-okreport-one" data-id="${reportCheck.empId}" data-no="${vs.index}" data-yn="${reportCheck.publicYn}">
 											<div>
 												<c:if test="${empty reportCheck.profileImg}">
 													<img src="${pageContext.request.contextPath}/resources/images/default.png" class="my-img" />
@@ -275,6 +275,7 @@
 						<script>
 							const okreport = document.querySelectorAll('.div-okreport-one');
 							console.log('okreport', okreport);
+							
 							if (okreport.length == 0) {
 								document.querySelector('.div-okreport-all').innerHTML = `
 									<div class="div-okreport-non"><span>없음</span></div>
@@ -744,31 +745,41 @@
 							/* 클릭한 보고자 및 그의 대한 내용 */
 							document.querySelectorAll('.div-okreport-one').forEach((one) => {
 								one.addEventListener('click', (e) => {
+									let loginEmpId = '${sessionScope.loginMember.empId}';
+									let yn = '${reportCheckList[0].publicYn}';
+									console.log(loginEmpId);
+									console.log(yn);
+									
 									let clickDiv = e.target;
 									const allView = document.querySelectorAll('.div-report-write-view');
 									console.log('allView', allView);
 									let no;
 									
-									/* 보고자 div class 지우기 */
-									document.querySelectorAll('.div-okreport-one').forEach((one) => {
-										one.classList.remove('div-okreport-one-click');
-									});
-									
 									
 									/* 보고자 div class 추가 및 아래 내용 띄우기 */
 									while (true) {
 										if (clickDiv.classList[0] === 'div-okreport-one') {
-											clickDiv.classList.add('div-okreport-one-click');
-											
 											no = clickDiv.dataset.no;
 											console.log(no);
 											
-											allView.forEach((viewDiv) => {
-												if (viewDiv.dataset.no === no)
-													viewDiv.style.display = 'block';
-												else
-													viewDiv.style.display = 'none';
-											});
+											if (yn === 'Y' || (yn === 'N' && clickDiv.dataset.id == loginEmpId)) {
+
+												/* 보고자 div class 지우기 */
+												document.querySelectorAll('.div-okreport-one').forEach((one) => {
+													one.classList.remove('div-okreport-one-click');
+												});
+												
+												clickDiv.classList.add('div-okreport-one-click');
+												
+												allView.forEach((viewDiv) => {
+													if (viewDiv.dataset.no === no)
+														viewDiv.style.display = 'block';
+													else
+														viewDiv.style.display = 'none';
+												});
+											} else {
+												console.log('no');
+											}
 											
 											//allView[no].style.display = 'block';
 											
@@ -878,6 +889,8 @@
 								before.style.display = 'block';
 							};
 						</script>
+						${reportCheckList}
+						${referList}
 					</div>
 				</div>
 				

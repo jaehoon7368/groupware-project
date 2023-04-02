@@ -128,4 +128,30 @@
 			no = #{no}
 	</select>
 	
+	
+	 <select id="findByMemberReportCheckList" resultType="report">
+	 	select
+	 		 r.* 
+	 	from
+	 		report r right join reportMember rm
+	 			on r.no = rm.report_no
+	 	where
+	 		rm.emp_id = #{empId}
+	 </select>
+	 
+	 
+	 <select id="findByReferenceReportCheckList" resultType="report">
+	 	select
+	 		r.*
+	 	from
+	 		report r right join reference re
+	 			on r.no = re.reference_no
+	 	where
+	 		re.type = 'R'
+	 		and
+	 		(re.emp_id = #{empId}
+	 		or
+	 		re.dept_code = #{deptCode})
+	 </select>
+	
 </mapper>

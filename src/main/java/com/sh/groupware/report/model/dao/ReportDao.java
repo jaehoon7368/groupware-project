@@ -82,5 +82,9 @@ public interface ReportDao {
 
 	@Select("select * from report where writer = #{empId}")
 	List<Report> findByWriterReportCheckList(String empId);
+
+	List<Report> findByMemberReportCheckList(String empId);
+
+	List<Report> findByReferenceReportCheckList(Map<String, Object> param);
 	
 } // class end

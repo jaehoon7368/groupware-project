@@ -272,4 +272,16 @@ public class ReportServiceImpl implements ReportService {
 		return reportDao.findByWriterReportCheckList(empId);
 	} // findByWriterReportCheckList() end
 	
+	
+	@Override
+	public List<Report> findByMemberReportCheckList(String empId) {
+		return reportDao.findByMemberReportCheckList(empId);
+	} // findByMemberReportCheckList() end
+	
+	
+	@Override
+	public List<Report> findByReferenceReportCheckList(Map<String, Object> param) {
+		return reportDao.findByReferenceReportCheckList(param);
+	} // findByReferenceReportCheckList() end
+	
 } // class end

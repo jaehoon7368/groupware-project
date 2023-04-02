@@ -54,4 +54,8 @@ public interface ReportService {
 
 	List<Report> findByWriterReportCheckList(String empId);
 
+	List<Report> findByMemberReportCheckList(String empId);
+
+	List<Report> findByReferenceReportCheckList(Map<String, Object> param);
+
 } // interface end
