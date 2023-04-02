@@ -20,19 +20,34 @@ public class Board extends BoardEntity{
 	
 	private int attachCount;
 	private List<Attachment> attachments = new ArrayList<>();
+	private List<BoardComment> boardComment = new ArrayList<>();
 	private Emp emp;
 	
 	public void addAttachment(Attachment attach) {
 		this.attachments.add(attach);
 	}
+	
+	private List<BoardComment> commentList;
 
+    public List<BoardComment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<BoardComment> commentList) {
+        this.commentList = commentList;
+    }
+	
 	public Board(String no, BType bType, String title, String content, int readCount, int likeCount,
 			LocalDateTime createdDate, LocalDateTime updatedDate, String empId, String writer, int attachCount,
-			List<Attachment> attachments, Emp emp) {
+			List<Attachment> attachments, List<BoardComment> boardComment, Emp emp) {
 		super(no, bType, title, content, readCount, likeCount, createdDate, updatedDate, empId, writer);
 		this.attachCount = attachCount;
 		this.attachments = attachments;
+		this.boardComment = boardComment;
 		this.emp = emp;
 	}
+
+
+	
 }
 

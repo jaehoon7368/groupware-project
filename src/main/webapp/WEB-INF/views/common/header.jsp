@@ -72,7 +72,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="#" class="is-active" title="주소록">
+								<a href="${pageContext.request.contextPath}/addr/addrHome.do" class="is-active" title="주소록">
 									<i class="large fa fa-solid fa-phone-volume"></i>
 									<span class="app-dashboard-sidebar-text">주소록</span>
 								</a>

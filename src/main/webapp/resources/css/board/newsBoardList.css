@@ -2,19 +2,33 @@
 	padding: 0px;
 	margin: 0px;
 }
+/* 글작성  */
 .form-wrap {
 	border: 1px solid lightgray;
 	width: 800px;
 	height: 200px;
 	margin-left: 30px;
-	
+	border-bottom:none;
+	border-right:none;
+	border-left:none;
 }
+.write-wrap{
+	height:300px;
+}
+
 .text-wrap {
   padding: 10px;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
-  border: 1px solid lightgray;
+  border: 1px solid #e1e1e1;
   border-top: none;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0px 0px 3px rgba(0,0,0,0.1);
+}
+.content-wrap {
+  margin-top: 10px;
 }
 
 .text-wrap textarea {
@@ -29,6 +43,7 @@
 .text-wrap textarea:focus {
   border: 1px solid black;
 }
+
 
 .button-wrap {
 	text-align: end;
@@ -90,35 +105,8 @@
 	color: lightgray;
 }
 
-.div-report-commend {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	margin-top: 10px;
-	padding: 20px;
-}
 
-.div-report-commend-all {
-	width: 100%;
-	display: flex;
-	align-items: baseline;
-	padding:10px;
-}
 
-.div-report-commend-all div {
-	margin: 0 5px;
-	flex-shrink: 0;
-}
-
-.div-report-commend-all div:nth-of-type(2) {
-	width: 85%;
-}
-
-.div-report-commend-all textarea {
-	width: 100%;
-	resize: none;
-	margin: 0;
-}
 
 .tool-wrap .heart-wrap img{
 	height:30px;
@@ -133,21 +121,190 @@
 	justify-content: space-between;
 }
 
-.div-report-commend-all form {
-	display:flex;
-}
-
-
-.content-wrap {
-	padding:10px;
-	border-top: 1px solid lightgray;
+#div-padding{
+	padding:20px;
 	border-bottom: 1px solid lightgray;
 }
 
-.div-report-commend{
-	border: 1px solid lightgray;
-	width: 1000px;
-	margin-left:20px;
-	border-radius: 10px;
+.content-wrap {
+	padding:10px;
 }
+.tool-wrap {
+  border-top: 1px solid #ddd;
+}
+
+.tool-wrap:first-child {
+  border-top: none;
+}
+
+.tool-wrap:last-child {
+  border-bottom: none;
+}
+
+
+.button-wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-right:20px;
+}
+.button-wrap img {
+  height: 25px;
+  width: 25px;
+  margin-right: 10px;
+}
+.button-wrap #write-btn {
+  height:25px;
+  width:70px;
+  background-color: #00bfff;
+  color: white;
+}
+
+
+.file-label {
+   display: inline-block;
+   margin-left: 10px;
+   font-size: 14px;
+   }
+
+.foreach-border {
+	border-bottom: 1px solid gray;
+	padding:20px;
+}
+
+
+ /* 댓글  */
+.comment-item{
+	padding:10px;
+}
+.div-report-commend {
+ 	border: 1px solid gray;
+	padding: 20px;
+	width: 950px;
+	
+} 
+.comment-edit-form-btn{
+ 
+}
+
+.div-report-commend-all {
+	display: flex;
+    align-items: baseline;
+} 
+
+.div-report-commend-all form{
+	display:flex;
+	align-items: baseline;
+}
+form#command {
+	display: flex;
+    align-items: baseline;
+}
+
+.comment-profile {
+  margin-right: 10px;
+  font-size: 24px;
+  color: #999;
+}
+
+.comment-input {
+  padding:20px;
+}
+.comment-reply-wrap .comment-input{
+  width:800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.comment-input textarea {
+  width: 700px;
+  height: 60px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  resize: none;
+}
+
+
+.comment-submit input[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+
+.comment-submit input[type="submit"]:hover {
+  background-color: #0069d9;
+}
+
+
+.commentList-view-btn-wrap input {
+	background-color:white;
+}
+.commentlist-edit-submit-button, .commentlist-cancel-button {
+  margin-left: 50px;
+}
+ 
+ /* 모달 */
+   .img-thumbnail {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    cursor: pointer;
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 70%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+  }
+
+  .modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80%;
+  }
+
+  .modal-content img {
+    margin-top:15%;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+  }
+ 
+.text-wrap-edit {
+	padding: 10px;
+    min-height: 300px;
+    height:400px;
+    width: 100%;
+    border: 1px solid #e1e1e1;
+    border-top: none;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.1);
+}
+ 
 
