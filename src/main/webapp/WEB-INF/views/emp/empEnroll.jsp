@@ -51,59 +51,59 @@
                     </script>
                     <!-- 상단 타이틀 end -->
 
-                     <!-- 본문 -->
+                    <!-- 본문 -->
+                <div class="div-padding">
                     <div id="empInfo">
-                       <form name="empFrm" action="${pageContext.request.contextPath}/emp/empEnroll.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
-                            <table>
+                        <form name="empFrm"
+                            action="${pageContext.request.contextPath}/emp/empEnroll.do?${_csrf.parameterName}=${_csrf.token}" method="post"
+                            enctype="multipart/form-data">
+                            <table id="emp-enroll-table">
+        
                                 <tr>
-                                    <th>사진</th>
-                                    <th>이름</th>
-                                    <th>사번</th>
+                                    <th></th>
                                     <td>
-                                        <div id="empId-container">
-                                            <input type="text" placeholder="아이디(4글자이상)" name="empId" id="empId" required>
-                                            <input type="hidden" id="idValid" value="0" />
+                                        <div id="profile-box">
+                                            <img id="preview" src="#" style="max-width:150px; max-height:150px;">
+                                            <label for="file"><i class="fa-solid fa-magnifying-glass"></i></label>
+                                            <input type="file" id="file" name="file" accept="image/*" onchange="previewImage(event)">
                                         </div>
                                     </td>
+
+                                </tr>
+                                <tr>
+                                
+                                    <th>이름</th>
+                                    <td>
+                                        <input type="text" name="name" id="name" required>
+                                    </td>
+                                    
+                                </tr>
+                               
+                                <tr>
+                                    
                                     <th>주민번호</th>
                                     <td>
-                                        <input type="text" name="ssn" id="ssn" required/>
+                                        <input type="text" name="ssn" id="ssn" required />
                                     </td>
+                                    
                                 </tr>
+                             
                                 <tr>
-                                    <td rowspan="3">
-                                       <div>
-										  <input type="file" id="file" name="file" accept="image/*" onchange="previewImage(event)">
-										  <img id="preview" src="#"  style="max-width:200px; max-height:200px;">
-										</div>
-                                    </td>
-                                    <td rowspan="3" style="width:150px;">
-                                        <input type="text"  name="name" id="name" style="width:150px;" required>
-                                    </td>
-                                    <th>패스워드</th>
-                                    <td>
-                                        <input type="password"  name="password" id="password" required>
-                                    </td>
-                                    <th>패스워드확인</th>
-                                    <td>
-                                        <input type="password" id="passwordCheck" required>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>이메일</th>
-                                    <td>
-                                        <input type="email"  placeholder="abc@xyz.com" name="email" id="email" required>
-                                    </td>
                                     <th>휴대폰</th>
                                     <td>
-                                        <input type="tel"  placeholder="(-없이)01012345678" name="phone" id="phone" maxlength="11"
-                                            required>
+                                        <input type="tel" placeholder="(-없이)01012345678" name="phone" id="phone" maxlength="11" required>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>주소</th>
+                                    <td colspan="5">
+                                        <input style="width: 500px;" type="text" class="form-control" name="address" id="address" required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>부서</th>
                                     <td>
-                                        <select class="work-select font-bold" name="deptCode" required>
+                                        <select name="deptCode" required>
                                             <option selected>부서선택</option>
                                             <option value="d1">인사총무</option>
                                             <option value="d2">개발</option>
@@ -112,9 +112,11 @@
                                             <option value="d5">기획</option>
                                         </select>
                                     </td>
+                                </tr>
+                                <tr>
                                     <th>직급</th>
                                     <td>
-                                        <select class="work-select font-bold" name="jobCode" required>
+                                        <select name="jobCode" required>
                                             <option selected>직급선택</option>
                                             <option value="j1">사장</option>
                                             <option value="j2">부사장</option>
@@ -127,17 +129,14 @@
                                         </select>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th>주소</th>
-                                    <td colspan="5">
-                                        <input style="width: 920px;" type="text" class="form-control" name="address" id="address" required>
-                                    </td>
-                                </tr>
+                                
+                                
                             </table>
                             <input type="submit" id="btn-empEnroll" value="등록">
                         </form>
                     </div>
-                    <!-- 본문 end -->
+                </div>
+                <!-- 본문 end -->
                 </div>
             </div>
             

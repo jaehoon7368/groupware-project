@@ -40,6 +40,7 @@ public class EmpServiceImpl implements EmpService {
 	public int insertEmp(Emp emp) {
 		// 직원추가
 		int result = empDao.insertEmp(emp);
+		log.debug("empService emp={}",emp);
 		
 		// 직원 권한부여
 		String jobCode = emp.getJobCode(); //회원 jobCode
@@ -72,15 +73,15 @@ public class EmpServiceImpl implements EmpService {
 		if(deptAuthority != null)
 			authorities.add(deptAuthority);
 		
-		
-		for(String str : authorities) {
-			String empId = emp.getEmpId(); //회원 pk
-			Map<String,Object> param = new HashMap<>();
-			param.put("empId", empId);
-			param.put("auth",str);
-			result = empDao.insertAuthority(param);
+		for(String auth : authorities) {
+			Authority authority = new Authority();
+			authority.setEmpId(emp.getEmpId());
+			authority.setAuth(auth);
+			result = empDao.insertAuthority(authority);
 		}
+		
 		Attachment attach = emp.getAttachment();
+		attach.setPkNo(emp.getEmpId());
 		result = attachmentDao.insertProfile(attach);
 		
 		return result;
