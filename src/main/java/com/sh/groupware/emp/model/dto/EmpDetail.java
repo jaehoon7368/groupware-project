@@ -27,9 +27,9 @@ public class EmpDetail extends Emp {
 	
 	public EmpDetail(String empId, String password, String name, String ssn, String address, String email, String phone,
 			LocalDate hireDate, LocalDate quitDate, Quit quitYn, String jobCode, String deptCode,
-			List<SimpleGrantedAuthority> authorities, Attachment attachment,String jobTitle, int baseDayOff, String deptTitle) {
+			List<SimpleGrantedAuthority> authorities,Attachment attachment, Authority authority,String jobTitle, int baseDayOff, String deptTitle) {
 		super(empId, password, name, ssn, address, email, phone, hireDate, quitDate, quitYn, jobCode, deptCode,
-				authorities, attachment);
+				authorities, attachment,authority);
 		this.jobTitle = jobTitle;
 		this.baseDayOff = baseDayOff;
 		this.deptTitle = deptTitle;
@@ -38,10 +38,10 @@ public class EmpDetail extends Emp {
 	
 	public EmpDetail(String empId, String password, String name, String ssn, String address, String email, String phone,
 			LocalDate hireDate, LocalDate quitDate, Quit quitYn, String jobCode, String deptCode,
-			List<SimpleGrantedAuthority> authorities, Attachment attachment,String jobTitle, int baseDayOff, String deptTitle,
+			List<SimpleGrantedAuthority> authorities, Attachment attachment,Authority authority,String jobTitle, int baseDayOff, String deptTitle,
 			List<Authority> authorityList) {
 		super(empId, password, name, ssn, address, email, phone, hireDate, quitDate, quitYn, jobCode, deptCode,
-				authorities,attachment);
+				authorities,attachment,authority);
 		this.jobTitle = jobTitle;
 		this.baseDayOff = baseDayOff;
 		this.deptTitle = deptTitle;
@@ -56,10 +56,10 @@ public class EmpDetail extends Emp {
 
 	public EmpDetail(String empId, String password, String name, String ssn, String address, String email, String phone,
 			LocalDate hireDate, LocalDate quitDate, Quit quitYn, String jobCode, String deptCode,
-			List<SimpleGrantedAuthority> authorities, Attachment attachment, String jobTitle, String deptTitle,
+			List<SimpleGrantedAuthority> authorities, Attachment attachment, Authority authority, String jobTitle, String deptTitle,
 			String renameFilename) {
 		super(empId, password, name, ssn, address, email, phone, hireDate, quitDate, quitYn, jobCode, deptCode,
-				authorities, attachment);
+				authorities, attachment,authority);
 		this.jobTitle = jobTitle;
 		this.deptTitle = deptTitle;
 		this.renameFilename = renameFilename;

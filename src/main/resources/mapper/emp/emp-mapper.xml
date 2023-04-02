@@ -29,12 +29,12 @@
 		insert into
 			emp
 		values(
-			#{empId},
+			'emp' || to_char(seq_emp_id_no.nextval, 'fm000'),
 			#{password},
 			#{name},
 			#{ssn},
 			#{address},
-			#{email},
+			'emp' || to_char(seq_emp_id_no.nextval, 'fm000') || '@gmail.com',
 			#{phone},
 			default,
 			null,
@@ -42,6 +42,12 @@
 			#{jobCode},
 			#{deptCode}
 		)
+	<selectKey order="AFTER" resultType="string" keyProperty="empId">
+			select 
+				'emp' || to_char(seq_emp_id_no.currval, 'fm000')
+			from
+				dual
+		</selectKey>
 	</insert>
 	<resultMap type="emp" id="empMap"></resultMap>
 	

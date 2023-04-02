@@ -22,7 +22,7 @@ public interface EmpDao {
 	int insertEmp(Emp emp);
 
 	@Insert("insert into authority values(#{empId},#{auth})")
-	int insertAuthority(Map<String, Object> param);
+	int insertAuthority(Authority auth);
 
 	EmpDetail selectEmpDetail(String empId);
 	
@@ -63,5 +63,7 @@ public interface EmpDao {
 	double selectBaseDayOff(String empId);
 
 	List<EmpDetail> empFinderList(Map<String, Object> param);
+
+	
 	
 }

@@ -116,7 +116,7 @@ public class EmpController {
 	public String empEnroll(Emp emp,@RequestParam("file") MultipartFile file) {
 		try {
 			log.debug("emp = {}",emp);
-			String rawPassword = emp.getPassword();
+			String rawPassword = "1234"; //초기비밀번호
 			String encodedPassword = passwordEncoder.encode(rawPassword);
 			emp.setPassword(encodedPassword);
 			log.debug("emp = {}", emp);
@@ -127,7 +127,7 @@ public class EmpController {
 			log.debug("file = {}", file);
 			if(file.getSize() > 0) {
 				// 1. 저장 
-				String pkNo = emp.getEmpId();
+//				String pkNo = emp.getEmpId();
 				String renamedFilename = HelloSpringUtils.renameMultipartFile(file);
 				String originalFilename = file.getOriginalFilename();
 				File destFile = new File(saveDirectory, renamedFilename);
@@ -140,7 +140,7 @@ public class EmpController {
 				Attachment attach = new Attachment();
 				attach.setRenameFilename(renamedFilename);
 				attach.setOriginalFilename(originalFilename);
-				attach.setPkNo(pkNo);
+				attach.setPkNo(emp.getEmpId());
 				emp.setAttachment(attach);
 				log.debug("attach = {}",attach);
 				
