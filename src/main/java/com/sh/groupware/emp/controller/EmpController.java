@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sh.groupware.emp.model.dto.EmpDetail;
 import com.sh.groupware.emp.model.dto.Emp;
@@ -113,7 +114,7 @@ public class EmpController {
 	
 	//인사정보 등록하기
 	@PostMapping("/empEnroll.do")
-	public String empEnroll(Emp emp,@RequestParam("file") MultipartFile file) {
+	public String empEnroll(Emp emp,@RequestParam("file") MultipartFile file,RedirectAttributes redirectAttr) {
 		try {
 			log.debug("emp = {}",emp);
 			String rawPassword = "1234"; //초기비밀번호
@@ -153,6 +154,9 @@ public class EmpController {
 			throw e;
 		}
 		log.trace("empEnroll 끝!");
+		
+		redirectAttr.addFlashAttribute("msg", "인사정보를 성공적으로 등록하였습니다.");
+		
 		return "redirect:/emp/empEnroll.do";
 	}
 	
@@ -174,8 +178,10 @@ public class EmpController {
 	}
 	
 	@PostMapping("/empInfo.do")
-	public String empUpdate(Emp emp,Authentication authentication) {
+	public String empUpdate(Emp emp,Authentication authentication,RedirectAttributes redirectAttr) {
 		log.debug("emp={}",emp);
+		Emp principal = (Emp) authentication.getPrincipal();
+		emp.setEmpId(principal.getEmpId());
 		// 비밀번호 암호화 처리
 		String rawPassword = emp.getPassword();
 		String encodedPassword = passwordEncoder.encode(rawPassword);
@@ -191,6 +197,8 @@ public class EmpController {
 				authentication.getAuthorities()
 		);
 		SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+		
+		redirectAttr.addFlashAttribute("msg", "인사정보를 성공적으로 수정하였습니다.");
 		
 		return "redirect:/emp/empInfo.do";
 	}
