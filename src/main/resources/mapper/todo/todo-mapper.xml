@@ -213,6 +213,25 @@
 	        order by tb.no asc
 	
 	</select>
+	
+	<select  id="selectAttachmentByBoardNo" resultMap = "attachmentMap">
+		select
+		    a.*
+		from
+		    todoboard tb join attachment a
+		    on tb.emp_id = a.pk_no
+		where 
+		    tb.no = #{todoBoardNo}
+		    union
+		select distinct
+		            a.*
+		from
+            todoboard tb  join todoboardgroup tbg
+				on tb.no = tbg.todoboard_no
+            join  attachment a 
+				on tbg.emp_id = a.pk_no
+		where  tb.no = #{todoBoardNo}  
+	</select>
 
 
 

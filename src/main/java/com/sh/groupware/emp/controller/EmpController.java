@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sh.groupware.emp.model.dto.EmpDetail;
 import com.sh.groupware.emp.model.dto.Emp;
@@ -34,6 +35,9 @@ import com.sh.groupware.workingManagement.model.service.WorkingManagementService
 import com.sh.groupware.common.HelloSpringUtils;
 import com.sh.groupware.common.attachment.model.service.AttachmentService;
 import com.sh.groupware.common.dto.Attachment;
+import com.sh.groupware.dayOff.model.dto.DayOff;
+import com.sh.groupware.dayOff.model.dto.DayOffDetail;
+import com.sh.groupware.dayOff.model.service.DayOffService;
 import com.sh.groupware.dept.model.dto.Dept;
 import com.sh.groupware.dept.model.service.DeptService;
 
@@ -42,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping("/emp")
-@SessionAttributes({"loginEmp"})
+@SessionAttributes({"loginMember"})
 public class EmpController {
 	
 	@Autowired
@@ -56,6 +60,9 @@ public class EmpController {
 	
 	@Autowired
 	private WorkingManagementService workingManagementService;
+	
+	@Autowired
+	private DayOffService dayOffService;
 	
 	@Autowired
 	private ServletContext application;
@@ -88,7 +95,7 @@ public class EmpController {
 	}
 	
 	//로그아웃 기능
-	@GetMapping("/empLogout.do")
+	@PostMapping("/empLogout.do")
 	public String empLogout(SessionStatus status) {
 		
 		if(!status.isComplete())
@@ -97,17 +104,20 @@ public class EmpController {
 		return "redirect:/";
 	}
 	
+	//내 근태현황
 	@GetMapping("/empHome.do")
 	public void empHome() {}
 	
+	//인사정보 등록 페이지
 	@GetMapping("/empEnroll.do")
 	public void empInsertPage() {}
 	
+	//인사정보 등록하기
 	@PostMapping("/empEnroll.do")
-	public String empEnroll(Emp emp,@RequestParam("file") MultipartFile file) {
+	public String empEnroll(Emp emp,@RequestParam("file") MultipartFile file,RedirectAttributes redirectAttr) {
 		try {
 			log.debug("emp = {}",emp);
-			String rawPassword = emp.getPassword();
+			String rawPassword = "1234"; //초기비밀번호
 			String encodedPassword = passwordEncoder.encode(rawPassword);
 			emp.setPassword(encodedPassword);
 			log.debug("emp = {}", emp);
@@ -118,7 +128,7 @@ public class EmpController {
 			log.debug("file = {}", file);
 			if(file.getSize() > 0) {
 				// 1. 저장 
-				String pkNo = emp.getEmpId();
+//				String pkNo = emp.getEmpId();
 				String renamedFilename = HelloSpringUtils.renameMultipartFile(file);
 				String originalFilename = file.getOriginalFilename();
 				File destFile = new File(saveDirectory, renamedFilename);
@@ -131,7 +141,7 @@ public class EmpController {
 				Attachment attach = new Attachment();
 				attach.setRenameFilename(renamedFilename);
 				attach.setOriginalFilename(originalFilename);
-				attach.setPkNo(pkNo);
+				attach.setPkNo(emp.getEmpId());
 				emp.setAttachment(attach);
 				log.debug("attach = {}",attach);
 				
@@ -144,6 +154,9 @@ public class EmpController {
 			throw e;
 		}
 		log.trace("empEnroll 끝!");
+		
+		redirectAttr.addFlashAttribute("msg", "인사정보를 성공적으로 등록하였습니다.");
+		
 		return "redirect:/emp/empEnroll.do";
 	}
 	
@@ -165,8 +178,10 @@ public class EmpController {
 	}
 	
 	@PostMapping("/empInfo.do")
-	public String empUpdate(Emp emp,Authentication authentication) {
+	public String empUpdate(Emp emp,Authentication authentication,RedirectAttributes redirectAttr) {
 		log.debug("emp={}",emp);
+		Emp principal = (Emp) authentication.getPrincipal();
+		emp.setEmpId(principal.getEmpId());
 		// 비밀번호 암호화 처리
 		String rawPassword = emp.getPassword();
 		String encodedPassword = passwordEncoder.encode(rawPassword);
@@ -183,25 +198,83 @@ public class EmpController {
 		);
 		SecurityContextHolder.getContext().setAuthentication(newAuthentication);
 		
+		redirectAttr.addFlashAttribute("msg", "인사정보를 성공적으로 수정하였습니다.");
+		
 		return "redirect:/emp/empInfo.do";
 	}
 	
-	//내 인사정보 페이지 불러오기
+	//내 연차내역 페이지 불러오기
 	@GetMapping("/empAnnual.do")
-	public void empAnnual() {}
-	
-	@GetMapping("/passwordEncode.do")
-	public void selectOneEmp() {
-		Emp emp = empService.selectEmp();
-		log.debug("enp = {}",emp);
-		log.debug("empPassword={}",emp.getPassword());
-		String rawPassword = emp.getPassword();
-		String encodedPassword = passwordEncoder.encode(rawPassword);
-		log.debug("encodedPassword = {}", encodedPassword);
+	public void empAnnual(Model model,Authentication authentication) {
+		Emp principal = (Emp) authentication.getPrincipal();
 		
+		String empId = principal.getEmpId();
+		
+		// 사원 기본 연차 가져오기
+		double baseDayOff = empService.selectBaseDayOff(empId);
+		model.addAttribute("baseDayOff", baseDayOff);
+		
+		//내 전체 연차 내역
+		List<DayOffDetail> dayoffList = dayOffService.selectOneEmpDayOffList(empId);
+		model.addAttribute("dayoffList", dayoffList);
+		
+		//마지막 연차내역 (남은연차 계산용)
+		DayOffDetail dayoffDetail = dayOffService.selectLastLeaveCount(empId);
+		model.addAttribute("dayOffDetail", dayoffDetail);
+		
+		// 연차 사용기간 년도
+		List<DayOff> dayOffYear = dayOffService.selectDayOffYear();
+		model.addAttribute("dayOffYear", dayOffYear);
 	}
 	
+	//내 연차내역 검색
+	@GetMapping("/selectAnnualYear.do")
+	public String selectAnnualYear(String year,Model model,Authentication authentication) {
+		log.debug("year = {}",year);
+		Emp principal = (Emp) authentication.getPrincipal();
+		
+		String empId = principal.getEmpId();
+		Map<String,Object> param = new HashMap<>();
+		param.put("empId", empId);
+		param.put("year", year);
+		
+		// 사원 기본 연차 가져오기
+		double baseDayOff = empService.selectBaseDayOff(empId);
+		model.addAttribute("baseDayOff", baseDayOff);
+		
+		//내 전체 연차 내역
+		List<DayOffDetail> dayoffList = dayOffService.selectOneEmpDayOffListYear(param);
+		model.addAttribute("dayoffList", dayoffList);
+		
+		//마지막 연차내역 (남은연차 계산용)
+		DayOffDetail dayoffDetail = dayOffService.selectLastLeaveCount(empId);
+		model.addAttribute("dayOffDetail", dayoffDetail);
+		
+		// 연차 사용기간 년도
+		List<DayOff> dayOffYear = dayOffService.selectDayOffYear();
+		model.addAttribute("dayOffYear", dayOffYear);
+		return "emp/empAnnual";
+	}
 	
+	//전사 인사정보
+	@GetMapping("/empAllInfo.do")
+	public void empAllInfo(Model model) {
+		List<EmpDetail> empList = empService.selectEmpAll();
+		
+		model.addAttribute("empList", empList);
+	}
 	
+	//전사 인사정보 검색
+	@GetMapping("/empFinder.do")
+	public String empFinder(String searchType, String searchKeyword,Model model) {
+		Map<String,Object> param = new HashMap<>();
+		param.put("searchType", searchType);
+		param.put("searchKeyword", searchKeyword);
+		
+		List<EmpDetail> empList = empService.empFinderList(param);
+		model.addAttribute("empList", empList);
+		
+		return "emp/empAllInfo";
+	}
 
 }

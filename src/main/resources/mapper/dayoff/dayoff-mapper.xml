@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sh.groupware.dayOff.model.dao.DayOffDao">
+
+	<insert id="insertDayOff">
+		insert into
+			dayoff
+		values (
+			seq_dayoff_no.nextval, 
+			#{formNo},
+			#{empId}, 
+			#{dayOffYear}, 
+			#{startDate}, 
+			#{endDate}, 
+			#{count}, 
+			#{leaveCount},
+			TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul'
+		)
+	</insert>
+	
+	<select id="selectOneEmpDayOffList" resultMap="dayOffDetailMap">
+		select 
+	        d.day_off_year,
+	        d.start_date,
+	        d.end_date,
+	        d.count,
+	        d.leave_count,
+	        df.type,
+	        df.content
+	    from 
+	        dayoff d join dayoffform df
+	        on d.form_no = df.no
+	    where
+	    	d.emp_id = #{empId}
+	    order by 
+	        d.no desc
+	</select>
+	
+	<select id="selectOneEmpDayOffListYear" resultMap="dayOffDetailMap">
+		select 
+	        d.day_off_year,
+	        d.start_date,
+	        d.end_date,
+	        d.count,
+	        d.leave_count,
+	        df.type,
+	        df.content
+	    from 
+	        dayoff d join dayoffform df
+	        on d.form_no = df.no
+	    where
+	    	d.emp_id = #{empId}
+	    	and day_off_year = #{year}
+	    order by 
+	        d.no desc
+	</select>
+	
+	<select id="selectLastLeaveCount" resultMap="dayOffDetailMap">
+		select  
+		  d.*  
+		from(
+		    select 
+		        d.day_off_year,
+		        d.start_date,
+		        d.end_date,
+		        d.count,
+		        d.leave_count,
+		        df.type,
+		        df.content,
+		        (select base_day_off from job where job_code = e.job_code) base_day_off
+		    from 
+		        dayoff d join dayoffform df
+		        on d.form_no = df.no
+		        join emp e
+		        on d.emp_id = e.emp_id
+		    where
+		    	d.emp_id = #{empId}
+		    order by 
+		        d.no desc
+		)d
+		where
+		    rownum = 1
+	</select>
+	<resultMap type="dayOffDetail" id="dayOffDetailMap"></resultMap>
+</mapper>

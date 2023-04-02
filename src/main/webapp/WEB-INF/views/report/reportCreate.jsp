@@ -34,7 +34,7 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="GET">
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
 											<button class="my-menu" type="submit">로그아웃</button>								
 										</form:form>
 									</div>
@@ -121,7 +121,7 @@
 										<tr>
 											<td colspan="2">
 												<button type="submit">확인</button>
-												<button type="reset">취소</button>
+												<button type="button" onClick="location.href='${pageContext.request.contextPath}/report/report.do';">취소</button>
 											</td>
 										</tr>
 									</tbody>

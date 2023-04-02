@@ -17,11 +17,9 @@
 	<div class="home-container">
 		<!-- 상단 타이틀 -->
 		<div class="top-container">
-			<div class="container-title">각자 기능</div>
 			<div class="home-topbar topbar-div">
 				<div>
 					<a href="#" id="home-my-img"> <img
-						src="${pageContext.request.contextPath}/resources/images/sample.jpg"
 						alt="" class="my-img">
 					</a>
 				</div>
@@ -90,14 +88,18 @@
 
 					<ul id ="bookMarkBody"> 
 						<!-- 여기서부터 즐겨찾기  -->
-					<c:forEach items ="${bookMarkTodoBoards }" var="bookMarkTodoBoard">
+					<c:forEach items ="${bookMarkTodoBoards}" var="bookMarkTodoBoard">
 					<li class="todo-li"  onclick="enterTodo('${bookMarkTodoBoard.no}',event);">
 						<div class="todo-top">
-								<span>${bookMarkTodoBoard.title }</span> <span>  
+								<span class="content-span">${bookMarkTodoBoard.title }</span>
 							
 							</div>
 							<div class="todo-bottom">
-								<img src="/김현동/joonpark.jpg" alt="" style="width: 32px;">
+							 <c:forEach items="${bookMarkTodoBoard.attachmentLists}" var ="attachment" varStatus="vs">
+							 		<c:if test= "${vs.index < 5 }">
+										<img src="${pageContext.request.contextPath }/resources/upload/emp/${attachment.renameFilename }" alt="" class="my-img">
+									</c:if>
+							</c:forEach>
 							</div>
 						</li>
 						<li class="test">
@@ -113,6 +115,13 @@
 				</div>
 				<!-- favorite end -->
 
+	<style>
+	.todo-bottom{
+	 	disply : flex;
+	 	
+	}
+	
+	</style>
 
 
 				<hr>
@@ -124,12 +133,16 @@
 						
 						<li class="todo-li"  onclick="enterTodo('${todoBoard.no}',event);">
 							<div class="todo-top">
-								<span>${todoBoard.title }</span> <span>  
+								<span class="content-span">${todoBoard.title }</span> 
 							
 							</div>
-							<div class="todo-bottom">
-								<img src="/김현동/joonpark.jpg" alt="" style="width: 32px;">
-							</div>
+								<div class="todo-bottom">
+							 <c:forEach items="${todoBoard.attachmentLists}" var ="attachment" varStatus="vs">
+							 		<c:if test= "${vs.index < 5 }">
+										<img src="${pageContext.request.contextPath }/resources/upload/emp/${attachment.renameFilename }" alt="" class="my-img">
+									</c:if>
+							</c:forEach>
+								</div>
 						</li>
 						<li class="test">
 							<i class="fa fa-star-o bookMark" aria-hidden="true" onclick ="bookMarkOn('${todoBoard.no}',event);"></i></span>

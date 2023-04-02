@@ -65,8 +65,33 @@ public class WorkingManagementServiceImpl implements WorkingManagementService {
 		return workingManagementDao.weekTotalTime(param);
 	}
 	
+	//주간 기본근무시간 가져오기
 	@Override
 	public int selectWeekWorkTime(Map<String, Object> startEndMap) {
 		return workingManagementDao.selectWeekWorkTime(startEndMap);
 	}
+	
+	//주간 연장근무시간 가져오기
+	@Override
+	public int selectWeekOverTime(Map<String, Object> startEndMap) {
+		return workingManagementDao.selectWeekOverTime(startEndMap);
+	}
+	
+	//월 연장근무시간 가져오기
+	@Override
+	public int monthOverTime(Map<String, Object> startEndMap) {
+		return workingManagementDao.monthOverTime(startEndMap);
+	}
+	
+	@Override
+	public int insertRegDateState(WorkingManagement working) {
+		return workingManagementDao.insertRegDateState(working);
+	} // insertRegDateState() end
+	
+	
+	@Override
+	public List<Map<String, Object>> findByEmpIdNoDate(String empId) {
+		return workingManagementDao.findByEmpIdNoDate(empId);
+	} // findByEmpIdNoDate() end
+	
 }

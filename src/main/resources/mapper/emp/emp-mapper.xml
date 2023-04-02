@@ -29,12 +29,12 @@
 		insert into
 			emp
 		values(
-			#{empId},
+			'emp' || to_char(seq_emp_id_no.nextval, 'fm000'),
 			#{password},
 			#{name},
 			#{ssn},
 			#{address},
-			#{email},
+			'emp' || to_char(seq_emp_id_no.nextval, 'fm000') || '@gmail.com',
 			#{phone},
 			default,
 			null,
@@ -42,6 +42,12 @@
 			#{jobCode},
 			#{deptCode}
 		)
+	<selectKey order="AFTER" resultType="string" keyProperty="empId">
+			select 
+				'emp' || to_char(seq_emp_id_no.currval, 'fm000')
+			from
+				dual
+		</selectKey>
 	</insert>
 	<resultMap type="emp" id="empMap"></resultMap>
 	
@@ -65,6 +71,18 @@
 		     join dept d
 		    	 on e.dept_code = d.dept_code
 	</select>
+	<select id="selectEmpDeptList" resultMap="empDetailMap">
+		select 
+		    emp_id,name,
+		    (select job_title from job where e.job_code = job_code) job_title,
+		    (select dept_title from dept where e.dept_code = dept_code) dept_title,
+		    (select rename_filename from attachment where pk_no = e.emp_id) renameFilename
+		from 
+		    emp e
+		where
+		    quit_yn = 'N'
+    		and dept_code = #{deptCode}
+	</select>
 	
 	<select id="findByMyDeptCodeManagerEmpList" resultMap="empMap">
 		select
@@ -80,6 +98,48 @@
 			</foreach>
 	</select>
 	
+	<select id="selectEmpAll" resultMap="empDetailMap">
+		select 
+		    e.*,
+		    (select job_title from job where e.job_code = job_code) job_title,
+		    (select dept_title from dept where e.dept_code = dept_code) dept_title,
+		    (select rename_filename from attachment where pk_no = e.emp_id) renameFilename
+		from 
+		    emp e
+		where
+		    quit_yn = 'N'
+		order by
+			dept_code,job_code		
+	</select>
+	
+	<select id="empFinderList" resultMap="empDetailMap">
+		select 
+		    e.*,
+		    j.job_title,
+		    d.dept_title,
+		    (select rename_filename from attachment where pk_no = e.emp_id) renameFilename
+		from 
+		    emp e join dept d
+		    on e.dept_code = d.dept_code
+		    join job j
+		    on e.job_code = j.job_code
+		where
+		    quit_yn = 'N'
+		    <if test="searchType == 'dept_title'">
+			    and
+				d.dept_title like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="searchType == 'job_title'">
+			    and
+				j.job_title like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="searchType == 'name'">
+			    and
+				e.name like '%' || #{searchKeyword} ||'%'
+		    </if>		    
+		order by
+			e.dept_code,e.job_code		
+	</select>
 	
 	<resultMap type="empDetail" id="empDetailMap"></resultMap>
 </mapper>

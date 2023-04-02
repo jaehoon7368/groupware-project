@@ -10,6 +10,12 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="todoList" name="title" />
 </jsp:include>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+	
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/todo/todoList.css">
 <div class="all-container app-dashboard-body-content off-canvas-content"
@@ -19,12 +25,9 @@
 	<div class="home-container">
 		<!-- 상단 타이틀 -->
 		<div class="top-container">
-			<div class="container-title">각자 기능</div>
+			<div class="container-title"></div>
 			<div class="home-topbar topbar-div">
 				<div>
-					<a href="#" id="home-my-img"> <img
-						src="${pageContext.request.contextPath}/resources/images/sample.jpg"
-						alt="" class="my-img">
 					</a>
 				</div>
 				<div id="my-menu-modal">
@@ -65,13 +68,13 @@
 
 </style>
 			<div class="content-top">
-				<h2 class="board-menu" id="boardMenu">Board ${todoBoard.title}</h2>
+				<h2 class="board-menu" id="boardMenu">Board  ${todoBoard.title}</h2>
 				<!-- 게시판 메뉴 모달 -->
 				<div class="groupEmp">
 					<ul>
-						<li><img src="${pageContext.request.contextPath }/resources/upload/emp/${emp.attachment.renameFilename }" alt="" class="my-img"></li>
-						<li><img src="${pageContext.request.contextPath }/resources/upload/emp/${emp.attachment.renameFilename }" alt="" class="my-img"></li>
-						<li><img src="${pageContext.request.contextPath }/resources/upload/emp/${emp.attachment.renameFilename }" alt="" class="my-img"></li>
+						<c:forEach items="${attachments}" var ="attachment" varStatus="vs">
+							<li><img src="${pageContext.request.contextPath }/resources/upload/emp/${attachment.renameFilename }" alt="" class="my-img"></li>
+						</c:forEach>
 					</ul>
 				</div>
 				<div class="removeView board-menu-modal" id="boardMenuModal">
@@ -255,10 +258,18 @@
 								<form:form method="POST" action="${pageContext.request.contextPath }/todo/todoListDelete.do">
 									<input type="hidden"  value="${todoList.no }" name="no" />
 									<input type="hidden" value="${todoBoard.no }" name="todoBoardNo"/>
-									<button class="comment-btn" onclick="confrm(event);">삭제</button>
+									<button class="comment-btn" style="display :none;" id="todoListDeleteBtn${vs.index}" onclick="confrm(event);">삭제</button>
 								</form:form>
 								<div class="row">
 									<script>
+$('#listTitle${vs.index}').hover(
+function() {
+$('#todoListDeleteBtn${vs.index}').css("display", "block");
+},
+function() {
+ $('#todoListDeleteBtn${vs.index}').css("display", "none");
+  }
+);								
 // 제목 폼 변경 메소드
 
 
@@ -282,7 +293,7 @@ const listTitle = document.querySelector("#listTitle${vs.index}")
 									<c:forEach items="${todoList.todos }" var="todo">
 											<a href="javascript:modalOpen('${todoList.no }','${todo.no}')" data-open="___exampleModal">
 												<div class="board-list">
-													<span>${todo.content } </span>
+													<span class="todocontent-span">${todo.content } </span>
 												</div>
 											</a>
 										</p>
@@ -461,34 +472,38 @@ document.querySelector("#titleContentCanclebtn${vs.index }").addEventListener('c
 														<form:form action="${pageContext.request.contextPath }/todo/todoInfoUpdate.do" id="updateEpFrm" class="removeView">
 															<input type="hidden" name="no" id="todoUpdateinput"/>
 															<input type="hidden" name="todoBoardNo" value="${todoBoard.no }"/>
-															<textarea name="info" id="todoInfo" cols="30" rows="5" style="margin-top: 21px;" ></textarea>
+															<textarea name="info" class="todoInfo" id="summernote" cols="30" rows="5" style="margin-top: 21px;" ></textarea>
 															<button class="comment-btn">수정</button>
 															<button class="comment-btn" id="epCanclebtn">취소</button>
 														</form:form>
 													</div> <!--  첨부파일 출력  -->
-														<div>
+														<div style="display: flex;  justify-content: center;">
 															<img src="${pagContext.request.contextPath }" alt=""  id="image-print"/>
 														</div>
 														
-													<div id="img-viewer-container" style="display: flex; justify-content: center;">
-														<img id="img-viewer" width="30%">
-														<form:form action="${pageContext.request.contextPath}/todo/todoAttachDelete.do">
-														<input type="hidden" id="attachDelet-input" name ="renameFilename"/>
-														<input type="hidden" name = "todoBoardNo" value="${todoBoard.no }" />
-														<button id="delteattachment" onclick="confrm(event)" class="removeView comment-btn">삭제</button>
-														</form:form>
-													</div>
+
 													<hr>
 													<ul>
 
 														<h3>
-															<i class="fa fa-paperclip fa-1x" aria-hidden="true"><p>
-																</p></i>파일첨부
+															<i class="fa fa-paperclip fa-1x" aria-hidden="true"></i>파일첨부
 														</h3>
+														
 														<div class="attach-div">
+														<div>
 															<i class="fa fa-paperclip" aria-hidden="true"></i>
 															<label for="exampleFileUpload" class="button">파일첨부를하려면 선택하세요</label>
 															<input type="file" id="exampleFileUpload" class="show-for-sr" name="upFile">
+														</div>	
+														<div id="img-viewer-container" style="display: flex; justify-content: center; height:100%;">
+															<form:form action="${pageContext.request.contextPath}/todo/todoAttachDelete.do">
+															<input type="hidden" id="attachDelet-input" name ="renameFilename"/>
+															<input type="hidden" name = "todoBoardNo" value="${todoBoard.no }" />
+															<button id="delteattachment" onclick="confrm(event)" class="removeView  button  tiny secondary"  style="
+							    								width: 69px;" >삭제</button>
+															</form:form>
+															<img id="img-viewer" width="15%">
+														</div>
 														</div>
 													</ul>
 													<div>
@@ -568,6 +583,7 @@ const confrm =(e)=>{
 
 <c:if test="\${empName.textContent} != null">
 </c:if>
+				
 
 											<!-- 모달 본문 끝 -->
 											<button class="close-button" data-close
@@ -603,8 +619,9 @@ const modalOpen = (todoListNo, todoNo) => {
 					
 					let imageName = '';
 					if(renameFilename != null && renameFilename != ""){
-					imageName += renameFilename.textContent;
+					imageName = renameFilename.textContent;
 					}
+					console.log(imageName)
 					//todo content info 아이디넣기
 					const todoContentinput = document.querySelector("#todoContentinput");
 					todoContentinput.value = no.textContent;
@@ -630,7 +647,7 @@ const modalOpen = (todoListNo, todoNo) => {
 					todoContentText.value ='';
 					todoContentText.value = content.textContent;
 					
-					const todoInfo = document.querySelector("#todoInfo");
+					const todoInfo = document.querySelector(".todoInfo");
 					todoInfo.value = '';
 					todoInfo.value = info.textContent;
 					
@@ -647,30 +664,36 @@ const modalOpen = (todoListNo, todoNo) => {
 					
 					const realcomments = [...comments.children];
 					if(realcomments !=null && realcomments !=''){
-						realcomments.forEach((comment)=>{
+						realcomments.forEach((comment,index)=>{
 							const [no,content,regDate,,,,,,empId,todoNo,empfilename,empName] = comment.children;							
 							
 							todoComment.innerHTML+= `
-								<div class="comment-div">  
+								<div class="comment-div comment-wrapper/${index}">  
 							<div style="width: 50px">
 								
 								<img src='${pageContext.request.contextPath}/resources/upload/emp/\${empfilename.textContent}' alt="" class="my-img";>
 							</div>
 							<div class="comment-name"> \${empName.textContent}</div>
 							<div style="width: 90%">
-								<input type="text" class="comment-input" readonly value ="\${content.textContent}" >
-							</div>
-							<form:form action="${pageContext.request.contextPath }/todo/todoComentDelete.do" method="POST">
-							<input type="hidden" name="no" value="\${no.textContent}"/>
-							<input type="hidden" name="todoBoardNo" value="${todoBoard.no}"/>
-							<button class="comment-btn" onclick="confrm(event)" id="comment-delete">삭제</button>
-							</form:form>
-							</div> <!--  댓글  -->
-							`
+								<input type="text" class="comment-input"  readonly value ="\${content.textContent}" >
 							
+							`
+							let confrmEmpId= '${sessionScope.loginMember.empId}';
+							if (empId.textContent == confrmEmpId){
+								
+							todoComment.innerHTML+=`
+							<button class="comment-btn modal-btn" onclick="commentDelete('\${no.textContent}',event)" id="comment-delete" >삭제</button>
+								`
+							
+							}
+							
+							todoComment.innerHTML+=`</div> <!--  댓글  -->`
 							
 						})
+						
 					}
+					
+					
 					 const btn = document.querySelector("#delteattachment");
 					 btn.classList.add('removeView');
 					
@@ -688,6 +711,33 @@ const modalOpen = (todoListNo, todoNo) => {
 				error:console.log
 			})
 };
+//비동기 코멘트  댓글 삭제 
+const commentDelete =(no)=>{
+	console.log(no)
+	const csrfHeader = "${_csrf.headerName}";
+        const csrfToken = "${_csrf.token}";
+        const headers = {};
+        headers[csrfHeader] = csrfToken;
+	
+	
+	if(confirm('삭제하시겠습니까?')){
+		$.ajax({
+			url: "${pageContext.request.contextPath}/todo/todoCommentDelete.do",
+			method : "POST",
+			headers,
+			data : {no : no},
+			success(data){
+				console.log(data)
+				
+				location.reload();
+			},
+			error : console.log
+		})
+	
+	}
+	
+}
+
 
 document.querySelector("#exampleFileUpload").addEventListener('change',(e)=>{
 
@@ -744,6 +794,23 @@ document.querySelector("#exampleFileUpload").addEventListener('change',(e)=>{
 			alert('한글자 이상 입력해주세요');
 		}
 	});
+	
+/* 썸머노트 textarea js */
+$('#summernote').summernote({
+	placeholder: 'Hello stand alone ui',
+	tabsize: 2,
+	height: 350,
+	width: '100%',
+	toolbar: [
+		['style', ['style']],
+		['font', ['bold', 'underline', 'clear']],
+		['color', ['color']],
+		['para', ['ul', 'ol', 'paragraph']],
+		['table', ['table']],
+		['insert', ['link', 'picture', 'video']],
+		['view', ['fullscreen', 'codeview', 'help']]
+	]
+});
 	
 	
 

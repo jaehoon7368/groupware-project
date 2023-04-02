@@ -39,7 +39,7 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="GET">
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
 											<button class="my-menu" type="submit">로그아웃</button>								
 										</form:form>
 									</div>
@@ -79,7 +79,7 @@
                                             <tbody>
                                             	<c:if test="${empty reportList}">
                                            			<tr>
-                                           				<td colspan="5">작성된 보고가 없습니다.</td>
+                                           				<td colspan="5">작성된 부서 보고가 없습니다.</td>
                                            			</tr>
                                             	</c:if>
                                             	<c:if test="${!empty reportList}">

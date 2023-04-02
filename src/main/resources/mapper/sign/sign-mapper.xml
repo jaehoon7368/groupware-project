@@ -26,16 +26,33 @@
 		</selectKey>
 	</insert>
 	
-	<select id="findByMyCreateSignList" resultMap="signMap">
+	<select id="findByMyCreateSignListComlete" resultMap="signMap">
 		select
-			s.*,
-			ss.*
+			*
 		from
-			sign s right join signStatus ss
-				on s.no = ss.sign_no
+			view_sign
 		where
-			s.emp_id = #{empId}
+			emp_id = #{empId}
+			and
+			complete = 'Y'
+		order by
+			reg_date desc
 	</select>
+	
+	
+	<select id="findByMyCreateSignListIng" resultMap="signMap">
+		select
+			*
+		from
+			view_sign
+		where
+			emp_id = #{empId}
+			and
+			complete = 'N'
+		order by
+			reg_date desc
+	</select>
+	
 	<resultMap type="sign" id="signMap">
 		<id column="no" property="no"/>
 		<result column="emp_id" property="empId"/>
@@ -45,15 +62,176 @@
 		<result column="reg_date" property="regDate"/>
 		<result column="emergency" property="emergency"/>
 		<result column="complete" property="complete"/>
+		<result column="name" property="name"/>
+		<result column="dept_title" property="deptTitle"/>
+		<result column="job_title" property="jobTitle"/>
+		<result column="profile_img" property="profileImg"/>
 		
-		<collection property="signStatusList" ofType="signStatus">
-			<id column="signStatus_no" property="no"/>
+		<collection property="signStatusList" ofType="SignStatusDetail">
+			<id column="status_no" property="no"/>
 			<result column="sign_no" property="signNo"/>
-			<result column="emp_id" property="empId"/>
+			<result column="status_emp_id" property="empId"/>
 			<result column="sign_order" property="signOrder"/>
 			<result column="status" property="status"/>
-			<result column="signStatus_reg_date" property="regDate"/>
+			<result column="reason" property="reason"/>
+			<result column="status_reg_date" property="regDate"/>
+			<result column="status_name" property="name"/>
+			<result column="status_dept_title" property="deptTitle"/>
+			<result column="status_job_title" property="jobTitle"/>
+			<result column="status_profile_img" property="profileImg"/>
 		</collection>
 	</resultMap>
+	
+	
+	<select id="findByNoSign" resultMap="signMap">
+		select
+			*
+		from
+			view_sign
+		where
+			no = #{no}
+	</select>
+	
+	
+	<select id="findByMySignList" resultMap="signMap">
+		select
+			*
+		from
+			view_sign
+		where
+			status_emp_id = #{empId}
+			and
+			status in ('W', 'H')
+		order by
+			complete desc, reg_date
+	</select>
+	
+	
+	<select id="findByEmpIdMySignStatus" resultMap="signMap">
+		select
+			*
+		from
+			view_sign
+		where
+			status_emp_id = #{empId}
+			and
+			status in
+			<foreach collection="inStatus" item="status" index="index" open="(" close=")" separator=",">
+				#{status}
+			</foreach>
+		order by
+			reg_date desc
+	</select>
+	
+	
+	<update id="updateMySignStatus">
+		update
+			signStatus
+		set
+			status = #{status},
+			reg_date = TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul',
+			reason = #{reason}
+		where
+			emp_id = #{empId}
+			and
+			sign_no = #{signNo}
+	</update>
+	
+	
+	<select id="findByEmpIdLeaveCount" resultType="string">
+		select
+			d.leave_count
+		from
+			(
+				select
+					row_number() over (order by reg_date desc) rnum,
+					leave_count
+				from
+					dayOff
+				where
+					emp_id = #{empId}
+			) d
+		where
+			d.rnum = 1
+	</select>
+	
+	
+	<select id="findByEmpIdBaseDayOff" resultType="_double">
+		select
+			base_day_off
+		from
+			job
+		where
+			job_code = (
+				select 
+					job_code 
+				from 
+					emp 
+				where 
+					emp_id = #{empId}
+			)
+	</select>
+	
+	
+	<select id="findByEmpIdToBeNoDateDayOff" resultType="hashMap">
+		select
+		    d.type,
+		    d.start_date,
+		    d.end_date
+		from
+		    dayoffform d left join sign s
+		        on d.sign_no = s.no
+		where
+		    s.complete = 'N'
+		    and
+		    s.emp_id = #{empId}
+	</select>
+	
+	
+	<select id="findByEmpIdToBeNoDateTrip" resultType="hashMap">
+		select
+		    t.start_date,
+		    t.end_date
+		from
+		    tripform t left join sign s
+		        on t.sign_no = s.no
+		where
+		    s.complete = 'N'
+		    and
+		    s.emp_id = #{empId}
+	</select>
+	
+	
+	<select id="findByEmpIdSignNoToBeNoDateDayOff" resultType="hashMap">
+		select
+		    d.type,
+		    d.start_date,
+		    d.end_date
+		from
+		    dayoffform d left join sign s
+		        on d.sign_no = s.no
+		where
+		    s.complete = 'N'
+		    and
+		    s.emp_id = #{empId}
+		    and
+		    d.sign_no != #{no}
+	</select>
+	
+	
+	<select id="findByEmpIdSignNoToBeNoDateTrip" resultType="hashMap">
+		select
+		    t.start_date,
+		    t.end_date
+		from
+		    tripform t left join sign s
+		        on t.sign_no = s.no
+		where
+		    s.complete = 'N'
+		    and
+		    s.emp_id = #{empId}
+		    and
+		    t.sign_no != #{no}
+	</select>
 	
 </mapper>

@@ -240,24 +240,20 @@
             <scope>compile</scope>
         </dependency>
         
-        
-        <!-- 구글 연동 api  -->
-        <dependency>
-		   <groupId>com.google.api-client</groupId>
-		   <artifactId>google-api-client</artifactId>
-		   <version>1.23.0</version>
-		</dependency>
+        <!-- 웹소켓 의존 추가 -->
 		<dependency>
-		   <groupId>com.google.oauth-client</groupId>
-		   <artifactId>google-oauth-client-jetty</artifactId>
-		   <version>1.23.0</version>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-websocket</artifactId>
+		    <version>${org.springframework-version}</version>
 		</dependency>
+		<!-- stomp관련 의존 추가 -->
 		<dependency>
-		   <groupId>com.google.apis</groupId>
-		   <artifactId>google-api-services-calendar</artifactId>
-		   <version>v3-rev305-1.23.0</version>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-messaging</artifactId>
+		    <version>${org.springframework-version}</version>
 		</dependency>
-		<!-- 구글연동 api  끝 -->
+		        
+
 	</dependencies>
     <build>
         <plugins>

@@ -20,6 +20,11 @@
 			<link rel="stylesheet"
 				href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
 	</head>
+<c:if test="${not empty msg}">
+	<script>
+	alert('${msg}');
+	</script>	
+</c:if>
 	<body>
 		<div class="app-dashboard shrink-medium">
 			<div class="app-dashboard-body off-canvas-wrapper">
@@ -60,13 +65,13 @@
 								</a>
 							</li>
 							<li>
-								<a href="${pageContext.request.contextPath }/reservation/reservation.do" class="is-active" title="예약">
+								<a href="${pageContext.request.contextPath}/chat/chat.do" class="is-active" title="채팅">
 									<i class="large fa fa-solid fa-check-to-slot"></i>
-									<span class="app-dashboard-sidebar-text">예약</span>
+									<span class="app-dashboard-sidebar-text">채팅</span>
 								</a>
 							</li>
 							<li>
-								<a href="${pageContext.request.contextPath }/todo/todo.do" class="is-active" title="Todo">
+								<a href="${pageContext.request.contextPath}/todo/todo.do" class="is-active" title="Todo">
 									<i class="large fa fa-solid fa-list-ol"></i>
 									<span class="app-dashboard-sidebar-text">Todo</span>
 								</a>

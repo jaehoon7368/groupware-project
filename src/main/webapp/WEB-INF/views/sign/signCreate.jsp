@@ -28,7 +28,7 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="GET">
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
 											<button class="my-menu" type="submit">로그아웃</button>								
 										</form:form>
 									</div>
@@ -39,7 +39,6 @@
 							<div class="div-sign-btn font-small">
 								<button onclick="signCreate();">결재요청</button>
 								<button onclick="location.href='${pageContext.request.contextPath}/sign/sign.do';">취소</button>
-								<button>결재 정보</button>
 							</div>
 						</div>
 						<script>

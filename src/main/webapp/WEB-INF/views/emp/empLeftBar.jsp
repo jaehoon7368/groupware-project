@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
                 <div class="all-container app-dashboard-body-content off-canvas-content" data-off-canvas-content>
                 <!-- 왼쪽 추가 메뉴 -->
@@ -22,7 +27,7 @@
                                 </tr>
                                 <tr>
                                     <td class="font-14 font-bold">업무상태</td>
-                                    <td class="text-right font-14" id="work-state">출근전</td>
+                                    <td class="text-right font-14 color-red font-bold" id="work-state">출근전</td>
                                 </tr>            
                                 <tr>
                                     <td class="font-14 font-bold">출근시간</td>
@@ -57,19 +62,20 @@
                                 </div>
                             </li>
                             <li>
-                                <p class="title font-medium font-bold">전사 근태관리</p>
+                                <p class="title font-medium font-bold">부서 근태현황</p>
                                 <div class="con">
                                     <ul class="container-detail font-small">
-                                        <li><a class="container-a" href="#">전사 근태현황</a></li>
-                                        <li><a class="container-a" href="#">전사 근태통계</a></li>
-                                        <li><a class="container-a" href="#">전사 인사정보</a></li>
-                                        <li><a class="container-a" href="#">전사 연차현황</a></li>
-                                        <li><a class="container-a" href="#">전사 연차 사용내역</a></li>
+                                    	<c:forEach items="${sessionScope.deptList}" var="dept">
+											<li><a class="container-a" href="${pageContext.request.contextPath}/workingManagement/empDeptView.do?code=${dept.deptCode}">${dept.deptTitle}</a></li>
+										</c:forEach>
                                     </ul>
                                 </div>
                             </li>
                             <li>
-                                <p class="title font-medium font-bold a-font"><a href="${pageContext.request.contextPath }/emp/empEnroll.do">인사정보 등록</a></p>
+                                <p class="title font-medium font-bold a-font"><a class=" color-black" href="${pageContext.request.contextPath }/emp/empEnroll.do">인사정보 등록</a></p>
+                            </li>
+                            <li>
+                                <p class="title font-medium font-bold a-font"><a class=" color-black" href="${pageContext.request.contextPath }/emp/empAllInfo.do">전사 인사정보</a></p>
                             </li>
                         </ul>
                     </div>
@@ -97,8 +103,8 @@ window.addEventListener('load', function(){
  			   var endtime = new Date(endWork);
  			   
  			   //하루 근무시간 계산
- 			   const daytime = endtime - starttime;
- 			   console.log(daytime);
+ 			   const daytimes = endtime - starttime;
+ 			   console.log(daytimes);
  			   
  			   const workState = document.querySelector("#work-state");
  			   workState.textContent = state;
@@ -122,9 +128,9 @@ window.addEventListener('load', function(){
  				  document.querySelector('#endwork-time').textContent = endWorkTime;
  			   }
  			   
- 			   if(daytime > 0){
+ 			   if(daytimes > 0){
  				   //하루 근무시간 update
- 				  updateDayWorkTime(daytime);
+ 				  updateDayWorkTime(daytimes);
  			   }
  		   }
  	   },
@@ -194,7 +200,7 @@ document.querySelector('#btn-endwork').addEventListener('click', function () {
    });
 });
 
-const updateDayWorkTime = (daytime) =>{
+const updateDayWorkTime = (daytimes) =>{
 	
 	const csrfHeader = "${_csrf.headerName}";
     const csrfToken = "${_csrf.token}";
@@ -205,7 +211,7 @@ const updateDayWorkTime = (daytime) =>{
         url: '${pageContext.request.contextPath}/workingManagement/updateDayWorkTime.do',
         method: 'POST',
         headers,
-        data: {daytime},
+        data: {daytimes},
         success(data) {
           console.log(data);
           getStartAndEndDateOfWeek();
@@ -234,22 +240,26 @@ function getStartAndEndDateOfWeek() {
 		  contentType : "application/json; charset=utf-8",
 		  success(data){
 			  console.log(data);
-			  const {totalMonthTime, weekTotalTime} = data;
+			  const {totalMonthOverTime ,totalMonthTime, weekOverTime ,weekTotalTime} = data;
 			  const totalWorkTime = document.querySelector("#totalwork-time");
 			  const mainTotalWorkTime = document.querySelector("#main-totalwork-time");
+			  const mainWeekOverTime = document.querySelector("#main-week-over-time");
 			  const mainWorkTime = document.querySelector("#main-work-time");
 			  const monthWorkTime = document.querySelector("#main-month-work-time");
-			  console.log("totalMonthTime = " + totalMonthTime);
+			  const monthOverTime = document.querySelector("#main-month-over-time")
 			  
-			  let times = 144000000 - weekTotalTime; // 40시간 - 주간근무시간
-			  totalWorkTime.textContent = chageWorkTime(weekTotalTime);
-			  mainTotalWorkTime.textContent = chageWorkTime(weekTotalTime);
+			  let times = 144000000 - (weekTotalTime + weekOverTime); // 40시간 - 주간 기본 근무시간
+			  totalWorkTime.textContent = chageWorkTime(weekTotalTime + weekOverTime);
+			  mainTotalWorkTime.textContent = chageWorkTime(weekTotalTime + weekOverTime);
+			  mainWeekOverTime.textContent = chageWorkTime(weekOverTime);
 			  mainWorkTime.textContent = chageWorkTime(times);
-			  monthWorkTime.textContent = chageWorkTime(totalMonthTime);
+			  monthWorkTime.textContent = chageWorkTime(totalMonthTime + totalMonthOverTime);
+			  monthOverTime.textContent = chageWorkTime(totalMonthOverTime);
 		  },
 		  error : console.log
 		  
 	  });
 }
+
 </script>					
 					

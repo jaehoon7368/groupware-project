@@ -40,13 +40,12 @@
     <input type="text" class="sign-in-form-password" id="sign-in-form-password" name="password">
     <div>
 		<input type="checkbox" name="remember-me" id="remember-me"/>
-		<label for="remember-me">Remember</label>
+		<label for="remember-me">Remember me</label>
 	</div>
     <button type="submit" class="sign-in-form-button">Sign In</button>
   </div>
 </form:form>
 
- <a class="dropdown-item" href="${pageContext.request.contextPath}/emp/passwordEncode.do">비밀번호 암호화를 위한 맴버 조회</a>
 	
 </body>
 </html>

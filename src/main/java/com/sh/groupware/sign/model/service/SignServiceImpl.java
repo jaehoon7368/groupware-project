@@ -1,5 +1,6 @@
 package com.sh.groupware.sign.model.service;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,15 +10,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sh.groupware.dayOff.model.dao.DayOffDao;
+import com.sh.groupware.dayOff.model.dto.DayOff;
 import com.sh.groupware.emp.model.dao.EmpDao;
 import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.sign.model.dao.SignDao;
 import com.sh.groupware.sign.model.dto.DayOffForm;
+import com.sh.groupware.sign.model.dto.ProductForm;
 import com.sh.groupware.sign.model.dto.ResignationForm;
 import com.sh.groupware.sign.model.dto.Sign;
 import com.sh.groupware.sign.model.dto.SignEntity;
 import com.sh.groupware.sign.model.dto.SignStatus;
+import com.sh.groupware.sign.model.dto.SignStatusDetail;
+import com.sh.groupware.sign.model.dto.SignType;
 import com.sh.groupware.sign.model.dto.Status;
+import com.sh.groupware.sign.model.dto.TripForm;
+import com.sh.groupware.workingManagement.model.dao.WorkingManagementDao;
+import com.sh.groupware.workingManagement.model.dto.WorkingManagement;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,8 +41,17 @@ public class SignServiceImpl implements SignService {
 	@Autowired
 	private EmpDao empDao;
 	
+
 	@Override
-	public int insertSign(DayOffForm dayOffForm, SignEntity sign) {
+	public String insertSign(SignEntity sign) {
+		int result = signDao.insertSign(sign);
+		result = insertSignStatus(sign);
+		return sign.getNo();
+	} // insertSign() end
+	
+	
+	@Override
+	public int insertSignDayOffForm(DayOffForm dayOffForm, SignEntity sign) {
 		int result = signDao.insertSign(sign);
 		dayOffForm.setSignNo(sign.getNo());
 		
@@ -42,7 +60,7 @@ public class SignServiceImpl implements SignService {
 		result = insertSignStatus(sign);
 		
 		return result;
-	} // insertSign() end
+	} // insertSignDayOffForm() end
 
 	
 	@Override
@@ -52,13 +70,38 @@ public class SignServiceImpl implements SignService {
 	
 	
 	@Override
-	public List<Sign> findByMyCreateSignList(String empId) {
-		return signDao.findByMyCreateSignList(empId);
-	} // findByMyCreateSignList() end
+	public int updateDayOffForm(DayOffForm dayOff) {
+		return signDao.updateDayOffForm(dayOff);
+	} // updateDayOffForm() end
 	
 	
 	@Override
-	public int insertSign(ResignationForm resignation, SignEntity sign) {
+	public int insertSignTripForm(TripForm tripForm, SignEntity sign) {
+		int result = signDao.insertSign(sign);
+		tripForm.setSignNo(sign.getNo());
+		
+		result = insertTripForm(tripForm);
+		
+		result = insertSignStatus(sign);
+		
+		return result;
+	} // insertSignTripForm() end
+	
+	
+	@Override
+	public int insertTripForm(TripForm tripForm) {
+		return signDao.insertTripForm(tripForm);
+	} // insertTripForm() end
+	
+	
+	@Override
+	public int updateTripForm(TripForm trip) {
+		return signDao.updateTripForm(trip);
+	} // updateTripForm() end
+	
+	
+	@Override
+	public int insertSignResignationForm(ResignationForm resignation, SignEntity sign) {
 		int result = signDao.insertSign(sign);
 		resignation.setSignNo(sign.getNo());
 		
@@ -67,13 +110,73 @@ public class SignServiceImpl implements SignService {
 		result = insertSignStatus(sign);
 		
 		return result;
-	} // insertSign() end
+	} // insertSignResignationForm() end
+	
+	
+	@Override
+	public int updateResignationForm(ResignationForm resignation) {
+		return signDao.updateResignationForm(resignation);
+	} // updateResignationForm() end
 
 	
 	@Override
 	public int insertResignationForm(ResignationForm resignation) {
 		return signDao.insertResignationForm(resignation);
 	} // insertResignationForm() end
+	
+	
+	@Override
+	public int insertProductForm(ProductForm productForm) {
+		return signDao.insertProductForm(productForm);
+	} // insertProductForm() end
+	
+	
+	@Override
+	public int updateProductForm(ProductForm product) {
+		return signDao.updateProductForm(product);
+	} // updateProductForm() end
+
+
+	@Override
+	public List<Sign> findByMyCreateSignListComlete(String empId) {
+		return signDao.findByMyCreateSignListComlete(empId);
+	} // findByMyCreateSignListComlete() end
+
+	
+	@Override
+	public List<Sign> findByMyCreateSignListIng(String empId) {
+		return signDao.findByMyCreateSignListIng(empId);
+	} // findByMyCreateSignListIng() end
+	
+	
+	@Override
+	public Sign findByNoSign(String no) {
+		return signDao.findByNoSign(no);
+	} // findByNoSign() end
+	
+	
+	@Override
+	public DayOffForm findBySignNoDayOffForm(String no) {
+		return signDao.findBySignNoDayOffForm(no);
+	} // findBySignNoDayOffForm() end
+	
+	
+	@Override
+	public TripForm findBySignNoTripForm(String no) {
+		return signDao.findBySignNoTripForm(no);
+	} // findBySignNoTripForm() end
+	
+	
+	@Override
+	public List<ProductForm> findBySignNoProductForm(String no) {
+		return signDao.findBySignNoProductForm(no);
+	} // findBySignNoProductForm() end
+	
+	
+	@Override
+	public ResignationForm findBySignNoResignationForm(String no) {
+		return signDao.findBySignNoResignationForm(no);
+	} // findBySignNoResignationForm() end
 	
 	
 	@Override
@@ -170,9 +273,9 @@ public class SignServiceImpl implements SignService {
 			signStatusList.get(i).setSignOrder(i + 1);
 			
 			if (i == 0) {
-				signStatusList.get(i).setStatus(Status.S);
-			} else {
 				signStatusList.get(i).setStatus(Status.W);
+			} else {
+				signStatusList.get(i).setStatus(Status.S);
 			}
 			
 			result = signDao.insertSignStatus(signStatusList.get(i));
@@ -180,5 +283,95 @@ public class SignServiceImpl implements SignService {
 		
 		return result;
 	} // insertSignStatus() end
+	
+	
+	@Override
+	public List<Sign> findByMySignList(String empId) {
+		return signDao.findByMySignList(empId);
+	} // findByMySignList() end
+
+
+	@Override
+	public int updateMySignStatus(SignStatus signStatus) {
+		return signDao.updateMySignStatus(signStatus);
+	} // updateMySignStatus() end
+	
+	
+	@Override
+	public int updateNextSignStatus(String no) {
+		return signDao.updateNextSignStatus(no);
+	} // updateNextSignStatus() end
+
+
+	@Override
+	public int updateSignComplete(String no) {
+		return signDao.updateSignComplete(no);
+	} //updateSignComplete() end
+	
+	
+	@Override
+	public double findByEmpIdTotalCount(String empId) {
+		double totalCount = 0;
+		
+		String _totalCount = signDao.findByEmpIdLeaveCount(empId);
+		
+		if (_totalCount == null) {
+			totalCount = signDao.findByEmpIdBaseDayOff(empId);
+		} else {
+			totalCount = Double.parseDouble(_totalCount);
+		}
+		return totalCount;
+	} // findByEmpIdTotalCount() end
+	
+	
+	@Override
+	public int deleteOneSign(Map<String, Object> param) {
+		int result = signDao.deleteOneSign(param.get("no"));
+		result = deleteSignStatus(param.get("no"));
+		result = deleteSignForm(param);
+		return result;
+	} // deleteOneSign() end
+	
+	
+	@Override
+	public int deleteSignStatus(Object no) {
+		return signDao.deleteSignStatus(no);
+	} // deleteSignStatus() end
+	
+	
+	@Override
+	public int deleteSignForm(Map<String, Object> param) {
+		return signDao.deleteSignForm(param);
+	} // deleteSignForm() end
+	
+	
+	@Override
+	public List<Sign> findByEmpIdMySignStatus(Map<String, Object> param) {
+		return signDao.findByEmpIdMySignStatus(param);
+	} // findByEmpIdMySignStatus() end
+	
+	
+	@Override
+	public List<Map<String, Object>> findByEmpIdToBeNoDateDayOff(String empId) {
+		return signDao.findByEmpIdToBeNoDateDayOff(empId);
+	} // findByEmpIdToBeNoDateDayOff() end
+	
+	
+	@Override
+	public List<Map<String, Object>> findByEmpIdToBeNoDateTrip(String empId) {
+		return signDao.findByEmpIdToBeNoDateTrip(empId);
+	} // findByEmpIdToBeNoDateTrip() end
+	
+	
+	@Override
+	public List<Map<String, Object>> findByEmpIdSignNoToBeNoDateDayOff(Map<String, Object> param) {
+		return signDao.findByEmpIdSignNoToBeNoDateDayOff(param);
+	} // findByEmpIdSignNoToBeNoDateDayOff() end
+	
+	
+	@Override
+	public List<Map<String, Object>> findByEmpIdSignNoToBeNoDateTrip(Map<String, Object> param) {
+		return signDao.findByEmpIdSignNoToBeNoDateTrip(param);
+	} // findByEmpIdSignNoToBeNoDateTrip() end
 	
 } // class end

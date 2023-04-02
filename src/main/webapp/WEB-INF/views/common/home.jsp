@@ -30,7 +30,7 @@
 								<button class="my-menu">기본정보</button>
 							</div>
 							<div class="my-menu-div">
-								<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="GET">
+								<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
 									<button class="my-menu" type="submit">로그아웃</button>								
 								</form:form>
 							</div>
@@ -180,7 +180,40 @@
 						<!-- 본문 오른쪽 -->
 						<div>
 							<div id="home-right" class="div-padding div-margin">
-								<h5>최근 알림</h5>
+								<h5 style="padding:20px">최근 알림</h5>
+								
+								<c:forEach items ="${reNotis }" var="reNoti" varStatus="vs">
+								<c:if test="${vs.index <4}">
+
+									<c:set  var = "notiType" value=""/>
+									        <c:set var="notiType" value="전자결재"/>
+									<c:choose>
+										<c:when test="${fn:contains(reNoti.pkNo,'tdb') }">
+											<c:set var="notsiType" value="할일게시판"/>
+										</c:when>
+										<c:when test="${fn:contains(reNoti.pkNo,'r') }">
+											<c:set var="notiType" value="보고서"/>
+										</c:when>
+										<c:when test="${fn:contains(reNoti.pkNo,'bo') }">
+											<c:set var="notiType" value="게시판"/>
+										</c:when>
+										<c:when test="${fn:contains(reNoti.pkNo,'s') }">
+											<c:set var="notiType" value="전자결재"/>
+										</c:when>
+									</c:choose>	
+									<div class="notification-list">
+		        						<div class="left-noti">
+		        							<img src="${pageContext.request.contextPath }/resources/upload/emp/${reNoti.attachment.renameFilename}" alt="" class="my-img">
+		        						</div>
+						            	<div class="right-noti">
+						               		<p> [<span class="noti-type-span">${notiType}등록</span>] '${reNoti.emp.name}' ${reNoti.emp.jobTitle }님 (이)가 <br />'${notiType}'를 등록하였습니다.</p>
+  										<p><span class="noti-time-span">${reNoti.regDate }</span><span> </span></p>
+    
+				          				</div>
+				       				</div>
+				       				</c:if>
+								</c:forEach>
+											
 							</div>
 							<div id="home-right" class="div-padding div-margin">
 								<h5>보고</h5>

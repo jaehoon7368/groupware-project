@@ -423,9 +423,11 @@ button:hover {
 /* home.jsp 본문에 오른쪽 */
 #home-right {
   width: 300px;
-  height: 500px;
+  height: 521px;
   border: solid 1px darkgray;
   border-radius: 10px;
+  padding-left: 0px;
+  font-size: small;
 }
 
 /* home.jsp 본문에 왼쪽 첫 번째 div안에 table */
@@ -501,9 +503,18 @@ button:hover {
 .left-container {
   width: 250px;
   height: 100%;
-  /* overflow-y: none; */
+  overflow-y: scroll;
   flex-shrink: 0;
   border-right: solid 2px #e3e3e3;
+}
+
+/* 스크롤 숨기기 */
+.left-container::-webkit-scrollbar {
+  display: none;
+}
+.left-container {
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
 }
 
 /* 왼쪽 추가 메뉴 새로만들기 btn */
@@ -563,4 +574,36 @@ p.title {
   width: 100%;
   justify-content: space-between;
 }
+/*최근알림*/
+.noti-type-span{
+color:#4487bd;
+}
+.noti-time-span{
+color:#787878;
+fontsize : 10px;
+}
+.notification-list{
+    width: 300px;
+   	margin-left : 0px;
+    height: 20%;
+    display: flex;
+    border-top: 1px solid #cbcbcbd9;;
+
+}
+.left-noti{
+    width: 20%;
+    display:flex;
+    justify-content: center;
+    padding-top :5px;
+    
+}
+.right-noti{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top:5px
+}
+
+/*최근알림*/
 
