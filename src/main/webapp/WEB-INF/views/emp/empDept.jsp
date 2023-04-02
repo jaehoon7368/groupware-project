@@ -6,10 +6,25 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+<%
+	String searchType = request.getParameter("searchType");
+	String searchKeyword = request.getParameter("searchKeyword");
+%>   
+
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
 		<jsp:param value="Emp" name="title"/>
 	</jsp:include>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/emp/empDept.css">
+<style>
+div#search-memberJob {display: <%= "job_title".equals(searchType) ? "inline-block" : "none" %>;}
+div#search-memberName {display: <%= searchType == null ||  "name".equals(searchType) ? "inline-block" : "none" %>;}
+</style>
+<script>
+window.addEventListener('load', () => {
+	
+});
+
+</script>
  	<jsp:include page="/WEB-INF/views/emp/empLeftBar.jsp" />
 	
 			<div class="home-container">
@@ -61,14 +76,29 @@
                             </h4>
                         </div>
 
-                        <div id="search-box">
-                            <label for="search-year">검색조건 :</label>
-                                <select id="search-year" name="search-year">
-                                    <option value="1">2023</option>
-                                    <option value="2">2022</option>
-                                    <option value="3">2021</option>
-                                </select>
-                        </div>
+                         <div id="search-container">
+						    <select id="searchType">
+						        <option value="name" <%= "name".equals(searchType) ? "selected" : "" %>>이름</option>
+						        <option value="job_title" <%= "job_title".equals(searchType) ? "selected" : "" %>>직급</option>				
+						    </select>
+						    <div id="search-memberJob" class="search-type">
+						        <form class="searchFrm">
+							            <input type="hidden" name="searchType" value="job_title"/>
+							            <input type="text" name="searchKeyword"  placeholder="검색할 직급을 입력하세요." 
+							            	value="<%= "job_title".equals(searchType) ? searchKeyword : "" %>"/>
+							            <button type="submit">검색</button>			
+						        </form>	
+						    </div>
+						    <div id="search-memberName" class="search-type">
+						        <form class="searchFrm">
+							            <input type="hidden" name="searchType" value="name"/>
+							            <input type="text" name="searchKeyword" placeholder="검색할 이름을 입력하세요."
+							            	value="<%= "name".equals(searchType) ? searchKeyword : "" %>" />
+							            <button type="submit">검색</button>			
+						        </form>	
+						    </div>
+						  
+					    </div> <!-- search-container end -->
 
                         <div>
                          
@@ -89,6 +119,28 @@
 <script>
 window.addEventListener('load',()=>{
      deptSendData();
+     
+     
+     //검색기능 타입변경
+     document.querySelector("#searchType").addEventListener('change', (e) => {
+ 		console.log(e.target.value); // member_id, member_name, gender
+ 		
+ 		// 모두 숨김
+ 		document.querySelectorAll(".search-type").forEach((div) => {
+ 			div.style.display = "none";
+ 		});
+ 		
+ 		// 현재선택된 값에 상응하는 div만 노출
+ 		let id; 
+ 		switch(e.target.value){
+ 		case "dept_title" : id = "search-memberDept"; break; 
+ 		case "job_title" : id = "search-memberJob"; break; 
+ 		case "name" : id = "search-memberName"; break; 
+ 		}
+ 		
+ 		document.querySelector("#" + id).style.display = "inline-block";
+ 	   
+ 	});
 });
 
 let date = new Date();
@@ -253,6 +305,15 @@ function deptSendData(){
 		error : console.log
 	});
 }
+
+//검색 기능
+document.querySelector("form").addEventListener('submit', (e) => {
+	e.preventDefault();
+	/* const searchType = ${searchType};
+	const searchKeyword = ${searchKeyword}; */
+	console.log(e.target);
+	console.log(searchKeyword);
+});
 
 //총근무시간
 function chageWorkTime(times){
