@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -16,13 +20,18 @@ import org.aspectj.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,11 +40,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sh.groupware.board.model.dto.Board;
 import com.sh.groupware.board.model.dto.BoardComment;
+import com.sh.groupware.board.model.dto.BoardLike;
+import com.sh.groupware.board.model.dto.LikeYn;
 import com.sh.groupware.board.model.service.BoardService;
 import com.sh.groupware.common.HelloSpringUtils;
 import com.sh.groupware.common.dto.Attachment;
 import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.emp.model.service.EmpService;
+import com.sh.groupware.report.model.dto.ReportComment;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -85,6 +97,7 @@ public class BoardController {
 	    // 시작 페이지와 끝 페이지 계산
 	    int startPage = ((cpage - 1) / 20) * 20 + 1; // 10 페이지씩 묶어서 보여줌
 	    int endPage = Math.min(startPage + 19, totalPage);
+	    
 		
 		
 	    model.addAttribute("boardList", boardList);
@@ -150,24 +163,48 @@ public class BoardController {
 	
 	
 	@GetMapping("/boardDetail.do")
-	public void boardDetail(@RequestParam String no, HttpServletRequest request, Model model) {
-	    // 세션에서 해당 게시글의 조회 여부를 확인
-	    HttpSession session = request.getSession();
-	    String key = no; // 게시글 번호를 key로 사용
-	    Boolean isRead = (Boolean) session.getAttribute(key);
-
-	    if (isRead == null || !isRead) { // 세션에 저장된 조회 여부가 없거나 false일 경우
-	        // 게시글 조회수 증가
-	        int result = boardService.updateReadCount(no);
-	        // 세션에 해당 게시글의 조회 여부를 true로 저장
-	        session.setAttribute(key, true);
+	public void boardDetail(@RequestParam(required = false) String no, HttpServletRequest request, Model model, Authentication authentication) {
+	    if (no == null) { // 파라미터가 누락된 경우
+	        model.addAttribute("errorMsg", "잘못된 요청입니다.");
+	        return;
 	    }
 
-	    // 게시글 상세 정보 조회
+	    HttpSession session = request.getSession();
+	    String key = "board:" + no; // 게시글 번호를 key로 사용
+	    Set<String> readBoardSet = (Set<String>) session.getAttribute("readBoardSet");
+
+	    if (readBoardSet == null) {
+	        readBoardSet = new HashSet<>();
+	    }
+
+	    if (!readBoardSet.contains(key)) { // 세션에 해당 게시글의 조회 여부가 없을 경우
+	        int result = boardService.updateReadCount(no); // 게시글 조회수 증가
+	        readBoardSet.add(key); // 세션에 해당 게시글의 조회 여부를 저장
+	        session.setAttribute("readBoardSet", readBoardSet);
+	    } else {
+	        // 세션에 해당 게시글의 조회 여부가 있을 경우 조회수 증가하지 않음
+	        int result = 0;
+	    }
+
 	    Board board = boardService.selectOneBoardCollection(no);
+	    if (board == null) {
+	        model.addAttribute("errorMsg", "존재하지 않는 게시글입니다.");
+	        return;
+	    }
+	    List<BoardComment> commentList = boardService.selectBoardComment(no);
+	    
+	    log.debug("no = {}", no);
+	    int likeCount = boardService.selectBoardLikeCount(no);
+	    int commentCount = boardService.selectCommentCount(no);
+	    log.debug("likeCount1 = {}", likeCount);
+	    log.debug("commentCount = {}", commentCount);
+	    
+	    model.addAttribute("commentCount", commentCount);
 	    model.addAttribute("board", board);
+	    model.addAttribute("commentList", commentList);
+	    model.addAttribute("likeCount", likeCount);
+	    log.debug("likeCount3 = {}", likeCount);
 	}
-	
 	@ResponseBody
 	@GetMapping("/fileDownload.do")
 	public Resource fileDownload(@RequestParam String no, HttpServletResponse response) {
@@ -205,7 +242,8 @@ public class BoardController {
 	
 	@PostMapping("/boardDelete.do")
 	private String boardDelete(@RequestParam String no, Authentication authentication, RedirectAttributes redirectAttributes) {
-	
+		
+		log.debug("보드삭제 no 확인 = {}", no);
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 	    Board board = boardService.selectBoardByNo(no); // 삭제하려는 게시물 가져오기
 
@@ -217,24 +255,35 @@ public class BoardController {
 	    return "redirect:/board/boardList.do";
 	}
 	
-//	@PostMapping("/boardDelete.do")
-//	private String boardDelete(@RequestParam(value = "boardNo", required = false) List<String> boardNos,
-//	                           Authentication authentication, RedirectAttributes redirectAttributes) {
-//	    String empId = ((Emp) authentication.getPrincipal()).getEmpId();
-//	    List<Board> boardsToDelete = boardService.selectBoardsByNos(boardNos);
-//	    List<String> failedNos = new ArrayList<>();
-//	    for (Board board : boardsToDelete) {
-//	        if (!board.getEmpId().equals(empId)) { // 작성자와 로그인한 사용자가 다를 때
-//	            failedNos.add(board.getNo());
-//	        }
-//	    }
-//	    if (failedNos.size() > 0) {
-//	        redirectAttributes.addFlashAttribute("msg", "다음 게시물은 작성자만 삭제할 수 있습니다.: " + String.join(", ", failedNos));
-//	    } else {
-//	        int result = boardService.deleteBoards(boardNos);
-//	    }
-//	    return "redirect:/board/boardList.do";
-//	}
+	@PostMapping("/boardCommentDelete.do")
+	private String boardDCommentDelete(@RequestParam String commentNo, Authentication authentication, RedirectAttributes redirectAttributes, Board board) {
+		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+	    BoardComment boardComment = boardService.selectBoardCommentByNo(commentNo);
+	    	
+	    	log.debug("boardComment = {}", boardComment);
+	        int result = boardService.deleteBoardComment(commentNo);
+	   
+	    return "redirect:/board/boardDetail.do?no=" + board.getNo();
+	}
+	
+	@PostMapping("/boardsDelete.do")
+	private String boardDelete(@RequestParam(value = "boardNo", required = false) List<String> boardNos,
+	                           Authentication authentication, RedirectAttributes redirectAttributes) {
+	    String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+	    log.debug("boardNos 시작 = {}", boardNos);
+	    
+	    List<Board> boardsToDelete = boardService.selectBoardsByNos(boardNos);
+	    log.debug("boardNos 끝 = {}", boardNos);
+	    log.debug("boardsToDelete = {}", boardsToDelete);
+	    List<String> failedNos = new ArrayList<>();
+	    for (Board board : boardsToDelete) { 
+	            failedNos.add(board.getNo());
+	        }
+
+	        int result = boardService.deleteBoards(boardNos);
+
+	    return "redirect:/board/boardList.do";
+	}
 	
 	
 	
@@ -287,23 +336,188 @@ public class BoardController {
 	}
 	
 	
+	@GetMapping("/newsBoardList.do")
+	public String selectNewsBoardList(Model model) {
+	    List<Board> boardList = boardService.selectNewsBoardList();
+	    Map<String, Object> commentCountMap = new HashMap<>();
+	    
+	    for (Board board : boardList) {
+	        List<BoardComment> commentList = boardService.selectCommentListByBoardNo(board.getNo());
+	        int likeCount = boardService.selectBoardCountByNo(board.getNo());	        
+	        board.setLikeCount(likeCount);
+	        board.setCommentList(commentList);
+
+	        int commentCount = boardService.selectBoardCommentCount(board.getNo());
+	        commentCountMap.put("CommentCount", commentCount);
+	    }
+	   
+	    
+	    log.debug("commentCountMap = {}", commentCountMap);
+	    log.debug("boardList = {}", boardList);
+	    
+	    model.addAttribute("commentCountMap", commentCountMap);
+	    model.addAttribute("boardList", boardList);
+	    return "/board/newsBoardList";
+	}
+	
+	 
+
+	@GetMapping("/photoBoardList.do")
+	public String selectPhotoBoardList(Model model) {
+		 List<Board> boardList = boardService.selectPhotoBoard();
+		 Map<String, Object> commentCountMap = new HashMap<>();
+		    
+		    for (Board board : boardList) {
+		        List<BoardComment> commentList = boardService.selectCommentListByBoardNo(board.getNo());
+		        int likeCount = boardService.selectBoardCountByNo(board.getNo());
+		        board.setLikeCount(likeCount);
+		        board.setCommentList(commentList);
+		        
+		        int commentCount = boardService.selectBoardCommentCount(board.getNo());
+		        commentCountMap.put("CommentCount", commentCount);
+		    }
+		    
+		    model.addAttribute("commentCountMap", commentCountMap);
+		    model.addAttribute("boardList", boardList);
+		    return "/board/photoBoardList";
+		}
+	
+	@GetMapping("/menuBoardList.do")
+	private void menuBoardList(@RequestParam(defaultValue = "1") int cpage, Model model) {
+	
+			int limit = 20;
+			int offset = (cpage - 1) * limit; 
+			RowBounds rowBounds = new RowBounds(offset, limit);
+			
+			List<Board> boardList = boardService.selectMenuBoardList(rowBounds);
+			log.debug("boardList = {}", boardList);
+			
+			// 총 게시물 수
+		    int totalCount = boardService.selectBoardCount();
+		    log.debug("totalCount = {}", totalCount);
+
+		    // 총 페이지 수 계산
+		    int totalPage = (int) Math.ceil((double) totalCount / limit);
+		    log.debug("totalPage = {}", totalPage);
+
+		    // 시작 페이지와 끝 페이지 계산
+		    int startPage = ((cpage - 1) / 20) * 20 + 1; // 10 페이지씩 묶어서 보여줌
+		    int endPage = Math.min(startPage + 19, totalPage);
+			
+			
+		    model.addAttribute("boardList", boardList);
+		    model.addAttribute("currentPage", cpage);
+		    model.addAttribute("startPage", startPage);
+		    model.addAttribute("endPage", endPage);
+		    model.addAttribute("totalPage", totalPage);
+	}
+	
+	@PostMapping("/boardCommentEnroll.do")
+	public String boardCommentEnroll(BoardComment boardComment, Board board, @RequestParam String no, Authentication authentication) {
+		log.debug("boardComment = {}", boardComment);
+
+		String boardNo = board.getNo();
+		boardComment.setBoardNo(boardNo);
+		
+		int result = boardService.insertBoardComment(boardComment);
+		
+		return "redirect:/board/boardDetail.do?no=" + board.getNo();
+	}
+	
+	@PostMapping("/boardCommentUpdate.do")
+	@ResponseBody
+	public Map<String, Object> boardCommentUpdate(@RequestBody BoardComment boardComment) {
+	    int result = boardService.updateBoardComment(boardComment);
+	    Map<String, Object> responseData = new HashMap<>();
+	    responseData.put("result", result > 0 ? "success" : "fail");
+	    return responseData;
+	}
+	
+	@PostMapping("/commentEnroll.do")
+	@ResponseBody
+	public String boardCommentEnroll(@RequestBody BoardComment boardComment, Authentication authentication, Board board) {
+		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+	    boardComment.setEmpId(empId);
+	    boardComment.setBoardNo(board.getNo());
+	    boardComment.setCommentLevel(0); // 댓글의 경우 기본 레벨 0
+	    
+	    log.debug("boardComment = {} ", boardComment);
+	    int result = boardService.insertBoardComment(boardComment);
+	   
+	    return "redirect:/board/boardDetail.do?no=" + board.getNo();
+	}
+	
+	@PostMapping("/boardLikeUp.do")
+	@ResponseBody
+	public Map<String, Object> boardlikeUp(@RequestBody BoardLike boardLike) {
+	Map<String, Object> resultMap = new HashMap<>();
+	 
+	try {
+	    int result = boardService.boardlikeUp(boardLike);
+	    resultMap.put("result", "success");
+	    log.debug("resultMap = {}", resultMap);
+	} catch (Exception e) {
+	    resultMap.put("result", "fail");
+	    log.error("Failed to like a board: {}", e.getMessage(), e);
+	}
+	return resultMap;
+}
+
+
+	@PostMapping("/boardLikeDown.do")
+	@ResponseBody
+	public Map<String, Object> boardlikeDown(@RequestBody BoardLike boardLike) {
+	Map<String, Object> resultMap = new HashMap<>();
+
+	try {
+	    int result = boardService.boardlikeDown(boardLike);
+	    resultMap.put("result", "success");
+	    log.debug("resultMap = {}", resultMap);
+	} catch (Exception e) {
+	    resultMap.put("result", "fail");
+	    log.error("Failed to unlike a board: {}", e.getMessage(), e);
+	}
+	return resultMap;
+	}
+
+	@GetMapping("/boardLikeCheck.do")
+	@ResponseBody
+	public Map<String, Object> boardLikeCheck(@RequestParam("boardNo") String boardNo, @RequestParam("empId") String empId, Model model) {
+			Map<String, Object> result = new HashMap<>();
+			try {
+					BoardLike boardLike = new BoardLike();
+					boardLike.setBoardNo(boardNo);
+					boardLike.setEmpId(empId);
+					log.debug("boardLike = {}", boardLike);
+			
+			 Map<String, Object> likeMap = boardService.selectBoardLikeCheck(boardLike);
+			    log.debug("likeMap = {}", likeMap);
+			    String likeYn = (String) likeMap.get("ISLIKED");
+			    	log.debug("likeYn = {}", likeYn);
+				    if ("N".equals(likeYn)) { // 좋아요 정보가 없는 경우
+				        result.put("isLiked", false);
+				    } else {
+				        result.put("isLiked", true);
+				    }
+			    result.put("likeCount", likeMap.get("LIKECOUNT"));
+			    result.put("result", "success");
+			    log.debug("result = {}", result);
+			} catch (Exception e) {
+			    result.put("result", "error");
+			    result.put("message", "좋아요 확인 중 오류가 발생했습니다.");
+			    e.printStackTrace();
+			}
+			model.addAttribute("result", result);
+			return result;
+		}
+	
+	
+	
+	
+	
 	@GetMapping("/boardForm.do")
 	private void boardForm() {}
 	
 	@GetMapping("/boardAdd.do")
 	private void boardCreate() {}
-	
-	@GetMapping("/newsBoardList.do")
-	private void newsBoardList() {
-		
-}
-	
-	@GetMapping("/menuBoardList.do")
-	private void menuBoardList() {}
-	
-	@GetMapping("/photoBoardList.do")
-	private void photoBoardList() {}
-	
-
-	
 }

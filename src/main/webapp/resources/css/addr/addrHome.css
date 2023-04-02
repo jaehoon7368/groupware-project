@@ -1,0 +1,211 @@
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+section.notice {
+  padding: 0px;
+
+}
+.tool-bar {
+	display: block;
+	padding: 10px;
+}
+
+tr[data-no] {cursor: pointer;}
+
+.tool-img {
+	height: 17px;
+	width: 17px;
+}
+.tool-button {
+	float: left;
+	padding: 10px;
+}
+.tool-bar span{
+	padding: 2px;
+	color: black;
+	font-size: 13px;
+}
+
+
+.page-title h3 {
+  font-size: 28px;
+  color: #333333;
+  font-weight: 400;
+  text-align: center;
+}
+
+.addr-list {
+	width:100%;
+}
+.addr-table {
+  font-size: 13px;
+  width: 100%;
+  
+}
+
+.addr-table a {
+  color: #333;
+  display: inline-block;
+  line-height: 1.4;
+  word-break: break-all;
+  vertical-align: middle;
+}
+.addr-table a:hover {
+  text-decoration: underline;
+}
+.addr-table th {
+  width:30px;
+  text-align: center;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+
+}
+
+.addr-table tbody tr:hover {
+ 	background: #F6f6f6;
+}
+
+.addr-table .th-checkBox {
+  width: 20px;
+  text-align: center;
+}
+.addr-table .th-name {
+  width: 20px;
+  text-align: center;
+}
+
+.addr-table .th-phone {
+  width: 150px;
+}
+.addr-table .th-email{
+	width: 150px;
+}
+
+.addr-table .th-company{
+	width: 100px;
+}
+.addr-table .th-companyPhone{
+	width: 100px;
+}
+
+.addr-table th, .addr-table td {
+  padding: 10px 0;
+}
+
+.addr-table tbody td {
+  text-align: center;
+  width:50px;
+}
+
+.addr-table tbody th {
+  padding-left: 28px;
+  padding-right: 14px;
+  
+  text-align: left;
+}
+
+.addr-table tbody .addr-title{
+	text-align: start;
+	padding-left: 40px;
+}
+
+.addr-table tbody th p{
+  display: none;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0 30px;
+  font-size: 15px;
+  font-weight: 400;
+  background: transparent;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+#addr-button {
+	padding : 10px;
+}
+
+#addr-btn{
+	border: none;
+	background: none;
+	padding-left: 20px;
+}
+
+.btn-dark {
+  background: #555;
+  color: #fff;
+}
+
+.btn-dark:hover, .btn-dark:focus {
+  background: #373737;
+  border-color: #373737;
+  color: #fff;
+}
+
+.btn-dark {
+  background: #555;
+  color: #fff;
+}
+
+.btn-dark:hover, .btn-dark:focus {
+  background: #373737;
+  border-color: #373737;
+  color: #fff;
+}
+
+/* reset */
+
+* {
+  list-style: none;
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.clearfix:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.container {
+  width: 100%;
+  margin: 0 auto;
+}
+.blind {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  margin: -1px;
+  width: 1px;
+  height: 1px;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+  
+ 
+}

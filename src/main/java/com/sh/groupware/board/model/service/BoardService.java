@@ -1,11 +1,14 @@
 package com.sh.groupware.board.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.http.ResponseEntity;
 
 import com.sh.groupware.board.model.dto.Board;
 import com.sh.groupware.board.model.dto.BoardComment;
+import com.sh.groupware.board.model.dto.BoardLike;
 import com.sh.groupware.common.dto.Attachment;
 
 public interface BoardService {
@@ -32,7 +35,58 @@ public interface BoardService {
 
 	List<Board> selectBoardHome(Board board);
 
-//	Board selectNewsBoardList(String no);
+	List<Board> selectNewsBoardList(Board board);
+
+	List<Board> selectPhotoBoardList(Board board);
+
+	List<Board> selectMenuBoardList(RowBounds rowBounds);
+
+	List<BoardComment> selectBoardComment(String no);
+
+	int updateBoardComment(BoardComment boardComment);
+
+	BoardComment selectBoardCommentByNo(String commentNo);
+
+	int deleteBoardComment(String commentNo);
+
+	int boardlikeUp(BoardLike boardLike);
+
+	int boardlikeDown(BoardLike boardLike);
+
+	int selectBoardLikeCount(String no);
+
+	Map<String, Object> selectBoardLikeCheck(BoardLike boardLike);
+
+
+	List<BoardComment> selectBoardComment(BoardComment boardComment);
+
+	List<Board> selectNewsBoardList();
+
+	List<BoardComment> selectCommentListByBoardNo(String no);
+
+	List<Board> selectPhotoBoard();
+
+	int selectBoardCountByNo(String no);
+
+	int selectCommentCount(String no);
+
+	int selectBoardCommentCount(String no);
+
+	List<Board> selectBoardsByNos(List<String> boardNos);
+
+	int deleteBoards(List<String> boardNos);
+
+	
+
+	
+
+
+	
+
+
+	
+
+
 
 	
 
