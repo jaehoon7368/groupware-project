@@ -52,12 +52,12 @@
 									<span class="app-dashboard-sidebar-text">홈</span>
 								</a>
 							</li>
-							<li>
+							<%-- <li>
 								<a href="${pageContext.request.contextPath}/mail/mail.do" class="is-active" title="메일">
 									<i class="large fa fa-solid fa-envelope"></i>
 									<span class="app-dashboard-sidebar-text">메일</span>
 								</a>
-							</li>
+							</li> --%>
 							<li>
 								<a href="${pageContext.request.contextPath}/report/report.do" class="is-active" title="보고">
 									<i class="large fa fa-solid fa-file"></i>
@@ -88,12 +88,12 @@
 									<span class="app-dashboard-sidebar-text">게시판</span>
 								</a>
 							</li>
-							<li>
+							<!-- <li>
 								<a href="#" class="is-active" title="캘린더">
 									<i class="large fa fa-solid fa-calendar-days"></i>
 									<span class="app-dashboard-sidebar-text">캘린더</span>
 								</a>
-							</li>
+							</li> -->
 							<li>
 								<a href="${pageContext.request.contextPath}/sign/sign.do" class="is-active" title="전자결재">
 									<i class="large fa fa-solid fa-signature"></i>

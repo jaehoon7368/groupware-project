@@ -248,9 +248,14 @@ public class ReportController {
 	@GetMapping("/reportReferView.do")
 	public String reportReferView(Authentication authentication, Model model) {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+		String deptCode = ((Emp) authentication.getPrincipal()).getDeptCode();
 
-		List<Report> myReportList = reportService.findByWriterReportCheckList(empId);
-		model.addAttribute("myReportList", myReportList);
+		Map<String, Object> param = new HashMap<>();
+		param.put("empId", empId);
+		param.put("deptCode", deptCode);
+		
+		List<Report> myReportReferenceList = reportService.findByReferenceReportCheckList(param);
+		model.addAttribute("myReportReferenceList", myReportReferenceList);
 		
 		return "report/reportRefer";
 	} // reportReferView() end
@@ -261,11 +266,8 @@ public class ReportController {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		String deptCode = ((Emp) authentication.getPrincipal()).getDeptCode();
 
-		Map<String, Object> param = new HashMap<>();
-		param.put("empId", empId);
-		param.put("deptCode", deptCode);
-		List<Report> myReportReferenceList = reportService.findByReferenceReportCheckList(param);
-		model.addAttribute("myReportReferenceList", myReportReferenceList);
+		List<Report> myReportList = reportService.findByWriterReportCheckList(empId);
+		model.addAttribute("myReportList", myReportList);
 		
 		return "report/reportMyList";
 	} // myListView() end
