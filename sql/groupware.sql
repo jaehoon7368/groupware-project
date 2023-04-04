@@ -143,7 +143,7 @@ select*from boardComment;
 insert into boardComment values(seq_boardComment_no.nextval, 'asdfasdfasd', sysdate, default, default, 'bo173', '230301', '230301');
 select*from board;
 
-
+select*from addressbook;
 -- 주소록
 create table addressbook (
     addr_no varchar2(15) not null,
@@ -157,8 +157,10 @@ create table addressbook (
     email varchar2(30) not null,
     reg_date date default sysdate,
     memo varchar2(500),
+    addrGroup varchar2(50) not null,
     constraint pk_addressbook primary key (addr_no)
 );
+--drop table addressbook;
 -- 그룹원
 create table groupMember (
     group_no varchar2(15) not null,

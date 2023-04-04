@@ -7,7 +7,7 @@
 						<div class="container-title"><a href="${pageContext.request.contextPath}/board/boardHome.do" class="container-a">주소록</a></div>
 						
 							<div class="container-btn">
-							<a href="${pageContext.request.contextPath}/board/boardForm.do"><button>연락처 추가</button></a>
+							<a href="${pageContext.request.contextPath}/addr/addrEnrollForm.do"><button>연락처 추가</button></a>
 							</div>
 						
 						<div class="accordion-box">

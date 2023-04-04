@@ -25,6 +25,16 @@ public class AddrBookController {
 	
 	@GetMapping("/addrHome.do")
 	public void addrHome() {
-		
 	}
+	
+	@GetMapping("/addrEnrollForm.do")
+	public void addrEnroll() {
+	}
+	
+	
+	
+	
+	
+	
+	
 }
