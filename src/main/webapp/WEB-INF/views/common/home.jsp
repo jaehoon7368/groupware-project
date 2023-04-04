@@ -185,11 +185,9 @@
 								<c:forEach items ="${reNotis }" var="reNoti" varStatus="vs">
 								<c:if test="${vs.index <4}">
 
-									<c:set  var = "notiType" value=""/>
-									        <c:set var="notiType" value="전자결재"/>
 									<c:choose>
 										<c:when test="${fn:contains(reNoti.pkNo,'tdb') }">
-											<c:set var="notsiType" value="할일게시판"/>
+											<c:set var="notiType" value="할일게시판"/>
 										</c:when>
 										<c:when test="${fn:contains(reNoti.pkNo,'r') }">
 											<c:set var="notiType" value="보고서"/>
@@ -207,8 +205,10 @@
 		        						</div>
 						            	<div class="right-noti">
 						               		<p> [<span class="noti-type-span">${notiType}등록</span>] '${reNoti.emp.name}' ${reNoti.emp.jobTitle }님 (이)가 <br />'${notiType}'를 등록하였습니다.</p>
-  										<p><span class="noti-time-span">${reNoti.regDate }</span><span> </span></p>
-    
+  											<p><span class="noti-time-span"> 
+  											<fmt:parseDate value="${reNoti.regDate }" var="regDate" pattern="yyyy-MM-dd" />
+											<fmt:formatDate value="${regDate}" pattern="yyyy-MM-dd" />
+  											</span><span> </span></p>
 				          				</div>
 				       				</div>
 				       				</c:if>

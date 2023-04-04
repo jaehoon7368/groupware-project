@@ -15,6 +15,6 @@ public class ChatLog extends ChatLogEntity{
 
 	
 	private Emp emp ;
-	
+	private int unreadCount;
 	
 }
