@@ -82,6 +82,8 @@
 		where
 		    quit_yn = 'N'
     		and dept_code = #{deptCode}
+    	order by
+    		job_code
 	</select>
 	
 	<select id="findByMyDeptCodeManagerEmpList" resultMap="empMap">
@@ -109,7 +111,7 @@
 		where
 		    quit_yn = 'N'
 		order by
-			dept_code,job_code		
+			e.dept_code,e.job_code		
 	</select>
 	
 	<select id="empFinderList" resultMap="empDetailMap">
@@ -136,10 +138,72 @@
 		    <if test="searchType == 'name'">
 			    and
 				e.name like '%' || #{searchKeyword} ||'%'
-		    </if>		    
+		    </if>
 		order by
 			e.dept_code,e.job_code		
 	</select>
+	
+	<select id="selectEmpCountDept" resultType="_int">
+		select 
+		    count(*)
+		from 
+		    emp e join dept d
+		    on e.dept_code = d.dept_code
+		    join job j
+		    on e.job_code = j.job_code
+		where
+		    quit_yn = 'N'
+		    <if test="searchType == 'dept_title'">
+			    and
+				d.dept_title like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="searchType == 'job_title'">
+			    and
+				j.job_title like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="searchType == 'name'">
+			    and
+				e.name like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="deptCode != null">
+		    	and
+		    	e.dept_code = #{deptCode}
+		    </if>		    		
+	</select>
+	
+	<select id="empFinderDeptList" resultMap="empDetailMap">
+		select 
+		    e.*,
+		    j.job_title,
+		    d.dept_title,
+		    (select rename_filename from attachment where pk_no = e.emp_id) renameFilename
+		from 
+		    emp e join dept d
+		    on e.dept_code = d.dept_code
+		    join job j
+		    on e.job_code = j.job_code
+		where
+		    quit_yn = 'N'
+		    <if test="searchType == 'dept_title'">
+			    and
+				d.dept_title like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="searchType == 'job_title'">
+			    and
+				j.job_title like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="searchType == 'name'">
+			    and
+				e.name like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="deptCode != null">
+		    	and
+		    	e.dept_code = #{deptCode}
+		    </if>		    
+		order by
+			e.dept_code,e.job_code	
+	</select>
+	
 	
 	<resultMap type="empDetail" id="empDetailMap"></resultMap>
 </mapper>

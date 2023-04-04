@@ -37,4 +37,8 @@ public interface WorkingManagementService {
 
 	List<Map<String, Object>> findByEmpIdNoDate(String empId);
 
+	int updateDayWorkTimeHalf(Map<String, Object> param);
+
+	int updateStartWork(Map<String, Object> param);
+
 }

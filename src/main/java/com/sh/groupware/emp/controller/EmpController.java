@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -258,21 +259,64 @@ public class EmpController {
 	
 	//전사 인사정보
 	@GetMapping("/empAllInfo.do")
-	public void empAllInfo(Model model) {
-		List<EmpDetail> empList = empService.selectEmpAll();
+	public void empAllInfo(@RequestParam(defaultValue = "1") int cpage,Model model) {
+		
+		// 페이징처리
+		int limit = 10; // 한페이지당 조회할 게시글수	
+		int offset = (cpage - 1) * limit; 
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		//총 회원수
+		int totalCount = empService.selectEmpCount();
+		
+		// 총 페이지 수 계산
+	    int totalPage = (int) Math.ceil((double) totalCount / limit);
+	    log.debug("totalPage = {}", totalPage);
+		
+		// 시작 페이지와 끝 페이지 계산
+	    int startPage = ((cpage - 1) / 20) * 20 + 1; // 10 페이지씩 묶어서 보여줌
+	    int endPage = Math.min(startPage + 19, totalPage);
+		
+		List<EmpDetail> empList = empService.selectEmpAll(rowBounds);
 		
 		model.addAttribute("empList", empList);
+		model.addAttribute("currentPage", cpage);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("totalPage", totalPage);
 	}
 	
 	//전사 인사정보 검색
 	@GetMapping("/empFinder.do")
-	public String empFinder(String searchType, String searchKeyword,Model model) {
+	public String empFinder(String searchType, String searchKeyword,@RequestParam(defaultValue = "1") int cpage,Model model) {
+		
+		// 페이징처리
+		int limit = 10; // 한페이지당 조회할 게시글수	
+		int offset = (cpage - 1) * limit; 
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
 		Map<String,Object> param = new HashMap<>();
 		param.put("searchType", searchType);
 		param.put("searchKeyword", searchKeyword);
 		
-		List<EmpDetail> empList = empService.empFinderList(param);
+		//총 회원수
+		int totalCount = empService.selectEmpCountDept(param);
+		
+		// 총 페이지 수 계산
+	    int totalPage = (int) Math.ceil((double) totalCount / limit);
+	    log.debug("totalPage = {}", totalPage);
+		
+		// 시작 페이지와 끝 페이지 계산
+	    int startPage = ((cpage - 1) / 20) * 20 + 1; // 10 페이지씩 묶어서 보여줌
+	    int endPage = Math.min(startPage + 19, totalPage);
+		
+		List<EmpDetail> empList = empService.empFinderList(param,rowBounds);
+		
 		model.addAttribute("empList", empList);
+		model.addAttribute("currentPage", cpage);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("totalPage", totalPage);
 		
 		return "emp/empAllInfo";
 	}

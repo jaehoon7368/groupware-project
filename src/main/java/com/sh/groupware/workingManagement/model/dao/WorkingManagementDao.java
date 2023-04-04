@@ -34,7 +34,7 @@ public interface WorkingManagementDao {
 	@Select("select * from working_management where reg_date like '%' || #{date} || '%' and emp_id = #{empId}")
 	List<WorkingManagement> selectMonthWok(Map<String, Object> param);
 
-	@Select("select * from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end})+1 order by reg_date")
+	@Select("select * from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end}) order by reg_date")
 	List<WorkingManagement> selectWeekDatas(Map<String, Object> param);
 
 	@Select("select sum(day_work_time) from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end})+1 order by reg_date")
@@ -44,11 +44,11 @@ public interface WorkingManagementDao {
 	int totalMonthTime(Map<String, Object> param);
 
 	//주간 기본근무시간 가져오기
-	@Select("select nvl(sum(day_work_time),0) from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end})+1 order by reg_date")
+	@Select("select nvl(sum(day_work_time),0) from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end}) order by reg_date")
 	int selectWeekWorkTime(Map<String, Object> startEndMap);
 
 	//주간 연장근무시간 가져오기
-	@Select("select nvl(sum(overtime),0) from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end})+1 order by reg_date")
+	@Select("select nvl(sum(overtime),0) from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end}) order by reg_date")
 	int selectWeekOverTime(Map<String, Object> startEndMap);
 
 	//월 연장근무시간 가져오기
@@ -59,5 +59,9 @@ public interface WorkingManagementDao {
 	int insertRegDateState(WorkingManagement working);
 
 	List<Map<String, Object>> findByEmpIdNoDate(String empId);
+
+	int updateDayWorkTimeHalf(Map<String, Object> param);
+
+	int updateStartWork(Map<String, Object> param);
 
 }
