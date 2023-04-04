@@ -48,7 +48,6 @@
 					
 					const empName = document.querySelector("#empName");
 					console.log(empName.value);
-					console.log("아이이~~~~~~~~~~~~~~~~~~~~~~~~~ 이름 확인줄")
 					const payload = {
 						chatroomId,
 						empId : '<sec:authentication property="principal.username" />',
