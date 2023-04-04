@@ -206,6 +206,21 @@ tr[data-no] {cursor: pointer;}
   display: flex;
   justify-content: center;
 }
-  
- 
+
+.simpleFrm-wrap input{
+	width: 150px;
+	height: 30px;
+	margin : 5px;
 }
+.simpleFrm-wrap form{
+	display: flex;
+	padding:15px;
+}
+#serch-all-wrap ul li{
+	padding:5px;
+	margin:5px;
+	color:gray;
+	font-size:13px;
+}
+
+
