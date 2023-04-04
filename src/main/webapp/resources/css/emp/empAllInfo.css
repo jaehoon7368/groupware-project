@@ -289,6 +289,10 @@ date-box {
     margin: auto;
     
 }
+#page-bar-box{
+	margin-top : 10px;
+	text-align: center;
+}
 
 
 /* 메인내용 end */

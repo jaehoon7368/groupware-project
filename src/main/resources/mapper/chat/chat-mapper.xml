@@ -47,7 +47,46 @@
 
 </insert>
 
+ <select  id="seletChatLogByempId" resultMap="chatLogMap">
+	select
+	    cl.no,
+	    cl.chatroom_id,
+	    (select emp_id from chat_room where chatroom_id = cl.chatroom_id and emp_id != #{empId}) emp_id,
+	    cl.msg,
+	    cl.time,
+	    (select count(*) from chat_log where chatroom_id = cl.chatroom_id and time > (select last_check from chat_room where chatroom_id = cl.chatroom_id and emp_id = #{empId})) unread_count,
+	    cl.type
+	from (
+	    select
+	        cl.*,
+	        row_number() over(partition by chatroom_id order by no desc) rnum
+	    from
+	        chat_log cl
+	    where
+	        cl.emp_id = #{empId}
+	) cl
+	where
+	    rnum = 1
 
+</select> 
+
+<select  id="selectYourIdBychatroomId" resultType="String">
+	select
+		emp_id
+	from
+		chat_room
+	where 
+		chatroom_id = #{chatroomId} and emp_id != #{empId}
+</select>
+
+<insert  id="updateLastCheck">
+	update 
+		chat_room
+	set
+		last_check = #{time} where chatroom_id = #{chatroomId} and emp_id = #{empId}
+
+
+</insert>
 
 
 

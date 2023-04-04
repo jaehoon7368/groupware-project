@@ -194,7 +194,15 @@
 		        								subTd5.textContent = "기본 "+ chageWorkTime(dayWorkTime) + " / 연장 " + chageWorkTime(overtime);
 		        								
 		        								const subTd6 = document.createElement("td");
-		        								subTd6.textContent = "";
+		        								if(state == '출장' || state == '연차'){
+			        								subTd6.textContent = "완료(" + state + " 8.00h)";
+		        								}
+		        								else if(state == '반차'){
+		        									subTd6.textContent = "완료(" + state + " 4.00h)";
+		        								}
+		        								else{
+		        									subTd6.textContent = "";
+		        								}
 		        								
 		        								subTr.append(subTd1,subTd2,subTd3,subTd4,subTd5,subTd6);
 		        								tbody2.append(subTr);

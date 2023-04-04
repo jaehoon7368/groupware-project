@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.session.RowBounds;
 
 import com.sh.groupware.emp.model.dto.Authority;
 import com.sh.groupware.emp.model.dto.Emp;
@@ -56,13 +57,24 @@ public interface EmpDao {
 	List<EmpDetail> selectEmpDeptList(String deptCode);
 
 	// 전사 인사정보
-	List<EmpDetail> selectEmpAll();
+	List<EmpDetail> selectEmpAll(RowBounds rowBounds);
 
 	//사원 기본 연차 가져오기
 	@Select("select base_day_off  from job j join emp e on j.job_code = e.job_code where e.emp_id = #{empId}" )
 	double selectBaseDayOff(String empId);
 
-	List<EmpDetail> empFinderList(Map<String, Object> param);
+	List<EmpDetail> empFinderList(Map<String, Object> param, RowBounds rowBounds);
+
+	@Select("select count(*) from emp where quit_yn = 'N'")
+	int selectEmpCount();
+
+	int selectEmpCountDept(Map<String, Object> param);
+
+	@Select("select count(*) from emp where dept_code = #{deptCode}")
+	int selectEmpDeptCount(String deptCode);
+
+	List<EmpDetail> empFinderDeptList(Map<String, Object> param);
+
 
 	
 	
