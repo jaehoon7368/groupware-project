@@ -82,24 +82,26 @@ textarea {
 .report-list-tbl {
   width: 100%;
   padding: 0;
+  margin-bottom: 50px;
 }
 
 .report-list-tbl table {
   width: 100%;
   margin: 10px 0;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .report-list-tbl th, .report-list-tbl td {
-  padding: 10px 0;
-}
-
-.report-list-tbl th, .report-list-tbl td {
+  padding: 10px 5px;
   font-size: small;
   /* font-weight: normal; */
   text-align: center;
   border-top: solid 1px lightgray;
   border-bottom: solid 1px lightgray;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .report-tr:hover {

@@ -19,7 +19,12 @@
 						<!-- 상단 타이틀 -->
 						<div class="top-container">
 							<div class="container-title">
-								참조 보고서
+								<c:choose>
+									<c:when test="${param.type == 'else'}">그 외</c:when>
+									<c:when test="${param.type == 'refer'}">참조</c:when>
+									<c:when test="${param.type == 'my'}">내가 생성한</c:when>
+								</c:choose>
+								&nbsp;보고서
 							</div>
 							<div class="home-topbar topbar-div">
 								<div>
@@ -64,6 +69,13 @@
                                 <div class="div-report-list">
                                     <div class="report-list-tbl">
                                         <table>
+                                        	<colgroup>
+                                                <col width="20%" />
+                                                <col width="35%" />
+                                                <col width="15%" />
+                                                <col width="15%" />
+                                                <col width="15%" />
+                                            </colgroup>
                                             <thead>
                                                 <tr>
                                                     <th>제목</th>
@@ -74,20 +86,29 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            	<c:if test="${empty myReportReferenceList}">
+                                            	<c:if test="${empty myReportList}">
                                            			<tr>
-                                           				<td colspan="5">참조 가능한 보고가 없습니다.</td>
+                                           				<td colspan="5">
+                                           					<c:choose>
+																<c:when test="${param.type == 'else'}">그 외</c:when>
+																<c:when test="${param.type == 'refer'}">참조 가능한</c:when>
+																<c:when test="${param.type == 'my'}">내가 생성한</c:when>
+															</c:choose>
+															&nbsp;보고가 없습니다.
+                                           				</td>
                                            			</tr>
                                             	</c:if>
-                                            	<c:if test="${!empty myReportReferenceList}">
-	                                            	<c:forEach items="${myReportReferenceList}" var="report">
-	                                            		<tr class="report-tr" data-no="${report.no}">
-	                                            			<td>${report.title}</td>
-	                                            			<td>${report.explain}</td>
-	                                            			<td>${report.writer}</td>
-	                                            			<td>${report.regDate}</td>
-	                                            			<td>${report.endDate}</td>
-	                                            		</tr>
+                                            	<c:if test="${!empty myReportList}">
+	                                            	<c:forEach items="${myReportList}" var="report" varStatus="vs">
+	                                            		<c:if test="${vs.index < 5}">
+		                                            		<tr class="report-tr" data-no="${report.no}">
+		                                            			<td>${report.title}</td>
+		                                            			<td>${report.explain}</td>
+		                                            			<td>${report.writer}</td>
+		                                            			<td>${report.regDate}</td>
+		                                            			<td>${report.endDate}</td>
+		                                            		</tr>
+		                                            	</c:if>
 	                                            	</c:forEach>
                                             	</c:if>
                                             </tbody>

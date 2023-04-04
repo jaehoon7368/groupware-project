@@ -71,6 +71,7 @@
 					          <c:when test="${board.BType == 'A'}">다우그룹>전체게시판</c:when>
 					          <c:when test="${board.BType == 'M'}">다우그룹>주간 식단표</c:when>
 					          <c:when test="${board.BType == 'N'}">다우그룹>이주의 IT뉴스</c:when>
+					          <c:when test="${board.BType == 'P'}">다우그룹>사진 게시판</c:when>
 					          <c:otherwise>${board.BType}</c:otherwise>
 					        </c:choose>
 					      </span>

@@ -57,5 +57,26 @@ public class ChatServiceImpl implements ChatService {
 		return chatDao.insertChatLog(chatLog);
 	}
 	
-
+	@Override
+	public List<ChatLog> seletChatLogByempId(String empId) {
+		List <ChatLog> chatLogs =chatDao.seletChatLogByempId(empId);
+		if(!chatLogs.isEmpty()) {
+			for(ChatLog chatLog : chatLogs) {
+				empId =chatLog.getEmpId();
+				chatLog.setEmp(commonDao.selectOneEmpTitleJobByEmpId(empId));
+				chatLog.getEmp().setAttachment(todoDao.selectOneAttachmentByEmpId(empId));
+			}
+		}
+		return chatLogs;
+		}
+	@Override
+	public String selectYourIdBychatroomId(Map<String, Object> param) {
+		return chatDao.selectYourIdBychatroomId(param);
+	}
+	@Override
+	public int updateLastCheck(ChatLog lastCheck) {
+		return chatDao.updateLastCheck(lastCheck);
+	}
+	
+	
 }

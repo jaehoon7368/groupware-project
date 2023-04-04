@@ -80,19 +80,101 @@ alter table board add writer varchar2(20) not null;
 alter table board add foreign key(writer) references emp (emp_id) on delete cascade;
 alter table board rename column type to b_type;
 
+--좋아요
+CREATE TABLE board_like (
+    like_no varchar2(20) PRIMARY KEY,
+    emp_id VARCHAR2(20) NOT NULL,
+    board_no VARCHAR2(15) NOT NULL,
+    like_yn CHAR(1) DEFAULT 'N' CHECK (like_yn IN ('Y', 'N')),
+    reg_date DATE DEFAULT SYSDATE,
+    CONSTRAINT fk_board_like_emp FOREIGN KEY (emp_id) REFERENCES emp (emp_id) ON DELETE CASCADE,
+    CONSTRAINT fk_board_like_board FOREIGN KEY (board_no) REFERENCES board (no) ON DELETE CASCADE
+);
+
+-- 게시판 좋아요 트리거
+-- 좋아요 테이블 INSERT 트리거
+-- 좋아요 테이블 INSERT 트리거
+CREATE OR REPLACE TRIGGER trg_board_like_insert
+before INSERT ON board_like
+FOR EACH ROW
+BEGIN
+  UPDATE board SET like_count = like_count + 1 WHERE no = :new.board_no;
+END;
+/
+
+-- 좋아요 테이블 UPDATE 트리거
+CREATE OR REPLACE TRIGGER trg_board_like_update
+BEFORE UPDATE ON board_like
+FOR EACH ROW
+BEGIN
+  IF :OLD.like_yn = 'Y' AND :NEW.like_yn = 'N' THEN -- 좋아요를 취소한 경우
+    UPDATE board SET like_count = like_count - 1 WHERE no = :NEW.board_no;
+  ELSIF :OLD.like_yn = 'N' AND :NEW.like_yn = 'Y' THEN -- 좋아요를 누른 경우
+    UPDATE board SET like_count = like_count + 1 WHERE no = :NEW.board_no;
+  END IF;
+  
+  :NEW.like_yn := :NEW.like_yn; -- UPDATE문 대신 :NEW 값을 변경
+END;
+/
+--ALTER TRIGGER ADMIN.TRG_BOARD_LIKE COMPILE;
+DROP TRIGGER trg_board_like_insert;
+drop table board_like;
+select*from board;
+create sequence seq_board_like_no;
+
 -- 댓글
 create table boardComment (
     no varchar2(15) not null,
     content varchar2(1000) not null,
     reg_date date default sysdate,
     comment_level number default 0,
-    ref_comment_no number,
+    ref_comment_no varchar2(20) default null,
     board_no varchar2(15) not null,
     emp_id varchar2(20) not null,
+    writer varchar2(20) not null,
     constraint pk_boardcomment primary key (no),
     constraint fk_boardcomment_board foreign key (board_no) references board (no) on delete cascade,
-    constraint fk_boardcomment_emp foreign key (emp_id) references emp (emp_id) on delete cascade
+    constraint fk_boardcomment_emp foreign key (emp_id) references emp (emp_id) on delete cascade,
+    constraint fk_boardcomment_ref foreign key(ref_comment_no) references boardComment (no) on delete cascade
 );
+select*from board_Like order by like_no desc; 
+delete from board_like where like_no = '23';
+select*from boardComment;
+insert into boardComment values(seq_boardComment_no.nextval, 'asdfasdfasd', sysdate, default, default, 'bo173', '230301', '230301');
+select*from board;
+
+
+-- 주소록
+create table addressbook (
+    addr_no varchar2(15) not null,
+    name varchar2(20) not null,
+    job_name varchar2(15),
+    phone varchar2(20),
+    dept_title varchar2(20),
+    company varchar2(20),
+    cpTel varchar2(20),
+    cpAddress varchar2(20),
+    email varchar2(30) not null,
+    reg_date date default sysdate,
+    memo varchar2(500),
+    constraint pk_addressbook primary key (addr_no)
+);
+-- 그룹원
+create table groupMember (
+    group_no varchar2(15) not null,
+    addr_no varchar2(15) not null,
+    constraint pk_groupMember primary key (group_no, addr_no) -- 복합
+);
+-- 그룹
+create table addressGroup (
+    no varchar2(15) not null,
+    group_name varchar2(20) not null,
+    emp_id varchar2(20) not null,
+    constraint pk_group primary key (no),
+    constraint fk_group_emp foreign key (emp_id) references emp (emp_id) on delete cascade
+);
+
+
 -- 첨부파일
 create table attachment (
     no varchar2(15) not null,
@@ -144,7 +226,6 @@ select * from dayoff;
 select * from dayoffform;
 delete from working_management where no = '45';
 update working_management set end_work = null, state = '출장',overtime = null where no = '40';
-delete working_management where no = '103';
 
 select day_off_year from dayoff group by day_off_year order by day_off_year;
     
@@ -219,40 +300,11 @@ insert into
 			'김사장'
 		);
 commit;
-
-select
-		    b.*,
-		    a.*,
-		    a.no attach_no,
-		    e.*
-		from
-		    board b 
-		    	left join attachment a
-		        	on b.no = a.no
-		         left join emp e
-            		on b.emp_id = e.emp_id	
-		where
-		    b.no = 1 ;
-            
-SELECT
-    b.*,
-    a.*,
-    a.no  attach_no
-FROM 
-    board b 
-        LEFT JOIN attachment a 
-            ON b.no = a.no AND a.category = 'B'
-WHERE b.no = '23';
-
-
-SELECT a.no, a.original_filename, a.rename_filename, a.reg_date
-FROM attachment a
-JOIN board b ON a.pk_no = b.no
-WHERE a.category = 'B'
-AND a.pk_no = '23';
-
-select*from attachment;
 select*from board;
+select*from emp;
+select*from attachment;
+select*from boardComment;
+
 
 
 select * from working_management where depte_code = 'd1' and reg_date between ? and ?;

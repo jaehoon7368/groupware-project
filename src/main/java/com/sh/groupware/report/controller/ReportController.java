@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,30 +70,13 @@ public class ReportController {
 	@GetMapping("/report.do")
 	public String report(Model model, Authentication authentication) {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
-		String deptCode = ((Emp) authentication.getPrincipal()).getDeptCode();
 		model.addAttribute("empId", empId);
 		
 		List<ReportCheck> reportList = reportService.selectMyReportCheck(empId);
 		model.addAttribute("reportList", reportList);
 		
-		List<ReportCheck> newReportList = reportService.selectMyReportCheck(empId);
-		model.addAttribute("newReportList", newReportList);
-		
 		return "report/reportHome";
 	} // report() end
-	
-	
-//	@GetMapping("/reportForm.do")
-//	public String reportForm(@RequestParam String no, Model model) {
-//		log.debug("no = {}", no);
-//		
-//		List<ReportCheck> reportCheckList = reportService.findByReportNoReportCheckList(no);
-//		List<Reference> referList = reportService.findByReportNoReference(no);
-//		
-//		model.addAttribute("reportCheckList", reportCheckList);
-//		model.addAttribute("referList", referList);
-//		return "report/reportForm";
-//	} // reportForm() end
 	
 	
 	@GetMapping("/reportCreateView.do")
@@ -144,7 +128,7 @@ public class ReportController {
 		List<Report> myReportList = reportService.findByWriterReportCheckList(loginMember.getEmpId());
 		model.addAttribute("myReportList", myReportList);
 		
-		return "redirect:/report/reportCreateView.do";
+		return "redirect:/report/myListView.do";
 	} // reportCreate() end
 	
 	
@@ -234,41 +218,34 @@ public class ReportController {
 	} // reportDeptView() end
 	
 	
-	@GetMapping("/reportElseView.do")
-	public String reportElseView(Authentication authentication, Model model) {
-		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+	@GetMapping("/reportListView.do")
+	public String reportListView(@RequestParam String type, Model model, Authentication authentication) {
+		log.debug("type = {}", type);
 		
-		List<Report> myReportMemberList = reportService.findByMemberReportCheckList(empId);
-		model.addAttribute("myReportMemberList", myReportMemberList);
-		
-		return "report/reportElse";
-	} // reportElseView() end
-	
-	
-	@GetMapping("/reportReferView.do")
-	public String reportReferView(Authentication authentication, Model model) {
-		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
-
-		List<Report> myReportList = reportService.findByWriterReportCheckList(empId);
-		model.addAttribute("myReportList", myReportList);
-		
-		return "report/reportRefer";
-	} // reportReferView() end
-	
-	
-	@GetMapping("/myListView.do")
-	public String myListView(Authentication authentication, Model model) {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		String deptCode = ((Emp) authentication.getPrincipal()).getDeptCode();
-
-		Map<String, Object> param = new HashMap<>();
-		param.put("empId", empId);
-		param.put("deptCode", deptCode);
-		List<Report> myReportReferenceList = reportService.findByReferenceReportCheckList(param);
-		model.addAttribute("myReportReferenceList", myReportReferenceList);
 		
-		return "report/reportMyList";
-	} // myListView() end
+		List<Report> myReportList = new ArrayList<>();
+		
+		switch (type) {
+		case "my":
+			myReportList = reportService.findByWriterReportCheckList(empId);
+			break;
+		case "refer":
+			Map<String, Object> param = new HashMap<>();
+			param.put("empId", empId);
+			param.put("deptCode", deptCode);
+			
+			myReportList = reportService.findByReferenceReportCheckList(param);
+			break;
+		case "else":
+			myReportList = reportService.findByMemberReportCheckList(empId);
+			break;
+		}
+		
+		model.addAttribute("myReportList", myReportList);
+		return "report/reportList";
+	} // reportListView() end
 	
 	
 	@GetMapping("/reportDetail.do")

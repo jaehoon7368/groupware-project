@@ -62,14 +62,16 @@
 
   <form:form name="boardFrm" action="${pageContext.request.contextPath}/board/updateBoard.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
   
+  	
 	<div class="target-select">
-		<span>To.</span>
-		<select name="bType" id="bType">
-			<option value="A">전사 공지</option>
-			<option value="M">주간 식단표</option>
-			<option value="P">사진 게시판</option>
-			<option value="N">IT뉴스</option>
-		</select>
+	  <span>To.</span>
+	  	<input type="hidden" name="bType" value="${param.BType}">
+		  <select name="bType" id="bType">
+		    <option value="A" ${board.BType == 'A' ? 'selected' : ''}>전사 공지</option>
+		    <option value="M" ${board.BType == 'M' ? 'selected' : ''}>주간 식단표</option>
+		    <option value="P" ${board.BType == 'P' ? 'selected' : ''}>사진 게시판</option>
+		    <option value="N" ${board.BType == 'N' ? 'selected' : ''}>IT뉴스</option>
+		  </select>
 	</div>
 
   <hr style="width:1000px;">
