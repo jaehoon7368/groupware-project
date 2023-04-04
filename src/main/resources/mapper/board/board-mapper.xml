@@ -11,11 +11,26 @@
 		from
 		    board b left join emp e
 		        on b.emp_id = e.emp_id
+		where 
+		    b.b_type = 'A'
 		order by 
 		    no desc
 	</select>
 	
-	<select id="selectBoardCount" resultType="int">
+	<select id="selectMenuBoardList" resultMap="boardMap">
+		select 
+		    b.*,
+		    (select count(*) from attachment where no = b.no and category = 'B') attach_count
+		from
+		    board b left join emp e
+		        on b.emp_id = e.emp_id
+		where 
+		    b.b_type = 'M'
+		order by 
+		    no desc
+	</select>
+	
+	<select id="selectBoardCount"  resultType="int">
         select
         	count(*)
         from 
@@ -31,31 +46,33 @@
     		no = #{no}
     </select>
     
+    
     <delete id="deleteBoard" >
     	delete from board
     	where no = #{no}
     </delete>
-    
-    <!-- <select id="selectBoardsByNos" resultMap="boardMap">
-	    select
-	        *
-	    from
-	        board
-	    where
-	        no in
-	        <foreach collection="nos" item="no" separator="," open="(" close=")">
+ 
+    <select id="selectBoardsByNos" resultMap="boardMap">
+	    select *
+	    from board
+	    <if test="boardNos != null">
+	        where no in
+	        <foreach collection="boardNos" item="no" separator="," open="(" close=")">
 	            #{no}
 	        </foreach>
+	    </if>
 	</select>
 	
 	<delete id="deleteBoards" parameterType="List">
 	    delete from board
-	    where no in 
-	    <foreach collection="list" item="no" open="(" separator="," close=")">
-	        #{no}
-	    </foreach>
-	</delete> -->
-    
+	    <if test="list != null">
+	        where no in 
+	        <foreach collection="list" item="no" open="(" separator="," close=")">
+	            #{no}
+	        </foreach>
+	    </if>
+	</delete>
+	    
 	<resultMap type="board" id="boardMap"></resultMap>
 	
 	<insert id="insertBoard">
@@ -99,17 +116,34 @@
 			created_date desc
 	</select>
 	
-	<!-- <select id="selectNewsBoardList" resultMap="boardCollectionMap">
+<!-- 	<select id="selectNewsBoardList" resultMap="boardCollectionMap">
 		SELECT 
 		    b.*, 
 		    a.*, 
 		    a.no AS attach_no 
 		FROM 
 		    board b 
-		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'N' 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
 		WHERE 
-		    b.no = #{no} 
+		    b.b_type = 'N'
+		order by
+			b.no desc
 	</select> -->
+	
+	<select id="selectPhotoBoard" resultMap="boardCollectionMap">
+		SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no 
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
+		WHERE 
+		    b.b_type = 'P'
+		order by
+			b.no desc
+	</select>
+	
 	
 	<insert id="insertAttachment">
 		insert into 
@@ -183,8 +217,157 @@
 			no = #{no}
 	</update>
 	
+	<insert id="insertBoardComment">
+		insert into
+			boardComment
+		values(
+			seq_boardComment_no.nextval, 
+			#{content}, 
+			sysdate,
+			default,
+			default,
+			#{refCommentNo},
+			#{empId},
+			#{writer}
+		)
+	</insert>
 	
+	<select id="selectBoardComment" resultMap="boardCommentMap">
+		select
+			bc.*
+		from
+			 boardComment bc
+		where 
+			 bc.board_no = #{no}
+	</select>
 	
+	<select id="selectComment" resultMap="boardCommentMap">
+		select
+			bc.*
+		from
+			 boardComment bc
+		where 
+			 bc.board_no = #{no}
+	</select>
+	
+	<resultMap type="boardComment" id="boardCommentMap"></resultMap>
+	
+	<update id="updateBoardComment">
+		update 
+			boardComment
+		set
+			content = #{content}
+		where
+			no = #{no}
+			
+	</update>
+	
+	<select id="selectBoardCommentByNo" resultMap="boardCommentMap">
+		select
+			*
+		from
+			boardComment
+		where
+			no = #{no}
+	</select>
+	
+	<delete id="deleteBoardComment">
+		delete from
+			boardComment
+		where
+			no = #{no}
+	</delete>
+	
+	<insert id="boardLikeUp">
+		insert into
+			 board_like
+		values(
+			seq_board_like_no.nextval,
+		  	#{empId},
+		   	#{boardNo},
+		    'Y',
+		    sysdate)
+	</insert>
+	
+	<update id="boardLikeDown">
+		update board_like
+			set like_yn = 'N'
+		where emp_id = #{empId}
+		  AND board_no = #{boardNo}
+	</update>
+	
+	<select id="selectBoardLikeCount" resultType="int">
+		select 
+			count(*)
+		from 
+			board_like
+		WHERE 
+		board_no = #{board.no}
+		  AND like_yn = 'Y'
+	</select>
+	
+	<select id="selectBoardLikeCheck" resultType="Map">
+		select 
+		  case 
+		    when sum(case when emp_id = #{empId} and like_yn = 'Y' then 1 else 0 end) > 0 then 'Y' 
+		    else 'N' 
+		  end as isLiked,
+		  sum(case when like_yn = 'Y' then 1 else 0 end) as likeCount
+		from 
+			board_like
+		where board_no = #{boardNo}
+	</select>
+	
+	<select id="selectNewsBoardList" resultMap="boardCollectionMap">
+		SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no 
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
+		WHERE 
+		    b.b_type = 'N'
+		order by
+			b.no desc
+	</select>
+	
+	<select id="selectCommentListByBoardNo" resultMap="boardCommentMap">
+		select
+			*
+		from
+			boardComment
+		where
+			board_no = #{no}
+		order by
+			no desc
+	</select>
+	
+	<select id="selectBoardCountByNo" resultType="int">
+		select
+			count(*)
+		from 
+			board_like where like_yn = 'Y' and board_no = #{boardNo}
+	</select>
+	
+	<select id="selectCommentCount" resultType="int">
+		select
+			count(*)
+		from
+			boardComment
+		where
+			board_no = #{board.no}
+	</select>
+	
+	<select id="selectBoardCommentCount" resultType="int">
+		select
+			count(*)
+		from
+			boardComment
+		where
+			board_no = #{board.no}
+	</select>
+
 	
 	
 </mapper>

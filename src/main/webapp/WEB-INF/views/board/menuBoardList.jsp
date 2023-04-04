@@ -90,21 +90,21 @@
                 </thead>
                 <tbody>
 	                <c:forEach items="${boardList}" var="board">
-		                <tr data-no="${board.no}">
-		                	<td><input type="checkbox" name="" value=""/></td>
-		                    <td>${board.no}</td>
-		                    <td>
-		                      <a href="#!">${board.title}</a>
-		                    </td>
-		                    <td>${board.writer}</td>
-		                    <td>
-								<fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate"/>
-								<fmt:formatDate value="${createdDate}" pattern="yy-MM-dd"/>
-							</td>
-		                    <td>${board.readCount}</td>
-		                    <td>${board.likeCount}</td>
-		                </tr>
-	                </c:forEach>
+					    <tr data-no="${board.no}">
+					        <td><input type="checkbox" name="boardNo" value="${board.no}"/></td>
+					        <td>${empty board.no ? '' : (board.no.startsWith('bo') ? board.no.substring(2).replaceFirst("^0+(?!$)", "") : board.no)}</td>
+					        <td class="board-title">
+					            <a href="#!">${board.title}</a>
+					        </td>
+					        <td>${board.writer}</td>
+					        <td>
+					            <fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate"/>
+					            <fmt:formatDate value="${createdDate}" pattern="yy-MM-dd"/>
+					        </td>
+					        <td>${board.readCount}</td>
+					        <td>${board.likeCount}</td>
+					    </tr>
+					</c:forEach>
                 </tbody>
             </table>
         </div>

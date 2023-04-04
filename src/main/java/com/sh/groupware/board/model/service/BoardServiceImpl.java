@@ -1,14 +1,24 @@
 package com.sh.groupware.board.model.service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.sh.groupware.board.model.dao.BoardDao;
 import com.sh.groupware.board.model.dto.Board;
 import com.sh.groupware.board.model.dto.BoardComment;
+import com.sh.groupware.board.model.dto.BoardLike;
 import com.sh.groupware.common.dto.Attachment;
 
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class BoardServiceImpl implements BoardService {
-
+	
 	@Autowired
 	private BoardDao boardDao;
 	
@@ -102,23 +112,108 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> selectBoardHome(Board board) {
 		return boardDao.selectBoardHome(board);
 	}
-	
-	
 
-//	@Override
-//	public Board selectNewsBoardList(String no) {
-//		return boardDao.selectNewsBoardList(no);
-//	}
+	@Override
+	public List<Board> selectNewsBoardList(Board board) {
+		return boardDao.selectNewsBoardList(board);
+	}
 	
-//	public int deleteBoards(List<String> boardNos) {
-//		return boardDao.deleteBoards(boardNos);
-//	}
-//	
-//	@Override
-//	public List<Board> selectBoardsByNos(List<String> boardNos) {
-//		return boardDao.selectBoardsByNos(boardNos);
-//	}
+	@Override
+	public List<Board> selectPhotoBoardList(Board board) {
+		return boardDao.selectPhotoBoardList(board);
+	}
 	
+	@Override
+	public List<Board> selectMenuBoardList(RowBounds rowBounds) {
+		return boardDao.selectMenuBoardList(rowBounds);
+	}
+	
+	@Override
+	public List<BoardComment> selectBoardComment(String no) {
+		return boardDao.selectBoardComment(no);
+	}
+	
+	@Override
+	public int updateBoardComment(BoardComment boardComment) {
+		return boardDao.updateBoardComment(boardComment);
+	}
+
+	@Override
+	public BoardComment selectBoardCommentByNo(String commentNo) {
+		return boardDao.selectBoardCommentByNo(commentNo);
+	}
+	
+	@Override
+	public int deleteBoardComment(String commentNo) {
+		return boardDao.deleteBoardComment(commentNo);
+	}
+
+	@Override
+	public int boardlikeDown(BoardLike boardLike) {
+		return boardDao.boardLikeDown(boardLike);
+	}
+	
+	@Override
+	public int boardlikeUp(BoardLike boardLike) {
+		return boardDao.boardLikeUp(boardLike);
+	}
+	
+	@Override
+	public int selectBoardLikeCount(String no) {
+		return boardDao.selectBoardLikeCount(no);
+	}
+
+	
+	@Override
+	public Map<String, Object> selectBoardLikeCheck(BoardLike boardLike) {
+		return boardDao.selectBoardLikeCheck(boardLike);
+	}
+	
+	@Override
+	public List<BoardComment> selectBoardComment(BoardComment boardComment) {
+		return boardDao.selectBoardComment(boardComment);
+	}
+	
+	@Override
+	public List<Board> selectNewsBoardList() {
+		return boardDao.selectNewsBoardList();
+	}
+	
+	@Override
+	public List<BoardComment> selectCommentListByBoardNo(String no) {
+		return boardDao.selectCommentListByBoardNo(no);
+	}
+	
+	@Override
+	public List<Board> selectPhotoBoard() {
+		return boardDao.selectPhotoBoard();
+	}
+	
+	@Override
+	public int selectBoardCountByNo(String no) {
+		return boardDao.selectBoardCountByNo(no);
+	}
+
+	@Override
+	public int selectCommentCount(String no) {
+		return boardDao.selectCommentCount(no);
+	}
+	
+	@Override
+	public int selectBoardCommentCount(String no) {
+		return boardDao.selectBoardCommentCount(no);
+	}
+	
+	@Override
+	public List<Board> selectBoardsByNos(List<String> boardNos) {
+		return boardDao.selectBoardsByNos(boardNos);
+	}
+	
+	@Override
+	public int deleteBoards(List<String> boardNos) {
+		return boardDao.deleteBoards(boardNos);
+	}
+
 
 
 }

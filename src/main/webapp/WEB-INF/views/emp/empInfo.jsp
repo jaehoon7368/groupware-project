@@ -33,7 +33,9 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<button class="my-menu">로그아웃</button>
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
+											<button class="my-menu" type="submit">로그아웃</button>								
+										</form:form>
 									</div>
 								</div>
 							</div>
@@ -54,68 +56,62 @@
 
                      <!-- 본문 -->
                     <div id="empInfo">
-                        <form:form action="" method="post">
+                        <form:form action="" method="post" name="empInfoFrm">
                             <table>
-                                <tr>
-                                    <th>사진</th>
-                                    <th>이름</th>
-                                    <th>사번</th>
-                                    <td>
-                                        <div id="empId-container">
-                                            ${loginEmp.empId}
-                                            <input type="hidden" id="empId" name="empId" value="${loginEmp.empId }" />
+                            	<tr>
+                            		<th></th>
+                            		<td>
+                                        <div id="profile-box">
+                                            <img id="preview" src="${pageContext.request.contextPath}/resources/upload/emp/${attach.renameFilename}" style="max-width:150px; max-height:150px;">
                                         </div>
                                     </td>
-                                    <th>주민번호</th>
+                            	</tr>
+                            	<tr>
+                            		<th>이름</th>
+                            		<td><p>${loginMember.name}</p></td>
+                            	</tr>
+                            	<tr>
+                            		<th>패스워드</th>
                                     <td>
-                                        ${loginEmp.ssn}
+                                        <input type="password"  name="password" id="password" required><span>* 기존 비밀번호를 입력하시거나 변경하실 비밀번호를 입력해주세요.</span>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="3">
-                                       <div>
-										  <img id="preview" src="${pageContext.request.contextPath}/resources/upload/emp/${attach.renameFilename}"  style="max-width:200px; max-height:200px;">
-										</div>
-                                    </td>
-                                    <td rowspan="3" style="width: 200px;">
-                                        ${loginEmp.name}
-                                    </td>
-                                    <th>패스워드</th>
-                                    <td>
-                                        <input type="password"  name="password" id="password" required>
-                                    </td>
-                                    <th>패스워드확인</th>
+                            	</tr>
+                            	<tr>
+                            		<th>패스워드확인</th>
                                     <td>
                                         <input type="password" id="passwordCheck" required>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <th>이메일</th>
-                                    <td>
-                                        ${loginEmp.email }
-                                    </td>
-                                    <th>휴대폰</th>
-                                    <td>
+                            	</tr>
+                            	<tr>
+                            		<th>이메일</th>
+                            		<td><p>${loginMember.email}</p></td>
+                            	</tr>
+                            	<tr>
+                            		<th>전화번호</th>
+                            		<td>
                                          <input type="tel"  placeholder="(-없이)01012345678" name="phone" id="phone" maxlength="11"
-                                            value="${loginEmp.phone }" required>
+                                            value="${loginMember.phone }" required>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <th>부서</th>
-                                    <td>
-                                        ${emp.deptTitle}
-                                    </td>
-                                    <th>직급</th>
-                                    <td>
-                                        ${emp.jobTitle}
-                                    </td>
-                                </tr>
-                                <tr>
+                            	</tr>
+                            	 <tr>
                                     <th>주소</th>
                                    <td colspan="5">
-                                        <input style="width: 920px;" type="text" class="form-control" name="address" id="address" value="${loginEmp.address }" required>
+                                        <input style="width: 500px;" type="text" class="form-control" name="address" id="address" value="${loginMember.address }" required>
                                     </td>
                                 </tr>
+                                 <tr>
+                                    <th>부서</th>
+                                    <td>
+                                        <p>${emp.deptTitle}</p> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>직급</th>
+                                    <td>
+                                        <p>${emp.jobTitle}</p> 
+                                    </td>
+                                </tr>
+                            	
                             </table>
                             <input type="submit" id="btn-empEnroll" value="수정">
                         </form:form>
@@ -123,6 +119,20 @@
                     <!-- 본문 end -->
                 </div>
             </div>
+
+<script>
+document.empInfoFrm.addEventListener('submit',(e)=>{
+	const password = document.querySelector("#password");
+	const passwordCheck = document.querySelector("#passwordCheck");
+	
+	if(password.value !== passwordCheck.value){
+		alert("비밀번호를 확인해주세요.");
+		e.preventDefault();
+		password.focus();
+		return false;
+	}
+});
+</script>
          
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	<script src="${pageContext.request.contextPath}/resources/js/emp/emp.js"></script>			

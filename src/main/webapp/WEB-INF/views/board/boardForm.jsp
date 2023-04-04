@@ -84,9 +84,12 @@
   		</tr>
   		<tr>
   			<th>
-  				<span class="file">첨부파일</span>
-  			</th>
-  			<td><input type="file" name="upFile" id="upFile"/></td>
+			  <span class="file">첨부파일</span>
+			</th>
+			<td>
+			  <input type="file" name="upFile" id="upFile" onchange="displayFileNames()" multiple/>
+			  <div id="fileName"></div>
+			</td>
   		</tr>
   	</table>
   	
@@ -151,19 +154,22 @@ $(document).ready(function() {
 });
 </script>
 <script>
-document.querySelectorAll("[name=upFile]").forEach((input) => {
-    input.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        const label = e.target.nextElementSibling;
-        
-        if(label) { // label이 null인 경우에 대한 예외 처리
-            if(file)
-                label.innerHTML = file.name;
-            else 
-                label.innerHTML = '파일을 선택하세요';
-        }
-    });
-});
+function displayFileNames() {
+	  const fileNameDiv = document.getElementById("fileName");
+	  const upFileInput = document.getElementById("upFile");
+
+	  // 기존 파일명 지우기
+	  fileNameDiv.innerHTML = "";
+
+	  for (let i = 0; i < upFileInput.files.length; i++) {
+	    const fileName = upFileInput.files[i].name;
+	    const fileListItem = document.createElement('div');
+	    fileListItem.innerText = fileName;
+	    fileNameDiv.appendChild(fileListItem);
+	  }
+	}
+</script>
+<script>
 
 $('#summernote').summernote({
 	 placeholder: 'Hello stand alone ui',

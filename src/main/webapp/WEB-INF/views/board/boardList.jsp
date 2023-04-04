@@ -5,6 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/boardList.css">
 
 
@@ -56,9 +57,6 @@
  <div class="content">
  
  	<div class="tool-bar">
-		<div class="tool-button">
-			<span id="selectAllBtn">전체선택</span>
-		</div>
  		<div class="tool-button">
  			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=A">
 		 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
@@ -81,7 +79,7 @@
                 <thead>
                 <tr>
                 	<th>
-						<input type="checkbox" name="" value=""/>
+						<input type="checkbox" id="selectAllBtn" name="" value=""/>
 					</th>
                     <th scope="col" class="th-num">번호</th>
                     <th scope="col" class="th-title">제목</th>
@@ -147,10 +145,11 @@
 
 
 <script>
-/* $(document).ready(function() {
+$(document).ready(function() {
     // 전체선택 버튼 클릭 시
     $('#selectAllBtn').click(function() {
-        $('input[name=boardNo]').prop('checked', true);
+        const isChecked = $(this).prop('checked');
+        $('input[name=boardNo]').prop('checked', isChecked);
     });
 
     // 체크박스 선택 시
@@ -162,17 +161,22 @@
 
     // 삭제 버튼 클릭 시
     $('a[href$="/boardDelete.do"]').click(function(event) {
-        e.preventDefault();
+        event.preventDefault();
         const boardNos = [];
+        const csrfHeader = "${_csrf.headerName}";
+  	    const csrfToken = "${_csrf.token}";
+  	    const headers = {};
+  	  headers[csrfHeader] = csrfToken;
         $('input[name=boardNo]:checked').each(function() {
             boardNos.push($(this).val());
         });
         console.log("Selected boardNos: " + boardNos);
         
         $.ajax({
-            url: $(this).attr('href'),
+            url: '${pageContext.request.contextPath}/board/boardsDelete.do',
             type: 'POST',
             data: {boardNos: boardNos},
+            headers,
             success: function() {
                 location.href = "${pageContext.request.contextPath}/board/boardList.do";
             },
@@ -181,28 +185,22 @@
             }
         });
     });
-}); */
+});
 </script>
 <script>
 document.querySelectorAll("tr[data-no]").forEach((tr) => {
 	tr.addEventListener('click', (e) => {
+		 // 클릭한 엘리먼트가 input 태그인 경우 이벤트 처리를 하지 않음
+	    if (e.target.tagName.toLowerCase() === 'input') {
+	      return;
+	    }
 		const no = tr.dataset.no;
 		console.log(no);
 		location.href = '${pageContext.request.contextPath}/board/boardDetail.do?no=' + no;
 	});
 });
 </script>
-<script>
-/* $(document).ready(function() {
-    // 체크박스 선택 시
-    $('input[name=boardNo]').change(function() {
-        // 선택된 체크박스의 값 가져오기
-        const boardNo = $(this).val();
-        console.log("Selected boardNo: " + boardNo);
-        // 나중에 테이블 이동시 사용하자
-    });
-}); */
-</script>
+
 
 
 
