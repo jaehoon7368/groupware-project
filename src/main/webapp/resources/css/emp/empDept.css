@@ -243,6 +243,9 @@ p.title {
     font-size: 18px;
     color: gray;
 }
+#date-box button{
+	border : none;
+}
 #annual-container{
     position: relative;
     border: 1px solid gray;
@@ -300,6 +303,7 @@ p.title {
 #dept-detail-table img{
     float: left;
     margin-left: 25px;
+    transform: translate(0, -4px);
 }
 
 #dept-detail-table th{

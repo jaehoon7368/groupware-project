@@ -9,7 +9,7 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
 		<jsp:param value="Anywhere" name="title"/>
 	</jsp:include>
-
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/emp/emp.css">
 				<div class="app-dashboard-body-content off-canvas-content" data-off-canvas-content>
 					<!-- 상단 타이틀 -->
 					<div class="home-topbar topbar-div">
@@ -58,13 +58,11 @@
 								<!-- 본문 왼쪽 -->
 								<div class="home-content-div">
 									<div id="home-left" class="div-padding div-margin">
+								<div style="height: 50px;"></div>
 										<table id="home-my-tbl">
 											<tbody>
-				                                <tr>
+				                               <tr>
 				                                    <td id="year" colspan="2" class="font-14">clock</td>
-				                                </tr>
-				                                <tr>
-				                                    <td colspan="2" id="clock" style="color:black;">clock</td>
 				                                </tr>
 												<tr>
 													<td colspan="2">
@@ -82,6 +80,14 @@
 												<tr>
 													<td colspan="2">${sessionScope.loginMember.deptTitle}</td>
 												</tr>
+												 
+				                                <tr>
+				                                    <td colspan="2" id="clock" style="color:black;">clock</td>
+				                                </tr>
+												<tr>
+				                                    <td class="font-14 font-bold">업무상태</td>
+				                                    <td class="text-right font-14 color-red font-bold" id="work-state">출근전</td>
+				                                </tr>    
 				                                <tr>
 				                                    <td class="font-14 font-bold">출근시간</td>
 				                                    <td class="text-right font-14" id="startwork-time">미등록</td>
@@ -99,7 +105,153 @@
 				                    
 				                    </div>
 								</div>
-		
+<script>
+window.addEventListener('load', function(){
+	
+	const csrfHeader = "${_csrf.headerName}";
+   const csrfToken = "${_csrf.token}";
+   const headers = {};
+   headers[csrfHeader] = csrfToken;
+   
+   $.ajax({
+	   url : '${pageContext.request.contextPath}/workingManagement/checkWorkTime.do',
+	   contentType : "application/json; charset=utf-8",
+	   success(data){
+		   console.log(data);
+		   if(data){
+			   const {no,startWork,endWork,overtime,regDate,state,dayWorkTime,empId} = data;
+			   var starttime = new Date(startWork);
+			   var endtime = new Date(endWork);
+			   
+			   //하루 근무시간 계산
+			   const daytimes = endtime - starttime;
+			   console.log(daytimes);
+			   
+			   const workState = document.querySelector("#work-state");
+			   workState.textContent = state;
+			   
+			   
+			   if(startWork){
+				 var hours = (starttime.getHours()); 
+                var minutes = starttime.getMinutes();
+                var seconds = starttime.getSeconds();
+                var startWorkTime = `\${hours < 10 ? '0' + hours : hours}:\${minutes < 10 ? '0'+minutes : minutes}:\${seconds < 10 ? '0'+seconds : seconds}`;
+                // 출근시간 정보 출력
+                document.querySelector('#startwork-time').textContent = startWorkTime;
+			   }
+			   
+			   if(endWork){
+ 				  var hours = (endtime.getHours()); 
+                 var minutes = endtime.getMinutes();
+                 var seconds = endtime.getSeconds();
+                 var endWorkTime = `\${hours < 10 ? '0' + hours : hours}:\${minutes < 10 ? '0'+minutes : minutes}:\${seconds < 10 ? '0'+seconds : seconds}`;
+                 // 퇴근시간 정보 출력
+				  document.querySelector('#endwork-time').textContent = endWorkTime;
+			   }
+			   
+			   if(daytimes > 0){
+				   //하루 근무시간 update
+				  updateDayWorkTime(daytimes);
+			   }
+		   }
+	   },
+	   error : console.log
+   });
+  
+});
+
+
+
+//출근 버튼 클릭 시
+document.querySelector('#btn-startwork').addEventListener('click', function () {
+	
+	const csrfHeader = "${_csrf.headerName}";
+   const csrfToken = "${_csrf.token}";
+   const headers = {};
+   headers[csrfHeader] = csrfToken;
+	
+	$.ajax({
+	   url : '${pageContext.request.contextPath}/workingManagement/insertStartWork.do',
+	   method : 'POST',
+	   headers,
+	   contentType : "application/json; charset=utf-8",
+	   success(data){
+			console.log(data);
+	       if(data.state === "성공"){
+	           alert("출근이 성공적으로 등록됬습니다.");
+	           location.reload();
+	       }else if(data.state === '출장'){
+	    	   alert("출장시에는 자동적으로 출근처리가 완료됩니다.");
+	    	  return;
+	       }else if(data.state === '연차'){
+	    	   alert("연차중입니다.");
+	    	   return;
+	       }
+	       else{
+	           alert("이미 출근하셨습니다.");
+	       }
+	   },
+	   error : console.log
+  });
+});
+
+//퇴근하기 버튼 누를시
+document.querySelector('#btn-endwork').addEventListener('click', function () {
+	
+	const csrfHeader = "${_csrf.headerName}";
+   const csrfToken = "${_csrf.token}";
+   const headers = {};
+   headers[csrfHeader] = csrfToken;
+	
+	$.ajax({
+	   url : '${pageContext.request.contextPath}/workingManagement/updateEndWork.do',
+	   method : 'POST',
+	   headers,
+	   contentType : "application/json; charset=utf-8",
+	   success(data){
+		   console.log(data);
+		   
+		   if(data.state === "성공"){
+	           alert("퇴근이 성공적으로 등록됬습니다.");
+	           location.reload();
+	       }else if(data.state === '출근전'){
+	    	   alert("출근전입니다.");
+	    	   return;
+	       }else if(data.state === '출장'){
+	    	   alert("출장시에는 자동적으로 퇴근처리가 완료됩니다.");
+	    	  return;
+	       }else if(data.state === '연차'){
+	    	   alert("연차중입니다.");
+	    	   return;
+	       }
+	       else{
+	           alert("이미 퇴근하셨습니다.");
+	           return;
+	       }
+		},
+	   error : console.log
+  });
+});
+
+const updateDayWorkTime = (daytimes) =>{
+	
+	const csrfHeader = "${_csrf.headerName}";
+   const csrfToken = "${_csrf.token}";
+   const headers = {};
+   headers[csrfHeader] = csrfToken;
+	
+   $.ajax({
+       url: '${pageContext.request.contextPath}/workingManagement/updateDayWorkTime.do',
+       method: 'POST',
+       headers,
+       data: {daytimes},
+       success(data) {
+         console.log(data);
+       },
+       error: console.log
+     });
+	};
+</script>		
 								<!-- 본문 가운데 -->
 								<div>
 									<div id="home-center" class="div-padding div-margin">
