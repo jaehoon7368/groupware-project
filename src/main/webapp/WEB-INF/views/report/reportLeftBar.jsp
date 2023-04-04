@@ -33,7 +33,7 @@
 									</div> --%>
 								</li>
 								<li>
-									<p class="title font-medium" onclick="location.href='${pageContext.request.contextPath}/report/reportElseView.do';">그 외 보고서</p>
+									<p class="title font-medium" onclick="location.href='${pageContext.request.contextPath}/report/reportListView.do?type=else';">그 외 보고서</p>
 									<%-- <div class="con">
 										<ul class="container-detail font-small">
 											<c:forEach items="${sessionScope.myReportMemberList}" var="report">
@@ -43,7 +43,7 @@
 									</div> --%>
 								</li>
 								<li>
-									<p class="title font-medium" onclick="location.href='${pageContext.request.contextPath}/report/reportReferView.do';">참조 보고서</p>
+									<p class="title font-medium" onclick="location.href='${pageContext.request.contextPath}/report/reportListView.do?type=refer';">참조 보고서</p>
 									<%-- <div class="con">
 										<ul class="container-detail font-small">
 											<c:forEach items="${sessionScope.myReportReferenceList}" var="report">
@@ -53,7 +53,7 @@
 									</div> --%>
 								</li>
 								<li>
-									<p class="title font-medium" onclick="location.href='${pageContext.request.contextPath}/report/myListView.do';">내가 생성한 보고서</p>
+									<p class="title font-medium" onclick="location.href='${pageContext.request.contextPath}/report/reportListView.do?type=my';">내가 생성한 보고서</p>
 									<%-- <div class="con">
 										<ul class="container-detail font-small">
 											<c:forEach items="${sessionScope.myReportList}" var="report">
