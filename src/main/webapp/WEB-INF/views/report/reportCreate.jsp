@@ -209,7 +209,7 @@
 						<div class="report-no-modal reveal" id="exampleModal1" data-reveal>
 							<h5>선택</h5>
 							<div>
-								<input type="text" name="search" id="search" placeholder="이름/부서/직급" />
+								<input type="text" name="search" id="search" placeholder="이름/직급" onkeyup="filter();"/>
 							</div>
 							<div class="div-emp-group">
 								<div class="accordion-box">
@@ -238,6 +238,20 @@
 							<button class="btn-close close-button" data-close aria-label="Close reveal" type="button">
 								<span aria-hidden="true">&times;</span>
 							</button>
+							<script>
+								const filter = () => {
+									let search = document.querySelector('#search').value;
+									let liEmp = document.querySelectorAll('.li-emp');
+									
+									liEmp.forEach((emp) => {
+										if (emp.innerText.includes(search)) {
+											emp.style.display = 'block';
+										} else {
+											emp.style.display = 'none';
+										}
+									});
+								};
+							</script>
 						</div>
 
 						

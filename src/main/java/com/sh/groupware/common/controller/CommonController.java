@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.sh.groupware.common.dto.RecentNotification;
 import com.sh.groupware.common.service.CommonService;
 import com.sh.groupware.emp.model.dto.Emp;
+import com.sh.groupware.report.model.dto.ReportCheck;
+import com.sh.groupware.report.model.service.ReportService;
+import com.sh.groupware.sign.model.dto.Sign;
+import com.sh.groupware.sign.model.service.SignService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,6 +26,11 @@ public class CommonController {
 	@Autowired
 	private CommonService commonService;
 
+	@Autowired
+	private SignService signService;
+
+	@Autowired
+	private ReportService reportService;
 	
 	//최근 알림 컨트롤러
 	@GetMapping("/home/home.do")
@@ -32,6 +41,12 @@ public class CommonController {
 		log.debug("empId= {}",empId);
 		List<RecentNotification> reNotis = commonService.selectAllReNoti(); 
 		log.debug("reNotis={} ",reNotis);
+		
+		// 결재 대기 문서
+		List<Sign> mySignList = signService.findByMySignList(empId);
+		
+		// 보고
+		List<ReportCheck> reportList = reportService.selectMyReportCheck(empId);
 		
 		// 남은 시간 계산 
 		for(RecentNotification reNoti :reNotis ) {
@@ -46,6 +61,9 @@ public class CommonController {
 		
 		
 		model.addAttribute("reNotis",reNotis);
+		model.addAttribute("mySignList", mySignList);
+		model.addAttribute("reportList", reportList);
+		
 		return "common/home";
 	} // home() end
 	

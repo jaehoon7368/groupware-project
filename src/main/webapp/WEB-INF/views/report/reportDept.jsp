@@ -64,9 +64,15 @@
 						<div>
                             <div>
                                 <div class="div-report-list">
-                                    <!-- <div class="container-title"></div> -->
                                     <div class="report-list-tbl">
                                         <table>
+                                        	<colgroup>
+                                                <col width="20%" />
+                                                <col width="35%" />
+                                                <col width="15%" />
+                                                <col width="15%" />
+                                                <col width="15%" />
+                                            </colgroup>
                                             <thead>
                                                 <tr>
                                                     <th>제목</th>

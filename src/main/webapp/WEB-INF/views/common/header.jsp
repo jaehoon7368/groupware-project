@@ -52,12 +52,12 @@
 									<span class="app-dashboard-sidebar-text">홈</span>
 								</a>
 							</li>
-							<%-- <li>
+							<li>
 								<a href="${pageContext.request.contextPath}/mail/mail.do" class="is-active" title="메일">
 									<i class="large fa fa-solid fa-envelope"></i>
 									<span class="app-dashboard-sidebar-text">메일</span>
 								</a>
-							</li> --%>
+							</li>
 							<li>
 								<a href="${pageContext.request.contextPath}/report/report.do" class="is-active" title="보고">
 									<i class="large fa fa-solid fa-file"></i>
