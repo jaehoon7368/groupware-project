@@ -85,6 +85,10 @@ textarea {
   margin-bottom: 50px;
 }
 
+.report-list-div-tbl {
+	min-height: 450px;
+}
+
 .report-list-tbl table {
   width: 100%;
   margin: 10px 0;
@@ -95,7 +99,6 @@ textarea {
 .report-list-tbl th, .report-list-tbl td {
   padding: 10px 5px;
   font-size: small;
-  /* font-weight: normal; */
   text-align: center;
   border-top: solid 1px lightgray;
   border-bottom: solid 1px lightgray;
@@ -633,4 +636,21 @@ textarea {
 	border-radius: 50px;
 	border: solid 1px lightgray;
 	color: gray;
+}
+
+
+/* 페이징 */
+.div-paging {
+	text-align: center;
+}
+
+.page-item {
+	list-style: none;
+	display: inline-block;
+	padding: 0 5px;
+}
+
+.page-item a {
+	color: #000;
+	font-size: small;
 }
