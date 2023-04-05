@@ -159,6 +159,12 @@ document.querySelector('#btn-startwork').addEventListener('click', function () {
 	       if(data.state === "성공"){
 	           alert("출근이 성공적으로 등록됬습니다.");
 	           location.reload();
+	       }else if(data.state === '출장'){
+	    	   alert("출장시에는 자동적으로 출근처리가 완료됩니다.");
+	    	  return;
+	       }else if(data.state === '연차'){
+	    	   alert("연차중입니다.");
+	    	   return;
 	       }
 	       else{
 	           alert("이미 출근하셨습니다.");
@@ -189,6 +195,12 @@ document.querySelector('#btn-endwork').addEventListener('click', function () {
 	           location.reload();
 	       }else if(data.state === '출근전'){
 	    	   alert("출근전입니다.");
+	    	   return;
+	       }else if(data.state === '출장'){
+	    	   alert("출장시에는 자동적으로 퇴근처리가 완료됩니다.");
+	    	  return;
+	       }else if(data.state === '연차'){
+	    	   alert("연차중입니다.");
 	    	   return;
 	       }
 	       else{

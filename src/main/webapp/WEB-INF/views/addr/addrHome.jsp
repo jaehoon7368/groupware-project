@@ -57,7 +57,7 @@
 	
 	<div class="tool-bar">
  		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=A">
+ 			<a href="#">
 		 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
 		 		<span>빠른등록</span>
 	 		</a>
@@ -77,7 +77,36 @@
  	</div>
  	
  	<div class="div-padding"></div>
+ 	
+ 	<div class="simpleFrm-wrap">
+ 		<form action="" id="simpleEnrollFrm">
+ 			<input style="color:gray; font-size:13px;" type="text" id="" name="" value="이름"/>
+ 			<input style="color:gray; font-size:13px;"  type="text" id="" name="" value="이메일"/>
+ 			<input style="color:gray; font-size:13px;" type="text" id="" name="" value="휴대폰" />
+ 			<input type="button" id="" name="" style="height:30px; width:30px; border:none;" value="+"/> 
+ 		</form>
+ 	</div>
  	<div class="div-padding"></div>
+ 	
+ 	<div id="serch-all-wrap">
+ 		<ul style="display:flex;">
+ 			<li data-param class="serch-All"><span>전체</span></li>
+ 			<li data-param="ㄱ"><span>ㄱ</span></li>
+ 			<li data-param="ㄴ"><span>ㄴ</span></li>
+ 			<li data-param="ㄷ"><span>ㄷ</span></li>
+ 			<li data-param="ㄹ"><span>ㄹ</span></li>
+ 			<li data-param="ㅁ"><span>ㅁ</span></li>
+ 			<li data-param="ㅂ"><span>ㅂ</span></li>
+ 			<li data-param="ㅅ"><span>ㅅ</span></li>
+ 			<li data-param="ㅇ"><span>ㅇ</span></li>
+ 			<li data-param="ㅈ"><span>ㅈ</span></li>
+ 			<li data-param="ㅊ"><span>ㅊ</span></li>
+ 			<li data-param="ㅋ"><span>ㅋ</span></li>
+ 			<li data-param="ㅌ"><span>ㅌ</span></li>
+ 			<li data-param="ㅍ"><span>ㅍ</span></li>
+ 			<li data-param="ㅎ"><span>ㅎ</span></li>
+ 		</ul>
+ 	</div>
  	
 <section class="notice">
   <!-- board list area -->
@@ -90,10 +119,14 @@
 						<input type="checkbox" id="selectAllBtn" name="" value=""/>
 					</th>
                     <th scope="col" class="th-name">이름</th>
+                    <th scope="col" class="th-jobName">직위</th>
                     <th scope="col" class="th-phone">휴대폰</th>
                     <th scope="col" class="th-email">이메일</th>
+                    <th scope="col" class="th-deptTitle">부서</th>
                     <th scope="col" class="th-company">회사</th>
                     <th scope="col" class="th-companyPhone">회사전화</th>
+                    <th scope="col" class="th-cpAddress">회사주소</th>
+                    <th scope="col" class="th-memo">메모</th>
                     <th scope="col" class="th-group">그룹</th>
                 </tr>
                 </thead>
@@ -101,39 +134,17 @@
                 	<tr>
                 		<td><input type="checkbox" name="addrNo" value="${addr.no}"/></td>
                 		<td>김기훈</td>
+                		<td>사원</td>
                 		<td>010-9567-6715</td>
                 		<td>karas1993@naver.com</td>
+                		<td>개발팀</td>
                 		<td>KH정보</td>
                 		<td>02-846-1385</td>
+                		<td>서울시 역삼동</td>
+                		<td>메모입니다</td>
                 		<td>1</td>
                 	</tr>
-                	<tr>
-                		<td><input type="checkbox" name="addrNo" value="${addr.no}"/></td>
-                		<td>김현동</td>
-                		<td>010-7921-3845</td>
-                		<td>gusehd@naver.com</td>
-                		<td>KH정보</td>
-                		<td>02-761-5888</td>
-                		<td>1</td>
-                	</tr>
-                	<tr>
-                		<td><input type="checkbox" name="addrNo" value="${addr.no}"/></td>
-                		<td>유재훈</td>
-                		<td>010-7321-8556</td>
-                		<td>dbwogns@naver.com</td>
-                		<td>KH정보</td>
-                		<td>02-1328-8554</td>
-                		<td>1</td>
-                	</tr>
-                	<tr>
-                		<td><input type="checkbox" name="addrNo" value="${addr.no}"/></td>
-                		<td>최민경</td>
-                		<td>010-7321-5856</td>
-                		<td>dbwogns@naver.com</td>
-                		<td>KH정보</td>
-                		<td>02-1328-8554</td>
-                		<td>1</td>
-                	</tr>
+                	
                 
                 
                 

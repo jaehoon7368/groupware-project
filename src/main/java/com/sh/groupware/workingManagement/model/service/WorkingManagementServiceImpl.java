@@ -21,6 +21,11 @@ public class WorkingManagementServiceImpl implements WorkingManagementService {
 	}
 	
 	@Override
+	public int updateStartWork(Map<String, Object> param) {
+		return workingManagementDao.updateStartWork(param);
+	}
+	
+	@Override
 	public WorkingManagement selectStartwork(String no) {
 		return workingManagementDao.selectStartwork(no);
 	}
@@ -43,6 +48,11 @@ public class WorkingManagementServiceImpl implements WorkingManagementService {
 	@Override
 	public int updateDayWorkTime(Map<String, Object> param) {
 		return workingManagementDao.updateDayWorkTime(param);
+	}
+	
+	@Override
+	public int updateDayWorkTimeHalf(Map<String, Object> param) {
+		return workingManagementDao.updateDayWorkTimeHalf(param);
 	}
 	
 	@Override
@@ -93,5 +103,6 @@ public class WorkingManagementServiceImpl implements WorkingManagementService {
 	public List<Map<String, Object>> findByEmpIdNoDate(String empId) {
 		return workingManagementDao.findByEmpIdNoDate(empId);
 	} // findByEmpIdNoDate() end
+	
 	
 }

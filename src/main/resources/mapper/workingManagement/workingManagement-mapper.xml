@@ -18,6 +18,16 @@
 			)
 	</insert>
 	
+	<update id="updateStartWork">
+		update
+			working_management
+		set
+			start_work = default
+		where
+			emp_id = #{empId}
+			and TRUNC(reg_date) = TO_DATE(#{time})
+	</update>
+	
 	<update id="updateDayWorkTime">
 		update
 			working_management
@@ -27,6 +37,23 @@
 		where
 			emp_id = #{empId}
 			and TRUNC(reg_date) = TO_DATE(#{time})
+	</update>
+	
+	<update id="updateDayWorkTimeHalf">
+	    update working_management
+	    set
+	        day_work_time = 
+	            <choose><!-- 먼약 근무시간 + 4시간이 8시간보다 크면 연장시간을 추가 -->
+	                <when test="daytime + 14400000 > 28800000">28800000</when> 
+	                <otherwise>#{daytime + 14400000}</otherwise>
+	            </choose>,
+	        overtime = 
+	            <choose>
+	                <when test="daytime + 14400000 > 28800000">#{daytime + 14400000 - 28800000}</when>
+	                <otherwise>#{overtime}</otherwise>
+	            </choose>
+	    where
+	        emp_id = #{empId} AND TRUNC(reg_date) = TO_DATE(#{time})
 	</update>
 	
 	

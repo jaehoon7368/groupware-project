@@ -84,20 +84,16 @@ window.addEventListener('load', () => {
 						        <option value="job_title" <%= "job_title".equals(searchType) ? "selected" : "" %>>직급</option>				
 						    </select>
 						    <div id="search-memberJob" class="search-type">
-						        <form class="searchFrm">
-							            <input type="hidden" name="searchType" value="job_title"/>
-							            <input type="text" name="searchKeyword"  placeholder="검색할 직급을 입력하세요." 
-							            	value="<%= "job_title".equals(searchType) ? searchKeyword : "" %>"/>
-							            <button type="submit">검색</button>			
-						        </form>	
+							            <input type="hidden" name="searchType" value="job_title" id="searchType"/>
+							            <input type="text" name="searchKeyword"  id="searchKeyword" placeholder="검색할 직급을 입력하세요." 
+							            	<%-- value="<%= "job_title".equals(searchType) ? searchKeyword : "" %>" --%>/>
+							            <button type="button">검색</button>			
 						    </div>
 						    <div id="search-memberName" class="search-type">
-						        <form class="searchFrm">
-							            <input type="hidden" name="searchType" value="name"/>
-							            <input type="text" name="searchKeyword" placeholder="검색할 이름을 입력하세요."
-							            	value="<%= "name".equals(searchType) ? searchKeyword : "" %>" />
-							            <button type="submit">검색</button>			
-						        </form>	
+							            <input type="hidden" name="searchType" value="name" id="searchType"/>
+							            <input type="text" name="searchKeyword" id="searchKeyword" placeholder="검색할 이름을 입력하세요."
+							            	<%-- value="<%= "name".equals(searchType) ? searchKeyword : "" %>" --%> />
+							            <button type="button">검색</button>			
 						    </div>
 						  
 					    </div> <!-- search-container end -->
@@ -112,7 +108,8 @@ window.addEventListener('load', () => {
                                 	<tbody id="dept-detail-tbody"></tbody>
                                 </table>
                            </div>
-                        </div>                       
+                        </div>
+                        <div id="page-bar-box"></div>                    
                     </div>
                     <!-- 본문 end -->
                 </div>
@@ -189,7 +186,150 @@ function deptSendData(){
 			
 			// thead 동적태그 넣기
 			const th1 = document.createElement("th");
-			th1.setAttribute("width", "100");
+			th1.setAttribute("width", "110");
+            th1.textContent = "이름";
+            
+            const th2 = document.createElement("th");
+			th2.setAttribute("width", "100");
+            th2.textContent = "누적근무시간";
+            
+            deptTr.append(th1,th2);
+           	
+           	const weekDates = data[0].weekDates;
+            weekDates.sort((a, b) => {
+      		  // 주차 문자열에서 '주차' 부분을 제외한 정수만 추출하여 비교
+      		  const weekA = parseInt(a.week.replace(/[^0-9]/g, ''));
+      		  const weekB = parseInt(b.week.replace(/[^0-9]/g, ''));
+      		  return weekA - weekB;
+      		});
+            
+           	console.log(data[0].weekDates);
+            for(let i = 0; i < weekDates.length;i++){
+            	const start = weekDates[i].start.substring(5);
+            	const end = weekDates[i].end.substring(5);
+            	
+		    	const th3 = document.createElement("th");
+		    	th3.setAttribute("width", "100");
+		    	const pp1 = document.createElement("p");
+		    	pp1.classList.add("margin-buttom0");
+		    	pp1.textContent = `\${i+1}주차`;
+		    	const pp2 = document.createElement("p");
+		    	pp2.classList.add("font-11","color-gray");
+		    	pp2.textContent = " ( " + start + " ~ " + end + " ) ";
+		    	th3.append(pp1,pp2);
+		    	deptTr.append(th3);
+            }
+            
+         // thead 동적태그 넣기 end
+         
+         // tbody 동적테그 넣기
+         
+         data.forEach((work)=>{
+        	const {name, deptTitle, jobTitle, profile, monthWorkTime, monthOverTime, weekDates } = work;
+        	console.log(weekDates);
+        	
+        	const tr2 = document.createElement("tr");
+        	const td1 = document.createElement("td");
+        	td1.setAttribute("width","110");
+        	
+        	const p = document.createElement('p');
+        	p.setAttribute("id","dept-name");
+        	p.classList.add('font-bold');
+        	p.textContent = name + " " + jobTitle;
+        	const span = document.createElement('span');
+        	const img = document.createElement('img');
+        	img.setAttribute('src', `${pageContext.request.contextPath}/resources/upload/emp/\${profile}`);
+        	img.classList.add('my-img');
+        	span.append(img);
+        	p.append(span);
+        	td1.append(p);
+        	
+        	const td2 = document.createElement("td");
+        	td2.setAttribute("width","100");
+        	
+        	const p1 = document.createElement("p");
+        	p1.classList.add("font-14","font-bold");
+        	p1.textContent = chageWorkTime(monthWorkTime + monthOverTime);
+        	
+        	const p2 = document.createElement("p");
+        	p2.classList.add("font-12","color-gray","font-bold");
+        	p2.textContent = "기본:"+chageWorkTime(monthWorkTime);
+        	
+        	const p3 = document.createElement("p");
+        	p3.classList.add("font-12","color-gray","font-bold");
+        	p3.textContent = "연장:"+chageWorkTime(monthOverTime);
+        	
+        	td2.append(p1,p2,p3);
+        	tr2.append(td1,td2);
+        	
+        	//주차 순서대로 정렬
+        	weekDates.sort((a, b) => {
+        		  // 주차 문자열에서 '주차' 부분을 제외한 정수만 추출하여 비교
+        		  const weekA = parseInt(a.week.replace(/[^0-9]/g, ''));
+        		  const weekB = parseInt(b.week.replace(/[^0-9]/g, ''));
+        		  return weekA - weekB;
+        	});
+        	
+        	Object.keys(weekDates).sort().forEach(key  =>{
+        		const workTime = weekDates[key].workTime;
+        		const overTime = weekDates[key].overTime;
+        		
+        		const td3 = document.createElement("td");
+            	td3.setAttribute("width","100");
+            	
+            	const p4 = document.createElement("p");
+            	p4.classList.add("font-14","font-bold");
+            	p4.textContent = chageWorkTime(workTime + overTime);
+            	
+            	const p5 = document.createElement("p");
+            	p5.classList.add("font-12","color-gray","font-bold");
+            	p5.textContent = "기본:"+chageWorkTime(workTime);
+            	
+            	const p6 = document.createElement("p");
+            	p6.classList.add("font-12","color-gray","font-bold");
+            	p6.textContent = "연장:"+chageWorkTime(overTime);
+            	
+            	td3.append(p4,p5,p6);
+            	tr2.append(td3);
+        		
+        	});
+        	tbody.append(tr2);
+        	
+        	
+         });
+      	 // tbody 동적테그 넣기 end   
+            
+		},
+		error : console.log
+	});
+}
+
+//검색 기능
+document.querySelectorAll(".search-type").forEach((div) => {
+	div.querySelector("button").addEventListener('click', (e) => {
+	/* console.log(e.target.previousElementSibling.value); */
+	const searchType = document.querySelector('#searchType').value;
+	const searchKeyword = e.target.previousElementSibling.value;
+	const dateText = document.getElementById("date-text").textContent;
+	const deptCode = "${deptCode}";
+	const deptTr = document.querySelector("#dept-detail-tr");
+	deptTr.innerHTML = "";
+	const tbody = document.querySelector("#dept-detail-tbody");
+	tbody.innerHTML = "";
+	console.log(searchType.value);
+	console.log(searchKeyword);
+	console.log(dateText);
+	console.log(deptCode);
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/workingManagement/searchEmpDept.do",
+		data : {dateText,deptCode ,searchType, searchKeyword},
+		contentType: false,
+		success(data){
+			console.log(data);
+			// thead 동적태그 넣기
+			const th1 = document.createElement("th");
+			th1.setAttribute("width", "110");
             th1.textContent = "이름";
             
             const th2 = document.createElement("th");
@@ -301,21 +441,14 @@ function deptSendData(){
         	
         	
          });
-      	 // tbody 동적테그 넣기 end   
-            
+      	 // tbody 동적테그 넣기 end
 		},
 		error : console.log
-	});
-}
-
-//검색 기능
-document.querySelector("form").addEventListener('submit', (e) => {
-	e.preventDefault();
-	/* const searchType = ${searchType};
-	const searchKeyword = ${searchKeyword}; */
-	console.log(e.target);
-	console.log(searchKeyword);
+	});//ajax end
+	
+	});// click event end
 });
+
 
 //총근무시간
 function chageWorkTime(times){

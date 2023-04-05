@@ -143,7 +143,7 @@ select*from boardComment;
 insert into boardComment values(seq_boardComment_no.nextval, 'asdfasdfasd', sysdate, default, default, 'bo173', '230301', '230301');
 select*from board;
 
-
+select*from addressbook;
 -- 주소록
 create table addressbook (
     addr_no varchar2(15) not null,
@@ -157,8 +157,10 @@ create table addressbook (
     email varchar2(30) not null,
     reg_date date default sysdate,
     memo varchar2(500),
+    addrGroup varchar2(50) not null,
     constraint pk_addressbook primary key (addr_no)
 );
+--drop table addressbook;
 -- 그룹원
 create table groupMember (
     group_no varchar2(15) not null,
@@ -225,7 +227,7 @@ select * from working_management order by no;
 select * from dayoff;
 select * from dayoffform;
 delete from working_management where no = '45';
-update working_management set end_work = null, state = '연차',overtime = null where no = '49';
+update working_management set end_work = null, state = '출장',overtime = null where no = '40';
 
 select day_off_year from dayoff group by day_off_year order by day_off_year;
     
@@ -379,3 +381,10 @@ from(
 )d
 where
     rownum = 1;
+
+select *
+ from working_management
+ where emp_id = '230303'
+ and reg_date between '2023.03.27'
+ and to_date('2023.04.02')+1 order by reg_date;
+         

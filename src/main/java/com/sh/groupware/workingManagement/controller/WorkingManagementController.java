@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -82,12 +83,19 @@ public class WorkingManagementController {
 	    param.put("empId", empId);
 	    param.put("time", time);
 
-	    int checkStartwork = workingManagementService.checkStartwork(param);
+	    WorkingManagement work = workingManagementService.checkWorkTime(param); //금일 출근기록이 있는지 확인
 
-	    if(checkStartwork == 0) {
-	        int result = workingManagementService.insertStartWork(empId);
+	    if(work == null) {
+	        int result = workingManagementService.insertStartWork(empId); // insert
 	        state.put("state", "성공");
-	    } else {
+	    }else if(work.getState().equals("반차")) {
+	    	int result = workingManagementService.updateStartWork(param); //반차일시 반차 행 update
+			state.put("state", "성공");
+		}else if(work.getState().equals("출장")) {
+			state.put("state", "출장");
+		}else if(work.getState().equals("연차")) {
+			state.put("state", "연차");
+	    }else {
 	        state.put("state", "실패");
 	    }
 	    
@@ -108,10 +116,16 @@ public class WorkingManagementController {
 		param.put("time", time);
 		 
 		WorkingManagement work = workingManagementService.checkWorkTime(param);
+		log.debug("work = {}",work);
 		
 		if(work == null) {
 			state.put("state","출근전");
-		}else if(work.getEndWork() == null) {
+		}else if(work.getState().equals("출장")) {
+			state.put("state", "출장");
+		}else if(work.getState().equals("연차")) {
+			state.put("state", "연차");
+		}
+		else if(work.getEndWork() == null || work.getState().equals("반차")) {
 			//퇴근시간 업데이트
 			int result = workingManagementService.updateEndWok(param);
 			state.put("state", "성공");	
@@ -155,7 +169,14 @@ public class WorkingManagementController {
 		param.put("daytime", daytime);
 		param.put("overtime", overtime);
 		
-		int result = workingManagementService.updateDayWorkTime(param);
+		WorkingManagement work = workingManagementService.checkWorkTime(param);
+		int result = 0;
+		if(work.getState().equals("반차")) {
+			result = workingManagementService.updateDayWorkTimeHalf(param); //반차 근무시간 업데이트시 4시간 추가 
+		}else {
+			result = workingManagementService.updateDayWorkTime(param); // 금일 근무시간 업데이트
+		}
+		
 		
 		Map<String,Object> state = new HashMap<>();
 		if(result > 0)
@@ -306,7 +327,7 @@ public class WorkingManagementController {
 	    Calendar cal = new Calendar();
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM");
 	    LocalDate currentDate = LocalDate.parse(dateText + ".01", DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-
+	    
 	    List<EmpDetail> empList = empService.selectEmpDeptList(deptCode);
 	    log.debug("empList = {}",empList);
 
@@ -366,5 +387,87 @@ public class WorkingManagementController {
 	    return ResponseEntity.ok()
 	            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
 	            .body(workList);
+	}
+	
+	@ResponseBody
+	@GetMapping("/searchEmpDept.do")
+	public ResponseEntity<?> searchEmpDept( String dateText, String deptCode, String searchType, String searchKeyword) {
+		log.debug("dateText = {}",dateText);
+		log.debug("deptCode = {}",deptCode);
+		log.debug("searchType = {}",searchType);
+		log.debug("searchKeyword = {}",searchKeyword);
+		
+		String[] arr = dateText.split("\\.");
+		    String date = arr[0].substring(2) + "/" + arr[1];
+
+		    Map<String,Object> param = new HashMap<>();
+		    param.put("date",date);
+		    param.put("deptCode", deptCode);
+		    param.put("searchType", searchType);
+		    param.put("searchKeyword", searchKeyword);
+
+		    Calendar cal = new Calendar();
+		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM");
+		    LocalDate currentDate = LocalDate.parse(dateText + ".01", DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+
+		    List<EmpDetail> empList = empService.empFinderDeptList(param);
+		    log.debug("empList = {}",empList);
+
+		    List<Map<String, Object>> workList = new ArrayList<>();
+
+		    for(EmpDetail emp : empList) {
+		        Map<String, Object> work = new HashMap<>();
+		        List<Map<String, Object>> weekDatesList = new ArrayList<>();
+		        work.put("name", emp.getName()); // 회원 이름
+		        work.put("jobTitle", emp.getJobTitle()); // 회원 직급
+		        work.put("deptTitle", emp.getDeptTitle()); // 회원 부서
+		        
+		        // profile있을 시 프로필 보여주고 없으면 기본프로필 보여주기
+		        String renameFilename = emp.getRenameFilename();
+		        if(renameFilename == null) {
+		        	work.put("profile", "default.png");
+		        }else {
+		        	work.put("profile", emp.getRenameFilename());
+		        }
+
+		        Map<String, Object> startEndMap = new HashMap<>();
+		        startEndMap.put("empId", emp.getEmpId()); // 회원 pk no
+		        startEndMap.put("monthTime", date); //선택한 달 ex)23/03
+
+		        // 선택한 달의 기본 누적근무 시간
+		        int monthWorkTime = workingManagementService.totalMonthTime(startEndMap);
+		        work.put("monthWorkTime", monthWorkTime);
+
+		        // 선택한 달의 연장 누적근무 시간
+		        int monthOverTime = workingManagementService.monthOverTime(startEndMap);
+		        work.put("monthOverTime", monthOverTime);
+
+		        // 선택한 달의 주차별 시작,끝날짜
+		        Map<String, Map<String, Object>> weekDates = cal.updateDateText(currentDate);
+
+		        for (String week : weekDates.keySet()) {
+		            startEndMap.put("start", weekDates.get(week).get("start"));
+		            startEndMap.put("end", weekDates.get(week).get("end"));
+
+		            int workTimes = workingManagementService.selectWeekWorkTime(startEndMap);
+		            int overTimes = workingManagementService.selectWeekOverTime(startEndMap);
+
+		            Map<String, Object> weekMap = new HashMap<>();
+		            weekMap.put("week", week);
+		            weekMap.put("workTime", workTimes);
+		            weekMap.put("overTime", overTimes);
+		            weekMap.put("start", weekDates.get(week).get("start"));
+		            weekMap.put("end", weekDates.get(week).get("end"));
+
+		            weekDatesList.add(weekMap);
+		        }
+
+		        work.put("weekDates", weekDatesList);
+		        workList.add(work);
+		    }
+
+		    return ResponseEntity.ok()
+		            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
+		            .body(workList);
 	}
 }

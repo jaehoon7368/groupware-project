@@ -1,18 +1,3 @@
-/* 태그 css */
-button {
-    border: solid 1px #bebebe;
-    padding: 10px;
-    border-radius: 30px;
-}
-
-button:hover {
-    cursor: pointer;
-}
-
-ul:hover {
-    cursor: pointer;
-}
-
 /* a태그 사용 시 파란 글씨를 검정으로 바꾸는 css */
 .container-a {
     color: #000;
@@ -23,6 +8,20 @@ ul:hover {
     color: #00b6c2;
 }
 
+
+
+/* font */
+.font-small {
+    font-size: small;
+}
+
+.font-medium {
+    font-size: 14px;
+}
+
+.font-large {
+    font-size: large;
+}
 
 /* home.jsp */
 .home-content {
@@ -60,7 +59,13 @@ ul:hover {
     border-radius: 50%;
 }
 
-
+/* home.jsp 본문에 가운데 */
+#home-center {
+    width: 500px;
+    height: 300px;
+    border: solid 1px darkgray;
+    border-radius: 10px;
+}
 
 /* home.jsp 본문에 오른쪽 */
 #home-right {
@@ -90,11 +95,9 @@ select {
     color: #00b6c2;
 }
 
-#work-state-div {
-    border: 1px solid black;
-    color: black;
-    height: 30px;
+.work-select {
     width: 100%;
+    border-radius: 20px;
     text-align: center;
     margin: 0px;
 }
@@ -203,96 +206,110 @@ p.title {
 }
 
 /* 메인내용 */
-#search-container {
-	width: 600px; 
-	margin-top: 30px;
-	padding:3px;
-	display: flex;
+#addrInfo{
+     margin-left: 20px; 
 }
-#search-container label{
-	color : gray;
-	font-weight: bold;
-}
-#search-container select{
-	width: 100px;
-    height: 30px;
-    border: .5px solid gray;
-    color: black;
-    margin-top: 3px;
-    font-size: 14px;
-    text-align: center;
-}
-#search-container input{
-	font-weight: bold;
-	width: 200px;
-	height : 30px;
-	font-size : 14px;
-	margin-left: 5px;
-	margin-top : 3px;
-    display: inline-block;
-}
-#search-container button{
-	font-size : 12px;
-	width: 50px;
-	height: 30px;
-	border: .5px solid gray;
-	display: inline-block;
-}
-#search-memberId{
-	width : 300px;
-	height: 30px;
-}
-
-
-date-box {
-    text-align: center;
-}
-
-#date-box i {
-    font-size: 18px;
-    color: gray;
-}
-
-
-
-
-#emp-detail-table {
-    width: 100%;
+#addrInfo table{
     border-collapse: collapse;
-    border-top: .5px solid gray;
-    border-bottom: .5px solid gray;
-    padding-left: 20px;
-    text-align: center;
-    font-weight: bold;
+    width: 100%;
+    float: left;
+    font-size: 14px;
 }
-
-#dept-name {
-    margin-top: 18px;
+#addrInfo th{
+    width: 50px;
+    height: 50px;
+	color : gray;
+	
 }
-
-#emp-detail-table p{
-    margin: 10px 0;
+#addrInfo td {
+    width: 150px;
+    height: 50px;
+    padding: 2px;
 }
+#profile-box{
+    display: flex;
+    width: 300px;
+    margin-left: 50px;
 
-#emp-detail-table img {
-    margin-right: 10px;
+}
+#addrInfo img{
+    margin-left: 50px;
+    border: 2px solid #00b6c2;
+    width: 150px;
+    height: 150px;
     margin-bottom: 5px;
+    border-radius: 50%;
+}
+#addrInfo label{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: 1px 2px 5px #111;
+    font-size: 17px;
+    text-align: center;
+    margin-top: 115px;
+    cursor: pointer;
+    transform: translate(-45px,0);
+}
+#addrInfo p{
+	margin-bottom : 0;
+	margin-left: 50px;
+	font-weight: bold;
+	
+}
+#addrInfo span{
+	margin-bottom : 0;
+	margin-left: 50px;
+	color : rgb(233, 93, 93);
+	font-size : 12px;	
+}
+#file{
+    display: none;
+}
+#addrInfo td input{
+    width: 300px;
+    height: 30px;
+    margin-bottom: 0;
+    font-size: 14px;
+    margin-left: 50px;
+}
+#addrInfo select{
+    width: 150px;
+    height: 30px;
+    margin-left: 50px;
+    color: #000;
+    font-size: 14px;
+    margin-top: 20px;
+    border: .5px solid rgb(119, 119, 119);
+    float: left;
+}
+#btn-addrEnroll{
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid #00b6c2;
+    background-color: #00b6c2;
+    box-shadow: 1px 2px 5px black;
+    color: white;
+}
+#btn-addrEnrollCancel{
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+    background-color: white;
+    box-shadow: 1px 2px 5px black;
+    color: #454d4e;
+    margin-left:20px;
+}
+.submit-btn-wrap {
+	width:300px;
+	display:flex;
+	padding:30px;
+	margin-left:20%;
 }
 
-#emp-detail-table th {
-    font-size: 14px;
-    border-bottom: .5px solid gray;
-}
-
-#emp-detail-table td {
-    font-size: 14px;
-    margin: auto;
-    
-}
-#page-bar-box{
-	margin-top : 10px;
-	text-align: center;
-}
 
 
 /* 메인내용 end */
@@ -321,19 +338,12 @@ date-box {
     text-align: right;
 }
 
-.font-11 {
-    font-size: 11px;
-    margin-bottom: 0;
-}
-
 .font-12 {
-    font-size: 12px;
-    margin-bottom: 0;
+	font-size : 12px;
 }
 
 .font-14 {
     font-size: 14px;
-    margin-bottom: 3px;
 }
 
 .font-18 {
@@ -346,8 +356,4 @@ date-box {
 
 .border-bottom {
     border-bottom: .5px solid gray;
-}
-
-.margin-buttom0 {
-    margin-bottom: 0;
 }

@@ -43,13 +43,11 @@ public class ChatController {
 		
 		List<Emp> empList = empService.selectAllEmpAddTitleDept();
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
-	
-		
-		
-		log.debug("empList={}",empList);
-	
+		//사원아이디로 검색해서 채팅방 가져오기 
+		List<ChatLog> chatLogs = chatService.seletChatLogByempId(empId);
 		 model.addAttribute("empId",empId);
 		 model.addAttribute("empList",empList);
+		 model.addAttribute("chatLogs",chatLogs);
 	}
 	
 	@ResponseBody

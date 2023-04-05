@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -140,8 +141,8 @@ public class EmpServiceImpl implements EmpService {
 	}
 	
 	@Override
-	public List<EmpDetail> selectEmpAll() {
-		return empDao.selectEmpAll();
+	public List<EmpDetail> selectEmpAll(RowBounds rowBounds) {
+		return empDao.selectEmpAll(rowBounds);
 	}
 	
 	@Override
@@ -150,7 +151,27 @@ public class EmpServiceImpl implements EmpService {
 	}
 	
 	@Override
-	public List<EmpDetail> empFinderList(Map<String, Object> param) {
-		return empDao.empFinderList(param);
+	public List<EmpDetail> empFinderList(Map<String, Object> param, RowBounds rowBounds) {
+		return empDao.empFinderList(param,rowBounds);
 	} //empFinderList() end
+	
+	@Override
+	public int selectEmpCount() {
+		return empDao.selectEmpCount();
+	}
+	
+	@Override
+	public int selectEmpCountDept(Map<String, Object> param) {
+		return empDao.selectEmpCountDept(param);
+	}
+	
+	@Override
+	public int selectEmpDeptCount(String deptCode) {
+		return empDao.selectEmpDeptCount(deptCode);
+	}
+	
+	@Override
+	public List<EmpDetail> empFinderDeptList(Map<String, Object> param) {
+		return empDao.empFinderDeptList(param);
+	}
 }

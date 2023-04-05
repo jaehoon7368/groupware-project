@@ -17,5 +17,11 @@ public interface ChatService {
 
 	int insertChatLog(ChatLog chatLog);
 
+	List<ChatLog> seletChatLogByempId(String empId);
+
+	String selectYourIdBychatroomId(Map<String, Object> param);
+
+	int updateLastCheck(ChatLog lastCheck);
+
 
 }

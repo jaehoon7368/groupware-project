@@ -175,6 +175,35 @@ window.addEventListener('load', () => {
                                 </table>
                             </div>
                         </div>
+                        <!-- 페이지 바 -->
+					    <div id="page-bar-box">
+						    <ul class="pagination justify-content-center">
+						
+						    <c:if test="${startPage > 1}">
+						      <li class="page-item">
+						        <a class="page-link" href="${pageContext.request.contextPath}/emp/empAllInfo.do?cpage=${startPage-1}" aria-label="Previous">
+						          <span aria-hidden="true">&lt;</span>
+						          <span class="sr-only">Previous</span>
+						        </a>
+						      </li>
+						    </c:if>
+						
+						    <c:forEach var="i" begin="${startPage}" end="${endPage}">
+						      <li class="page-item ${i==currentPage ? 'active' : ''}">
+						        <a class="page-link" href="${pageContext.request.contextPath}/emp/empAllInfo.do?cpage=${i}">${i}</a>
+						      </li>
+						    </c:forEach>
+						
+						    <c:if test="${endPage < totalPage}">
+						      <li class="page-item">
+						        <a class="page-link" href="${pageContext.request.contextPath}/emp/empAllInfo.do?cpage=${endPage+1}" aria-label="Next">
+						          <span aria-hidden="true">&gt;</span>
+						          <span class="sr-only">Next</span>
+						        </a>
+						      </li>
+							</c:if>
+						  </ul>
+					  </div> <!-- 페이지 바 end -->
                     </div>
                     <!-- 본문 end -->
                 </div>
