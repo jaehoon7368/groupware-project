@@ -46,11 +46,6 @@ public class AddrServiceImpl implements AddrService {
 	}
 	
 	@Override
-	public List<AddressGroup> findByGroupType(String groupType) {
-		return addrBookDao.findByGroupType(groupType);
-	}
-	
-	@Override
 	public List<Emp> selectEmpList(RowBounds rowBounds) {
 		return addrBookDao.selectEmpList(rowBounds);
 	}
@@ -78,6 +73,56 @@ public class AddrServiceImpl implements AddrService {
 	@Override
 	public List<AddressGroup> selectAddrBookListByGroupName(String groupName) {
 		return addrBookDao.selectAddrBookListByGroupName(groupName);
+	}
+	
+	@Override
+	public List<AddressGroup> findByEmpId(String empId) {
+		return addrBookDao.findByEmpId(empId);
+	}
+	
+	@Override
+	public AddressBook selectOneAddrCollection(String addrNo) {
+		return addrBookDao.selectOneAddrCollection(addrNo);
+	}
+	
+	@Override
+	public int updateAddrBook(AddressBook addressBook) {
+		return addrBookDao.updateAddrBook(addressBook);
+	}
+	
+	@Override
+	public List<AddressBook> selectAddrBookListByPage(String empId, RowBounds rowBounds) {
+		return addrBookDao.selectAddrBooklistByPage(empId, rowBounds);
+	}
+	
+	@Override
+	public int selectAddrBookCountById(String empId) {
+		return addrBookDao.selectAddressBookCountById(empId);
+	}
+	
+	@Override
+	public List<AddressBook> filterNamesByKeyword(String keyword) {
+		return addrBookDao.filterNamesByKeyword(keyword);
+	}
+	
+	@Override
+	public List<AddressBook> selectAddrsByNos(List<String> addrNos) {
+		return addrBookDao.selectAddrsByNos(addrNos);
+	}
+	
+	@Override
+	public int deleteAddrs(List<String> addrNos) {
+		return addrBookDao.deleteAddrs(addrNos);
+	}
+	
+	@Override
+	public AddressBook selectAddrByNo(String addrNo) {
+		return addrBookDao.selectAddrByNo(addrNo);
+	}
+	
+	@Override
+	public int deleteAddr(String addrNo) {
+		return addrBookDao.deleteAddr(addrNo);
 	}
 }
 

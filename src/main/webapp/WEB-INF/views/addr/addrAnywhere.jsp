@@ -34,6 +34,7 @@
 				</div>
 			</div>
 		</div>
+		
 	</div>
 	<script>
 	document.querySelector('#home-my-img').addEventListener('click', (e) => {
@@ -58,13 +59,13 @@
 	<div class="tool-bar">
  		<div class="tool-button">
  			<a href="#">
-		 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
+		 		<span><img src="${pageContext.request.contextPath}/resources/images/plus.png" alt="" class="tool-img" /></span>
 		 		<span>빠른등록</span>
 	 		</a>
  		</div>
  		<div class="tool-button">
  			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=A">
-		 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
+		 		<span><img src="${pageContext.request.contextPath}/resources/images/email.png" alt="" class="tool-img" style="height:28px; width:28px;" /></span>
 		 		<span>메일발송</span>
 	 		</a>
  		</div>
@@ -72,6 +73,12 @@
  			<a href="${pageContext.request.contextPath}/board/boardDelete.do">
 	 			<span><img src="${pageContext.request.contextPath}/resources/images/trash.png" alt="" class="tool-img" /></span>
 	 			<span>삭제</span>
+	 		</a>
+ 		</div>
+ 		<div class="tool-button">
+ 			<a href="${pageContext.request.contextPath}/board/boardDelete.do">
+	 			<span><img src="${pageContext.request.contextPath}/resources/images/copy.png" alt="" class="tool-img" /></span>
+	 			<span>주소록 복사</span>
 	 		</a>
  		</div>
  	</div>
@@ -88,24 +95,22 @@
  	</div>
  	<div class="div-padding"></div>
  	
- 	<div id="serch-all-wrap">
- 		<ul style="display:flex;">
- 			<li data-param class="serch-All"><span>전체</span></li>
- 			<li data-param="ㄱ"><span>ㄱ</span></li>
- 			<li data-param="ㄴ"><span>ㄴ</span></li>
- 			<li data-param="ㄷ"><span>ㄷ</span></li>
- 			<li data-param="ㄹ"><span>ㄹ</span></li>
- 			<li data-param="ㅁ"><span>ㅁ</span></li>
- 			<li data-param="ㅂ"><span>ㅂ</span></li>
- 			<li data-param="ㅅ"><span>ㅅ</span></li>
- 			<li data-param="ㅇ"><span>ㅇ</span></li>
- 			<li data-param="ㅈ"><span>ㅈ</span></li>
- 			<li data-param="ㅊ"><span>ㅊ</span></li>
- 			<li data-param="ㅋ"><span>ㅋ</span></li>
- 			<li data-param="ㅌ"><span>ㅌ</span></li>
- 			<li data-param="ㅍ"><span>ㅍ</span></li>
- 			<li data-param="ㅎ"><span>ㅎ</span></li>
- 		</ul>
+ 	<div id="search-div" class="search-div" style="display:flex;">
+ 			<button class="btn-search-keyword" onclick="styleChange(this);">전체</button>
+ 			<button class="btn-search-keyword" onclick="styleChange(this);">ㄱ</button>
+			<button class="btn-search-keyword" onclick="styleChange(this);">ㄴ</button>
+			<button class="btn-search-keyword" onclick="styleChange(this);">ㄷ</button>
+			<button class="btn-search-keyword" onclick="styleChange(this);">ㄹ</button>
+			<button class="btn-search-keyword" onclick="styleChange(this);">ㅁ</button>
+			<button class="btn-search-keyword" onclick="styleChange(this);">ㅂ</button>
+			<button class="btn-search-keyword" onclick="styleChange(this);">ㅅ</button>
+			<button class="btn-search-keyword" onclick="styleChange(this);">ㅇ</button>
+			<button class="btn-search-keyword" onclick="styleChange(this);">ㅈ</button>
+			<button class="btn-search-keyword" onclick="styleChange(this);">ㅊ</button>
+			<button class="btn-search-keyword" onclick="styleChange(this);">ㅋ</button>
+			<button class="btn-search-keyword" onclick="styleChange(this);">ㅌ</button>
+			<button class="btn-search-keyword" onclick="styleChange(this);">ㅍ</button>
+			<button class="btn-search-keyword" onclick="styleChange(this);">ㅎ</button>
  	</div>
  	
 <section class="notice">
@@ -129,7 +134,10 @@
 	              	 <c:forEach items="${addressBookList}" var="addr">
 					   	<tr data-no="${addr.addrNo}">
 					   		<td><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
-	                		<td>${addr.name}</td>
+	                		<td>
+	                		<span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>
+	                		${addr.name}
+	                		</td>
 	                		<td>${addr.jobName}</td>
 	                		<td>${addr.phone}</td>
 	                		<td>${addr.email}</td>
@@ -174,7 +182,80 @@
 	  </ul>
 	</c:if>
 
-	
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const addList = $('#addressList'); // 주소록 리스트 요소 가져오기
+  addList.hide(); // 리스트 숨김 처리
+
+  // 클릭 이벤트 핸들러 함수
+ function handleButtonClick(event) {
+  const keyword = event.target.innerText;
+  if (keyword === "전체") { // 전체 키워드인 경우
+	  location.reload(); // 숨겨진 모든 행 보이기
+
+  }
+  filterNames(keyword);
+  console.log(keyword);
+}
+
+  // 서버에 요청을 보내는 함수
+  function filterNames(keyword) {
+	  $.ajax({
+	      url: '${pageContext.request.contextPath}/addr/keywordSearch.do',
+	      type: 'GET',
+	      dataType: 'json',
+	      data: { keyword },
+	      success: function (data) {
+	        $('.addr-table tbody').empty();
+	        if (data.length === 0) {
+	          $('.addr-table tbody').append('<tr><td style="padding-top:50px;" colspan="11">조회된 주소록이 없습니다.</td></tr>');
+	        } else {
+	          $.each(data, function (index, item) {
+	            $('.addr-table tbody').append(
+	              '<tr data-no="' + item.addrNo + '">' +
+	              '<td><input type="checkbox" name="addrNo" value="' + item.addrNo + '"/></td>' +
+	              '<td>' +
+	              '<span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>' +
+	              item.name +
+	              '</td>' +
+	              '<td>' + item.jobName + '</td>' +
+	              '<td>' + item.phone + '</td>' +
+	              '<td>' + item.email + '</td>' +
+	              '<td>' + item.deptTitle + '</td>' +
+	              '<td>' + item.company + '</td>' +
+	              '<td>' + item.cpTel + '</td>' +
+	              '<td>' + item.cpAddress + '</td>' +
+	              '<td>' + item.memo + '</td>' +
+	              '<td>' + item.groupName + '</td>' +
+	              '</tr>'
+	            );
+	          });
+	        }
+	      },
+	      error: function (jqXHR, textStatus, errorThrown) {
+	        console.log(jqXHR.responseText);
+	      }
+	    });
+	  }
+
+  // 버튼 요소들 가져오기
+  const buttons = document.querySelectorAll('.btn-search-keyword');
+
+  // 버튼 요소들에 클릭 이벤트 핸들러 함수 등록하기
+  buttons.forEach(button => {
+    button.addEventListener('click', handleButtonClick);
+  });
+});
+</script>
+<script>
+const styleChange = (btn) => {
+	document.querySelectorAll('#search-div .btn-search-keyword').forEach((btn) => {
+		btn.style.borderBottom = 'none';
+	});
+		btn.style.borderBottom = 'solid 2px #000';
+};
+</script>
 <script>
 $(document).ready(function() {
     // 전체선택 버튼 클릭 시

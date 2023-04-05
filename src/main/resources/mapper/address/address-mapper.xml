@@ -4,11 +4,11 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.groupware.address.model.dao.AddrBookDao">
 
-	<insert id="insertBoard">
+	<insert id="insertAddrbook">
 		insert into 
-			board
+			addressBook
 		values (
-			'addr'||to_char(seq_board_no.nextval,'fm000'),
+			'addr'||to_char(seq_addressBook_no.nextval,'fm000'),
 			#{name},
 			#{jobName},
 			#{phone},
@@ -20,11 +20,12 @@
 			default,
 			#{memo},
 			#{groupName},
-			#{groupType}
+			#{groupType},
+			#{writer}
 		)
-		<selectKey order="AFTER" resultType="String" keyProperty="no">
+		<selectKey order="AFTER" resultType="String" keyProperty="addrNo">
 			select 
-				'addr'||to_char(seq_board_no.currval,'fm000')
+				'addr'||to_char(seq_addressBook_no.currval,'fm000')
 			from
 				dual
 		</selectKey>
@@ -47,6 +48,19 @@
 		select*from addressbook where writer = #{writer}
 	</select>
 	
+	<select id="selectAddrBooklistByPage" resultMap="addressBookMap">
+		select*from addressBook where writer = #{writer}
+	</select>
+	
+	<select id="selectAddressBookCountById" resultType="int">
+		select
+			count(*)
+		from
+			addressBook
+		where
+			writer = #{empId}
+	</select>
+	
 	<select id="selectEmpList" resultMap="empMap">
 		select * from emp
 	</select>
@@ -57,10 +71,17 @@
 	</select>
 	<resultMap type="addressBook" id="addressBookMap"></resultMap>
 	
-<!-- 	<select id="findByGroupType" resultMap="addressGroupMap">
-		select group_name from addressgroup where group_type = #{groupType}
-	</select>-->
+	
+	<select id="findByEmpId" resultMap="addressGroupMap">
+		select 
+			group_name 
+		from 
+			addressgroup 
+		where 
+			emp_id = #{empId}
+	</select>
 	<resultMap type="addressGroup" id="addressGroupMap"></resultMap> 
+	
 	
 	<insert id="insertAddrGroup">
 		insert into
@@ -91,5 +112,119 @@
 		where 
 			group_name = #{groupName}
 	</select>
+	
+	<select id="selectOneAddrCollection" resultMap="addressBookCollectionMap">
+		select
+			*
+		from
+			addressbook
+		where
+			addr_no = #{addrNo}
+	</select>
+	<resultMap type="addressBook" id="addressBookCollectionMap">
+		<id column="addr_No" property="addrNo"/>
+		<result column="name" property="name"/>
+		<result column="job_Name" property="jobName"/>
+		<result column="phone" property="phone"/>
+		<result column="dept_Title" property="deptTitle"/>
+		<result column="company" property="company"/>
+		<result column="cpTel" property="cpTel"/>
+		<result column="cpAddress" property="cpAddress"/>
+		<result column="email" property="email"/>
+		<result column="reg_Date" property="regDate"/>
+		<result column="memo" property="memo"/>
+		<result column="group_Name" property="groupName"/>
+		<result column="group_Type" property="groupType"/>
+		<result column="writer" property="writer"/>
+		<association property="emp" javaType="emp">
+			<id column="emp_id" property="empId"/>
+		</association>
+		<collection property="attachments" ofType="attachment">
+			<id column="attach_no" property="no"/>
+			<result column="original_filename" property="originalFilename"/>
+			<result column="rename_filename" property="renameFilename"/>
+			<result column="reg_date" property="regDate"/>
+			<result column="category" property="category"/>
+			<result column="pk_no" property="pkNo"/>
+		</collection>
+	</resultMap>
+	
+	<update id="updateAddrBook">
+		update
+			addressBook
+		set 
+			name = #{name},
+			job_name = #{jobName},
+			phone = #{phone}, 
+			dept_title = #{deptTitle}, 
+			company = #{company}, 
+			cpTel = #{cpTel}, 
+			cpAddress = #{cpAddress}, 
+			email = #{email}, 
+			memo = #{memo}
+		where
+			addr_No = #{addrNo}
+	</update>
+	
+	<select id="filterNamesByKeyword" resultMap="addressBookMap">
+		    SELECT *
+		    FROM addressBook
+		    WHERE CASE 
+		    <![CDATA[
+		        WHEN name  < 'ㄱ' THEN SUBSTR(name, 1, 1)
+		        WHEN ASCII('ㄱ') <= ASCII(name) AND ASCII(name) <= ASCII('ㅎ') THEN name
+		        WHEN name < '나' THEN 'ㄱ'
+		        WHEN name <'다' THEN 'ㄴ'
+		        WHEN name < '라' THEN 'ㄷ'
+		        WHEN name < '마' THEN 'ㄹ'
+		        WHEN name < '바' THEN 'ㅁ'
+		        WHEN name < '사' THEN 'ㅂ'
+		        WHEN name < '아' THEN 'ㅅ'
+		        WHEN name < '자' THEN 'ㅇ'
+		        WHEN name < '차' THEN 'ㅈ'
+		        WHEN name < '카' THEN 'ㅊ'
+		        WHEN name < '타' THEN 'ㅋ'
+		        WHEN name < '파' THEN 'ㅌ'
+		        WHEN name < '하' THEN 'ㅍ'
+		        ELSE 'ㅎ'
+		        END = #{keyword} ]]> 
+		</select>
+		
+		<select id="selectAddrsByNos" resultMap="addressBookMap">
+		    select *
+		    from addressBook
+		    <if test="addrNos != null">
+		        where addrNo in
+		        <foreach collection="addrNos" item="addrNo" separator="," open="(" close=")">
+		            #{addrNo}
+		        </foreach>
+		    </if>
+		</select>
+		
+		<delete id="deleteAddrs" parameterType="List">
+		    delete from addressBook
+		    <if test="list != null">
+		        where addrNo in 
+		        <foreach collection="list" item="addrNo" open="(" separator="," close=")">
+		            #{addrNo}
+		        </foreach>
+		    </if>
+		</delete>
+		
+		<select id="selectAddrByNo" resultMap="addressBookMap">
+	    	select
+	    		*
+	    	from
+	    		addressBook
+	    	where
+	    		addrNo = #{addrNo}
+	    </select>
+	    
+	    <delete id="deleteAddr" >
+	    	delete from addressBook
+	    	where addrNo = #{addrNo}
+	    </delete>
+    
+    
 	
 </mapper>

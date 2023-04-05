@@ -56,7 +56,7 @@
 			<div class="content">
 				<div id="addrInfo">
 				<form name="addrEnrollFrm"
-                            action="${pageContext.request.contextPath}/addr/addrEnroll.do?${_csrf.parameterName}=${_csrf.token}" method="post"
+                            action="${pageContext.request.contextPath}/addr/addrUpdate.do?${_csrf.parameterName}=${_csrf.token}" method="post"
                             enctype="multipart/form-data">
                             <table id="addr-enroll-table">
                                 <tr>
@@ -70,14 +70,14 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                	
                                     <th>주소록 지정</th>
                                     <td>
                                         <select name="groupName" id="groupName">
-											<c:forEach var="groupName" items="${groupNames}">
-										     	<option value="${groupName}">${groupName}</option>
-										    </c:forEach>
+										     	<option value="${addressBook.groupName}">${addressBook.groupName}</option>
 										</select>
 										<input type="hidden" name="groupType" value="P" />
+										<input type="hidden" name="addrNo" value="${addressBook.addrNo}" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -88,61 +88,61 @@
                                 <tr>
                                     <th>이름</th>
                                     <td>
-                                        <input type="text" name="name" id="name" required>
+                                        <input type="text" name="name" id="name" value="${addressBook.name}"required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>회사</th>
                                     <td>
-                                        <input type="text" name="company" id="company" required />
+                                        <input type="text" name="company" id="company" value="${addressBook.company}" required />
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>부서</th>
                                     <td>
-                                        <input type="text" name="deptTitle" id="deptTitle" required />
+                                        <input type="text" name="deptTitle" id="deptTitle" value="${addressBook.deptTitle}" required />
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>직위</th>
                                     <td>
-                                        <input type="text" name="jobName" id="jobName" required />
+                                        <input type="text" name="jobName" id="jobName"  value="${addressBook.jobName}" required />
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>이메일</th>
                                     <td>
-                                        <input type="text" name="email" id="email" required />
+                                        <input type="text" name="email" id="email" value="${addressBook.email}" required />
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>휴대폰</th>
                                     <td>
-                                        <input type="tel" placeholder="(-없이)01012345678" name="phone" id="phone" maxlength="11" required>
+                                        <input type="tel"  name="phone" id="phone" value="${addressBook.phone}" maxlength="11" required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>회사전화</th>
                                     <td>
-                                        <input type="tel" placeholder="(-없이)0212345678" name="cpTel" id="cpTel" maxlength="11" required>
+                                        <input type="tel" name="cpTel" id="cpTel" value="${addressBook.cpTel}" maxlength="11" required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>회사주소</th>
                                     <td colspan="5">
-                                        <input style="width: 500px;" type="text" class="form-control" name="cpAddress" id="cpAddress" required>
+                                        <input style="width: 500px;" type="text" class="form-control" name="cpAddress" id="cpAddress"  value="${addressBook.cpAddress}"required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>메모</th>
                                     <td colspan="5">
-                                        <input style="width: 600px; height:80px;" type="text" class="form-control" name="memo" id="memo" required>
+                                        <input style="width: 600px; height:80px;" type="text" class="form-control" name="memo" id="memo"  value="${addressBook.memo}" required>
                                     </td>
                                 </tr>
 
                             </table>
                             <div class="submit-btn-wrap">
-                            	<input type="submit" id="btn-addrEnroll" value="등록">
+                            	<input type="submit" id="btn-addrEnroll" value="수정">
                             	<input type="submit" id="btn-addrEnrollCancel" value="취소">
                             </div>
                         </form>
