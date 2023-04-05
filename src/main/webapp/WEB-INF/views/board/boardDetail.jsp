@@ -78,12 +78,12 @@
 	 		</a>
  		</div>
  		<div class="tool-button">
-			  <a href="${pageContext.request.contextPath}/board/boardList.do">
- 				<button id="write-btn">
-			 		<span><img src="${pageContext.request.contextPath}/resources/images/bar.png" alt="" class="tool-img" /></span>
-			 		<span>목록</span>
-		 		</button>
-	 		</a>
+			<%-- <a href="${pageContext.request.contextPath}/board/boardList.do"> --%>
+				<button id="write-btn" onclick="history.back();">
+					<span><img src="${pageContext.request.contextPath}/resources/images/bar.png" alt="" class="tool-img" /></span>
+					<span>목록</span>
+				</button>
+			<!-- </a> -->
  		</div>
  	</div>
 

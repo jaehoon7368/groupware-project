@@ -16,9 +16,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.sh.groupware.board.model.dao.BoardDao;
+import com.sh.groupware.board.model.dto.BCategory;
 import com.sh.groupware.board.model.dto.Board;
 import com.sh.groupware.board.model.dto.BoardComment;
 import com.sh.groupware.board.model.dto.BoardLike;
+import com.sh.groupware.board.model.dto.BoardType;
 import com.sh.groupware.common.dto.Attachment;
 
 import lombok.extern.slf4j.Slf4j;
@@ -215,5 +217,33 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 
+	@Override
+	public int insertBoardType(BoardType boardType) {
+		return boardDao.insertBoardType(boardType);
+	} // insertBoardType() end
+	
+	
+	@Override
+	public List<BoardType> selectBoardTypeList() {
+		return boardDao.selectBoardTypeList();
+	} // selectBoardTypeList() end
+	
+	
+	@Override
+	public List<Board> findByNoBoardList(String no, RowBounds rowBounds) {
+		return boardDao.findByNoBoardList(no, rowBounds);
+	} // findByNoBoardList() end
+	
+	
+	@Override
+	public int selectBoardNoCount(String no) {
+		return boardDao.selectBoardNoCount(no);
+	} // selectBoardNoCount() end
+	
+	
+	@Override
+	public BCategory selectOneBoardCategory(String bType) {
+		return boardDao.selectOneBoardCategory(bType);
+	} // selectOneBoardCategory() end
 
 }

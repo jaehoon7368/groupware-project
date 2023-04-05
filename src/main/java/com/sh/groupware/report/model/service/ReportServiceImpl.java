@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -176,8 +177,8 @@ public class ReportServiceImpl implements ReportService {
 	
 	
 	@Override
-	public List<Report> findByDeptCodeReportList(String code) {
-		List<Report> reportList = reportDao.findByDeptCodeReportList(code);
+	public List<Report> findByDeptCodeReportList(String code, RowBounds rowBounds) {
+		List<Report> reportList = reportDao.findByDeptCodeReportList(code, rowBounds);
 		
 		if (reportList.size() > 0) {
 			for (Report repo : reportList) {
@@ -275,20 +276,50 @@ public class ReportServiceImpl implements ReportService {
 	
 	
 	@Override
-	public List<Report> findByWriterReportCheckList(String empId) {
-		return reportDao.findByWriterReportCheckList(empId);
+	public List<Report> findByWriterReportList(String empId) {
+		return reportDao.findByWriterReportList(empId);
+	} // findByWriterReportList() end
+	
+	
+	@Override
+	public List<Report> findByWriterReportCheckList(String empId, RowBounds rowBounds) {
+		return reportDao.findByWriterReportCheckList(empId, rowBounds);
 	} // findByWriterReportCheckList() end
 	
 	
 	@Override
-	public List<Report> findByMemberReportCheckList(String empId) {
-		return reportDao.findByMemberReportCheckList(empId);
+	public List<Report> findByMemberReportCheckList(String empId, RowBounds rowBounds) {
+		return reportDao.findByMemberReportCheckList(empId, rowBounds);
 	} // findByMemberReportCheckList() end
 	
 	
 	@Override
-	public List<Report> findByReferenceReportCheckList(Map<String, Object> param) {
-		return reportDao.findByReferenceReportCheckList(param);
+	public List<Report> findByReferenceReportCheckList(Map<String, Object> param, RowBounds rowBounds) {
+		return reportDao.findByReferenceReportCheckList(param, rowBounds);
 	} // findByReferenceReportCheckList() end
+	
+	
+	@Override
+	public int selectDeptCodeListCount(String code) {
+		return reportDao.selectDeptCodeListCount(code);
+	} // selectDeptCodeListCount() end
+	
+	
+	@Override
+	public int selectWriterListCount(String empId) {
+		return reportDao.selectWriterListCount(empId);
+	} // selectWriterListCount() end
+	
+	
+	@Override
+	public int selectReferListCount(Map<String, Object> param) {
+		return reportDao.selectReferListCount(param);
+	} // selectReferListCount() end
+	
+	
+	@Override
+	public int selectMemberListCount(String empId) {
+		return reportDao.selectMemberListCount(empId);
+	} // selectMemberListCount() end
 	
 } // class end

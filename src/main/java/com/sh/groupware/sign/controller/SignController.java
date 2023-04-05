@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -75,6 +76,12 @@ public class SignController {
 	} // sign() end
 	
 	
+	/**
+	 * 연차 및 출장 확정된 날짜 목록
+	 * 
+	 * @param empId
+	 * @return
+	 */
 	public List<Map<String, Object>> noDateList(String empId) {
 		List<Map<String, Object>> noDateList = new ArrayList<>();
 		
@@ -100,6 +107,12 @@ public class SignController {
 	} // noDateList() end
 	
 	
+	/**
+	 * 연차 및 출장 신청 중인 날짜 목록
+	 * 
+	 * @param empId
+	 * @return
+	 */
 	public List<Map<String, Object>> toBeNoDateList(String empId) {
 		List<Map<String, Object>> toBeNoDateList = new ArrayList<>();
 		
@@ -170,6 +183,14 @@ public class SignController {
 	} // toBeNoDateList() end
 	
 	
+	/**
+	 * 해당 출장 또는 연차 날짜 제외한 나머지 신청중인 날짜 목록
+	 * 
+	 * @param empId
+	 * @param no
+	 * @param type
+	 * @return
+	 */
 	public List<Map<String, Object>> thisNotoBeNoDateList(String empId, String no, String type) {
 		List<Map<String, Object>> toBeNoDateList = new ArrayList<>();
 		
@@ -664,13 +685,19 @@ public class SignController {
 	
 	
 	@GetMapping("/signStatus.do")
-	public String signStatus(String status, Model model, Authentication authentication) {
+	public String signStatus(String status, @RequestParam(defaultValue = "1") int cpage, Model model, Authentication authentication) {
 		log.debug("status = {}", status);
 		
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		
 		Map<String, Object> param = new HashMap<>();
 		param.put("empId", empId);
+		
+		// 페이징처리
+		int limit = 7;
+		int offset = (cpage - 1) * limit; 
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		log.debug("rowBounds = {}", rowBounds);
 		
 		switch (status) {
 		// 결재 대기 문서
@@ -691,8 +718,23 @@ public class SignController {
 		} // switch end
 		
 		// 내가 결재한(할) 모든 목록
-		List<Sign> mySignStatusList = signService.findByEmpIdMySignStatus(param);
-		model.addAttribute("mySignStatusList", mySignStatusList);
+		List<Sign> mySignStatusList = signService.findByEmpIdMySignStatus(param, rowBounds);
+		
+		int totalCount = signService.selectMySignStatusCount(param);
+		
+	    // 총 페이지 수 계산
+	    int totalPage = (int) Math.ceil((double) totalCount / limit);
+	    log.debug("totalPage = {}", totalPage);
+
+	    // 시작 페이지와 끝 페이지 계산
+	    int startPage = ((cpage - 1) / 10) * 10 + 1; // 10 페이지씩 묶어서 보여줌
+	    int endPage = Math.min(startPage + 9, totalPage);
+	    
+	    model.addAttribute("currentPage", cpage);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPage", totalPage);
+	    model.addAttribute("mySignStatusList", mySignStatusList);
 		
 		return "sign/signStatus";
 	} // signStatus() end

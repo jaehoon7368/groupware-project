@@ -3,6 +3,8 @@ package com.sh.groupware.sign.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
+
 import com.sh.groupware.sign.model.dto.DayOffForm;
 import com.sh.groupware.sign.model.dto.ProductForm;
 import com.sh.groupware.sign.model.dto.ResignationForm;
@@ -63,7 +65,7 @@ public interface SignService {
 	
 	int deleteSignForm(Map<String, Object> param);
 
-	List<Sign> findByEmpIdMySignStatus(Map<String, Object> param);
+	List<Sign> findByEmpIdMySignStatus(Map<String, Object> param, RowBounds rowBounds);
 
 	int updateProductForm(ProductForm product);
 
@@ -80,5 +82,7 @@ public interface SignService {
 	List<Map<String, Object>> findByEmpIdSignNoToBeNoDateDayOff(Map<String, Object> param);
 
 	List<Map<String, Object>> findByEmpIdSignNoToBeNoDateTrip(Map<String, Object> param);
+
+	int selectMySignStatusCount(Map<String, Object> param);
 
 } // interface end

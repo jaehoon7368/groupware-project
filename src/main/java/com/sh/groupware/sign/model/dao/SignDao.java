@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.session.RowBounds;
 
 import com.sh.groupware.sign.model.dto.DayOffForm;
 import com.sh.groupware.sign.model.dto.ProductForm;
@@ -81,7 +82,7 @@ public interface SignDao {
 	@Delete("delete from ${form} where sign_no = #{no}")
 	int deleteSignForm(Map<String, Object> param);
 	
-	List<Sign> findByEmpIdMySignStatus(Map<String, Object> param);
+	List<Sign> findByEmpIdMySignStatus(Map<String, Object> param, RowBounds rowBounds);
 
 	@Update("update productForm set name = #{name}, amount = #{amount}, price = #{price}, total_price = #{totalPrice}, purpose = #{purpose} where no = #{no}")
 	int updateProductForm(ProductForm product);
@@ -102,5 +103,7 @@ public interface SignDao {
 	List<Map<String, Object>> findByEmpIdSignNoToBeNoDateDayOff(Map<String, Object> param);
 
 	List<Map<String, Object>> findByEmpIdSignNoToBeNoDateTrip(Map<String, Object> param);
+
+	int selectMySignStatusCount(Map<String, Object> param);
 
 } // interface end

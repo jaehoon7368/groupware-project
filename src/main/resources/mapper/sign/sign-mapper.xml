@@ -124,6 +124,23 @@
 	</select>
 	
 	
+	<select id="selectMySignStatusCount" resultType="_int">
+		select
+			count(*)
+		from
+			view_sign
+		where
+			status_emp_id = #{empId}
+			and
+			status in
+			<foreach collection="inStatus" item="status" index="index" open="(" close=")" separator=",">
+				#{status}
+			</foreach>
+		order by
+			reg_date desc
+	</select>
+	
+	
 	<update id="updateMySignStatus">
 		update
 			signStatus
