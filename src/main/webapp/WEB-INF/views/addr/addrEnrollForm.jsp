@@ -59,15 +59,28 @@
                             action="${pageContext.request.contextPath}/addr/addrEnroll.do?${_csrf.parameterName}=${_csrf.token}" method="post"
                             enctype="multipart/form-data">
                             <table id="addr-enroll-table">
-        
                                 <tr>
                                     <th></th>
                                     <td>
                                         <div id="profile-box">
                                             <img id="preview" src="#" style="max-width:150px; max-height:150px;">
-                                            <label for="file"><i class="fa-solid fa-magnifying-glass"></i></label>
+                                            <label for="file"><i class="fa-solid fa-magnifying-glass" style="padding-top:7px;"></i></label>
                                             <input type="file" id="file" name="file" accept="image/*" onchange="previewImage(event)">
                                         </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>주소록 지정</th>
+                                    <td>
+                                        <select name="groupType" id="groupType">
+											<option value="P">개인 주소록</option>
+											<option value="D">부서 주소록</option>
+										</select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="writer" id="writer" value="${loginMember.empId}" required>
                                     </td>
                                 </tr>
                                 <tr>
@@ -164,7 +177,41 @@ function previewImage(event) {
 	  reader.readAsDataURL(event.target.files[0]);
 	}
 </script>
+<script>
+/* document.querySelector('')
+	  // 첫번째 select 태그에 대한 이벤트 핸들러
+	  $('#gropuType').on('change', function() {
+	    var selectedGroup = $(this).val(); // 선택된 그룹 타입
+	    var $subMenuSelect = $('#subMenu'); // 서브메뉴 select 태그
 
+	    // 서브메뉴 select 태그 초기화
+	    $subMenuSelect.empty().append($('<option>', {
+	      value: '',
+	      text: '하위 메뉴를 선택하세요'
+	    }));
+
+	    // 선택된 그룹 타입에 따라 서브메뉴 select 태그에 옵션 추가
+	    $.ajax({
+	      url: '{pageContext.request.contextPath}/addr/addrEnrollForm.do',
+	      type: 'GET',
+	      data: {
+	        groupType: selectedGroup
+	      },
+	      success: function(data) {
+	        data.forEach(function(item) {
+	          $subMenuSelect.append($('<option>', {
+	            value: item.value,
+	            text: item.text
+	          }));
+	        });
+	      },
+	      error: function(err) {
+	        console.error(err);
+	      }
+	    });
+	  });
+	}); */
+</script>
 
 
 
