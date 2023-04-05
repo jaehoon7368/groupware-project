@@ -131,7 +131,7 @@
                 </tr>
                 </thead>
                 <tbody>
-	               <c:forEach items="${addrBookList}" var="addr">
+	               <c:forEach items="${addrGroupList}" var="addr">
 					    <tr data-no="${addr.addrNo}">
 					        <td><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
 					        <td>${addr.name}</td>

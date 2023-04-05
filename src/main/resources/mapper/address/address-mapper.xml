@@ -4,4 +4,92 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sh.groupware.address.model.dao.AddrBookDao">
 
+	<insert id="insertBoard">
+		insert into 
+			board
+		values (
+			'addr'||to_char(seq_board_no.nextval,'fm000'),
+			#{name},
+			#{jobName},
+			#{phone},
+			#{deptTitle},
+			#{company},
+			#{cpTel},
+			#{cpAddress},
+			#{email},
+			default,
+			#{memo},
+			#{groupName},
+			#{groupType}
+		)
+		<selectKey order="AFTER" resultType="String" keyProperty="no">
+			select 
+				'addr'||to_char(seq_board_no.currval,'fm000')
+			from
+				dual
+		</selectKey>
+	</insert>
+	
+	<insert id="insertAttachment">
+		insert into 
+			attachment
+		values (
+			seq_attachment_no.nextval, 
+			#{originalFilename}, 
+			#{renameFilename},
+			default,
+			'A',
+			#{pkNo}
+		)
+	</insert>
+	
+	<select id="selectAllAddrBookList" resultMap="addressBookMap">
+		select*from addressbook where writer = #{writer}
+	</select>
+	
+	<select id="selectEmpList" resultMap="empMap">
+		select * from emp
+	</select>
+	<resultMap type="emp" id="empMap"></resultMap>
+	
+	<select id="selectAddressBookCount" resultType="int">
+		select count(*) from addressbook
+	</select>
+	<resultMap type="addressBook" id="addressBookMap"></resultMap>
+	
+<!-- 	<select id="findByGroupType" resultMap="addressGroupMap">
+		select group_name from addressgroup where group_type = #{groupType}
+	</select>-->
+	<resultMap type="addressGroup" id="addressGroupMap"></resultMap> 
+	
+	<insert id="insertAddrGroup">
+		insert into
+			addressGroup
+		values (
+			seq_addressGroup_no.nextval,
+			#{empId},
+			#{groupName},
+			#{groupType}
+		)
+	
+	</insert>
+	
+	<select id="selectGroupName" resultMap="addressGroupMap">
+		select 
+			group_name
+		from 
+			addressgroup
+		where 
+			emp_id = #{loginMember.empId}
+	</select>
+	
+	<select id="selectAddrBookListByGroupName" resultMap="addressBookMap">
+		select 
+			* 
+		from 
+			addressbook 
+		where 
+			group_name = #{groupName}
+	</select>
+	
 </mapper>

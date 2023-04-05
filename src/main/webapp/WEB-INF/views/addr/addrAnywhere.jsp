@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/addr/addrHome.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/addr/addrAnywhere.css">
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
 		<jsp:param value="주소록" name="title"/>
@@ -17,7 +17,7 @@
 <div class="home-container">
 	<!-- 상단 타이틀 -->
 	<div class="top-container">
-		<div class="container-title">전체 주소록</div>
+		<div class="container-title">주소록</div>
 		<div class="home-topbar topbar-div">
 			<div>
 				<a href="#" id="home-my-img"> <img
@@ -115,7 +115,7 @@
             <table class="addr-table">
                 <thead>
                 <tr>
-                	<th>
+                	<th style="width:20px;">
 						<input type="checkbox" id="selectAllBtn" name="" value=""/>
 					</th>
                     <th scope="col" class="th-name">이름</th>
@@ -123,27 +123,17 @@
                     <th scope="col" class="th-phone">휴대폰</th>
                     <th scope="col" class="th-email">이메일</th>
                     <th scope="col" class="th-deptTitle">부서</th>
-                    <th scope="col" class="th-company">회사</th>
-                    <th scope="col" class="th-companyPhone">회사전화</th>
-                    <th scope="col" class="th-cpAddress">회사주소</th>
-                    <th scope="col" class="th-memo">메모</th>
-                    <th scope="col" class="th-group">그룹</th>
                 </tr>
                 </thead>
                 <tbody>
-	               <c:forEach items="${addrBookList}" var="addr">
-					    <tr data-no="${addr.addrNo}">
-					        <td><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
-					        <td>${addr.name}</td>
-					        <td>${addr.jobName}</td>
-					        <td>${addr.phone}</td>
-					        <td>${addr.email} </td>
-					        <td>${addr.deptTitle}</td>
-					        <td>${addr.company}</td>
-					        <td>${addr.cpTel}</td>
-					        <td>${addr.cpAddress}</td>
-					        <td>${addr.memo}</td>
-					        <td>${addr.groupName}</td>
+	              	 <c:forEach items="${addressBookList}" var="addr">
+					   	<tr data-no="${addr.addrNo}">
+					   		<td><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
+	                		<td>${addr.name}</td>
+	                		<td>${addr.jobName}</td>
+	                		<td>${addr.phone}</td>
+	                		<td>${addr.email}</td>
+	                		<td>${addr.deptTitle}</td>
 					    </tr>
 					</c:forEach>
                 </tbody>
@@ -170,7 +160,7 @@
 
     <c:forEach var="i" begin="${startPage}" end="${endPage}">
       <li class="page-item ${i==currentPage ? 'active' : ''}">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do?cpage=${i}">${i}</a>
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do.do?cpage=${i}">${i}</a>
       </li>
     </c:forEach>
 
