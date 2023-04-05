@@ -64,7 +64,7 @@
 						<div>
                             <div>
                                 <div class="div-report-list">
-                                    <div class="report-list-tbl">
+                                    <div class="report-list-tbl report-list-div-tbl">
                                         <table>
                                         	<colgroup>
                                                 <col width="20%" />

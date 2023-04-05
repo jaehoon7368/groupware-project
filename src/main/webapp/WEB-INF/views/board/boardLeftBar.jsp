@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
                 <div class="all-container app-dashboard-body-content off-canvas-content" data-off-canvas-content>
 					<!-- 왼쪽 추가 메뉴 -->
@@ -16,10 +21,15 @@
 									<p class="title font-medium">전사 게시판</p>
 									<div class="con">
 										<ul class="container-detail font-small">
+											<c:forEach items="${boardTypeList}" var="boardType">
+												<li><a class="container-a" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${boardType.no}&category=${boardType.category}">${boardType.title}</a></li>
+											</c:forEach>
+											<%-- 
 											<li><a class="container-a" href="${pageContext.request.contextPath}/board/boardList.do">전사 공지</a></li>
 											<li><a class="container-a" href="${pageContext.request.contextPath}/board/menuBoardList.do">주간 식단표</a></li>
 											<li><a class="container-a" href="${pageContext.request.contextPath}/board/photoBoardList.do">사진 게시판</a></li>
-											<li><a class="container-a" href="${pageContext.request.contextPath}/board/newsBoardList.do">이주의 IT뉴스</a></li>
+											<li><a class="container-a" href="${pageContext.request.contextPath}/board/newsBoardList.do">이주의 IT뉴스</a></li> 
+											--%>
 										</ul>
 									</div>
 								</li>

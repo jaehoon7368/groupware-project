@@ -111,6 +111,10 @@
 	color: gray;
 }
 
+.div-sign-ing-tbl {
+	min-height: 465px;
+}
+
 .div-sign-all-tbl {
 	width: 100%;
 }
@@ -149,4 +153,21 @@
 	cursor: pointer;
 	box-shadow: 0 0 5px #d7d7d7;
 	background-color: #f8f8f8;
+}
+
+
+/* 페이징 */
+.div-paging {
+	text-align: center;
+}
+
+.page-item {
+	list-style: none;
+	display: inline-block;
+	padding: 0 5px;
+}
+
+.page-item a {
+	color: #000;
+	font-size: small;
 }

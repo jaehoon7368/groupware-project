@@ -20,7 +20,12 @@
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
-										<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
+										<c:if test="${!empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+										</c:if>
+										<c:if test="${empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+										</c:if>
 									</a>
 								</div>
 								<div id="my-menu-modal">
@@ -28,7 +33,9 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<button class="my-menu">로그아웃</button>
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
+											<button class="my-menu" type="submit">로그아웃</button>								
+										</form:form>
 									</div>
 								</div>
 							</div>
@@ -50,7 +57,7 @@
 						<!-- 본문 -->
 						<div class="div-padding"></div>
 <div class="content">
-	<form action="">
+	<form action="${pageContext.request.contextPath}/board/boardTypeAdd.do" method="post" name="boardTypeAddFrm">
 		<table class="board-add">
 			<colgroup>
 				<col width="130px">
@@ -68,10 +75,10 @@
 								<option value="">다우그룹</option>
 							</select>
 						</span>
-						<span class="btn-wrap">
+						<!-- <span class="btn-wrap">
 							<span>+</span>
 							<span>게시판 그룹 선택</span>
-						</span>
+						</span> -->
 					</td>
 				</tr>
 			<tr>
@@ -79,7 +86,7 @@
 	  				<span class="title">제목</span>
 	  			</th>
 	  			<td>
-	  				<input type="text" class="padding-input"/>
+	  				<input type="text" name="title" id="title" class="padding-input"/>
 	  			</td>
 	  		</tr>
 	  		<tr>
@@ -88,7 +95,7 @@
 	  			</th>
 	  			<td>
 	  				<div class="textarea-wrap">
-	  					<textarea name="" id="" cols="100" rows="2"></textarea>
+	  					<textarea name="explain" id="explain" cols="100" rows="2"></textarea>
 	  				</div>
 	  			</td>
 	  		</tr>
@@ -99,143 +106,152 @@
 					<td>
 						<ul>
 							<li>
-								<label for="">
-									<input type="radio" name="type" value="classic" checked="checked"/>
-									<span>이미지</span>
-									<span>클래식</span>
-								</label>
+								<input type="radio" name="category" id="classic" value="C" checked="checked"/>
+								<span><label for="classic">이미지 클래식</label></span>
 							</li>
 							<li>
-								<label for="">
-									<input type="radio" name="type" value="stream" checked="checked"/>
-									<span>이미지</span>
-									<span>피드</span>
-								</label>
+								<input type="radio" name="category" id="feed" value="F"/>
+								<span><label for="feed">이미지 피드</label></span>
 							</li>
 						</ul>
 						<div class="desc">※ 게시판 유형은 나중에 변경하실 수 없습니다.</div>
 					</td>
-			</tr>
-			<tr class="line">
-				<td colspan="2">
-					<hr>
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<span>공유 부서 설정</span>
-				</th>
-				<td>
-					<span class="wrap-option">
-						<input type="radio" />
-						<lebel>사용함</lebel>
-					</span>
-					<span class="wrap-option">
-						<input type="radio" checked="checked"/>
-						<lebel>사용하지 않음</lebel>
-					</span>
-						<div class="desc">※ 게시판을 공유할 부서를 지정하세요</div>
-				</td>
-			</tr>
-			<tr class="line">
-				<td colspan="3">
-					<hr>
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<span>비공개 설정</span>
-				</th>
-				<td>
-					<span class="wrap-option">
-						<input type="radio" />
-						<lebel>사용함</lebel>
-					</span>
-					<span class="wrap-option">
-						<input type="radio" checked="checked"/>
-						<lebel>사용하지 않음</lebel>
-					</span>
-						<div class="desc">※ 게시판을 공개할 멤버를 지정하세요.</div>
-				</td>
-			</tr>
-			<tr class="line">
-				<td colspan="3">
-					<hr>
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<span>익명 설정</span>
-				</th>
-				<td>
-					<span class="wrap-option">
-						<input type="radio" />
-						<lebel>사용함</lebel>
-					</span>
-					<span class="wrap-option">
-						<input type="radio" checked="checked"/>
-						<lebel>사용하지 않음</lebel>
-					</span>
-						<div class="desc">※ 익명 설정은 나중에 변결하실 수 없습니다.</div>
-				</td>
-			</tr>
-			<tr class="line">
-				<td colspan="3">
-					<hr>
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<span>말머리</span>
-				</th>
-				<td>
-					<span class="wrap-option">
-						<input type="radio" />
-						<lebel>사용함</lebel>
-					</span>
-					<span class="wrap-option">
-						<input type="radio" checked="checked"/>
-						<lebel>사용하지 않음</lebel>
-					</span>
-				</td>
-			</tr>
-			<tr class="line">
-				<td colspan="3">
-					<hr>
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<span>댓글 작성</span>
-				</th>
-				<td>
-					<span class="wrap-option">
-						<input type="radio" checked="checked" />
-						<lebel>허용</lebel>
-					</span>
-					<span class="wrap-option">
-						<input type="radio" />
-						<lebel>허용하지 않음</lebel>
-					</span>
-				</td>
-			</tr>
-			<tr class="line">
-				<td colspan="3">
-					<hr>
-				</td>
-			</tr>
-
+				</tr>
+				<tr class="line">
+					<td colspan="2">
+						<hr>
+					</td>
+				</tr>
+				<!-- <tr>
+					<th>
+						<span>공유 부서 설정</span>
+					</th>
+					<td>
+						<span class="wrap-option">
+							<input type="radio" />
+							<lebel>사용함</lebel>
+						</span>
+						<span class="wrap-option">
+							<input type="radio" checked="checked"/>
+							<lebel>사용하지 않음</lebel>
+						</span>
+							<div class="desc">※ 게시판을 공유할 부서를 지정하세요</div>
+					</td>
+				</tr>
+				<tr class="line">
+					<td colspan="3">
+						<hr>
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<span>비공개 설정</span>
+					</th>
+					<td>
+						<span class="wrap-option">
+							<input type="radio" />
+							<lebel>사용함</lebel>
+						</span>
+						<span class="wrap-option">
+							<input type="radio" checked="checked"/>
+							<lebel>사용하지 않음</lebel>
+						</span>
+							<div class="desc">※ 게시판을 공개할 멤버를 지정하세요.</div>
+					</td>
+				</tr>
+				<tr class="line">
+					<td colspan="3">
+						<hr>
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<span>익명 설정</span>
+					</th>
+					<td>
+						<span class="wrap-option">
+							<input type="radio" />
+							<lebel>사용함</lebel>
+						</span>
+						<span class="wrap-option">
+							<input type="radio" checked="checked"/>
+							<lebel>사용하지 않음</lebel>
+						</span>
+							<div class="desc">※ 익명 설정은 나중에 변결하실 수 없습니다.</div>
+					</td>
+				</tr>
+				<tr class="line">
+					<td colspan="3">
+						<hr>
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<span>말머리</span>
+					</th>
+					<td>
+						<span class="wrap-option">
+							<input type="radio" />
+							<lebel>사용함</lebel>
+						</span>
+						<span class="wrap-option">
+							<input type="radio" checked="checked"/>
+							<lebel>사용하지 않음</lebel>
+						</span>
+					</td>
+				</tr>
+				<tr class="line">
+					<td colspan="3">
+						<hr>
+					</td>
+				</tr> -->
+				<tr>
+					<th>
+						<span>댓글 작성</span>
+					</th>
+					<td>
+						<span class="wrap-option">
+							<input type="radio" name="commentType" id="commentTypeY" value="Y" checked="checked"/>
+							<label for="commentTypeY">허용</label>
+						</span>
+						<span class="wrap-option">
+							<input type="radio" name="commentType" id="commentTypeN" value="N"/>
+							<label for="commentTypeN">허용하지 않음</label>
+						</span>
+					</td>
+				</tr>
+				<tr class="line">
+					<td colspan="3">
+						<hr>
+					</td>
+				</tr>
 				
-				
-			
 			</tbody>
 		</table>
+		<div class="div-padding div-report-write-btn">
+			<button>만들기</button>
+			<button>취소</button>
+		</div>
 	</form>
+	<script>
+		document.boardTypeAddFrm.addEventListener('submit', (e) => {
+			const title = e.target.title;
+			const explain = e.target.explain;
+
+			if (/^\s+$/.test(title.value) || !title.value) {
+				alert('제목을 작성해주세요.');
+				title.select();
+				return false;
+			};
+			
+			if (/^\s+$/.test(explain.value) || !explain.value) {
+				alert('설명을 작성해주세요.');
+				explain.select();
+				return false;
+			};
+		});
+	</script>
 	
-	<div class="div-padding div-report-write-btn">
-		<button>만들기</button>
-		<button>취소</button>
-	</div>
 </div>
 
 

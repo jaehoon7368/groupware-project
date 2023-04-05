@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -346,8 +347,8 @@ public class SignServiceImpl implements SignService {
 	
 	
 	@Override
-	public List<Sign> findByEmpIdMySignStatus(Map<String, Object> param) {
-		return signDao.findByEmpIdMySignStatus(param);
+	public List<Sign> findByEmpIdMySignStatus(Map<String, Object> param, RowBounds rowBounds) {
+		return signDao.findByEmpIdMySignStatus(param, rowBounds);
 	} // findByEmpIdMySignStatus() end
 	
 	
@@ -373,5 +374,11 @@ public class SignServiceImpl implements SignService {
 	public List<Map<String, Object>> findByEmpIdSignNoToBeNoDateTrip(Map<String, Object> param) {
 		return signDao.findByEmpIdSignNoToBeNoDateTrip(param);
 	} // findByEmpIdSignNoToBeNoDateTrip() end
+	
+	
+	@Override
+	public int selectMySignStatusCount(Map<String, Object> param) {
+		return signDao.selectMySignStatusCount(param);
+	} // selectMySignStatusCount() end
 	
 } // class end

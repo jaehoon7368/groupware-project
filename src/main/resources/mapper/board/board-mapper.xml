@@ -367,7 +367,52 @@
 		where
 			board_no = #{board.no}
 	</select>
-
 	
+	
+	<select id="findByNoBoardList" resultMap="boardMap">
+		select 
+		    b.*,
+		    (select count(*) from attachment where no = b.no and category = 'B') attach_count
+		from
+		    board b left join emp e
+		        on b.emp_id = e.emp_id
+		where 
+		    b.b_type = #{no}
+		order by 
+		    no desc
+	</select>
+	
+	
+	<select id="selectBoardNoCount" resultType="_int">
+		select 
+		    count(*)
+		from
+		    board
+		where 
+		    b_type = #{no}
+		order by 
+		    no desc
+	</select>
+	
+	
+	<insert id="insertBoardType">
+		insert into 
+			boardType 
+		values (
+			seq_boardtype_no.nextval, 
+			#{title}, 
+			#{explain}, 
+			#{category}, 
+			#{commentYn}
+		)
+		
+		<selectKey order="AFTER" resultType="string" keyProperty="no">
+			select
+				seq_boardtype_no.currval
+			from
+				dual
+		</selectKey>
+	</insert>
+
 	
 </mapper>

@@ -34,13 +34,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sh.groupware.board.model.dto.BCategory;
 import com.sh.groupware.board.model.dto.Board;
 import com.sh.groupware.board.model.dto.BoardComment;
 import com.sh.groupware.board.model.dto.BoardLike;
+import com.sh.groupware.board.model.dto.BoardType;
 import com.sh.groupware.board.model.dto.LikeYn;
 import com.sh.groupware.board.model.service.BoardService;
 import com.sh.groupware.common.HelloSpringUtils;
@@ -54,6 +57,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 @RequestMapping("/board")
+@SessionAttributes("boardTypeList")
 public class BoardController {
 
 	@Autowired
@@ -71,8 +75,13 @@ public class BoardController {
 	@GetMapping("/boardHome.do")
 	private void boardHome(@ModelAttribute Board board, Model model) {
 		List<Board> boardList = boardService.selectBoardHome(board);
+		List<BoardType> boardTypeList = boardService.selectBoardTypeList();
+		
 	    log.debug("boardList = {}", boardList);
+	    log.debug("boardTypeList = {}", boardTypeList);
+	    
 	    model.addAttribute("boardList", boardList);
+	    model.addAttribute("boardTypeList", boardTypeList);
 	}
 	
 	@GetMapping("/boardList.do")
@@ -147,18 +156,21 @@ public class BoardController {
 		int result = boardService.insertBoard(board);
 		redirectAttr.addFlashAttribute("msg", "게시글을 성공적으로 저장했습니다.");
 		
-		String bType = board.getBType() == null ? "" : board.getBType().toString();
+		BCategory cate = boardService.selectOneBoardCategory(board.getBType());
 		
-		    switch (bType) {
-		        case "M":
-		            return "redirect:/board/menuBoardList.do";
-		        case "P":
-		            return "redirect:/board/photoBoardList.do";
-		        case "N":
-		            return "redirect:/board/newsBoardList.do";
-		        default:
-		            return "redirect:/board/boardList.do";
-		    }
+		return "redirect:/board/boardTypeList.do?no=" + board.getBType() + "&category=" + cate;
+		
+//		String bType = board.getBType() == null ? "" : board.getBType().toString();
+//		    switch (bType) {
+//		        case "M":
+//		            return "redirect:/board/menuBoardList.do";
+//		        case "P":
+//		            return "redirect:/board/photoBoardList.do";
+//		        case "N":
+//		            return "redirect:/board/newsBoardList.do";
+//		        default:
+//		            return "redirect:/board/boardList.do";
+//		    }
 	}
 	
 	
@@ -520,4 +532,59 @@ public class BoardController {
 	
 	@GetMapping("/boardAdd.do")
 	private void boardCreate() {}
+	
+	
+	@PostMapping("/boardTypeAdd.do")
+	public String boardTypeAdd(BoardType boardType, Model model) {
+		log.debug("boardType = {}", boardType);
+		
+		int result = boardService.insertBoardType(boardType);
+		List<BoardType> boardTypeList = boardService.selectBoardTypeList();
+		
+		model.addAttribute("boardTypeList", boardTypeList);
+		
+		return "redirect:/board/boardTypeList.do?no=" + boardType.getNo() + "&type=" + boardType.getCategory();
+	} // boardTypeAdd() end
+	
+	
+	@GetMapping("/boardTypeList.do")
+	public String boardTypeList(String no, String category, @RequestParam(defaultValue = "1") int cpage, Model model) {
+		log.debug("no = {}, category = {}", no, category);
+		
+		// 페이징처리
+		int limit = 20;
+		int offset = (cpage - 1) * limit; 
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		List<Board> boardList = boardService.findByNoBoardList(no, rowBounds);
+		log.debug("boardList = {}", boardList);
+
+		// 총 게시물 수
+	    int totalCount = boardService.selectBoardNoCount(no);
+	    log.debug("totalCount = {}", totalCount);
+
+	    // 총 페이지 수 계산
+	    int totalPage = (int) Math.ceil((double) totalCount / limit);
+	    log.debug("totalPage = {}", totalPage);
+
+	    // 시작 페이지와 끝 페이지 계산
+	    int startPage = ((cpage - 1) / 10) * 10 + 1; // 10 페이지씩 묶어서 보여줌
+	    int endPage = Math.min(startPage + 9, totalPage);
+		
+	    model.addAttribute("boardList", boardList);
+	    model.addAttribute("currentPage", cpage);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPage", totalPage);
+		
+		switch (category) {
+		case "C":
+			return "board/boardClassicList";
+		case "F":
+			return "board/boardFeedList";
+		} // switch end
+		
+		return "board/boardHome";
+	} // boardTypeList() end
+	
 }

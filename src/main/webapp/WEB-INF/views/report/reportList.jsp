@@ -67,7 +67,7 @@
 						<div>
                             <div>
                                 <div class="div-report-list">
-                                    <div class="report-list-tbl">
+                                    <div class="report-list-tbl report-list-div-tbl">
                                         <table>
                                         	<colgroup>
                                                 <col width="20%" />
@@ -140,7 +140,7 @@
 							<ul>
 								<c:if test="${startPage > 1}">
 									<li class="page-item">
-										<a class="page-link" href="${pageContext.request.contextPath}/report/reportDeptView.do?code=${sessionScope.loginMember.deptCode}&cpage=${startPage-1}" aria-label="Previous">
+										<a class="page-link" href="${pageContext.request.contextPath}/report/reportListView.do?type=${param.type}&cpage=${startPage-1}" aria-label="Previous">
 											<span aria-hidden="true">&lt;</span>
 											<span class="sr-only">Previous</span>
 										</a>
@@ -149,13 +149,13 @@
 								
 								<c:forEach var="i" begin="${startPage}" end="${endPage}">
 									<li class="page-item ${i==currentPage ? 'active' : ''}">
-										<a class="page-link" href="${pageContext.request.contextPath}/report/reportDeptView.do?code=${sessionScope.loginMember.deptCode}&cpage=${i}">${i}</a>
+										<a class="page-link" href="${pageContext.request.contextPath}/report/reportListView.do?type=${param.type}&cpage=${i}">${i}</a>
 									</li>
 								</c:forEach>
 								
 								<c:if test="${endPage < totalPage}">
 									<li class="page-item">
-										<a class="page-link" href="${pageContext.request.contextPath}/report/reportDeptView.do?code=${sessionScope.loginMember.deptCode}&cpage=${endPage+1}" aria-label="Next">
+										<a class="page-link" href="${pageContext.request.contextPath}/report/reportListView.do?type=${param.type}&cpage=${endPage+1}" aria-label="Next">
 											<span aria-hidden="true">&gt;</span>
 											<span class="sr-only">Next</span>
 										</a>

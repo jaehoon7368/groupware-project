@@ -6,9 +6,11 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.http.ResponseEntity;
 
+import com.sh.groupware.board.model.dto.BCategory;
 import com.sh.groupware.board.model.dto.Board;
 import com.sh.groupware.board.model.dto.BoardComment;
 import com.sh.groupware.board.model.dto.BoardLike;
+import com.sh.groupware.board.model.dto.BoardType;
 import com.sh.groupware.common.dto.Attachment;
 
 public interface BoardService {
@@ -75,6 +77,16 @@ public interface BoardService {
 	List<Board> selectBoardsByNos(List<String> boardNos);
 
 	int deleteBoards(List<String> boardNos);
+
+	List<BoardType> selectBoardTypeList();
+
+	int insertBoardType(BoardType boardType);
+
+	List<Board> findByNoBoardList(String no, RowBounds rowBounds);
+
+	int selectBoardNoCount(String no);
+
+	BCategory selectOneBoardCategory(String bType);
 
 	
 

@@ -67,13 +67,16 @@
 					  <li class="article-data" onclick="location.href='${pageContext.request.contextPath}/board/boardDetail.do?no=${board.no}'">
 					    <div class="article-wrap">
 					      <span class="bType">
-					        <c:choose>
+					      	<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
+					      		<c:if test="${board.BType == boardType.no}">다우그룹>${boardType.title}</c:if>
+					      	</c:forEach>
+					        <%-- <c:choose>
 					          <c:when test="${board.BType == 'A'}">다우그룹>전체게시판</c:when>
 					          <c:when test="${board.BType == 'M'}">다우그룹>주간 식단표</c:when>
 					          <c:when test="${board.BType == 'N'}">다우그룹>이주의 IT뉴스</c:when>
 					          <c:when test="${board.BType == 'P'}">다우그룹>사진 게시판</c:when>
 					          <c:otherwise>${board.BType}</c:otherwise>
-					        </c:choose>
+					        </c:choose> --%>
 					      </span>
 					      <span class="title">${board.title}</span>
 					      <span class="article-content">${board.content}</span>
@@ -95,6 +98,7 @@
 					</c:forEach>
 				</ul>
 			</div>
+			</form>
 		</section> <!--  left-content end -->
 
 
@@ -106,13 +110,13 @@
 			</div>
 			
 			<div class="resent-group">
-
-				<div class="group-list">
-				    <a href="${pageContext.request.contextPath}/board/boardList.do"><span class="group-list-title">전사 공지</span></a>
-				    <ul>
+				<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
+					<div class="group-list">
+					    <a href="${pageContext.request.contextPath}/board/boardList.do"><span class="group-list-title">${boardType.title}</span></a>
+					    <ul>
 				        <c:set var="count" value="0"/>
 					        <c:forEach items="${boardList}" var="board">
-					            <c:if test="${board.BType == 'A' && count < 5}">
+					            <c:if test="${board.BType == boardType.no && count < 5}">
 					                <c:set var="onclick" value="''" />
 					                <c:if test="${board.title.length() > 13}">
 					                    <c:set var="title" value="${board.title.substring(0, 13)}..." />
@@ -132,8 +136,9 @@
 					        </c:forEach>
 					    </ul>
 					</div>
+				</c:forEach>
 				
-				<div class="group-list">
+				<%-- <div class="group-list">
 					<a href="${pageContext.request.contextPath}/board/newsBoardList.do"><span class="group-list-title">이주의 IT뉴스</span></a>
 					<ul>
 				        <c:set var="count" value="0"/>
@@ -163,7 +168,7 @@
 					<a href="${pageContext.request.contextPath}/board/menuBoardList.do"><span class="group-list-title">주간 식단표</span></a>
 					<ul>
 				        <c:set var="count" value="0"/>
-					        <c:forEach items="${boardList}" var="board">
+					       <c:forEach items="${boardList}" var="board">
 					            <c:if test="${board.BType == 'M' && count < 5}">
 					                <c:set var="onclick" value="''" />
 					                <c:if test="${board.title.length() > 13}">
@@ -183,7 +188,7 @@
 					            </c:if>
 					        </c:forEach>
 					    </ul>
-				</div>
+				</div> --%>
 			</div>
 		</section> <!--  right-content end -->
 
