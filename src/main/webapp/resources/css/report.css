@@ -634,3 +634,20 @@ textarea {
 	border: solid 1px lightgray;
 	color: gray;
 }
+
+
+/* 페이징 */
+.div-paging {
+	text-align: center;
+}
+
+.page-item {
+	list-style: none;
+	display: inline-block;
+	padding: 0 5px;
+}
+
+.page-item a {
+	color: #000;
+	font-size: small;
+}

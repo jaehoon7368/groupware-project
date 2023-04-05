@@ -683,6 +683,10 @@ fontsize : 10px;
   font-size: small;
 }
 
+#home-report h5:hover {
+	cursor: pointer;
+}
+
 .home-report-div {
 	width: 100%;
 }
