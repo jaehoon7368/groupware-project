@@ -28,7 +28,7 @@
 									</div>
 								</li>
 								<li>
-									<a href="${pageContext.request.contextPath}/addr/addrAnywhere.do"><p class="title font-medium">Anywhere</p></a>
+									<a href="${pageContext.request.contextPath}/addr/addrAnywhere.do"><p class="title font-medium">Anywhere 연락망</p></a>
 								</li>
 								<li>
 									<p class="title font-medium">개인 주소록</p>

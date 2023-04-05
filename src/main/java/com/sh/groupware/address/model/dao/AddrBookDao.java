@@ -32,4 +32,24 @@ public interface AddrBookDao {
 
 	List<AddressGroup> selectAddrBookListByGroupName(String groupName);
 
+	List<AddressGroup> findByEmpId(String empId);
+
+	AddressBook selectOneAddrCollection(String addrNo);
+
+	int updateAddrBook(AddressBook addressBook);
+
+	List<AddressBook> selectAddrBooklistByPage(String empId, RowBounds rowBounds);
+
+	int selectAddressBookCountById(String empId);
+
+	List<AddressBook> filterNamesByKeyword(String keyword);
+
+	List<AddressBook> selectAddrsByNos(List<String> addrNos);
+
+	int deleteAddrs(List<String> addrNos);
+
+	AddressBook selectAddrByNo(String addrNo);
+
+	int deleteAddr(String addrNo);
+
 }

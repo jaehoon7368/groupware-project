@@ -147,19 +147,23 @@ select*from addressbook;
 -- 주소록
 create table addressbook (
     addr_no varchar2(15) not null,
-    name varchar2(20) not null,
-    job_name varchar2(15),
-    phone varchar2(20),
-    dept_title varchar2(20),
-    company varchar2(20),
-    cpTel varchar2(20),
-    cpAddress varchar2(20),
-    email varchar2(30) not null,
+    name varchar2(30) not null,
+    job_name varchar2(30),
+    phone varchar2(50),
+    dept_title varchar2(50),
+    company varchar2(50),
+    cpTel varchar2(50),
+    cpAddress varchar2(100),
+    email varchar2(100) not null,
     reg_date date default sysdate,
     memo varchar2(500),
-    addrGroup varchar2(50) not null,
+    group_name varchar2(50) not null,
+    group_type char not null,
+    writer varchar2(20) not null,
     constraint pk_addressbook primary key (addr_no)
 );
+
+
 --drop table addressbook;
 -- 그룹원
 create table groupMember (
@@ -170,11 +174,17 @@ create table groupMember (
 -- 그룹
 create table addressGroup (
     no varchar2(15) not null,
-    group_name varchar2(20) not null,
-    emp_id varchar2(20) not null,
+    group_no varchar2(20) not null,
+    group_name varchar2(50) not null,
+    group_type  char not null,
     constraint pk_group primary key (no),
-    constraint fk_group_emp foreign key (emp_id) references emp (emp_id) on delete cascade
+    constraint ck_addressGroup check (group_type in ('P', 'D')),
+    constraint fk_addrgroupno_addr foreign key (group_no) references addressbook (addr_no) on delete cascade
 );
+drop table addressGroup;
+
+create sequence seq_addressbook_no;
+create sequence seq_addressGroup_no;
 
 
 -- 첨부파일
@@ -186,8 +196,9 @@ create table attachment (
     category char not null,
     pk_no varchar2(15) not null,
     constraint pk_attachment primary key (no),
-    constraint ck_attachment check (category in ('M', 'B', 'T', 'R', 'P'))
+    constraint ck_attachment check (category in ('M', 'B', 'T', 'R', 'P', 'A'))
 );
+
 
 create sequence seq_working_management_no;
 create sequence seq_board_no;
@@ -387,4 +398,111 @@ select *
  where emp_id = '230303'
  and reg_date between '2023.03.27'
  and to_date('2023.04.02')+1 order by reg_date;
-         
+
+
+
+
+-- 그룹
+create table addressGroup (
+    no varchar2(15) not null,
+    emp_id varchar2(20) not null,
+    group_name varchar2(50) not null,
+    group_type  char not null,
+    constraint pk_group primary key (no),
+    constraint ck_addressGroup check (group_type in ('P', 'D')),
+    constraint fk_addrgroup_emp foreign key (emp_id) references emp (emp_id) on delete cascade
+);
+--drop table addressGroup;
+select*from addressgroup;
+select group_name
+from addressgroup
+where emp_id = '230301';
+
+select * from addressbook;
+select*from addressBook where addr_no = 'addr025';
+select * from addressbook where group_name = '키키키';
+delete from addressbook where addr_no = 'addr024';
+select*from addressbook where writer = '230301';
+select count(*) from addressbook;
+select group_name from addressgroup where group_type = 'D';
+insert into 
+			addressbook
+		values (
+			'addr'||to_char(seq_addressbook_no.nextval,'fm000'),
+			'신사',
+			'사원',
+			'01095676715',
+			'개발팀',
+			'KH',
+			'022-359-4575',
+            '서울특별시 강남구 역삼동',
+			'karas1993@naver.com',
+			default,
+			'주소록 등록 테스트',
+			'하하하',
+            'P',
+            '230301'
+		);
+insert into
+        addressgroup
+    values (
+        seq_addressgroup_no.nextval,
+        'addr021',
+        '그룹이름2',
+        'P');
+
+    select
+			e.name,
+			(select job_title from job where job_code = e.job_code) job_title,
+            e.phone,
+            e.email,
+			(select dept_title from dept where dept_code = e.dept_code) dept_title
+		from
+			emp e;
+            
+            SELECT
+  e.name,
+  j.job_title,
+  e.phone,
+  e.email,
+  d.dept_title
+FROM
+  emp e
+  JOIN job j ON e.job_code = j.job_code
+  JOIN dept d ON e.dept_code = d.dept_code;
+  
+  
+  SELECT e.name,  e.email, e.phone,  j.job_title, d.dept_title
+FROM emp e
+JOIN job j ON e.job_code = j.job_code
+JOIN dept d ON e.dept_code = d.dept_code;
+
+select*from addressbook;
+
+SELECT *
+FROM {TABLE_NAME}
+WHERE {COLUMN_NAME} >= '가' AND {COLUMN_NAME} <='나';
+
+
+
+    SELECT *
+    FROM addressBook
+    WHERE CASE 
+        WHEN name < 'ㄱ' THEN SUBSTR(name, 1, 1)
+        WHEN ASCII('ㄱ') <= ASCII(name) AND ASCII(name) <= ASCII('ㅎ') THEN name
+        WHEN name < '나' THEN 'ㄱ'
+        WHEN name < '다' THEN 'ㄴ'
+        WHEN name < '라' THEN 'ㄷ'
+        WHEN name < '마' THEN 'ㄹ'
+        WHEN name < '바' THEN 'ㅁ'
+        WHEN name < '사' THEN 'ㅂ'
+        WHEN name < '아' THEN 'ㅅ'
+        WHEN name < '자' THEN 'ㅇ'
+        WHEN name < '차' THEN 'ㅈ'
+        WHEN name < '카' THEN 'ㅊ'
+        WHEN name < '타' THEN 'ㅋ'
+        WHEN name < '파' THEN 'ㅌ'
+        WHEN name < '하' THEN 'ㅍ'
+        ELSE 'ㅎ'
+        END = 'ㄱ' and writer = '230301';
+

@@ -13,8 +13,6 @@ public interface AddrService {
 
 	int insertAddrbook(AddressBook addressBook);
 
-	List<AddressGroup> findByGroupType(String groupType);
-
 	List<Emp> selectEmpList(RowBounds rowBounds);
 
 	int selectAddressBookCount();
@@ -26,5 +24,25 @@ public interface AddrService {
 	List<AddressGroup> selectGroupName(String empId);
 
 	List<AddressGroup> selectAddrBookListByGroupName(String groupName);
+
+	List<AddressGroup> findByEmpId(String empId);
+
+	AddressBook selectOneAddrCollection(String addrNo);
+
+	int updateAddrBook(AddressBook addressBook);
+
+	List<AddressBook> selectAddrBookListByPage(String empId, RowBounds rowBounds);
+
+	int selectAddrBookCountById(String empId);
+
+	List<AddressBook> filterNamesByKeyword(String keyword);
+
+	List<AddressBook> selectAddrsByNos(List<String> addrNos);
+
+	int deleteAddrs(List<String> addrNos);
+
+	AddressBook selectAddrByNo(String addrNo);
+
+	int deleteAddr(String addrNo);
 
 }

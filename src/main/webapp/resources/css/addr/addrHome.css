@@ -231,4 +231,8 @@ tr[data-no] {cursor: pointer;}
 	font-size:13px;
 }
 
+.btn-search-keyword {
+	border:none;
+	border-radius:0px;
+}
 
