@@ -1,10 +1,9 @@
-$(document).foundation()
+const list = document.querySelectorAll('.list');
+        function activeLink() {
+            list.forEach((item) =>
+                item.classList.remove('active'));
+            this.classList.add('active');
+        }
 
-$('[data-app-dashboard-toggle-shrink]').on('click', function(e) {
-  e.preventDefault();
-  $(this).parents('.app-dashboard').toggleClass('shrink-medium').toggleClass('shrink-large');
-});
-  
-$("p.title").on('click',function(){
-  $(this).next(".con").slideToggle(100);
-});
+        list.forEach((item) =>
+            item.addEventListener('click', activeLink));
