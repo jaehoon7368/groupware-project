@@ -13,6 +13,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sh.groupware.board.model.dto.Board;
 import com.sh.groupware.common.HelloSpringUtils;
 import com.sh.groupware.common.attachment.model.service.AttachmentService;
 import com.sh.groupware.common.dto.Attachment;
@@ -125,7 +127,7 @@ public class ReportController {
 		
 		int result = reportService.insertReport(report);
 		
-		List<Report> myReportList = reportService.findByWriterReportCheckList(loginMember.getEmpId());
+		List<Report> myReportList = reportService.findByWriterReportList(loginMember.getEmpId());
 		model.addAttribute("myReportList", myReportList);
 		
 		return "redirect:/report/myListView.do";
@@ -210,40 +212,103 @@ public class ReportController {
 	
 	
 	@GetMapping("/reportDeptView.do")
-	public String reportDeptView(@RequestParam String code, Model model) {
+	public String reportDeptView(@RequestParam String code, @RequestParam(defaultValue = "1") int cpage, Model model) {
 		log.debug("code = {}", code);
-		List<Report> reportList = reportService.findByDeptCodeReportList(code);
-		model.addAttribute("reportList", reportList);
+		
+		// 페이징처리
+		int limit = 10;
+		int offset = (cpage - 1) * limit; 
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		log.debug("rowBounds = {}", rowBounds);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("code", code);
+		param.put("rowBounds", rowBounds);
+		List<Report> reportList = reportService.findByDeptCodeReportList(code, rowBounds);
+		
+		// 총 게시물 수
+	    int totalCount = reportService.selectDeptCodeListCount(code);
+	    log.debug("totalCount = {}", totalCount);
+
+	    // 총 페이지 수 계산
+	    int totalPage = (int) Math.ceil((double) totalCount / limit);
+	    log.debug("totalPage = {}", totalPage);
+
+	    // 시작 페이지와 끝 페이지 계산
+	    int startPage = ((cpage - 1) / 10) * 10 + 1; // 10 페이지씩 묶어서 보여줌
+	    int endPage = Math.min(startPage + 9, totalPage);
+	    
+	    model.addAttribute("reportList", reportList);
+	    model.addAttribute("currentPage", cpage);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPage", totalPage);
+		
 		return "report/reportDept";
 	} // reportDeptView() end
 	
 	
 	@GetMapping("/reportListView.do")
-	public String reportListView(@RequestParam String type, Model model, Authentication authentication) {
+	public String reportListView(@RequestParam String type, @RequestParam(defaultValue = "1") int cpage, Model model, Authentication authentication) {
 		log.debug("type = {}", type);
 		
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		String deptCode = ((Emp) authentication.getPrincipal()).getDeptCode();
 		
+		// 페이징처리
+		int limit = 10;
+		int offset = (cpage - 1) * limit; 
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		log.debug("rowBounds = {}", rowBounds);
+		
 		List<Report> myReportList = new ArrayList<>();
+		int totalCount = 0;
 		
 		switch (type) {
 		case "my":
-			myReportList = reportService.findByWriterReportCheckList(empId);
+			myReportList = reportService.findByWriterReportCheckList(empId, rowBounds);
+
+			// 총 게시물 수
+		    totalCount = reportService.selectWriterListCount(empId);
+		    log.debug("totalCount = {}", totalCount);
+		    
 			break;
 		case "refer":
 			Map<String, Object> param = new HashMap<>();
 			param.put("empId", empId);
 			param.put("deptCode", deptCode);
 			
-			myReportList = reportService.findByReferenceReportCheckList(param);
+			myReportList = reportService.findByReferenceReportCheckList(param, rowBounds);
+
+			// 총 게시물 수
+		    totalCount = reportService.selectReferListCount(param);
+		    log.debug("totalCount = {}", totalCount);
+		    
 			break;
 		case "else":
-			myReportList = reportService.findByMemberReportCheckList(empId);
+			myReportList = reportService.findByMemberReportCheckList(empId, rowBounds);
+
+			// 총 게시물 수
+		    totalCount = reportService.selectMemberListCount(empId);
+		    log.debug("totalCount = {}", totalCount);
+		    
 			break;
 		}
-		
+
+	    // 총 페이지 수 계산
+	    int totalPage = (int) Math.ceil((double) totalCount / limit);
+	    log.debug("totalPage = {}", totalPage);
+
+	    // 시작 페이지와 끝 페이지 계산
+	    int startPage = ((cpage - 1) / 10) * 10 + 1; // 10 페이지씩 묶어서 보여줌
+	    int endPage = Math.min(startPage + 9, totalPage);
+	    
+	    model.addAttribute("currentPage", cpage);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPage", totalPage);
 		model.addAttribute("myReportList", myReportList);
+		
 		return "report/reportList";
 	} // reportListView() end
 	

@@ -35,21 +35,12 @@ tr[data-no] {cursor: pointer;}
   text-align: center;
 }
 
-.addr-list {
-	width:100%;
-}
+
 .addr-table {
   font-size: 13px;
   width: 100%;
 }
 
-.addr-table a {
-  color: #333;
-  display: inline-block;
-  line-height: 1.4;
-  word-break: break-all;
-  vertical-align: middle;
-}
 .addr-table a:hover {
   text-decoration: underline;
 }
@@ -65,41 +56,26 @@ tr[data-no] {cursor: pointer;}
 
 .addr-table .th-checkBox {
   width: 10px;
-  text-align: center;
+
 }
 .addr-table .th-name {
-  width: 80px;
-  text-align: center;
-}
+  width: 100px;
 
+}
+.addr-table .th-jobName {
+	width:100px;
+}
 .addr-table .th-phone {
-  width: 130px;
+  width: 100px;
 }
 .addr-table .th-email{
-	width: 150px;
+	width: 100px;
 }
 
-.addr-table .th-company{
-	width: 50px;
-}
-.addr-table .th-jobName{
-	width: 100px;
-}
-.addr-table .th-companyPhone{
-	width: 150px;
-}
 .addr-table .th-deptTitle{
-	width: 150px;
-}
-.addr-table .th-cpAddress{
-	width: 250px;
-}
-.addr-table .th-memo{
-	width: 150px;
-}
-.addr-table .th-group{
 	width: 100px;
 }
+
 
 .addr-table th, .addr-table td {
   padding: 10px 0;

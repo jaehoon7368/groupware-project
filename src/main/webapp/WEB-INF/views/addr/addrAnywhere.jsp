@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/addr/addrHome.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/addr/addrAnywhere.css">
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
 		<jsp:param value="주소록" name="title"/>
@@ -17,7 +17,7 @@
 <div class="home-container">
 	<!-- 상단 타이틀 -->
 	<div class="top-container">
-		<div class="container-title">전체 주소록</div>
+		<div class="container-title">주소록</div>
 		<div class="home-topbar topbar-div">
 			<div>
 				<a href="#" id="home-my-img"> <img
@@ -34,6 +34,7 @@
 				</div>
 			</div>
 		</div>
+		
 	</div>
 	<script>
 	document.querySelector('#home-my-img').addEventListener('click', (e) => {
@@ -63,19 +64,19 @@
 	 		</a>
  		</div>
  		<div class="tool-button">
- 			<a href="#">
+ 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=A">
 		 		<span><img src="${pageContext.request.contextPath}/resources/images/email.png" alt="" class="tool-img" style="height:28px; width:28px;" /></span>
 		 		<span>메일발송</span>
 	 		</a>
  		</div>
  		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/addr/addrDelete.do">
+ 			<a href="${pageContext.request.contextPath}/board/boardDelete.do">
 	 			<span><img src="${pageContext.request.contextPath}/resources/images/trash.png" alt="" class="tool-img" /></span>
 	 			<span>삭제</span>
 	 		</a>
  		</div>
  		<div class="tool-button">
- 			<a href="#">
+ 			<a href="${pageContext.request.contextPath}/board/boardDelete.do">
 	 			<span><img src="${pageContext.request.contextPath}/resources/images/copy.png" alt="" class="tool-img" /></span>
 	 			<span>주소록 복사</span>
 	 		</a>
@@ -93,8 +94,6 @@
  		</form>
  	</div>
  	<div class="div-padding"></div>
- 	
- 	
  	
  	<div id="search-div" class="search-div" style="display:flex;">
  			<button class="btn-search-keyword" onclick="styleChange(this);">전체</button>
@@ -114,9 +113,6 @@
 			<button class="btn-search-keyword" onclick="styleChange(this);">ㅎ</button>
  	</div>
  	
-	
-									
- 	
 <section class="notice">
   <!-- board list area -->
     <div id="addr-list">
@@ -124,7 +120,7 @@
             <table class="addr-table">
                 <thead>
                 <tr>
-                	<th>
+                	<th style="width:20px;">
 						<input type="checkbox" id="selectAllBtn" name="" value=""/>
 					</th>
                     <th scope="col" class="th-name">이름</th>
@@ -132,30 +128,20 @@
                     <th scope="col" class="th-phone">휴대폰</th>
                     <th scope="col" class="th-email">이메일</th>
                     <th scope="col" class="th-deptTitle">부서</th>
-                    <th scope="col" class="th-company">회사</th>
-                    <th scope="col" class="th-companyPhone">회사전화</th>
-                    <th scope="col" class="th-cpAddress">회사주소</th>
-                    <th scope="col" class="th-memo">메모</th>
-                    <th scope="col" class="th-group">그룹</th>
                 </tr>
                 </thead>
                 <tbody>
-	               <c:forEach items="${addrBookList}" var="addr">
-					    <tr data-no="${addr.addrNo}">
-					        <td><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
-					        <td>
-					        <span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>
-					        ${addr.name}
-					        </td>
-					        <td>${addr.jobName}</td>
-					        <td>${addr.phone}</td>
-					        <td>${addr.email} </td>
-					        <td>${addr.deptTitle}</td>
-					        <td>${addr.company}</td>
-					        <td>${addr.cpTel}</td>
-					        <td>${addr.cpAddress}</td>
-					        <td>${addr.memo}</td>
-					        <td>${addr.groupName}</td>
+	              	 <c:forEach items="${addressBookList}" var="addr">
+					   	<tr data-no="${addr.addrNo}">
+					   		<td><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
+	                		<td>
+	                		<span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>
+	                		${addr.name}
+	                		</td>
+	                		<td>${addr.jobName}</td>
+	                		<td>${addr.phone}</td>
+	                		<td>${addr.email}</td>
+	                		<td>${addr.deptTitle}</td>
 					    </tr>
 					</c:forEach>
                 </tbody>
@@ -182,7 +168,7 @@
 
     <c:forEach var="i" begin="${startPage}" end="${endPage}">
       <li class="page-item ${i==currentPage ? 'active' : ''}">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do?cpage=${i}">${i}</a>
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do.do?cpage=${i}">${i}</a>
       </li>
     </c:forEach>
 
@@ -195,6 +181,7 @@
       </li>
 	  </ul>
 	</c:if>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -270,19 +257,6 @@ const styleChange = (btn) => {
 };
 </script>
 <script>
-document.querySelectorAll("tr[data-no]").forEach((tr) => {
-	tr.addEventListener('click', (e) => {
-		 // 클릭한 엘리먼트가 input 태그인 경우 이벤트 처리를 하지 않음
-	    if (e.target.tagName.toLowerCase() === 'input') {
-	      return;
-	    }
-		const addrNo = tr.dataset.no;
-		console.log(addrNo);
-		location.href = '${pageContext.request.contextPath}/addr/addrUpdateForm.do?addrNo=' + addrNo;
-	});
-});
-</script>
-<script>
 $(document).ready(function() {
     // 전체선택 버튼 클릭 시
     $('#selectAllBtn').click(function() {
@@ -294,37 +268,12 @@ $(document).ready(function() {
     $('input[name=addrNo]').change(function() {
         // 선택된 체크박스의 값 가져오기
         const addrNo = $(this).val();
-        console.log("Selected addrNo: " + addrNo);
-        // 삭제 버튼 클릭 시
-        
-        $('a[href$="/addrDelete.do"]').click(function(event) {
-            event.preventDefault();
-            const addrNos = [];
-            const csrfHeader = "${_csrf.headerName}";
-      	    const csrfToken = "${_csrf.token}";
-      	    const headers = {};
-      	  headers[csrfHeader] = csrfToken;
-            $('input[name=addrNo]:checked').each(function() {
-                addrNos.push($(this).val());
-            });
-            console.log("Selected addrNos: " + addrNos);
-            
-            $.ajax({
-                url: '${pageContext.request.contextPath}/addr/addrDelete.do',
-                type: 'POST',
-                data: {addrNos: addrNos},
-                headers,
-                success: function() {
-                    location.href = "${pageContext.request.contextPath}/addr/addrHome.do";
-                },
-                error: function() {
-                    alert("삭제 실패");
-                }
-            });    
+        console.log("Selected addrNo: " + boardNo);
     });
 });
-});
 </script>
+
+
 
 
 

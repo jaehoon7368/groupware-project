@@ -3,6 +3,8 @@ package com.sh.groupware.report.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
+
 import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.report.model.dto.Reference;
 import com.sh.groupware.report.model.dto.Report;
@@ -39,7 +41,7 @@ public interface ReportService {
 
 	int updateCreateYnY(Map<String, Object> param);
 
-	List<Report> findByDeptCodeReportList(String code);
+	List<Report> findByDeptCodeReportList(String code, RowBounds rowBounds);
 
 	int updateReportDetail(ReportDetail reportDetail);
 
@@ -55,10 +57,20 @@ public interface ReportService {
 
 	ReportComment findByNoReportComment(String no);
 
-	List<Report> findByWriterReportCheckList(String empId);
+	List<Report> findByWriterReportCheckList(String empId, RowBounds rowBounds);
 
-	List<Report> findByMemberReportCheckList(String empId);
+	List<Report> findByMemberReportCheckList(String empId, RowBounds rowBounds);
 
-	List<Report> findByReferenceReportCheckList(Map<String, Object> param);
+	List<Report> findByReferenceReportCheckList(Map<String, Object> param, RowBounds rowBounds);
+
+	int selectDeptCodeListCount(String code);
+
+	int selectWriterListCount(String empId);
+
+	int selectReferListCount(Map<String, Object> param);
+
+	int selectMemberListCount(String empId);
+
+	List<Report> findByWriterReportList(String empId);
 
 } // interface end

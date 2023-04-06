@@ -63,19 +63,19 @@
 	 		</a>
  		</div>
  		<div class="tool-button">
- 			<a href="#">
+ 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=A">
 		 		<span><img src="${pageContext.request.contextPath}/resources/images/email.png" alt="" class="tool-img" style="height:28px; width:28px;" /></span>
 		 		<span>메일발송</span>
 	 		</a>
  		</div>
  		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/addr/addrDelete.do">
+ 			<a href="${pageContext.request.contextPath}/board/boardDelete.do">
 	 			<span><img src="${pageContext.request.contextPath}/resources/images/trash.png" alt="" class="tool-img" /></span>
 	 			<span>삭제</span>
 	 		</a>
  		</div>
  		<div class="tool-button">
- 			<a href="#">
+ 			<a href="${pageContext.request.contextPath}/board/boardDelete.do">
 	 			<span><img src="${pageContext.request.contextPath}/resources/images/copy.png" alt="" class="tool-img" /></span>
 	 			<span>주소록 복사</span>
 	 		</a>
@@ -94,8 +94,6 @@
  	</div>
  	<div class="div-padding"></div>
  	
- 	
- 	
  	<div id="search-div" class="search-div" style="display:flex;">
  			<button class="btn-search-keyword" onclick="styleChange(this);">전체</button>
  			<button class="btn-search-keyword" onclick="styleChange(this);">ㄱ</button>
@@ -113,9 +111,6 @@
 			<button class="btn-search-keyword" onclick="styleChange(this);">ㅍ</button>
 			<button class="btn-search-keyword" onclick="styleChange(this);">ㅎ</button>
  	</div>
- 	
-	
-									
  	
 <section class="notice">
   <!-- board list area -->
@@ -140,7 +135,7 @@
                 </tr>
                 </thead>
                 <tbody>
-	               <c:forEach items="${addrBookList}" var="addr">
+	               <c:forEach items="${addrGroupList}" var="addr">
 					    <tr data-no="${addr.addrNo}">
 					        <td><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
 					        <td>
@@ -196,6 +191,8 @@
 	  </ul>
 	</c:if>
 
+	
+	
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const addList = $('#addressList'); // 주소록 리스트 요소 가져오기
@@ -260,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', handleButtonClick);
   });
 });
-</script>
+</script>	
 <script>
 const styleChange = (btn) => {
 	document.querySelectorAll('#search-div .btn-search-keyword').forEach((btn) => {
@@ -268,6 +265,22 @@ const styleChange = (btn) => {
 	});
 		btn.style.borderBottom = 'solid 2px #000';
 };
+</script>
+<script>
+$(document).ready(function() {
+    // 전체선택 버튼 클릭 시
+    $('#selectAllBtn').click(function() {
+        const isChecked = $(this).prop('checked');
+        $('input[name=addrNo]').prop('checked', isChecked);
+    });
+
+    // 체크박스 선택 시
+    $('input[name=addrNo]').change(function() {
+        // 선택된 체크박스의 값 가져오기
+        const addrNo = $(this).val();
+        console.log("Selected addrNo: " + boardNo);
+    });
+});
 </script>
 <script>
 document.querySelectorAll("tr[data-no]").forEach((tr) => {
@@ -282,49 +295,7 @@ document.querySelectorAll("tr[data-no]").forEach((tr) => {
 	});
 });
 </script>
-<script>
-$(document).ready(function() {
-    // 전체선택 버튼 클릭 시
-    $('#selectAllBtn').click(function() {
-        const isChecked = $(this).prop('checked');
-        $('input[name=addrNo]').prop('checked', isChecked);
-    });
 
-    // 체크박스 선택 시
-    $('input[name=addrNo]').change(function() {
-        // 선택된 체크박스의 값 가져오기
-        const addrNo = $(this).val();
-        console.log("Selected addrNo: " + addrNo);
-        // 삭제 버튼 클릭 시
-        
-        $('a[href$="/addrDelete.do"]').click(function(event) {
-            event.preventDefault();
-            const addrNos = [];
-            const csrfHeader = "${_csrf.headerName}";
-      	    const csrfToken = "${_csrf.token}";
-      	    const headers = {};
-      	  headers[csrfHeader] = csrfToken;
-            $('input[name=addrNo]:checked').each(function() {
-                addrNos.push($(this).val());
-            });
-            console.log("Selected addrNos: " + addrNos);
-            
-            $.ajax({
-                url: '${pageContext.request.contextPath}/addr/addrDelete.do',
-                type: 'POST',
-                data: {addrNos: addrNos},
-                headers,
-                success: function() {
-                    location.href = "${pageContext.request.contextPath}/addr/addrHome.do";
-                },
-                error: function() {
-                    alert("삭제 실패");
-                }
-            });    
-    });
-});
-});
-</script>
 
 
 

@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.session.RowBounds;
 
 import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.report.model.dto.Reference;
@@ -58,8 +59,8 @@ public interface ReportDao {
 	@Update("update reportMember set create_yn = 'Y' where report_no = #{no} and emp_id = #{empId}")
 	int updateCreateYnY(Map<String, Object> param);
 
-	@Select("select * from report where dept_yn = 'Y' and writer in (select emp_id from emp where dept_code = #{code}) order by end_date")
-	List<Report> findByDeptCodeReportList(String code);
+	@Select("select * from report where dept_yn = 'Y' and writer in (select emp_id from emp where dept_code = #{code}) order by end_date, reg_date")
+	List<Report> findByDeptCodeReportList(String code, RowBounds rowBounds);
 
 	ReportDetail findByDetailNoReportDetail(String no);
 
@@ -84,10 +85,23 @@ public interface ReportDao {
 	ReportComment findByNoReportComment(String no);
 
 	@Select("select * from report where writer = #{empId} order by end_date desc")
-	List<Report> findByWriterReportCheckList(String empId);
+	List<Report> findByWriterReportList(String empId);
 
-	List<Report> findByMemberReportCheckList(String empId);
+	@Select("select * from report where writer = #{empId} order by end_date desc")
+	List<Report> findByWriterReportCheckList(String empId, RowBounds rowBounds);
 
-	List<Report> findByReferenceReportCheckList(Map<String, Object> param);
+	List<Report> findByMemberReportCheckList(String empId, RowBounds rowBounds);
+
+	List<Report> findByReferenceReportCheckList(Map<String, Object> param, RowBounds rowBounds);
+
+	@Select("select count(*) from report where dept_yn = 'Y' and writer in (select emp_id from emp where dept_code = #{code}) order by end_date")
+	int selectDeptCodeListCount(String code);
+
+	@Select("select count(*) from report where writer = #{empId} order by end_date desc")
+	int selectWriterListCount(String empId);
+
+	int selectReferListCount(Map<String, Object> param);
+
+	int selectMemberListCount(String empId);
 	
 } // class end

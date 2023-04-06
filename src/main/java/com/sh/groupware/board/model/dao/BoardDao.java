@@ -3,13 +3,17 @@ package com.sh.groupware.board.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
+import com.sh.groupware.board.model.dto.BCategory;
 import com.sh.groupware.board.model.dto.Board;
 import com.sh.groupware.board.model.dto.BoardComment;
 import com.sh.groupware.board.model.dto.BoardLike;
+import com.sh.groupware.board.model.dto.BoardType;
 import com.sh.groupware.common.dto.Attachment;
 
 @Mapper
@@ -78,6 +82,18 @@ public interface BoardDao {
 	List<Board> selectBoardsByNos(List<String> boardNos);
 
 	int deleteBoards(List<String> boardNos);
+
+	int insertBoardType(BoardType boardType);
+
+	@Select("select * from boardType")
+	List<BoardType> selectBoardTypeList();
+
+	List<Board> findByNoBoardList(String no, RowBounds rowBounds);
+
+	int selectBoardNoCount(String no);
+
+	@Select("select category from boardType where no = #{no}")
+	BCategory selectOneBoardCategory(String bType);
 
 
 

@@ -16,7 +16,8 @@ public class BoardEntity {
 	
 
 	private String no;
-	private BType bType;
+	private String bType;
+	/* private BType bType; */
 	private String title;
 	private String content;
 	private int readCount;

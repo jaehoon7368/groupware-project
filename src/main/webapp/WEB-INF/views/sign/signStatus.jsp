@@ -68,7 +68,7 @@
 						<div>
 							<!-- 기안 진행 문서 -->
 							<div class="div-sign-all">
-								<div class="div-sign-all-tbl">
+								<div class="div-sign-all-tbl div-sign-ing-tbl">
 									<table class="div-sign-all-tbl-ing">
 										<thead>
 											<tr>
@@ -165,6 +165,36 @@
 								});
 							});
 						</script>
+						
+						
+						<div class="div-paging">
+							<ul>
+								<c:if test="${startPage > 1}">
+									<li class="page-item">
+										<a class="page-link" href="${pageContext.request.contextPath}/sign/signStatus.do?status=${param.status}&cpage=${startPage-1}" aria-label="Previous">
+											<span aria-hidden="true">&lt;</span>
+											<span class="sr-only">Previous</span>
+										</a>
+									</li>
+								</c:if>
+								
+								<c:forEach var="i" begin="${startPage}" end="${endPage}">
+									<li class="page-item ${i==currentPage ? 'active' : ''}">
+										<a class="page-link" href="${pageContext.request.contextPath}/sign/signStatus.do?status=${param.status}&cpage=${i}">${i}</a>
+									</li>
+								</c:forEach>
+								
+								<c:if test="${endPage < totalPage}">
+									<li class="page-item">
+										<a class="page-link" href="${pageContext.request.contextPath}/sign/signStatus.do?status=${param.status}&cpage=${endPage+1}" aria-label="Next">
+											<span aria-hidden="true">&gt;</span>
+											<span class="sr-only">Next</span>
+										</a>
+									</li>
+								</c:if>
+							</ul>
+						</div>
+						
 					</div>
 				</div>
 				
