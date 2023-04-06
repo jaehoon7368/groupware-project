@@ -133,6 +133,17 @@ document.empInfoFrm.addEventListener('submit',(e)=>{
 	}
 });
 </script>
+<script>
+//총근무시간
+function chageWorkTime(times){
+	const time = times / 1000;
+	const hours = Math.floor(time / 3600); // 시간 계산
+	const minutes = Math.floor((time % 3600) / 60); // 분 계산
+	const seconds = Math.floor(time % 60); // 초 계산
+	
+	return `\${hours}h \${minutes}m \${seconds}s`;	
+}
+</script>
          
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	<script src="${pageContext.request.contextPath}/resources/js/emp/emp.js"></script>			
