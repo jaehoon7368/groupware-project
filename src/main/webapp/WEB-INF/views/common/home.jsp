@@ -360,7 +360,7 @@ const updateDayWorkTime = (daytimes) =>{
 								
 								<!-- 본문 오른쪽 -->
 								<div>
-									<div id="home-right" class="div-padding div-margin">
+									<div id="home-right-div" class="div-padding div-margin">
 										<h5 style="padding:20px">최근 알림</h5>
 										
 										<c:forEach items ="${reNotis }" var="reNoti" varStatus="vs">
@@ -500,7 +500,7 @@ const updateDayWorkTime = (daytimes) =>{
 									<c:if test="${!empty reportList}"><c:set var="j" value="0" />
 										<c:forEach items="${reportList}" var="report" varStatus="vs">
 											<c:if test="${report.createYn == 'N'}">
-												<c:if test="${j <= 20}">
+												<c:if test="${j <= 200}">
 													<c:set var="j" value="${j += 1}" />
 													<div class="div-report" data-no="${report.reportNo}">
 														<div class="div-report-tbl">
