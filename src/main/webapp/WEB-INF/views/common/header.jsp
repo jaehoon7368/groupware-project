@@ -26,6 +26,7 @@
 	</script>	
 </c:if>
 	<body>
+
 		 <div class="app-dashboard shrink-medium">
         <div class="app-dashboard-body off-canvas-wrapper">
             <!-- 전체 메뉴 바 -->
@@ -107,4 +108,5 @@
                 </ul>
             </div>
             <!-- 전체 메뉴 바 end -->
+
 		    

@@ -258,13 +258,14 @@ public class BoardController {
 		log.debug("보드삭제 no 확인 = {}", no);
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 	    Board board = boardService.selectBoardByNo(no); // 삭제하려는 게시물 가져오기
+	    BoardType boardType = boardService.selectOneBoardType(board.getBType());
 
 	    if (board != null && board.getEmpId().equals(empId)) { // 게시물 작성자와 현재 사용자가 같을 때만 삭제
 	        int result = boardService.deleteBoard(no);
 	    } else {
 	    	redirectAttributes.addFlashAttribute("msg", "작성자만 삭제할 수 있습니다.");
 	    }
-	    return "redirect:/board/boardList.do";
+	    return "redirect:/board/boardTypeList.do?no=" + board.getBType() + "&category=" + boardType.getCategory();
 	}
 	
 	@PostMapping("/boardCommentDelete.do")
@@ -279,22 +280,25 @@ public class BoardController {
 	}
 	
 	@PostMapping("/boardsDelete.do")
-	private String boardDelete(@RequestParam(value = "boardNo", required = false) List<String> boardNos,
+	private String boardDelete(@RequestParam(value = "boardNos[]", required = false) List<String> boardNos,
 	                           Authentication authentication, RedirectAttributes redirectAttributes) {
 	    String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 	    log.debug("boardNos 시작 = {}", boardNos);
 	    
-	    List<Board> boardsToDelete = boardService.selectBoardsByNos(boardNos);
-	    log.debug("boardNos 끝 = {}", boardNos);
-	    log.debug("boardsToDelete = {}", boardsToDelete);
-	    List<String> failedNos = new ArrayList<>();
-	    for (Board board : boardsToDelete) { 
-	            failedNos.add(board.getNo());
-	        }
+//	    List<Board> boardsToDelete = boardService.selectBoardsByNos(boardNos);
+//	    log.debug("boardNos 끝 = {}", boardNos);
+//	    log.debug("boardsToDelete = {}", boardsToDelete);
+//	    List<String> failedNos = new ArrayList<>();
+//	    for (Board board : boardsToDelete) { 
+//	            failedNos.add(board.getNo());
+//	        }
 
-	        int result = boardService.deleteBoards(boardNos);
-
-	    return "redirect:/board/boardList.do";
+        BoardType boardType = boardService.selectOneBoardType(boardNos.get(0));
+        log.debug("boardType = {}", boardType);
+        
+        int result = boardService.deleteBoards(boardNos);
+        
+        return "redirect:/board/boardTypeList.do?no=" + boardType.getNo() + "&category=" + boardType.getCategory();
 	}
 	
 	
@@ -543,7 +547,7 @@ public class BoardController {
 		
 		model.addAttribute("boardTypeList", boardTypeList);
 		
-		return "redirect:/board/boardTypeList.do?no=" + boardType.getNo() + "&type=" + boardType.getCategory();
+		return "redirect:/board/boardTypeList.do?no=" + boardType.getNo() + "&category=" + boardType.getCategory();
 	} // boardTypeAdd() end
 	
 	

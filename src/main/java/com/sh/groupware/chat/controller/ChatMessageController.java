@@ -48,6 +48,7 @@ public class ChatMessageController {
 		String yourId = chatService.selectYourIdBychatroomId(param);
 		//상대방과 나의  채팅목록  소켓 연결
 		simpleMessageingTemplate.setDefaultDestination("/queue/default");
+		
 		simpleMessageingTemplate.convertAndSend("/app/chat/" + empId + "/chatList", chatLog);
 		simpleMessageingTemplate.convertAndSend("/app/chat/" + yourId + "/chatList", chatLog);
 		

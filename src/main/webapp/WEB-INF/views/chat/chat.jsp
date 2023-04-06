@@ -90,8 +90,9 @@ p.title {
 						
 						
 						
+						
 					},
-				error: console.log
+				error: console.log,
 			})
 			
 		})
@@ -106,12 +107,39 @@ p.title {
 	<div class="home-container">
 	<style>
 	.div-padding{
-		margin-top : 200px;
-	}
+  margin-top : 200px;
+
+}
+
+.div-padding table {
+	width: 100%;
+	text-align: center;
+	border-collapse: collapse;
+}
+
+.chat-table thead td {
+	font-size: small;
+	padding: 10px 0;
+	font-weight: bold;
+	border-top: solid 1px lightgray;
+	border-bottom: solid 1px lightgray;
+}
+
+.chat-table tbody td {
+	font-size: small;
+	padding: 10px 0;
+	border-top: solid 1px lightgray;
+	border-bottom: solid 1px lightgray;
+}
+.chat-tbl-tr:hover {
+	cursor: pointer;
+	box-shadow: 0 0 5px #d7d7d7;
+	background-color: #f8f8f8;
+}
 	</style>
 		<!-- 본문 -->
 		<div class="div-padding">
-	    <table class=" "> 
+	    <table class="chat-table"> 
             <thead>
               <tr>
                 <th width="200">채팅방 이름</th>
@@ -120,14 +148,20 @@ p.title {
               </tr>
             </thead>
             <tbody>
-            <c:forEach items="${chatLogs }" var="chatLog">   
-              <tr data-chatroomId = "${chatLog.chatroomId }">
-                <td class="name">${chatLog.emp.name }님 과의 채팅방</td>
-                <td class="msg">${chatLog.msg }</td>
-                <td class="unreadCount"><span>${chatLog.unreadCount }</span></td>
-              </tr>
-              </c:forEach>
-    
+            <c:if test="${!empty chatLogs }">
+	            <c:forEach items="${chatLogs }" var="chatLog">   
+	              <tr class="chat-tbl-tr" data-chatroomId = "${chatLog.chatroomId }">
+	                <td class="name">${chatLog.emp.name }님 과의 채팅방</td>
+	                <td class="msg">${chatLog.msg }</td>
+	                <td class="unreadCount"><span>${chatLog.unreadCount }</span></td>
+	              </tr>
+	             </c:forEach>
+             </c:if>
+            <c:if test="${empty chatLogs }">
+            	<tr class="chat-tbl-tr">
+            		<td colspan="3">생성된 채팅방이 없습니다.</td>
+            	</tr>
+            </c:if>
             </tbody>
           </table>
 
@@ -166,10 +200,6 @@ p.title {
 			const myId ='<sec:authentication property="principal.username"/>' ;
 						
 			
-			console.log(name);
-			console.log(name)
-			console.log(name)
-			console.log("type =",type);
 			switch(type){
 			case "LAST_CHECK" :
 				
@@ -210,29 +240,9 @@ p.title {
 				}
 				const tbody = document.querySelector('table tbody');
 				tbody.insertAdjacentElement('afterbegin', tr);
-				
+				location.reload();
 				break;
 			}
-			/* 
-					<!-- 본문 -->
-		<div class="div-padding">
-	    <table class="hover"> 
-            <thead>
-              <tr>
-                <th width="200">채팅방 이름</th>
-                <th>메시지</th>
-                <th width="150">안읽은 메시지 수</th>
-              </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${chatLogs }" var="chatLog">   
-              <tr data-chatroomId = "${chatLog.chatroomId }">
-                <td class="name">${chatLog.emp.name }님 과의 채팅방</td>
-                <td class="msg">${chatLog.msg }</td>
-                <td class="unreadCount"><span>${chatLog.unreadCount }</span></td>
-              </tr>
-              </c:forEach>
-    */
 			
 			
 			
