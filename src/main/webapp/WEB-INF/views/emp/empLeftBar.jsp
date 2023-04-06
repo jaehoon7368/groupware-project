@@ -65,18 +65,25 @@
                                 <p class="title font-medium font-bold">부서 근태현황</p>
                                 <div class="con">
                                     <ul class="container-detail font-small">
-                                    	<c:forEach items="${sessionScope.deptList}" var="dept">
-											<li><a class="container-a" href="${pageContext.request.contextPath}/workingManagement/empDeptView.do?code=${dept.deptCode}">${dept.deptTitle}</a></li>
-										</c:forEach>
+                                    	<sec:authorize access="hasRole('ROLE_PERSONNEL')">
+	                                    	<c:forEach items="${sessionScope.deptList}" var="dept">
+												<li><a class="container-a" href="${pageContext.request.contextPath}/workingManagement/empDeptView.do?code=${dept.deptCode}">${dept.deptTitle}</a></li>
+											</c:forEach>
+										</sec:authorize>
+										<sec:authorize access="!hasRole('ROLE_PERSONNEL')">
+												<li><a class="container-a" href="${pageContext.request.contextPath}/workingManagement/empDeptView.do?code=${sessionScope.loginMember.deptCode}">${sessionScope.loginMember.deptTitle}</a></li>
+										</sec:authorize>
                                     </ul>
                                 </div>
                             </li>
+                             <sec:authorize access="hasRole('ROLE_PERSONNEL')">
                             <li>
                                 <p class="title font-medium font-bold a-font"><a class=" color-black" href="${pageContext.request.contextPath }/emp/empEnroll.do">인사정보 등록</a></p>
                             </li>
                             <li>
                                 <p class="title font-medium font-bold a-font"><a class=" color-black" href="${pageContext.request.contextPath }/emp/empAllInfo.do">전사 인사정보</a></p>
                             </li>
+                            </sec:authorize>
                         </ul>
                     </div>
                 </div>
