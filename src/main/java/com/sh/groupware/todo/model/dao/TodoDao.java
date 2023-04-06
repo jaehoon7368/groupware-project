@@ -20,7 +20,6 @@ public interface TodoDao {
 	List<TodoBoard> selectTodoBoardByempId(String empId);
 	
 	@Select("select * from todoboard where no = #{no} order by no asc")
-	
 	TodoBoard selectOneTodoBoardByNo(String no);
 	TodoList selectLastTodoList(Map<String,Object> param);
 	int todoListEnroll(Map<String,Object> param);

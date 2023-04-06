@@ -167,6 +167,7 @@
         on t.no =a.pk_no
         where  
         t.no = #{no} 
+        order by c.no
 <!--         select
         *
         from

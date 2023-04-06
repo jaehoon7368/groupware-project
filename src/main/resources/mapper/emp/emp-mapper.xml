@@ -204,6 +204,20 @@
 			e.dept_code,e.job_code	
 	</select>
 	
+<select  id="selectEmpAddTitleDept" resultMap="empDetailMap">
+	select 
+		e.*,
+    	j.job_title,
+    	d.dept_title 
+	from 
+		emp e join job j
+		  	 on e.job_code = j.job_code 
+		join dept d
+		      on e.dept_code = d.dept_code
+    where e.emp_id not in ((select emp_id from todoboardgroup where todoboard_no = #{no}))
+
+</select>
+	
 	
 	<resultMap type="empDetail" id="empDetailMap"></resultMap>
 </mapper>

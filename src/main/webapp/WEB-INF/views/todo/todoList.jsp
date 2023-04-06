@@ -41,16 +41,7 @@
 			</div>
 		</div>
 		<script>
-							document.querySelector('#home-my-img').addEventListener('click', (e) => {
-								const modal = document.querySelector('#my-menu-modal');
-								const style =  modal.style.display;
-								
-								if (style == 'inline-block') {
-									modal.style.display = 'none';
-								} else {
-									modal.style.display = 'inline-block';
-								}
-							}); 
+
 						</script>
 		<!-- 상단 타이틀 end -->
 		<!-- 본문 -->
@@ -98,7 +89,7 @@
 															<div class="">
 																<ul class="container-detail font-small">
 																	<c:forEach items="${emps}" var="emp">
-																		<c:if test="${emp.deptCode eq dept.deptCode}">
+																		<c:if test="${emp.deptCode eq dept.deptCode and emp.empId ne loginMember.empId }">
 																			 <li class="li-emp" data-id="${emp.empId}" data-dept="${emp.deptCode}" data-job="${emp.jobTitle}" data-name="${emp.name}">${emp.name } ${emp.jobTitle }</li>
 																		</c:if>
 																	</c:forEach>
@@ -143,6 +134,12 @@
 	border-radius: 50px;
 	border: solid 1px lightgray;
 	color: gray;
+}
+.menu a, .menu .button {
+    line-height: 1;
+    text-decoration: none;
+    display: block;
+    padding: 1.7rem 1rem;
 }
 </style>
  				
@@ -512,8 +509,7 @@ document.querySelector("#titleContentCanclebtn${vs.index }").addEventListener('c
 													</div>
 													<div class="comment-div"> <!--  댓글입력창 -->
 														<div style="width: 50px">
-															
-   																 <img src="${pageContext.request.contextPath }/resources/upload/emp/${emp.attachment.renameFilename }" alt="" class="my-img">
+   																 <img src="${pageContext.request.contextPath }/resources/upload/emp/${empty emp.attachment.renameFilename ? 'default.png' : emp.attachment.renameFilename }" alt="" class="my-img">
 														</div>
 														<div class="comment-name">${emp.name }</div>
 														<div style="width: 90%"> 
@@ -522,7 +518,7 @@ document.querySelector("#titleContentCanclebtn${vs.index }").addEventListener('c
 																<input type="hidden" class="comment-input" name="todoBoardNo" value="${todoBoard.no }">
 																<input type="hidden" id="comment-todo-input" name="todoNo"/>
 														</div>
-														<button class="comment-btn"id="comment-enroll">등록</button>
+														<button class="comment-btn"id="comment-enroll" style="margin-top: 30px;">등록</button>
 															</form:form>
 													</div><!-- 댓글 나오게  -->
 													<div  id="todoComment">
@@ -663,30 +659,35 @@ const modalOpen = (todoListNo, todoNo) => {
 					todoComment.innerHTML= "";
 					
 					const realcomments = [...comments.children];
-					if(realcomments !=null && realcomments !=''){
-						realcomments.forEach((comment,index)=>{
-							const [no,content,regDate,,,,,,empId,todoNo,empfilename,empName] = comment.children;							
-							
-							todoComment.innerHTML+= `
-								<div class="comment-div comment-wrapper/${index}">  
-							<div style="width: 50px">
-								
-								<img src='${pageContext.request.contextPath}/resources/upload/emp/\${empfilename.textContent}' alt="" class="my-img";>
-							</div>
-							<div class="comment-name"> \${empName.textContent}</div>
-							<div style="width: 90%">
-								<input type="text" class="comment-input"  readonly value ="\${content.textContent}" >
-							
-							`
-							let confrmEmpId= '${sessionScope.loginMember.empId}';
-							if (empId.textContent == confrmEmpId){
-								
-							todoComment.innerHTML+=`
-							<button class="comment-btn modal-btn" onclick="commentDelete('\${no.textContent}',event)" id="comment-delete" >삭제</button>
-								`
-							
-							}
-							
+					if(realcomments != null && realcomments != ''){
+					    realcomments.forEach((comment,index)=>{
+					        let [no,content,regDate,,,,,,empId,todoNo,empfilename,empName] = comment.children;							
+					        
+					        if(empfilename.textContent == '' || empfilename.textContent == null) {
+					            empfilename.textContent = 'default.png';
+					        }
+					        		console.log(empfilename);
+					                     
+					        todoComment.innerHTML += `
+					            <div class="comment-div comment-wrapper/${index}">  
+					                <div style="width: 50px">
+					                    <img src='${pageContext.request.contextPath}/resources/upload/emp/\${empfilename.textContent}' alt="" class="my-img";>
+					                </div>
+					                <div class="comment-name">\${empName.textContent}</div>
+					                <div style="width: 90%">
+					                    <input type="text" class="comment-input" readonly value="\${content.textContent}">
+					                </div>
+					        `;
+					        
+					        let confrmEmpId = '${sessionScope.loginMember.empId}';
+					        
+					        if (empId.textContent == confrmEmpId){
+					            todoComment.innerHTML += `
+					                <button class="comment-btn modal-btn" onclick="commentDelete('${no.textContent}', event)" id="comment-delete">삭제</button>
+					            `;
+												
+												}
+												
 							todoComment.innerHTML+=`</div> <!--  댓글  -->`
 							
 						})
@@ -742,8 +743,6 @@ const commentDelete =(no)=>{
 document.querySelector("#exampleFileUpload").addEventListener('change',(e)=>{
 
 	const f = e.target;
-	console.log(f.files);               //배열
-	console.log(f.files[0]);           //보통 0번지에 사진이 들어가있다.
 	if(f.files[0]){//파일 선택한 경우
 		const fr = new FileReader();
 		fr.readAsDataURL(f.files[0]);  //비동기처리  - 백그라운드 작업
@@ -752,7 +751,11 @@ document.querySelector("#exampleFileUpload").addEventListener('change',(e)=>{
 			document.querySelector("#img-viewer").src = e.target.result; // dataUrl		
 			console.log(e.target.result); //파일2진데이터를 인코딩한 결과
 			
+			
 			const todoNo = document.querySelector("#todoContentinput");
+			
+			
+			
 			const formData = new FormData();
 			formData.append('file', f.files[0]); // f는 input[type=file] 엘리먼트
 			formData.append('todoNo',todoNo.value);
