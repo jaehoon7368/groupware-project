@@ -109,4 +109,20 @@
             </div>
             <!-- 전체 메뉴 바 end -->
 
-		    
+<script>
+function setActiveMenu() {
+	  const currentLocation = location.href;
+	  const menuItems = document.querySelectorAll('.list');
+
+	  menuItems.forEach(item => {
+	    const link = item.querySelector('a');
+	    if (link.href === currentLocation) {
+	      item.classList.add('active');
+	    } else {
+	      item.classList.remove('active');
+	    }
+	  });
+	}
+	// 페이지가 로드될 때 setActiveMenu 함수 호출
+	window.addEventListener('load', setActiveMenu);
+</script>
