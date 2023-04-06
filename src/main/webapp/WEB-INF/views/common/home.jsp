@@ -337,6 +337,7 @@ const updateDayWorkTime = (daytimes) =>{
 									</script>
 									</div>
 									
+									<!-- 
 									<div id="home-center" class="div-padding div-margin">
 										<h5>메일함</h5>
 										<div id="mail-div" class="home-div">
@@ -353,7 +354,8 @@ const updateDayWorkTime = (daytimes) =>{
 											});
 											btn.style.borderBottom = 'solid 2px #000';
 										};
-									</script>
+									</script> 
+									-->
 								</div>
 								
 								<!-- 본문 오른쪽 -->
@@ -393,8 +395,10 @@ const updateDayWorkTime = (daytimes) =>{
 						       				</c:if>
 										</c:forEach>
 													
+													
 									</div>
 									
+									<%-- 
 									<div id="home-report" class="div-padding div-margin">
 										<div class="div-padding home-report-div">
 											<h5 onclick="location.href='${pageContext.request.contextPath}/report/report.do';">보고</h5>
@@ -479,14 +483,15 @@ const updateDayWorkTime = (daytimes) =>{
 												<div class="home-bottom-title">작성해야 하는 보고가 없습니다.</div>
 											`;
 										}
-									</script>
+									</script> 
+									--%>
 									
 								</div>
 							</div>
 						</div>
 						
 						<div>
-							<%-- <div id="home-bottom" class="div-padding div-margin">
+							<div id="home-bottom" class="div-padding div-margin">
 								<h5 onclick="location.href='${pageContext.request.contextPath}/report/report.do';">보고</h5>
 								<div class="home-bottom-div">
 									<c:if test="${empty reportList}">
@@ -568,7 +573,7 @@ const updateDayWorkTime = (daytimes) =>{
 										<div class="home-bottom-title">작성해야 하는 보고가 없습니다.</div>
 									`;
 								}
-							</script> --%>
+							</script>
 						</div>
 					</div>
 					

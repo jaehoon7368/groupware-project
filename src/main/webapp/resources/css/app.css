@@ -422,7 +422,7 @@ button:hover {
 }
 
 /* home.jsp 본문에 오른쪽 */
-#home-right {
+#home-right-div {
   width: 300px;
   height: 521px;
   border: solid 1px darkgray;
