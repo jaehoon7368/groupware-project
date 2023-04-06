@@ -144,8 +144,8 @@
           <span class="sr-only">Next</span>
         </a>
       </li>
+	</c:if>
   </ul>
-</c:if>
 
 
 <script>
