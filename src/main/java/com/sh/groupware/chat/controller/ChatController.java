@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sh.groupware.chat.model.dto.ChatLog;
 import com.sh.groupware.chat.model.dto.ChatRoom;
 import com.sh.groupware.chat.model.service.ChatService;
+import com.sh.groupware.common.service.CommonService;
 import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.emp.model.service.EmpService;
 import com.sh.groupware.todo.model.service.TodoService;
@@ -87,6 +88,14 @@ public class ChatController {
 		Emp emp = empService.selectEmpDetail(empId);
 		model.addAttribute("emp",emp);
 		model.addAttribute("chatLogs",chatLogs);
+	}
+	@ResponseBody
+	@GetMapping("/selectEmpByEmpId.do")
+	public Emp selectEmpByEmpId(@RequestParam String empId) {
+		Emp emp = todoService.selectOneEmpByEmpId(empId);
+		
+		log.debug("emp 채팅 보낸 사람 {} ",emp);
+		return emp;
 	}
 	
 	

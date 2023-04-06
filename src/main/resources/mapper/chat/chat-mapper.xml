@@ -54,16 +54,16 @@
 	    (select emp_id from chat_room where chatroom_id = cl.chatroom_id and emp_id != #{empId}) emp_id,
 	    cl.msg,
 	    cl.time,
-	    (select count(*) from chat_log where chatroom_id = cl.chatroom_id and time > (select last_check from chat_room where chatroom_id = cl.chatroom_id and emp_id = #{empId})) unread_count,
+	    (select count(*) from chat_log where chatroom_id = cl.chatroom_id and time > (select last_check from chat_room where chatroom_id = cl.chatroom_id and emp_id = #{empId} )) unread_count,
 	    cl.type
 	from (
-	    select
+        select
 	        cl.*,
-	        row_number() over(partition by chatroom_id order by no desc) rnum
-	    from
-	        chat_log cl
-	    where
-	        cl.emp_id = #{empId}
+	        row_number() over(partition by cl.chatroom_id order by no desc) rnum
+        from
+            chat_log cl
+        where
+            chatroom_id in (select chatroom_id from chat_room where emp_id = #{empId} )
 	) cl
 	where
 	    rnum = 1
@@ -87,6 +87,7 @@
 
 
 </insert>
+
 
 
 
