@@ -528,7 +528,7 @@ button:hover {
 /* home.jsp 본문에 오른쪽 */
 #home-right-div {
   width: 300px;
-  height: 521px;
+  height: 611px;
   border: solid 1px darkgray;
   border-radius: 10px;
   padding-left: 0px;
@@ -747,7 +747,7 @@ fontsize : 10px;
 
 /* 홈 보고 문서 */
 #home-bottom {
-  width: 770px;
+  width: 1090px;
   height: auto;
   min-height: 300px;
   border: solid 1px darkgray;
