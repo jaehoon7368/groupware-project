@@ -65,12 +65,17 @@
   	
 	<div class="target-select">
 	  <span>To.</span>
-	  	<input type="hidden" name="bType" value="${param.BType}">
+	  	<%-- <input type="hidden" name="bType" value="${param.BType}"> --%>
 		  <select name="bType" id="bType">
+			<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
+				<option value="${boardType.no}" ${board.BType == boardType.no ? 'selected' : ''}>${boardType.title}</option>
+			</c:forEach>
+		    <%-- 
 		    <option value="A" ${board.BType == 'A' ? 'selected' : ''}>전사 공지</option>
 		    <option value="M" ${board.BType == 'M' ? 'selected' : ''}>주간 식단표</option>
 		    <option value="P" ${board.BType == 'P' ? 'selected' : ''}>사진 게시판</option>
-		    <option value="N" ${board.BType == 'N' ? 'selected' : ''}>IT뉴스</option>
+		    <option value="N" ${board.BType == 'N' ? 'selected' : ''}>IT뉴스</option> 
+		    --%>
 		  </select>
 	</div>
 

@@ -212,7 +212,7 @@
 			b_type = #{bType},
 			title = #{title},
 			content = #{content}, 
-			UPDATED_DATE = sysdate
+			UPDATED_DATE = TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul'
 		where
 			no = #{no}
 	</update>
@@ -223,7 +223,7 @@
 		values(
 			seq_boardComment_no.nextval, 
 			#{content}, 
-			sysdate,
+			default,
 			default,
 			default,
 			#{refCommentNo},
@@ -286,7 +286,7 @@
 		  	#{empId},
 		   	#{boardNo},
 		    'Y',
-		    sysdate)
+		    default)
 	</insert>
 	
 	<update id="boardLikeDown">

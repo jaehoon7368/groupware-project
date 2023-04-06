@@ -245,5 +245,11 @@ public class BoardServiceImpl implements BoardService {
 	public BCategory selectOneBoardCategory(String bType) {
 		return boardDao.selectOneBoardCategory(bType);
 	} // selectOneBoardCategory() end
+	
+	
+	@Override
+	public BoardType selectOneBoardType(String no) {
+		return boardDao.selectOneBoardType(no);
+	} // selectOneBoardType() end
 
 }
