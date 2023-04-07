@@ -41,16 +41,7 @@
 			</div>
 		</div>
 		<script>
-							document.querySelector('#home-my-img').addEventListener('click', (e) => {
-								const modal = document.querySelector('#my-menu-modal');
-								const style =  modal.style.display;
-								
-								if (style == 'inline-block') {
-									modal.style.display = 'none';
-								} else {
-									modal.style.display = 'inline-block';
-								}
-							}); 
+
 						</script>
 		<!-- 상단 타이틀 end -->
 		<!-- 본문 -->
@@ -77,6 +68,7 @@
 						</c:forEach>
 					</ul>
 				</div>
+				
 				<div class="removeView board-menu-modal" id="boardMenuModal">
 					<div class="modalTitle">Board</div>
 					<div class="modalList" id="todoHome">Todo홈</div>
@@ -98,7 +90,7 @@
 															<div class="">
 																<ul class="container-detail font-small">
 																	<c:forEach items="${emps}" var="emp">
-																		<c:if test="${emp.deptCode eq dept.deptCode}">
+																		<c:if test="${emp.deptCode eq dept.deptCode and emp.empId ne loginMember.empId }">
 																			 <li class="li-emp" data-id="${emp.empId}" data-dept="${emp.deptCode}" data-job="${emp.jobTitle}" data-name="${emp.name}">${emp.name } ${emp.jobTitle }</li>
 																		</c:if>
 																	</c:forEach>
@@ -143,6 +135,12 @@
 	border-radius: 50px;
 	border: solid 1px lightgray;
 	color: gray;
+}
+.menu a, .menu .button {
+    line-height: 1;
+    text-decoration: none;
+    display: block;
+    padding: 1.7rem 1rem;
 }
 </style>
  				
@@ -427,6 +425,7 @@ document.querySelector("#titleContentCanclebtn${vs.index }").addEventListener('c
 	position:absolute;
 	right: 98px;
     top: 39px;
+    transform: translate(0, -20px);
 }
 .comment-name{
 	width : 68px;
@@ -472,7 +471,7 @@ document.querySelector("#titleContentCanclebtn${vs.index }").addEventListener('c
 														<form:form action="${pageContext.request.contextPath }/todo/todoInfoUpdate.do" id="updateEpFrm" class="removeView">
 															<input type="hidden" name="no" id="todoUpdateinput"/>
 															<input type="hidden" name="todoBoardNo" value="${todoBoard.no }"/>
-															<textarea name="info" class="todoInfo" id="summernote" cols="30" rows="5" style="margin-top: 21px;" ></textarea>
+															<textarea name="info" class="todoInfo" id="summernote" cols="30" rows="5" style="margin-top: 21px;"  ></textarea>
 															<button class="comment-btn">수정</button>
 															<button class="comment-btn" id="epCanclebtn">취소</button>
 														</form:form>
@@ -503,6 +502,7 @@ document.querySelector("#titleContentCanclebtn${vs.index }").addEventListener('c
 							    								width: 69px;" >삭제</button>
 															</form:form>
 															<img id="img-viewer" width="15%">
+															<div class="div-report-write-file-name"></div>
 														</div>
 														</div>
 													</ul>
@@ -512,8 +512,7 @@ document.querySelector("#titleContentCanclebtn${vs.index }").addEventListener('c
 													</div>
 													<div class="comment-div"> <!--  댓글입력창 -->
 														<div style="width: 50px">
-															
-   																 <img src="${pageContext.request.contextPath }/resources/upload/emp/${emp.attachment.renameFilename }" alt="" class="my-img">
+   																 <img src="${pageContext.request.contextPath }/resources/upload/emp/${empty emp.attachment.renameFilename ? 'default.png' : emp.attachment.renameFilename }" alt="" class="my-img">
 														</div>
 														<div class="comment-name">${emp.name }</div>
 														<div style="width: 90%"> 
@@ -522,7 +521,7 @@ document.querySelector("#titleContentCanclebtn${vs.index }").addEventListener('c
 																<input type="hidden" class="comment-input" name="todoBoardNo" value="${todoBoard.no }">
 																<input type="hidden" id="comment-todo-input" name="todoNo"/>
 														</div>
-														<button class="comment-btn"id="comment-enroll">등록</button>
+														<button class="comment-btn"id="comment-enroll" style="margin-top: 30px;">등록</button>
 															</form:form>
 													</div><!-- 댓글 나오게  -->
 													<div  id="todoComment">
@@ -592,6 +591,9 @@ const confrm =(e)=>{
 											</button>
 										</div>
 									</div><!-- 모달끝 -->
+									<style>
+									
+									</style>
 
 <script>
 //$('#element').foundation('open');
@@ -607,33 +609,47 @@ const modalOpen = (todoListNo, todoNo) => {
 				url : "${pageContext.request.contextPath}/todo/todoSelectByNo.do?no="+todoNo,
 				success(data){
 					console.log(data);
-					const no = data.querySelector("no");
-					const info = data.querySelector("info");
-					const content = data.querySelector("content");
-					const endDate = data.querySelector("end_date");
-					const comments = data.querySelector("todocomments");
-					const attachments = data.querySelector("attachments")					
-					const renameFilename= attachments.querySelector("renameFilename");
 					
 					
 					
+					
+					const no = data.no;
+					const info = data.info;
+					const content = data.content;
+					const endDate = data.endDate;
+					const comments = data.todocomments;
+					const attachments = data.attachments					
 					let imageName = '';
+					
+					if(attachments != null  && attachments.length > 0){
+					const renameFilename= attachments[0].renameFilename;
 					if(renameFilename != null && renameFilename != ""){
-					imageName = renameFilename.textContent;
+					imageName = renameFilename;
+					}
+					 const btn = document.querySelector("#delteattachment");
+					 btn.classList.add('removeView');
+					
+						if(renameFilename != null && renameFilename != ""){
+							// delete 버튼에 no 값 넣기 
+							const attachDeletinput= document.querySelector("#attachDelet-input");
+							attachDeletinput.value = renameFilename;
+						    btn.classList.remove('removeView');
+							}
+					
 					}
 					console.log(imageName)
 					//todo content info 아이디넣기
 					const todoContentinput = document.querySelector("#todoContentinput");
-					todoContentinput.value = no.textContent;
+					todoContentinput.value = no;
 					//todo info input  아이디 넣기
 					const todoUpdateinput = document.querySelector("#todoUpdateinput");
-					todoUpdateinput.value = no.textContent; // 수정된 부분				
+					todoUpdateinput.value = no; // 수정된 부분				
 					//todo delete input 아이디넣기
 					const todoDeleteinput = document.querySelector("#todoDeleteinput");
-					todoDeleteinput.value = no.textContent;
+					todoDeleteinput.value = no;
 					//todo comment no input 아이디 넣기
 					const commenttodoinput =  document.querySelector("#comment-todo-input");
-					commenttodoinput.value = no.textContent;
+					commenttodoinput.value = no;
 	
 					//이미지 넣기
 					const imagePrint = document.querySelector("#image-print")					
@@ -641,52 +657,63 @@ const modalOpen = (todoListNo, todoNo) => {
 					
 					const todoContent = document.querySelector("#todoContent");
 					todoContent.innerHTML='';
-					todoContent.innerHTML= content.textContent;
+					todoContent.innerHTML= content;
+					const summernote = document.querySelector("#summernote");
+					summernote.value = '';
+					summernote.value = content;
 					
 					const todoContentText = document.querySelector("#todoContentText");
 					todoContentText.value ='';
-					todoContentText.value = content.textContent;
+					todoContentText.value = content;
 					
 					const todoInfo = document.querySelector(".todoInfo");
 					todoInfo.value = '';
-					todoInfo.value = info.textContent;
+					todoInfo.value = info;
 					
 					const epContent = document.querySelector("#epContent");
 					epContent.innerHTML= '';
 					epContent.innerHTML+= `<i class="fa fa-list" aria-hidden="true" style="margin-right: 15px"></i>`;
-					epContent.innerHTML+= info.textContent;
+					epContent.innerHTML+= info;
 					
 					// 등록된 댓글 뿌리기
 					console.log(comments);
-					// 유사배열 진짜 배열로 만들고 뿌리기
 					const todoComment = document.querySelector("#todoComment");
 					todoComment.innerHTML= "";
 					
-					const realcomments = [...comments.children];
-					if(realcomments !=null && realcomments !=''){
-						realcomments.forEach((comment,index)=>{
-							const [no,content,regDate,,,,,,empId,todoNo,empfilename,empName] = comment.children;							
-							
-							todoComment.innerHTML+= `
-								<div class="comment-div comment-wrapper/${index}">  
-							<div style="width: 50px">
-								
-								<img src='${pageContext.request.contextPath}/resources/upload/emp/\${empfilename.textContent}' alt="" class="my-img";>
-							</div>
-							<div class="comment-name"> \${empName.textContent}</div>
-							<div style="width: 90%">
-								<input type="text" class="comment-input"  readonly value ="\${content.textContent}" >
-							
-							`
-							let confrmEmpId= '${sessionScope.loginMember.empId}';
-							if (empId.textContent == confrmEmpId){
-								
-							todoComment.innerHTML+=`
-							<button class="comment-btn modal-btn" onclick="commentDelete('\${no.textContent}',event)" id="comment-delete" >삭제</button>
-								`
-							
-							}
-							
+					if(comments != null && comments != ''){
+						comments.forEach((comment,index)=>{
+					        
+							let no = comment.no;
+							let content = comment.content;
+							let empId = comment.empId;
+							let todoNo = comment.todoNo;
+							let empfilename = comment.empFilename;
+							let empName = comment.empName;
+					        
+					        if(empfilename == '' || empfilename == null) {
+					            empfilename = 'default.png';
+					        }
+					                     
+					        todoComment.innerHTML += `
+					            <div class="comment-div comment-wrapper/${index}">  
+					                <div style="width: 50px">
+					                    <img src='${pageContext.request.contextPath}/resources/upload/emp/\${empfilename}' alt="" class="my-img";>
+					                </div>
+					                <div class="comment-name">\${empName}</div>
+					                <div style="width: 90%">
+					                    <input type="text" class="comment-input" readonly value="\${content}">
+					                </div>
+					        `;
+					        
+					        let confrmEmpId = '${sessionScope.loginMember.empId}';
+					        
+					        if (empId == confrmEmpId){
+					            todoComment.innerHTML += `
+					                <button class="comment-btn modal-btn" onclick="commentDelete('${no}', event)" id="comment-delete">삭제</button>
+					            `;
+												
+												}
+												
 							todoComment.innerHTML+=`</div> <!--  댓글  -->`
 							
 						})
@@ -694,17 +721,7 @@ const modalOpen = (todoListNo, todoNo) => {
 					}
 					
 					
-					 const btn = document.querySelector("#delteattachment");
-					 btn.classList.add('removeView');
-					
-					if(renameFilename != null && renameFilename != ""){
-						// delete 버튼에 no 값 넣기 
-						const attachDeletinput= document.querySelector("#attachDelet-input");
-						attachDeletinput.value = renameFilename.textContent;
-					    btn.classList.remove('removeView');
-						}
-						
-					
+
 					
 					
 				},
@@ -742,17 +759,23 @@ const commentDelete =(no)=>{
 document.querySelector("#exampleFileUpload").addEventListener('change',(e)=>{
 
 	const f = e.target;
-	console.log(f.files);               //배열
-	console.log(f.files[0]);           //보통 0번지에 사진이 들어가있다.
 	if(f.files[0]){//파일 선택한 경우
 		const fr = new FileReader();
 		fr.readAsDataURL(f.files[0]);  //비동기처리  - 백그라운드 작업
 		fr.onload = (e) => {
 			//읽기 작업 완료시 호출될 load이벤트핸들러
-			document.querySelector("#img-viewer").src = e.target.result; // dataUrl		
+			document.querySelector("#img-viewer").src = '/resources/images/clip.png'; // dataUrl		
 			console.log(e.target.result); //파일2진데이터를 인코딩한 결과
 			
+			const div = document.querySelector('.div-report-write-file-name');
+			
 			const todoNo = document.querySelector("#todoContentinput");
+			console.log(e.target);
+			
+			if(f){
+					div.innerHTML = f.name;
+			}
+			
 			const formData = new FormData();
 			formData.append('file', f.files[0]); // f는 input[type=file] 엘리먼트
 			formData.append('todoNo',todoNo.value);

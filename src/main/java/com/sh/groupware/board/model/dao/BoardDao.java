@@ -85,7 +85,7 @@ public interface BoardDao {
 
 	int insertBoardType(BoardType boardType);
 
-	@Select("select * from boardType")
+	@Select("select * from boardType order by no")
 	List<BoardType> selectBoardTypeList();
 
 	List<Board> findByNoBoardList(String no, RowBounds rowBounds);
@@ -94,6 +94,9 @@ public interface BoardDao {
 
 	@Select("select category from boardType where no = #{no}")
 	BCategory selectOneBoardCategory(String bType);
+
+	@Select("select * from boardType where no = (select b_type from board where no = #{no})")
+	BoardType selectOneBoardType(String no);
 
 
 

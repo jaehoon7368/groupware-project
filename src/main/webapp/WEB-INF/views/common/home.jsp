@@ -257,10 +257,6 @@ const updateDayWorkTime = (daytimes) =>{
 									<div id="home-center" class="div-padding div-margin">
 										<h5>전사게시판</h5>
 										<div id="board-div" class="home-div">
-											<button class="btn-board-title" onclick="styleChange(this);">ㅇㅇ</button>
-											<button class="btn-board-title" onclick="styleChange(this);">ㄱㄱ</button>
-											<button class="btn-board-title" onclick="styleChange(this);">ㅊㅊ</button>
-											<button class="btn-board-title" onclick="styleChange(this);">ㄹㄹ</button>
 										</div>
 									</div>
 									<script>
@@ -337,6 +333,7 @@ const updateDayWorkTime = (daytimes) =>{
 									</script>
 									</div>
 									
+									<!-- 
 									<div id="home-center" class="div-padding div-margin">
 										<h5>메일함</h5>
 										<div id="mail-div" class="home-div">
@@ -353,12 +350,13 @@ const updateDayWorkTime = (daytimes) =>{
 											});
 											btn.style.borderBottom = 'solid 2px #000';
 										};
-									</script>
+									</script> 
+									-->
 								</div>
 								
 								<!-- 본문 오른쪽 -->
 								<div>
-									<div id="home-right" class="div-padding div-margin">
+									<div id="home-right-div" class="div-padding div-margin">
 										<h5 style="padding:20px">최근 알림</h5>
 										
 										<c:forEach items ="${reNotis }" var="reNoti" varStatus="vs">
@@ -393,8 +391,10 @@ const updateDayWorkTime = (daytimes) =>{
 						       				</c:if>
 										</c:forEach>
 													
+													
 									</div>
 									
+									<%-- 
 									<div id="home-report" class="div-padding div-margin">
 										<div class="div-padding home-report-div">
 											<h5 onclick="location.href='${pageContext.request.contextPath}/report/report.do';">보고</h5>
@@ -479,14 +479,15 @@ const updateDayWorkTime = (daytimes) =>{
 												<div class="home-bottom-title">작성해야 하는 보고가 없습니다.</div>
 											`;
 										}
-									</script>
+									</script> 
+									--%>
 									
 								</div>
 							</div>
 						</div>
 						
 						<div>
-							<%-- <div id="home-bottom" class="div-padding div-margin">
+							<div id="home-bottom" class="div-padding div-margin">
 								<h5 onclick="location.href='${pageContext.request.contextPath}/report/report.do';">보고</h5>
 								<div class="home-bottom-div">
 									<c:if test="${empty reportList}">
@@ -495,7 +496,7 @@ const updateDayWorkTime = (daytimes) =>{
 									<c:if test="${!empty reportList}"><c:set var="j" value="0" />
 										<c:forEach items="${reportList}" var="report" varStatus="vs">
 											<c:if test="${report.createYn == 'N'}">
-												<c:if test="${j <= 20}">
+												<c:if test="${j <= 200}">
 													<c:set var="j" value="${j += 1}" />
 													<div class="div-report" data-no="${report.reportNo}">
 														<div class="div-report-tbl">
@@ -568,7 +569,7 @@ const updateDayWorkTime = (daytimes) =>{
 										<div class="home-bottom-title">작성해야 하는 보고가 없습니다.</div>
 									`;
 								}
-							</script> --%>
+							</script>
 						</div>
 					</div>
 					

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ 	<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -12,21 +12,43 @@
 		<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-	
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chat/chatRoom.css" />
 	</head>
 	<body>
-	
 		<div id="msg-container" style="height: 90vh; overflow-y: auto;">
 			<ul class="list-group list-group-flush">
 				<c:forEach items="${chatLogs}" var="chatLog">
 					<jsp:useBean id="date" class="java.util.Date" />
 					<jsp:setProperty name="date" property="time" value="${chatLog.time}" />
-					<li class="list-group-item" title="<fmt:formatDate value='${date}' type='both' />">
-						${chatLog.emp.name} ${chatLog.emp.jobTitle }님 : ${chatLog.msg}
-					</li>
+					
+					<c:if test ="${chatLog.empId ne loginMember.empId }">
+						<li class="list-group-item" title="<fmt:formatDate value='${date}' type='both' />">
+						<img src="${pageContext.request.contextPath }/resources/upload/emp/${chatLog.emp.attachment.renameFilename }" alt=""  class="img"/>
+						<p class="name"> ${chatLog.emp.name} </p>
+						<p>
+							<span class="msg">${chatLog.msg}</span>
+							<span class="time"><fmt:formatDate value='${date}' type='both' /></span>
+						</p>
+						</li>
+					
+					</c:if>
+					<c:if test ="${chatLog.empId eq loginMember.empId }">
+						<li class="list-group-item myli" title="<fmt:formatDate value='${date}' type='both' />">
+						<p class="name1"></p>
+						<p>
+							<span class="time"><fmt:formatDate value='${date}' type='both' /></span>
+							<span class="msg2">${chatLog.msg}</span>
+						</p>
+						</li>
+					
+					</c:if>
+					
+
+						
 				</c:forEach>
 			</ul>
 		</div>
+
 		
 		<div class="input-group mb-3">
 		  <input type="text" id="msg" class="form-control" placeholder="Message">
@@ -62,7 +84,7 @@
 					msg.value = '';
 					msg.focus(); 
 				});
-	window.addEventListener('focus',()=>{
+				window.addEventListener('focus',()=>{
 					lastCheck();
 				})
 				const chatroomId = '${param.chatroomId}';
@@ -89,20 +111,59 @@
 					stompClient.subscribe(`/app/chat/${param.chatroomId}`, (message) => {
 						console.log(`/app/chat/${param.chatroomId} : `, message);
 						
-						
 						const {'content-type' : contentType} = message.headers; // applicaion/json
 						const {empId, msg, time, type ,emp} = JSON.parse(message.body);
-						
-						console.log(emp);
-						console.log(empName);
+						console.log(empId);
+						const myId = '<sec:authentication property="principal.username" />';
 						if (contentType) {
 							const ul = document.querySelector('#msg-container ul');
-							ul.innerHTML += `
-								<li class="list-group-item" title="\${new Date(time)}">
-									\${emp.name} \${emp.jobTitle}님 : \${msg}
-								</li>
-							`;
+							const currentTime = new Date().toLocaleTimeString();
+	
+							if(empId == myId){
+								ul.innerHTML += `
+									<li class="list-group-item myli" id="dialog" title="\${currentTime}">
+									<p>
+										<span class="time"><fmt:formatDate value='${date}' type='both' /></span>
+										<span class="msg2">\${msg}</span>
+									</p>
+										</li>
+									`;
+							}else{
+								$.ajax({
+									url:"${pageContext.request.contextPath}/chat/selectEmpByEmpId.do",
+									data: {
+										empId : empId
+									},
+									success(data){
+										console.log(data);
+										const attach = data.attachment;
+										const fileName = attach.renameFilename;
+										const name = data.name;
+										
+										
+										ul.innerHTML += `
+											<li class="list-group-item" id="dialog2" title="\${currentTime}">
+											<img src="${pageContext.request.contextPath }/resources/upload/emp/\${fileName}" alt=""  class="img"/>
+											<p class="name"> \${name} </p>
+											<p>
+												<span class="msg2">\${msg}</span>
+												<span class="time"><fmt:formatDate value='${date}' type='both' /></span>
+											</p>
+												</li>
+											`;
+										
+										
+										
+									},
+									error: console.log
+								});// ajax 끝
+							} // if끝
+							
+							
 						}
+						
+	
+						
 						// 메세지창 끌어 올리기 (스크롤 처리)
                         const container = document.querySelector('#msg-container');
                         container.scrollTop = container.scrollHeight;

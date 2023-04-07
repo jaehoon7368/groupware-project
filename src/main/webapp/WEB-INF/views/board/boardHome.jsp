@@ -20,9 +20,13 @@
 		<div class="container-title">게시판 홈</div>
 		<div class="home-topbar topbar-div">
 			<div>
-				<a href="#" id="home-my-img"> <img
-					src="${pageContext.request.contextPath}/resources/images/sample.jpg"
-					alt="" class="my-img">
+				<a href="#" id="home-my-img">
+					<c:if test="${!empty sessionScope.loginMember.attachment}">
+						<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+					</c:if>
+					<c:if test="${empty sessionScope.loginMember.attachment}">
+						<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+					</c:if>
 				</a>
 			</div>
 			<div id="my-menu-modal">
@@ -30,7 +34,9 @@
 					<button class="my-menu">기본정보</button>
 				</div>
 				<div class="my-menu-div">
-					<button class="my-menu">로그아웃</button>
+					<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
+						<button class="my-menu" type="submit">로그아웃</button>								
+					</form:form>
 				</div>
 			</div>
 		</div>
@@ -70,22 +76,17 @@
 					      	<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
 					      		<c:if test="${board.BType == boardType.no}">다우그룹>${boardType.title}</c:if>
 					      	</c:forEach>
-					        <%-- <c:choose>
-					          <c:when test="${board.BType == 'A'}">다우그룹>전체게시판</c:when>
-					          <c:when test="${board.BType == 'M'}">다우그룹>주간 식단표</c:when>
-					          <c:when test="${board.BType == 'N'}">다우그룹>이주의 IT뉴스</c:when>
-					          <c:when test="${board.BType == 'P'}">다우그룹>사진 게시판</c:when>
-					          <c:otherwise>${board.BType}</c:otherwise>
-					        </c:choose> --%>
 					      </span>
 					      <span class="title">${board.title}</span>
 					      <span class="article-content">${board.content}</span>
 					      <div class="writer-info">
 					        <span class="writer-img">
-					          <a href="#" id="home-my-img"> <img
-					            src="${pageContext.request.contextPath}/resources/images/sample.jpg"
-					            alt="" class="my-img">
-					          </a>
+					        	<c:if test="${empty board.renameFilename }">
+					        		<img src="${pageContext.request.contextPath}/resources/upload/emp/default.png" class="my-img">
+					        	</c:if>
+					        	<c:if test="${!empty board.renameFilename }">
+						           <img src="${pageContext.request.contextPath}/resources/upload/emp/${board.renameFilename}" class="my-img">
+					        	</c:if>
 					        </span>
 					        <span class="writer">${board.writer}</span>
 					        <span id="createdDate" class="createdDate">
@@ -111,6 +112,7 @@
 			
 			<div class="resent-group">
 				<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
+				<c:if test="${boardType.category == 'C'}">
 					<div class="group-list">
 					    <a href="${pageContext.request.contextPath}/board/boardList.do"><span class="group-list-title">${boardType.title}</span></a>
 					    <ul>
@@ -136,6 +138,7 @@
 					        </c:forEach>
 					    </ul>
 					</div>
+					</c:if>
 				</c:forEach>
 				
 				<%-- <div class="group-list">

@@ -29,7 +29,12 @@
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
-										<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
+										<c:if test="${!empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+										</c:if>
+										<c:if test="${empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+										</c:if>
 									</a>
 								</div>
 								<div id="my-menu-modal">
@@ -37,7 +42,9 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<button class="my-menu">로그아웃</button>
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
+											<button class="my-menu" type="submit">로그아웃</button>								
+										</form:form>
 									</div>
 								</div>
 							</div>
@@ -65,10 +72,14 @@
 	<div class="target-select">
 		<span>To.</span>
 		<select name="bType" id="bType">
-			<option value="A">전사 공지</option>
+			<option value="none">게시판을 선택해주세요.</option>
+			<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
+				<option value="${boardType.no}">${boardType.title}</option>
+			</c:forEach>
+			<!-- <option value="A">전사 공지</option>
 			<option value="M">주간 식단표</option>
 			<option value="P">사진 게시판</option>
-			<option value="N">이주의 IT뉴스</option>
+			<option value="N">이주의 IT뉴스</option> -->
 		</select>
 	</div>
 
@@ -122,12 +133,27 @@
   	
 	<div class="div-padding div-report-write-btn">
 		<input type="submit" value="등록"/>
-		<input type="submit" value="취소"/>
+		<input type="button" value="취소"/>
 	</div>
 </form:form>
+<script>
+	document.boardFrm.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const bType = e.target.bType;
+		
+		if (bType.value == 'none') {
+			alert('글을 작성할 게시판을 선택해주세요.');
+			bType.focus();
+			return false;
+		}
+		
+		e.target.submit();
+	});
+</script>
 </section>
   </div>
 </div>
+<%-- 
 <script>
 $(document).ready(function() {
      bType = "<%= request.getParameter("bType") %>";
@@ -152,7 +178,8 @@ $(document).ready(function() {
             break;
     }
 });
-</script>
+</script> 
+--%>
 <script>
 function displayFileNames() {
 	  const fileNameDiv = document.getElementById("fileName");

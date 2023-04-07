@@ -13,7 +13,7 @@
 %>   
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="Emp" name="title"/>
+	<jsp:param value="근태관리" name="title"/>
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/emp/empAllInfo.css">
 <style>
@@ -208,6 +208,8 @@ window.addEventListener('load', () => {
                     <!-- 본문 end -->
                 </div>
             </div>	
+        
+
          
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 <script src="${pageContext.request.contextPath}/resources/js/emp/emp.js"></script>			

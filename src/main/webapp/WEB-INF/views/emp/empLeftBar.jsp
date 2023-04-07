@@ -65,21 +65,29 @@
                                 <p class="title font-medium font-bold">부서 근태현황</p>
                                 <div class="con">
                                     <ul class="container-detail font-small">
-                                    	<c:forEach items="${sessionScope.deptList}" var="dept">
-											<li><a class="container-a" href="${pageContext.request.contextPath}/workingManagement/empDeptView.do?code=${dept.deptCode}">${dept.deptTitle}</a></li>
-										</c:forEach>
+                                    	<sec:authorize access="hasRole('ROLE_PERSONNEL')">
+	                                    	<c:forEach items="${sessionScope.deptList}" var="dept">
+												<li><a class="container-a" href="${pageContext.request.contextPath}/workingManagement/empDeptView.do?code=${dept.deptCode}">${dept.deptTitle}</a></li>
+											</c:forEach>
+										</sec:authorize>
+										<sec:authorize access="!hasRole('ROLE_PERSONNEL')">
+												<li><a class="container-a" href="${pageContext.request.contextPath}/workingManagement/empDeptView.do?code=${sessionScope.loginMember.deptCode}">${sessionScope.loginMember.deptTitle}</a></li>
+										</sec:authorize>
                                     </ul>
                                 </div>
                             </li>
+                             <sec:authorize access="hasRole('ROLE_PERSONNEL')">
                             <li>
                                 <p class="title font-medium font-bold a-font"><a class=" color-black" href="${pageContext.request.contextPath }/emp/empEnroll.do">인사정보 등록</a></p>
                             </li>
                             <li>
                                 <p class="title font-medium font-bold a-font"><a class=" color-black" href="${pageContext.request.contextPath }/emp/empAllInfo.do">전사 인사정보</a></p>
                             </li>
+                            </sec:authorize>
                         </ul>
                     </div>
                 </div>
+             
                 <!-- 왼쪽 추가 메뉴 end -->
 
 <script>
@@ -262,15 +270,19 @@ function getStartAndEndDateOfWeek() {
 			  
 			  let times = 144000000 - (weekTotalTime + weekOverTime); // 40시간 - 주간 기본 근무시간
 			  totalWorkTime.textContent = chageWorkTime(weekTotalTime + weekOverTime);
-			  mainTotalWorkTime.textContent = chageWorkTime(weekTotalTime + weekOverTime);
-			  mainWeekOverTime.textContent = chageWorkTime(weekOverTime);
-			  mainWorkTime.textContent = chageWorkTime(times);
-			  monthWorkTime.textContent = chageWorkTime(totalMonthTime + totalMonthOverTime);
-			  monthOverTime.textContent = chageWorkTime(totalMonthOverTime);
 		  },
 		  error : console.log
 		  
 	  });
+}
+
+function chageWorkTime(times){
+	const time = times / 1000;
+	const hours = Math.floor(time / 3600); // 시간 계산
+	const minutes = Math.floor((time % 3600) / 60); // 분 계산
+	const seconds = Math.floor(time % 60); // 초 계산
+	
+	return `\${hours}h \${minutes}m \${seconds}s`;	
 }
 
 </script>					

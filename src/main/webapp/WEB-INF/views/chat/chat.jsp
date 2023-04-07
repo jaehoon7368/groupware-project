@@ -13,27 +13,11 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
 		<jsp:param value="" name="title"/>
 	</jsp:include>
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/chat/chat.css" />
 
 <div class="all-container app-dashboard-body-content off-canvas-content"
 	data-off-canvas-content>
 	
-<style>
-	
-/* 테이블*/
-.left-container {
-    display: flex;
-    flex-direction: row;
-    align-content: space-around;
-    flex-wrap: wrap;
-}
-p.title {
-    font-size: 22px;
-}
-.container-detail li:hover{
-	background-color: #d9d9d942;
-	font-size:15px;
-}
-</style>
 	<!-- 왼쪽 추가 메뉴 -->
 	<div class="left-container">
 		<div class="accordion-box">
@@ -63,7 +47,6 @@ p.title {
 		li.addEventListener('click',(e)=>{
 			const empId = e.target.dataset.id;
 			const myEmpId = ${empId};
-			console.log(myEmpId);
 			const csrfHeader = "${_csrf.headerName}";
 	        const csrfToken = "${_csrf.token}";
 	        const headers = {};
@@ -79,19 +62,19 @@ p.title {
 						},
 				success(data){
 						console.log(data)
-						const chatroomId = data.querySelector("chatroomId");
-						console.log(chatroomId.textContent);
+						const chatroomId = data.chatroomId;
 						
 						
-						const url = `${pageContext.request.contextPath}/chat/chatRoomPopUp.do?chatroomId=\${chatroomId.textContent}`;
+						const url = `${pageContext.request.contextPath}/chat/chatRoomPopUp.do?chatroomId=\${chatroomId}`;
 						const name = chatroomId;               //popup의 window 이름, 브라우져가 탭 , 팝업윈도으를 관리하는 이름 
 						const spec = "width=600px,height=700px";
 						open(url,name,spec);
 						
 						
 						
+						
 					},
-				error: console.log
+				error: console.log,
 			})
 			
 		})
@@ -105,13 +88,10 @@ p.title {
 	<!-- 왼쪽 추가 메뉴 end -->
 	<div class="home-container">
 	<style>
-	.div-padding{
-		margin-top : 200px;
-	}
 	</style>
 		<!-- 본문 -->
 		<div class="div-padding">
-	    <table class=" "> 
+	    <table class="chat-table"> 
             <thead>
               <tr>
                 <th width="200">채팅방 이름</th>
@@ -120,14 +100,20 @@ p.title {
               </tr>
             </thead>
             <tbody>
-            <c:forEach items="${chatLogs }" var="chatLog">   
-              <tr data-chatroomId = "${chatLog.chatroomId }">
-                <td class="name">${chatLog.emp.name }님 과의 채팅방</td>
-                <td class="msg">${chatLog.msg }</td>
-                <td class="unreadCount"><span>${chatLog.unreadCount }</span></td>
-              </tr>
-              </c:forEach>
-    
+            <c:if test="${!empty chatLogs }">
+	            <c:forEach items="${chatLogs }" var="chatLog">   
+	              <tr class="chat-tbl-tr" data-chatroomId = "${chatLog.chatroomId }">
+	                <td class="name">${chatLog.emp.name }님 과의 채팅방</td>
+	                <td class="msg">${chatLog.msg }</td>
+	                <td class="unreadCount"><span>${chatLog.unreadCount }</span></td>
+	              </tr>
+	             </c:forEach>
+             </c:if>
+            <c:if test="${empty chatLogs }">
+            	<tr class="chat-tbl-tr">
+            		<td colspan="3">생성된 채팅방이 없습니다.</td>
+            	</tr>
+            </c:if>
             </tbody>
           </table>
 
@@ -166,10 +152,6 @@ p.title {
 			const myId ='<sec:authentication property="principal.username"/>' ;
 						
 			
-			console.log(name);
-			console.log(name)
-			console.log(name)
-			console.log("type =",type);
 			switch(type){
 			case "LAST_CHECK" :
 				
@@ -210,29 +192,9 @@ p.title {
 				}
 				const tbody = document.querySelector('table tbody');
 				tbody.insertAdjacentElement('afterbegin', tr);
-				
+				location.reload();
 				break;
 			}
-			/* 
-					<!-- 본문 -->
-		<div class="div-padding">
-	    <table class="hover"> 
-            <thead>
-              <tr>
-                <th width="200">채팅방 이름</th>
-                <th>메시지</th>
-                <th width="150">안읽은 메시지 수</th>
-              </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${chatLogs }" var="chatLog">   
-              <tr data-chatroomId = "${chatLog.chatroomId }">
-                <td class="name">${chatLog.emp.name }님 과의 채팅방</td>
-                <td class="msg">${chatLog.msg }</td>
-                <td class="unreadCount"><span>${chatLog.unreadCount }</span></td>
-              </tr>
-              </c:forEach>
-    */
 			
 			
 			

@@ -88,6 +88,8 @@ public interface BoardService {
 
 	BCategory selectOneBoardCategory(String bType);
 
+	BoardType selectOneBoardType(String no);
+
 	
 
 	

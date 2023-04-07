@@ -124,7 +124,7 @@
             <table class="addr-table">
                 <thead>
                 <tr>
-                	<th>
+                	<th style="width:35px;">
 						<input type="checkbox" id="selectAllBtn" name="" value=""/>
 					</th>
                     <th scope="col" class="th-name">이름</th>
@@ -143,10 +143,7 @@
 	               <c:forEach items="${addrBookList}" var="addr">
 					    <tr data-no="${addr.addrNo}">
 					        <td><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
-					        <td>
-					        <span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>
-					        ${addr.name}
-					        </td>
+					        <td>${addr.name}</td>
 					        <td>${addr.jobName}</td>
 					        <td>${addr.phone}</td>
 					        <td>${addr.email} </td>
@@ -182,13 +179,14 @@
 
     <c:forEach var="i" begin="${startPage}" end="${endPage}">
       <li class="page-item ${i==currentPage ? 'active' : ''}">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do?cpage=${i}">${i}</a>
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrHome.do?cpage=${i}">${i}</a>
       </li>
     </c:forEach>
 
     <c:if test="${endPage < totalPage}">
+    
       <li class="page-item">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do?cpage=${endPage+1}" aria-label="Next">
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrHome.do?cpage=${endPage+1}" aria-label="Next">
           <span aria-hidden="true">&gt;</span>
           <span class="sr-only">Next</span>
         </a>
@@ -197,70 +195,21 @@
 	</c:if>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const addList = $('#addressList'); // 주소록 리스트 요소 가져오기
-  addList.hide(); // 리스트 숨김 처리
-
   // 클릭 이벤트 핸들러 함수
  function handleButtonClick(event) {
+	  console.log('event', event);
   const keyword = event.target.innerText;
-  if (keyword === "전체") { // 전체 키워드인 경우
-	  location.reload(); // 숨겨진 모든 행 보이기
-
+  location.href = '${pageContext.request.contextPath}/addr/addrHome.do?keyword=' + keyword;
+	  console.log(keyword);
   }
-  filterNames(keyword);
-  console.log(keyword);
-}
-
-  // 서버에 요청을 보내는 함수
-  function filterNames(keyword) {
-	  $.ajax({
-	      url: '${pageContext.request.contextPath}/addr/keywordSearch.do',
-	      type: 'GET',
-	      dataType: 'json',
-	      data: { keyword },
-	      success: function (data) {
-	        $('.addr-table tbody').empty();
-	        if (data.length === 0) {
-	          $('.addr-table tbody').append('<tr><td style="padding-top:50px;" colspan="11">조회된 주소록이 없습니다.</td></tr>');
-	        } else {
-	          $.each(data, function (index, item) {
-	            $('.addr-table tbody').append(
-	              '<tr data-no="' + item.addrNo + '">' +
-	              '<td><input type="checkbox" name="addrNo" value="' + item.addrNo + '"/></td>' +
-	              '<td>' +
-	              '<span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>' +
-	              item.name +
-	              '</td>' +
-	              '<td>' + item.jobName + '</td>' +
-	              '<td>' + item.phone + '</td>' +
-	              '<td>' + item.email + '</td>' +
-	              '<td>' + item.deptTitle + '</td>' +
-	              '<td>' + item.company + '</td>' +
-	              '<td>' + item.cpTel + '</td>' +
-	              '<td>' + item.cpAddress + '</td>' +
-	              '<td>' + item.memo + '</td>' +
-	              '<td>' + item.groupName + '</td>' +
-	              '</tr>'
-	            );
-	          });
-	        }
-	      },
-	      error: function (jqXHR, textStatus, errorThrown) {
-	        console.log(jqXHR.responseText);
-	      }
-	    });
-	  }
-
   // 버튼 요소들 가져오기
   const buttons = document.querySelectorAll('.btn-search-keyword');
-
   // 버튼 요소들에 클릭 이벤트 핸들러 함수 등록하기
   buttons.forEach(button => {
     button.addEventListener('click', handleButtonClick);
   });
-});
 </script>
+
 <script>
 const styleChange = (btn) => {
 	document.querySelectorAll('#search-div .btn-search-keyword').forEach((btn) => {
@@ -284,6 +233,14 @@ document.querySelectorAll("tr[data-no]").forEach((tr) => {
 </script>
 <script>
 $(document).ready(function() {
+	// 버튼클릭 스타일
+	const urlKeyword = "${keyword}";
+	console.log(urlKeyword);
+	document.querySelectorAll('#search-div .btn-search-keyword').forEach((btn) => {
+		if (btn.innerText == urlKeyword)
+			btn.style.borderBottom = 'solid 2px #000';
+	});
+	
     // 전체선택 버튼 클릭 시
     $('#selectAllBtn').click(function() {
         const isChecked = $(this).prop('checked');
@@ -310,7 +267,7 @@ $(document).ready(function() {
             console.log("Selected addrNos: " + addrNos);
             
             $.ajax({
-                url: '${pageContext.request.contextPath}/addr/addrDelete.do',
+                url: '${pageContext.request.contextPath}/addr/addrsDelete.do',
                 type: 'POST',
                 data: {addrNos: addrNos},
                 headers,

@@ -29,15 +29,22 @@
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
-										<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
+										<c:if test="${!empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+										</c:if>
+										<c:if test="${empty sessionScope.loginMember.attachment}">
+											<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+										</c:if>
 									</a>
-								</div>
+								</div>	
 								<div id="my-menu-modal">
 									<div class="my-menu-div">
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<button class="my-menu">로그아웃</button>
+										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
+											<button class="my-menu" type="submit">로그아웃</button>								
+										</form:form>
 									</div>
 								</div>
 							</div>
@@ -65,12 +72,17 @@
   	
 	<div class="target-select">
 	  <span>To.</span>
-	  	<input type="hidden" name="bType" value="${param.BType}">
+	  	<%-- <input type="hidden" name="bType" value="${param.BType}"> --%>
 		  <select name="bType" id="bType">
+			<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
+				<option value="${boardType.no}" ${board.BType == boardType.no ? 'selected' : ''}>${boardType.title}</option>
+			</c:forEach>
+		    <%-- 
 		    <option value="A" ${board.BType == 'A' ? 'selected' : ''}>전사 공지</option>
 		    <option value="M" ${board.BType == 'M' ? 'selected' : ''}>주간 식단표</option>
 		    <option value="P" ${board.BType == 'P' ? 'selected' : ''}>사진 게시판</option>
-		    <option value="N" ${board.BType == 'N' ? 'selected' : ''}>IT뉴스</option>
+		    <option value="N" ${board.BType == 'N' ? 'selected' : ''}>IT뉴스</option> 
+		    --%>
 		  </select>
 	</div>
 

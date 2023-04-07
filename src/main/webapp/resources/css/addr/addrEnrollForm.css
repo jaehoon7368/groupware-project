@@ -1,3 +1,9 @@
+.navigation ul li a .icon i {
+    position: relative;
+    font-size: 1.5em;
+    z-index: 1;
+    margin-top: 20px;
+}
 /* a태그 사용 시 파란 글씨를 검정으로 바꾸는 css */
 .container-a {
     color: #000;

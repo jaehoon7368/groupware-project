@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+.navigation ul li a .icon i {
+    position: relative;
+    font-size: 1.5em;
+    z-index: 1;
+    margin-top: 20px;
+}
+/* 테이블*/
+.left-container {
+    display: flex;
+    flex-direction: row;
+    align-content: space-around;
+    flex-wrap: wrap;
+}
+p.title {
+    font-size: 22px;
+}
+.container-detail li:hover{
+	background-color: #d9d9d942;
+	font-size:15px;
+}
+	.div-padding{
+  margin-top : 200px;
+
+}
+
+.div-padding table {
+	width: 100%;
+	text-align: center;
+	border-collapse: collapse;
+}
+
+.chat-table thead td {
+	font-size: small;
+	padding: 10px 0;
+	font-weight: bold;
+	border-top: solid 1px lightgray;
+	border-bottom: solid 1px lightgray;
+}
+
+.chat-table tbody td {
+	font-size: small;
+	padding: 10px 0;
+	border-top: solid 1px lightgray;
+	border-bottom: solid 1px lightgray;
+}
+.chat-tbl-tr:hover {
+	cursor: pointer;
+	box-shadow: 0 0 5px #d7d7d7;
+	background-color: #f8f8f8;
+}

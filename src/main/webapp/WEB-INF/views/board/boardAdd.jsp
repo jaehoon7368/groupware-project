@@ -57,7 +57,7 @@
 						<!-- 본문 -->
 						<div class="div-padding"></div>
 <div class="content">
-	<form action="${pageContext.request.contextPath}/board/boardTypeAdd.do" method="post" name="boardTypeAddFrm">
+	<form:form action="${pageContext.request.contextPath}/board/boardTypeAdd.do" method="post" name="boardTypeAddFrm">
 		<table class="board-add">
 			<colgroup>
 				<col width="130px">
@@ -106,12 +106,12 @@
 					<td>
 						<ul>
 							<li>
-								<input type="radio" name="category" id="classic" value="C" checked="checked"/>
-								<span><label for="classic">이미지 클래식</label></span>
+								<input type="radio" name="category" id="classic" value="C" checked/>
+								<label for="classic">이미지 클래식</label>
 							</li>
 							<li>
 								<input type="radio" name="category" id="feed" value="F"/>
-								<span><label for="feed">이미지 피드</label></span>
+								<label for="feed">이미지 피드</label>
 							</li>
 						</ul>
 						<div class="desc">※ 게시판 유형은 나중에 변경하실 수 없습니다.</div>
@@ -211,11 +211,11 @@
 					</th>
 					<td>
 						<span class="wrap-option">
-							<input type="radio" name="commentType" id="commentTypeY" value="Y" checked="checked"/>
+							<input type="radio" name="commentYn" id="commentTypeY" value="Y" checked/>
 							<label for="commentTypeY">허용</label>
 						</span>
 						<span class="wrap-option">
-							<input type="radio" name="commentType" id="commentTypeN" value="N"/>
+							<input type="radio" name="commentYn" id="commentTypeN" value="N"/>
 							<label for="commentTypeN">허용하지 않음</label>
 						</span>
 					</td>
@@ -229,10 +229,10 @@
 			</tbody>
 		</table>
 		<div class="div-padding div-report-write-btn">
-			<button>만들기</button>
-			<button>취소</button>
+			<button type="submit">만들기</button>
+			<button type="button">취소</button>
 		</div>
-	</form>
+	</form:form>
 	<script>
 		document.boardTypeAddFrm.addEventListener('submit', (e) => {
 			const title = e.target.title;

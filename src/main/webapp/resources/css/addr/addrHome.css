@@ -1,3 +1,9 @@
+.navigation ul li a .icon i {
+    position: relative;
+    font-size: 1.5em;
+    z-index: 1;
+    margin-top: 20px;
+}
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -64,7 +70,7 @@ tr[data-no] {cursor: pointer;}
 }
 
 .addr-table .th-checkBox {
-  width: 10px;
+  width: 35px;
   text-align: center;
 }
 .addr-table .th-name {

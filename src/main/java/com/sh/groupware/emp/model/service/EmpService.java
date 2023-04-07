@@ -46,5 +46,7 @@ public interface EmpService {
 
 	List<EmpDetail> empFinderDeptList(Map<String, Object> param);
 
+	List<Emp> selectEmpAddTitleDept(Map<String, Object> param);
+
 	
 }

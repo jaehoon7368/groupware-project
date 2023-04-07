@@ -1,0 +1,34 @@
+<%
+	String hotelName = (String) request.getAttribute("hotelName");
+	String roomType = (String) request.getAttribute("roomType");
+	String checkIn = (String) request.getAttribute("checkIn");
+	String checkOut = (String) request.getAttribute("checkOut");
+	int price = (int) request.getAttribute("price");
+	
+	
+
+%>    
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+
+
+
+	String hotelName = (String) request.getAttribute("hotelName");
+	String roomType = (String) request.getAttribute("roomType");
+	String checkIn = (String) request.getAttribute("checkIn");
+	String checkOut = (String) request.getAttribute("checkOut");
+	Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(checkIn);
+	Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(checkOut);
+	long dateofAccom = (date2.getTime() -date1.getTime()); //날짜 차이 계산 밀리초
+	long result = (dateofAccom/(24*60*60)/1000);   // 일수 계산  = 몇박  
+ 	int price = (int) request.getAttribute("price");
+	int totalPrice = price* (int)result;	 // 일수 * 가격
+	String hotelNo = (String) request.getAttribute("hotelNo");
+	String roomNo = (String) request.getAttribute("roomNo");
+
+
+
+
+
+
+
+https://smartstore.naver.com/deleshop/products/5016853873?NaPm=ct%3Dlcorz8lc%7Cci%3D155d13c73c74bdeef793f9ed414d1030168ded37%7Ctr%3Dsls%7Csn%3D223401%7Chk%3Dd206900c80cd8db9ee25e29ff359f5b8fc4753e7
