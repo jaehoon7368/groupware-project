@@ -32,7 +32,7 @@
             <!-- 전체 메뉴 바 -->
             <div class="navigation">
                 <ul>
-                    <li class="list active">
+                    <li class="list">
                         <a href="${pageContext.request.contextPath}/home/home.do"  title="홈">
                             <span class="icon">
                                 <i class="large fa fa-sharp fa-solid fa-house"></i>
@@ -54,14 +54,6 @@
                                 <i class="fa-solid fa-message"></i>
                             </span>
                             <span class="title">채팅</span>
-                        </a>
-                    </li>
-                    <li class="list">
-                        <a href="${pageContext.request.contextPath}/mail/mail.do" title="메일">
-                            <span class="icon">
-                                <i class="large fa fa-solid fa-envelope"></i>
-                            </span>
-                            <span class="title">메일</span>
                         </a>
                     </li>
                     <li class="list">
@@ -108,21 +100,3 @@
                 </ul>
             </div>
             <!-- 전체 메뉴 바 end -->
-
-<script>
-function setActiveMenu() {
-	  const currentLocation = location.href;
-	  const menuItems = document.querySelectorAll('.list');
-
-	  menuItems.forEach(item => {
-	    const link = item.querySelector('a');
-	    if (link.href === currentLocation) {
-	      item.classList.add('active');
-	    } else {
-	      item.classList.remove('active');
-	    }
-	  });
-	}
-	// 페이지가 로드될 때 setActiveMenu 함수 호출
-	window.addEventListener('load', setActiveMenu);
-</script>

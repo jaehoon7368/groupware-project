@@ -1,3 +1,10 @@
+.navigation ul li a .icon i {
+    position: relative;
+    font-size: 1.5em;
+    z-index: 1;
+    margin-top: 20px;
+}
+
 .left-board ul {
 	padding: 0px;
 	margin: 0px;

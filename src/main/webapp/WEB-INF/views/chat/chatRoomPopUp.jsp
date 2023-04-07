@@ -12,81 +12,9 @@
 		<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-	
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chat/chatRoom.css" />
 	</head>
 	<body>
-	<style>
-body {
-	background-color: #a1e0fa59;
-}
-
-.list-group-flush li {
-	background-color: #e1f6ff59;
-}
-
-.time {
-	font-size: 11px;
-	color: #999;
-}
-
-.img {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-}
-
-.name {
-	position: absolute;
-	font-size: 10px;
-	transform: translate(38px, -21px);
-}
-
-.list-group-item {
-	position: relative;
-	display: block;
-	padding: 0.75rem 1.25rem;
-	margin-bottom: -1px;
-	background-color: #fff;
-	border: 1px solid rgb(255 255 255/ 0%);
-	height: 73px;
-}
-
-.msg {
-	background-color: white;
-	border-radius: 12px;
-	padding: 4px;
-	font-size: 12px;
-	margin-right: 7px;
-	margin-top: 24px;
-}
-
-.list-group-item.myli {
-	display: flex;
-	flex-direction: row-reverse;
-	position: relative;
-	padding: 0.75rem 1.25rem;
-	margin-bottom: -1px;
-	background-color: #fff;
-	border: 1px solid rgb(255 255 255/ 0%);
-    height: 50px;
-    background-color: #e1f6ff59;
-}
-
-.name1 {
-	position: absolute;
-	font-size: 10px;
-	transform: translate(-38px, -21px);
-}
-
-.msg2 {
-	background-color: white;
-	border-radius: 12px;
-	padding: 4px;
-	font-size: 12px;
-	margin-left: 7px;
-	margin-top: 24px;
-}
-</style>
 		<div id="msg-container" style="height: 90vh; overflow-y: auto;">
 			<ul class="list-group list-group-flush">
 				<c:forEach items="${chatLogs}" var="chatLog">
@@ -183,20 +111,19 @@ body {
 					stompClient.subscribe(`/app/chat/${param.chatroomId}`, (message) => {
 						console.log(`/app/chat/${param.chatroomId} : `, message);
 						
-						
 						const {'content-type' : contentType} = message.headers; // applicaion/json
 						const {empId, msg, time, type ,emp} = JSON.parse(message.body);
 						console.log(empId);
 						const myId = '<sec:authentication property="principal.username" />';
 						if (contentType) {
 							const ul = document.querySelector('#msg-container ul');
-							
+							const currentTime = new Date().toLocaleTimeString();
 	
 							if(empId == myId){
 								ul.innerHTML += `
-									<li class="list-group-item myli" id="dialog" title="\${new Date(time)}">
+									<li class="list-group-item myli" id="dialog" title="\${currentTime}">
 									<p>
-										<span class="time"><fmt:formatDate value='${date}' type='both' /></span>
+										<span class="time"><fmt:formatDate value='${currentTime}' type='both' /></span>
 										<span class="msg2">\${msg}</span>
 									</p>
 										</li>
@@ -209,19 +136,18 @@ body {
 									},
 									success(data){
 										console.log(data);
-										const attach = data.querySelector("attachment");
-										console.log(attach)
-										const fileName = attach.querySelector("renameFilename");
-										console.log(fileName.textContent);
-										const name = data.querySelector("name");
+										const attach = data.attachment;
+										const fileName = attach.renameFilename;
+										const name = data.name;
+										
 										
 										ul.innerHTML += `
-											<li class="list-group-item" id="dialog2" title="\${new Date(time)}">
-											<img src="${pageContext.request.contextPath }/resources/upload/emp/\${fileName.textContent}" alt=""  class="img"/>
-											<p class="name"> \${name.textContent} </p>
+											<li class="list-group-item" id="dialog2" title="\${currentTime}">
+											<img src="${pageContext.request.contextPath }/resources/upload/emp/\${fileName}" alt=""  class="img"/>
+											<p class="name"> \${name} </p>
 											<p>
 												<span class="msg2">\${msg}</span>
-												<span class="time"><fmt:formatDate value='${date}' type='both' /></span>
+												<span class="time"><fmt:formatDate value='${currentTime}' type='both' /></span>
 											</p>
 												</li>
 											`;
