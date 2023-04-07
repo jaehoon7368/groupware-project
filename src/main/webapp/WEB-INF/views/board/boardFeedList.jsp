@@ -105,11 +105,13 @@
 					<div class="foreach-border">
 						<div class="tool-wrap">
 							<div class="info-wrap">
-								<span class="writer-img"> <a href="#" id="home-my-img">
-										<img
-										src="${pageContext.request.contextPath}/resources/images/sample.jpg"
-										alt="" class="my-img">
-								</a>
+								<span class="writer-img">
+									<c:if test="${empty board.renameFilename }">
+										<img src="${pageContext.request.contextPath}/resources/upload/emp/default.png" class="my-img">
+									</c:if>
+									<c:if test="${!empty board.renameFilename }">
+										<img src="${pageContext.request.contextPath}/resources/upload/emp/${board.renameFilename}" class="my-img">
+									</c:if>
 								</span> <span class="writer">${board.writer}</span> <span
 									id="createdDate" class="createdDate"> 
 									<fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" /> 
@@ -176,9 +178,12 @@
 							            <input type="hidden" class="comment-id" name="no" data-comment-id="${comment.no}" value="${comment.no}">
 							            <input type="hidden" class="comment-empId" name="empId" value="${comment.empId}">
 							            <span class="writer-img">
-							              <a href="#" id="home-my-img">
-							                <img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
-							              </a>
+							              <c:if test="${empty comment.renameFilename }">
+											<img src="${pageContext.request.contextPath}/resources/upload/emp/default.png" class="my-img">
+											</c:if>
+											<c:if test="${!empty comment.renameFilename }">
+												<img src="${pageContext.request.contextPath}/resources/upload/emp/${board.renameFilename}" class="my-img">
+											</c:if>
 							            </span>
 							            <span class="writer">${comment.writer}</span>
 							            <span class="createdDate">
