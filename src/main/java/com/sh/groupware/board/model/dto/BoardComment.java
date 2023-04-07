@@ -24,5 +24,6 @@ public class BoardComment {
 	private String boardNo;
 	private String empId;
 	private String writer;
+	private String renameFilename;
 	
 }
