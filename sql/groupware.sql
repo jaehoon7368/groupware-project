@@ -237,7 +237,7 @@ select * from attachment;
 select * from working_management order by no;
 select * from dayoff;
 select * from dayoffform;
-delete from working_management where no = '45';
+delete from working_management where no = '36';
 update working_management set end_work = null, state = '업무중',overtime = null,day_work_time = null where no = '107';
 
 select day_off_year from dayoff group by day_off_year order by day_off_year;
@@ -318,7 +318,10 @@ select*from emp;
 select*from attachment;
 select*from boardComment;
 
-
+select
+			bc.*
+		from
+			 boardComment bc;
 
 select * from working_management where depte_code = 'd1' and reg_date between ? and ?;
 
