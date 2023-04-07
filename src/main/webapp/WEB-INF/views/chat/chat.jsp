@@ -47,7 +47,6 @@
 		li.addEventListener('click',(e)=>{
 			const empId = e.target.dataset.id;
 			const myEmpId = ${empId};
-			console.log(myEmpId);
 			const csrfHeader = "${_csrf.headerName}";
 	        const csrfToken = "${_csrf.token}";
 	        const headers = {};
@@ -64,7 +63,6 @@
 				success(data){
 						console.log(data)
 						const chatroomId = data.chatroomId;
-						console.log(chatroomId.textContent);
 						
 						
 						const url = `${pageContext.request.contextPath}/chat/chatRoomPopUp.do?chatroomId=\${chatroomId}`;
