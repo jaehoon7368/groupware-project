@@ -22,6 +22,7 @@ public class Board extends BoardEntity{
 	private List<Attachment> attachments = new ArrayList<>();
 	private List<BoardComment> boardComment = new ArrayList<>();
 	private Emp emp;
+	private String renameFilename;
 	
 	public void addAttachment(Attachment attach) {
 		this.attachments.add(attach);
@@ -49,13 +50,14 @@ public class Board extends BoardEntity{
 
 	public Board(String no, String bType, String title, String content, int readCount, int likeCount,
 			LocalDateTime createdDate, LocalDateTime updatedDate, String empId, String writer, int attachCount,
-			List<Attachment> attachments, List<BoardComment> boardComment, Emp emp, List<BoardComment> commentList) {
+			List<Attachment> attachments, List<BoardComment> boardComment, Emp emp, String renameFilename ,List<BoardComment> commentList) {
 		super(no, bType, title, content, readCount, likeCount, createdDate, updatedDate, empId, writer);
 		this.attachCount = attachCount;
 		this.attachments = attachments;
 		this.boardComment = boardComment;
 		this.emp = emp;
 		this.commentList = commentList;
+		this.renameFilename = renameFilename;
 	}
 	
 	

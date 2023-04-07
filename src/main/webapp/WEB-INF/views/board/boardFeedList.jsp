@@ -27,9 +27,13 @@
 		</div>
 		<div class="home-topbar topbar-div">
 			<div>
-				<a href="#" id="home-my-img"> <img
-					src="${pageContext.request.contextPath}/resources/images/sample.jpg"
-					alt="" class="my-img">
+				<a href="#" id="home-my-img">
+					<c:if test="${!empty sessionScope.loginMember.attachment}">
+						<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+					</c:if>
+					<c:if test="${empty sessionScope.loginMember.attachment}">
+						<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+					</c:if>
 				</a>
 			</div>
 			<div id="my-menu-modal">
@@ -37,7 +41,9 @@
 					<button class="my-menu">기본정보</button>
 				</div>
 				<div class="my-menu-div">
-					<button class="my-menu">로그아웃</button>
+					<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
+						<button class="my-menu" type="submit">로그아웃</button>								
+					</form:form>
 				</div>
 			</div>
 		</div>
@@ -68,8 +74,8 @@
 				<div class="form-wrap">
 					<input type="hidden" id="empId" name="empId"value="${loginMember.empId}"> 
 						<input type="hidden"id="wrtier" name="writer" value="${loginMember.name}"> 
-						<input type="hidden" id="title" name="title" value="사진 게시판"> 
-						<input type="hidden" id="bType" name="bType" value="P">
+						<input type="hidden" id="title" name="title" value="피드게시판">
+						<input type="hidden" id="bType" name="bType" value="${param.no}">
 					<div class="text-wrap">
 						  <textarea id="content" name="content"></textarea>
 						  <div class="upfile-img">
@@ -99,11 +105,13 @@
 					<div class="foreach-border">
 						<div class="tool-wrap">
 							<div class="info-wrap">
-								<span class="writer-img"> <a href="#" id="home-my-img">
-										<img
-										src="${pageContext.request.contextPath}/resources/images/sample.jpg"
-										alt="" class="my-img">
-								</a>
+								<span class="writer-img">
+									<c:if test="${empty board.renameFilename }">
+										<img src="${pageContext.request.contextPath}/resources/upload/emp/default.png" class="my-img">
+									</c:if>
+									<c:if test="${!empty board.renameFilename }">
+										<img src="${pageContext.request.contextPath}/resources/upload/emp/${board.renameFilename}" class="my-img">
+									</c:if>
 								</span> <span class="writer">${board.writer}</span> <span
 									id="createdDate" class="createdDate"> 
 									<fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" /> 
@@ -170,9 +178,12 @@
 							            <input type="hidden" class="comment-id" name="no" data-comment-id="${comment.no}" value="${comment.no}">
 							            <input type="hidden" class="comment-empId" name="empId" value="${comment.empId}">
 							            <span class="writer-img">
-							              <a href="#" id="home-my-img">
-							                <img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
-							              </a>
+							              <c:if test="${empty comment.renameFilename }">
+											<img src="${pageContext.request.contextPath}/resources/upload/emp/default.png" class="my-img">
+											</c:if>
+											<c:if test="${!empty comment.renameFilename }">
+												<img src="${pageContext.request.contextPath}/resources/upload/emp/${comment.renameFilename}" class="my-img">
+											</c:if>
 							            </span>
 							            <span class="writer">${comment.writer}</span>
 							            <span class="createdDate">
