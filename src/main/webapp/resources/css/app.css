@@ -1,9 +1,8 @@
 .navigation {
     position: relative;
     height: 100%;
-    width: 80px;
+    width: 90px;
     background: #00b6c2;
-    box-shadow: 5px 0 0 #00919b9f;
     border-left: 0;
     overflow-x: hidden;
     transition: width 0.5s;
@@ -19,7 +18,7 @@
     left: 0;
     width: 100%;
     /* padding-left: 5px; */
-    padding-top: 100px;
+    padding-top: 150px;
     
 }
 
@@ -29,10 +28,6 @@
     width: 100%;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-}
-
-.navigation ul li.active {
-    background: #00919b9f;
 }
 
 .navigation ul li a {

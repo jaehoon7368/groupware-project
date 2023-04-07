@@ -238,7 +238,7 @@ select * from working_management order by no;
 select * from dayoff;
 select * from dayoffform;
 delete from working_management where no = '45';
-update working_management set end_work = null, state = '출장',overtime = null where no = '40';
+update working_management set end_work = null, state = '업무중',overtime = null,day_work_time = null where no = '107';
 
 select day_off_year from dayoff group by day_off_year order by day_off_year;
     
