@@ -62,7 +62,7 @@
  
  	<div class="tool-bar">
  		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=A">
+ 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=${param.no}">
 		 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
 		 		<span>새글쓰기</span>
 	 		</a>
@@ -182,7 +182,7 @@ $(document).ready(function() {
             data: {boardNos: boardNos},
             headers,
             success: function() {
-                location.href = "${pageContext.request.contextPath}/board/boardList.do";
+                location.href = "${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}";
             },
             error: function() {
                 alert("삭제 실패");

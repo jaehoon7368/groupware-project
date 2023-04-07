@@ -135,13 +135,10 @@
                 </tr>
                 </thead>
                 <tbody>
-	               <c:forEach items="${addrGroupList}" var="addr">
+	               <c:forEach items="${addrGroupByName}" var="addr">
 					    <tr data-no="${addr.addrNo}">
 					        <td><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
-					        <td>
-					        <span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>
-					        ${addr.name}
-					        </td>
+					        <td>${addr.name}</td>
 					        <td>${addr.jobName}</td>
 					        <td>${addr.phone}</td>
 					        <td>${addr.email} </td>

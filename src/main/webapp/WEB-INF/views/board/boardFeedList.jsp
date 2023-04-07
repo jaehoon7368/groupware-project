@@ -68,8 +68,8 @@
 				<div class="form-wrap">
 					<input type="hidden" id="empId" name="empId"value="${loginMember.empId}"> 
 						<input type="hidden"id="wrtier" name="writer" value="${loginMember.name}"> 
-						<input type="hidden" id="title" name="title" value="사진 게시판"> 
-						<input type="hidden" id="bType" name="bType" value="P">
+						<input type="hidden" id="title" name="title" value="피드게시판">
+						<input type="hidden" id="bType" name="bType" value="${param.no}">
 					<div class="text-wrap">
 						  <textarea id="content" name="content"></textarea>
 						  <div class="upfile-img">

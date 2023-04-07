@@ -70,7 +70,7 @@ tr[data-no] {cursor: pointer;}
 }
 
 .addr-table .th-checkBox {
-  width: 10px;
+  width: 35px;
   text-align: center;
 }
 .addr-table .th-name {

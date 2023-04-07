@@ -124,7 +124,7 @@
             <table class="addr-table">
                 <thead>
                 <tr>
-                	<th>
+                	<th style="width:35px;">
 						<input type="checkbox" id="selectAllBtn" name="" value=""/>
 					</th>
                     <th scope="col" class="th-name">이름</th>
@@ -143,10 +143,7 @@
 	               <c:forEach items="${addrBookList}" var="addr">
 					    <tr data-no="${addr.addrNo}">
 					        <td><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
-					        <td>
-					        <span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>
-					        ${addr.name}
-					        </td>
+					        <td>${addr.name}</td>
 					        <td>${addr.jobName}</td>
 					        <td>${addr.phone}</td>
 					        <td>${addr.email} </td>
@@ -182,13 +179,14 @@
 
     <c:forEach var="i" begin="${startPage}" end="${endPage}">
       <li class="page-item ${i==currentPage ? 'active' : ''}">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do?cpage=${i}">${i}</a>
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrHome.do?cpage=${i}">${i}</a>
       </li>
     </c:forEach>
 
     <c:if test="${endPage < totalPage}">
+    
       <li class="page-item">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do?cpage=${endPage+1}" aria-label="Next">
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrHome.do?cpage=${endPage+1}" aria-label="Next">
           <span aria-hidden="true">&gt;</span>
           <span class="sr-only">Next</span>
         </a>
@@ -226,10 +224,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	        } else {
 	          $.each(data, function (index, item) {
 	            $('.addr-table tbody').append(
-	              '<tr data-no="' + item.addrNo + '">' +
+	              '<tr>' +
 	              '<td><input type="checkbox" name="addrNo" value="' + item.addrNo + '"/></td>' +
 	              '<td>' +
-	              '<span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>' +
 	              item.name +
 	              '</td>' +
 	              '<td>' + item.jobName + '</td>' +
@@ -267,6 +264,7 @@ const styleChange = (btn) => {
 		btn.style.borderBottom = 'none';
 	});
 		btn.style.borderBottom = 'solid 2px #000';
+		location.href
 };
 </script>
 <script>
@@ -310,7 +308,7 @@ $(document).ready(function() {
             console.log("Selected addrNos: " + addrNos);
             
             $.ajax({
-                url: '${pageContext.request.contextPath}/addr/addrDelete.do',
+                url: '${pageContext.request.contextPath}/addr/addrsDelete.do',
                 type: 'POST',
                 data: {addrNos: addrNos},
                 headers,
