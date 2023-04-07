@@ -5,7 +5,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board/boardList.css">
 
 
@@ -18,20 +17,11 @@
 					<div class="home-container">
 						<!-- 상단 타이틀 -->
 						<div class="top-container">
-							<div class="container-title">
-								<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
-									<c:if test="${boardType.no == param.no}">${boardType.title}</c:if>
-								</c:forEach>
-							</div>
+							<div class="container-title">주간 식단표</div>
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
-										<c:if test="${!empty sessionScope.loginMember.attachment}">
-											<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
-										</c:if>
-										<c:if test="${empty sessionScope.loginMember.attachment}">
-											<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
-										</c:if>
+										<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
 									</a>
 								</div>
 								<div id="my-menu-modal">
@@ -39,9 +29,7 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
-											<button class="my-menu" type="submit">로그아웃</button>								
-										</form:form>
+										<button class="my-menu">로그아웃</button>
 									</div>
 								</div>
 							</div>
@@ -69,7 +57,7 @@
  
  	<div class="tool-bar">
  		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=${param.no}">
+ 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=M">
 		 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
 		 		<span>새글쓰기</span>
 	 		</a>
@@ -90,7 +78,7 @@
                 <thead>
                 <tr>
                 	<th>
-						<input type="checkbox" id="selectAllBtn" name="" value=""/>
+						<input type="checkbox" name="" value=""/>
 					</th>
                     <th scope="col" class="th-num">번호</th>
                     <th scope="col" class="th-title">제목</th>
@@ -131,7 +119,7 @@
 
     <c:if test="${startPage > 1}">
       <li class="page-item">
-        <a class="page-link" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}&cpage=${startPage-1}" aria-label="Previous">
+        <a class="page-link" href="${pageContext.request.contextPath}/board/boardList.do?cpage=${startPage-1}" aria-label="Previous">
           <span aria-hidden="true">&lt;</span>
           <span class="sr-only">Previous</span>
         </a>
@@ -140,78 +128,31 @@
 
     <c:forEach var="i" begin="${startPage}" end="${endPage}">
       <li class="page-item ${i==currentPage ? 'active' : ''}">
-        <a class="page-link" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}&cpage=${i}">${i}</a>
+        <a class="page-link" href="${pageContext.request.contextPath}/board/boardList.do?cpage=${i}">${i}</a>
       </li>
     </c:forEach>
 
     <c:if test="${endPage < totalPage}">
       <li class="page-item">
-        <a class="page-link" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}&cpage=${endPage+1}" aria-label="Next">
+        <a class="page-link" href="${pageContext.request.contextPath}/board/boardList.do?cpage=${endPage+1}" aria-label="Next">
           <span aria-hidden="true">&gt;</span>
           <span class="sr-only">Next</span>
         </a>
       </li>
-	</c:if>
   </ul>
+</c:if>
 
 
-<script>
-$(document).ready(function() {
-    // 전체선택 버튼 클릭 시
-    $('#selectAllBtn').click(function() {
-        const isChecked = $(this).prop('checked');
-        $('input[name=boardNo]').prop('checked', isChecked);
-    });
 
-    // 체크박스 선택 시
-    $('input[name=boardNo]').change(function() {
-        // 선택된 체크박스의 값 가져오기
-        const boardNo = $(this).val();
-        console.log("Selected boardNo: " + boardNo);
-    });
-
-    // 삭제 버튼 클릭 시
-    $('a[href$="/boardDelete.do"]').click(function(event) {
-        event.preventDefault();
-        const boardNos = [];
-        const csrfHeader = "${_csrf.headerName}";
-  	    const csrfToken = "${_csrf.token}";
-  	    const headers = {};
-  	  headers[csrfHeader] = csrfToken;
-        $('input[name=boardNo]:checked').each(function() {
-            boardNos.push($(this).val());
-        });
-        console.log("Selected boardNos: " + boardNos);
-        
-        $.ajax({
-            url: '${pageContext.request.contextPath}/board/boardsDelete.do',
-            type: 'POST',
-            data: {boardNos: boardNos},
-            headers,
-            success: function() {
-                location.href = "${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}";
-            },
-            error: function() {
-                alert("삭제 실패");
-            }
-        });
-    });
-});
-</script>
 <script>
 document.querySelectorAll("tr[data-no]").forEach((tr) => {
 	tr.addEventListener('click', (e) => {
-		 // 클릭한 엘리먼트가 input 태그인 경우 이벤트 처리를 하지 않음
-	    if (e.target.tagName.toLowerCase() === 'input') {
-	      return;
-	    }
 		const no = tr.dataset.no;
 		console.log(no);
 		location.href = '${pageContext.request.contextPath}/board/boardDetail.do?no=' + no;
 	});
 });
 </script>
-
 
 
 

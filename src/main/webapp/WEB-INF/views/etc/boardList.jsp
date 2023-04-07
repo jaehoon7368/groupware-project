@@ -18,20 +18,11 @@
 					<div class="home-container">
 						<!-- 상단 타이틀 -->
 						<div class="top-container">
-							<div class="container-title">
-								<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
-									<c:if test="${boardType.no == param.no}">${boardType.title}</c:if>
-								</c:forEach>
-							</div>
+							<div class="container-title">전사 공지</div>
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
-										<c:if test="${!empty sessionScope.loginMember.attachment}">
-											<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
-										</c:if>
-										<c:if test="${empty sessionScope.loginMember.attachment}">
-											<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
-										</c:if>
+										<img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img">
 									</a>
 								</div>
 								<div id="my-menu-modal">
@@ -39,9 +30,7 @@
 										<button class="my-menu">기본정보</button>
 									</div>
 									<div class="my-menu-div">
-										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
-											<button class="my-menu" type="submit">로그아웃</button>								
-										</form:form>
+										<button class="my-menu">로그아웃</button>
 									</div>
 								</div>
 							</div>
@@ -69,7 +58,7 @@
  
  	<div class="tool-bar">
  		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=${param.no}">
+ 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=A">
 		 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
 		 		<span>새글쓰기</span>
 	 		</a>
@@ -131,7 +120,7 @@
 
     <c:if test="${startPage > 1}">
       <li class="page-item">
-        <a class="page-link" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}&cpage=${startPage-1}" aria-label="Previous">
+        <a class="page-link" href="${pageContext.request.contextPath}/board/boardList.do?cpage=${startPage-1}" aria-label="Previous">
           <span aria-hidden="true">&lt;</span>
           <span class="sr-only">Previous</span>
         </a>
@@ -140,19 +129,19 @@
 
     <c:forEach var="i" begin="${startPage}" end="${endPage}">
       <li class="page-item ${i==currentPage ? 'active' : ''}">
-        <a class="page-link" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}&cpage=${i}">${i}</a>
+        <a class="page-link" href="${pageContext.request.contextPath}/board/boardList.do?cpage=${i}">${i}</a>
       </li>
     </c:forEach>
 
     <c:if test="${endPage < totalPage}">
       <li class="page-item">
-        <a class="page-link" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}&cpage=${endPage+1}" aria-label="Next">
+        <a class="page-link" href="${pageContext.request.contextPath}/board/boardList.do?cpage=${endPage+1}" aria-label="Next">
           <span aria-hidden="true">&gt;</span>
           <span class="sr-only">Next</span>
         </a>
       </li>
-	</c:if>
   </ul>
+</c:if>
 
 
 <script>
@@ -189,7 +178,7 @@ $(document).ready(function() {
             data: {boardNos: boardNos},
             headers,
             success: function() {
-                location.href = "${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}";
+                location.href = "${pageContext.request.contextPath}/board/boardList.do";
             },
             error: function() {
                 alert("삭제 실패");

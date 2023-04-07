@@ -90,7 +90,8 @@ public class ChatController {
 		model.addAttribute("chatLogs",chatLogs);
 	}
 	@ResponseBody
-	@GetMapping("/selectEmpByEmpId.do")
+//	@GetMapping("/selectEmpByEmpId.do")
+	@GetMapping(path = "/selectEmpByEmpId.do", produces = "application/json")
 	public Emp selectEmpByEmpId(@RequestParam String empId) {
 		Emp emp = todoService.selectOneEmpByEmpId(empId);
 		

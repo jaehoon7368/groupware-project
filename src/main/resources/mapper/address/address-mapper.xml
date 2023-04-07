@@ -194,7 +194,7 @@
 		    select *
 		    from addressBook
 		    <if test="addrNos != null">
-		        where addrNo in
+		        where addr_no in
 		        <foreach collection="addrNos" item="addrNo" separator="," open="(" close=")">
 		            #{addrNo}
 		        </foreach>
@@ -204,7 +204,7 @@
 		<delete id="deleteAddrs" parameterType="List">
 		    delete from addressBook
 		    <if test="list != null">
-		        where addrNo in 
+		        where addr_no in 
 		        <foreach collection="list" item="addrNo" open="(" separator="," close=")">
 		            #{addrNo}
 		        </foreach>
@@ -217,12 +217,12 @@
 	    	from
 	    		addressBook
 	    	where
-	    		addrNo = #{addrNo}
+	    		addr_No = #{addrNo}
 	    </select>
 	    
 	    <delete id="deleteAddr" >
 	    	delete from addressBook
-	    	where addrNo = #{addrNo}
+	    	where addr_No = #{addrNo}
 	    </delete>
     
     

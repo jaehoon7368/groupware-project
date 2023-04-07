@@ -12,7 +12,7 @@
 
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="사진 게시판" name="title" />
+	<jsp:param value="게시판" name="title" />
 </jsp:include>
 
 <jsp:include page="/WEB-INF/views/board/boardLeftBar.jsp" />
@@ -20,20 +20,12 @@
 <div class="home-container">
 	<!-- 상단 타이틀 -->
 	<div class="top-container">
-		<div class="container-title">
-			<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
-				<c:if test="${boardType.no == param.no}">${boardType.title}</c:if>
-			</c:forEach>
-		</div>
+		<div class="container-title">이주의 IT뉴스</div>
 		<div class="home-topbar topbar-div">
 			<div>
-				<a href="#" id="home-my-img">
-					<c:if test="${!empty sessionScope.loginMember.attachment}">
-						<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
-					</c:if>
-					<c:if test="${empty sessionScope.loginMember.attachment}">
-						<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
-					</c:if>
+				<a href="#" id="home-my-img"> <img
+					src="${pageContext.request.contextPath}/resources/images/sample.jpg"
+					alt="" class="my-img">
 				</a>
 			</div>
 			<div id="my-menu-modal">
@@ -41,9 +33,7 @@
 					<button class="my-menu">기본정보</button>
 				</div>
 				<div class="my-menu-div">
-					<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
-						<button class="my-menu" type="submit">로그아웃</button>								
-					</form:form>
+					<button class="my-menu">로그아웃</button>
 				</div>
 			</div>
 		</div>
@@ -74,8 +64,8 @@
 				<div class="form-wrap">
 					<input type="hidden" id="empId" name="empId"value="${loginMember.empId}"> 
 						<input type="hidden"id="wrtier" name="writer" value="${loginMember.name}"> 
-						<input type="hidden" id="title" name="title" value="피드게시판">
-						<input type="hidden" id="bType" name="bType" value="${param.no}">
+						<input type="hidden" id="title" name="title" value="이번주 IT뉴스"> 
+						<input type="hidden" id="bType" name="bType" value="N">
 					<div class="text-wrap">
 						  <textarea id="content" name="content"></textarea>
 						  <div class="upfile-img">
@@ -97,7 +87,7 @@
 
 		<!-- 게시글 내용 -->
 		<section class="content-wrap">
-			<form name="contentFrm">
+				<form name="contentFrm">
 				<div class="content-border">
 					<c:forEach var="board" items="${boardList}" varStatus="status">
 					<div class="board-item" data-board-no="${board.no}" data-emp-id="${board.empId}">
@@ -225,8 +215,8 @@
 					</div>
 					</div>
 					</c:forEach>
-				</div>
-			</form>
+					</div>
+				</form>
 		</section>
 	</div>
 	
