@@ -257,10 +257,6 @@ const updateDayWorkTime = (daytimes) =>{
 									<div id="home-center" class="div-padding div-margin">
 										<h5>전사게시판</h5>
 										<div id="board-div" class="home-div">
-											<button class="btn-board-title" onclick="styleChange(this);">ㅇㅇ</button>
-											<button class="btn-board-title" onclick="styleChange(this);">ㄱㄱ</button>
-											<button class="btn-board-title" onclick="styleChange(this);">ㅊㅊ</button>
-											<button class="btn-board-title" onclick="styleChange(this);">ㄹㄹ</button>
 										</div>
 									</div>
 									<script>
