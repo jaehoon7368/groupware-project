@@ -20,6 +20,12 @@
 <style>
 	
 /* 테이블*/
+.navigation ul li a .icon i {
+    position: relative;
+    font-size: 1.5em;
+    z-index: 1;
+    margin-top: 20px;
+}
 .left-container {
     display: flex;
     flex-direction: row;

@@ -100,6 +100,7 @@
 	<script>
         window.addEventListener('load',()=>{
                 sendData();
+                weekTimes();
         });
         
         let currentDate = new Date();
@@ -317,6 +318,44 @@ function changeTimeText(time) {
 	  
 	  return `\${hours}:\${minutes}:\${seconds}`;				
 	}
+}
+
+function weekTimes(){
+	const today = new Date();
+	const todayDay = today.getDay(); // 오늘 날짜의 요일 (0: 일요일, 1: 월요일, ..., 6: 토요일)
+
+	const startDate = new Date(today); // 해당 주의 시작일
+	startDate.setDate(startDate.getDate() - todayDay);
+
+	const endDate = new Date(today); // 해당 주의 종료일
+	endDate.setDate(endDate.getDate() + (6 - todayDay));
+
+	const start = startDate.getFullYear() + "." + (startDate.getMonth() + 1) + "." + startDate.getDate();
+	const end = endDate.getFullYear() + "." + (endDate.getMonth() + 1) + "." + endDate.getDate();
+	  
+	$.ajax({
+		  url : "${pageContext.request.contextPath}/workingManagement/weekTotalTime.do",
+		  data : {start, end},
+		  contentType : "application/json; charset=utf-8",
+		  success(data){
+			  console.log(data);
+			  const {totalMonthOverTime ,totalMonthTime, weekOverTime ,weekTotalTime} = data;
+			  const mainTotalWorkTime = document.querySelector("#main-totalwork-time");
+			  const mainWeekOverTime = document.querySelector("#main-week-over-time");
+			  const mainWorkTime = document.querySelector("#main-work-time");
+			  const monthWorkTime = document.querySelector("#main-month-work-time");
+			  const monthOverTime = document.querySelector("#main-month-over-time")
+			  
+			  let times = 144000000 - (weekTotalTime + weekOverTime); // 40시간 - 주간 기본 근무시간
+			  mainTotalWorkTime.textContent = chageWorkTime(weekTotalTime + weekOverTime);
+			  mainWeekOverTime.textContent = chageWorkTime(weekOverTime);
+			  mainWorkTime.textContent = chageWorkTime(times);
+			  monthWorkTime.textContent = chageWorkTime(totalMonthTime + totalMonthOverTime);
+			  monthOverTime.textContent = chageWorkTime(totalMonthOverTime);
+		  },
+		  error : console.log
+		  
+	  });
 }
 
 // 총근무시간

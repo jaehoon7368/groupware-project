@@ -1,3 +1,9 @@
+.navigation ul li a .icon i {
+    position: relative;
+    font-size: 1.5em;
+    z-index: 1;
+    margin-top: 20px;
+}
 .content {
 	display: inline-block;
 	padding: 15px;

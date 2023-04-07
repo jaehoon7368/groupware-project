@@ -269,15 +269,19 @@ function getStartAndEndDateOfWeek() {
 			  
 			  let times = 144000000 - (weekTotalTime + weekOverTime); // 40시간 - 주간 기본 근무시간
 			  totalWorkTime.textContent = chageWorkTime(weekTotalTime + weekOverTime);
-			  mainTotalWorkTime.textContent = chageWorkTime(weekTotalTime + weekOverTime);
-			  mainWeekOverTime.textContent = chageWorkTime(weekOverTime);
-			  mainWorkTime.textContent = chageWorkTime(times);
-			  monthWorkTime.textContent = chageWorkTime(totalMonthTime + totalMonthOverTime);
-			  monthOverTime.textContent = chageWorkTime(totalMonthOverTime);
 		  },
 		  error : console.log
 		  
 	  });
+}
+
+function chageWorkTime(times){
+	const time = times / 1000;
+	const hours = Math.floor(time / 3600); // 시간 계산
+	const minutes = Math.floor((time % 3600) / 60); // 분 계산
+	const seconds = Math.floor(time % 60); // 초 계산
+	
+	return `\${hours}h \${minutes}m \${seconds}s`;	
 }
 
 </script>					
