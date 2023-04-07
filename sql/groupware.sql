@@ -506,3 +506,4 @@ WHERE {COLUMN_NAME} >= '가' AND {COLUMN_NAME} <='나';
         ELSE 'ㅎ'
         END = 'ㄱ' and writer = '230301';
 
+select*from board;
