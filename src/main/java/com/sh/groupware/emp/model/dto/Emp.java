@@ -36,7 +36,6 @@ public class Emp implements UserDetails{
 	
 	private Attachment attachment;
 	
-	private Authority authorty;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

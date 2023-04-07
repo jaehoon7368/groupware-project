@@ -102,7 +102,7 @@
                                 <select id="search-year" name="search-year">
                                 	<option selected>선택</option>
                                 <c:forEach items="${dayOffYear }" var="year">
-                                    <option value="${year.dayOffYear }">${year.dayOffYear }</option>
+                                    <option value="${year.dayOffYear}">${year.dayOffYear}</option>
                                 </c:forEach>
                                 </select>
                         </div>
@@ -183,15 +183,7 @@ var yearNow = document.getElementById("yearAnnual");
  clock();
  
 
-//총근무시간
-function chageWorkTime(times){
-	const time = times / 1000;
-	const hours = Math.floor(time / 3600); // 시간 계산
-	const minutes = Math.floor((time % 3600) / 60); // 분 계산
-	const seconds = Math.floor(time % 60); // 초 계산
-	
-	return `\${hours}h \${minutes}m \${seconds}s`;	
-}
+
 
 </script>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

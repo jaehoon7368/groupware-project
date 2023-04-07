@@ -15,7 +15,6 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chat/chatRoom.css" />
 	</head>
 	<body>
-	<style></style>
 		<div id="msg-container" style="height: 90vh; overflow-y: auto;">
 			<ul class="list-group list-group-flush">
 				<c:forEach items="${chatLogs}" var="chatLog">
