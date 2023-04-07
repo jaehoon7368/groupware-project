@@ -57,14 +57,6 @@
                         </a>
                     </li>
                     <li class="list">
-                        <a href="${pageContext.request.contextPath}/mail/mail.do" title="메일">
-                            <span class="icon">
-                                <i class="large fa fa-solid fa-envelope"></i>
-                            </span>
-                            <span class="title">메일</span>
-                        </a>
-                    </li>
-                    <li class="list">
                         <a href="${pageContext.request.contextPath}/report/report.do" title="보고">
                             <span class="icon">
                                 <i class="large fa fa-solid fa-file"></i>
