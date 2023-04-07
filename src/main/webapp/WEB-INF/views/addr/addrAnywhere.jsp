@@ -132,8 +132,8 @@
                 </thead>
                 <tbody>
 	              	 <c:forEach items="${empList}" var="empList">
-					   	<tr data-no="">
-					   		<td><input type="checkbox" name="addrNo" value=""/></td>
+					   	<tr data-no="${empList.empId}">
+					   		<td><input type="checkbox" name="addrNo" value="${empList.empId}"/></td>
 	                		<td>
 	                		<span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>
 	                		${empList.name}
