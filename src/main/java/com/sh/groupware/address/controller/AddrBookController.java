@@ -59,7 +59,7 @@ public class AddrBookController {
 	
 	
 	@GetMapping("/addrHome.do")
-	public void addrHome(@RequestParam(defaultValue = "1") int cpage, Model model, AddressBook addressBook, AddressGroup addressGroup, Authentication authentication) {
+	public String addrHome(@RequestParam(defaultValue = "1") int cpage, @RequestParam(defaultValue = "전체") String keyword , Model model, AddressBook addressBook, AddressGroup addressGroup, Authentication authentication) {
 	    String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 	    log.debug("loginMemberId = {}", empId);
 	    addressBook.setWriter(empId);
@@ -69,7 +69,13 @@ public class AddrBookController {
 	    int offset = (cpage - 1) * limit; 
 	    RowBounds rowBounds = new RowBounds(offset, limit);
 
-	    List<AddressBook> addrBookList = addrService.selectAddrBookListByPage(empId, rowBounds);
+	    List<AddressBook> addrBookList = new ArrayList<>();
+	    if("전체".equals(keyword)) {
+	    	 addrBookList = addrService.selectAddrBookListByPage(empId, rowBounds);
+	    } else {
+	    	addrBookList = addrService.filterNamesByKeyword(keyword); // 초성에 해당하는 이름 리스트를 가져옴
+	    }
+	    
 	    log.debug("addrBookList = {}", addrBookList);
 
 	    int totalCount = addrService.selectAddrBookCountById(empId);
@@ -90,6 +96,9 @@ public class AddrBookController {
 	    model.addAttribute("startPage", startPage);
 	    model.addAttribute("endPage", endPage);
 	    model.addAttribute("totalPage", totalPage);
+	    model.addAttribute("keyword", keyword);
+	    
+	    return "addr/addrHome";
 	}
 	
 	@PostMapping("/createAddrGroup.do")
