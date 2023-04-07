@@ -131,17 +131,17 @@
                 </tr>
                 </thead>
                 <tbody>
-	              	 <c:forEach items="${empList}" var="emp">
-					   	<tr>
-					   		<td><input type="checkbox" name="" value=""/></td>
+	              	 <c:forEach items="${empList}" var="empList">
+					   	<tr data-no="">
+					   		<td><input type="checkbox" name="addrNo" value=""/></td>
 	                		<td>
 	                		<span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>
-	                		${emp.name}
+	                		${empList.name}
 	                		</td>
-	                		<td>${emp.jobName}</td>
-	                		<td>${emp.phone}</td>
-	                		<td>${emp.email}</td>
-	                		<td>${emp.deptTitle}</td>
+	                		<td>${empList.jobTitle}</td>
+	                		<td>${empList.phone}</td>
+	                		<td>${empList.email}</td>
+	                		<td>${empList.deptTitle}</td>
 					    </tr>
 					</c:forEach>
                 </tbody>

@@ -182,7 +182,7 @@ $(document).ready(function() {
             data: {boardNos: boardNos},
             headers,
             success: function() {
-                location.href = "${pageContext.request.contextPath}/board/boardList.do";
+                location.href = "${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}";
             },
             error: function() {
                 alert("삭제 실패");

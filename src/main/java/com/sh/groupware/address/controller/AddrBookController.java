@@ -144,7 +144,7 @@ public class AddrBookController {
 	@GetMapping("/addrAnywhere.do")
 	public void addrAnywhere(@RequestParam(defaultValue = "1") int cpage, Model model, Authentication authentication ) {
 		// 페이징처리
-				int limit = 20;
+				int limit = 10;
 				int offset = (cpage - 1) * limit; 
 				RowBounds rowBounds = new RowBounds(offset, limit);
 				
@@ -155,10 +155,15 @@ public class AddrBookController {
 				//내 인사정보 가져오기
 				EmpDetail empInfo = empService.selectEmpDetail(empId);
 				
-				List<AddressBook> addressBookList = new ArrayList<>();
-				log.debug("addressBookList = {}", addressBookList);
 				List<EmpDetail> empList = empService.selectEmpAll(rowBounds);
 				log.debug("empList = {}", empList);
+				
+				
+				
+//				List<AddressBook> addressBookList = new ArrayList<>();
+//				log.debug("addressBookList = {}", addressBookList);
+//				
+				
 				
 				
 				// 총 게시물 수
@@ -170,11 +175,11 @@ public class AddrBookController {
 			    log.debug("totalPage = {}", totalPage);
 
 			    // 시작 페이지와 끝 페이지 계산
-			    int startPage = ((cpage - 1) / 20) * 20 + 1; // 10 페이지씩 묶어서 보여줌
-			    int endPage = Math.min(startPage + 19, totalPage);
+			    int startPage = ((cpage - 1) / 10) * 10 + 1; // 10 페이지씩 묶어서 보여줌
+			    int endPage = Math.min(startPage + 9, totalPage);
 			    
-			    model.addAttribute("empList = {} ", empList);
-			    model.addAttribute("addressBookList", addressBookList);
+			    model.addAttribute("empList", empList);
+//			    model.addAttribute("addressBookList", addressBookList);
 			    model.addAttribute("currentPage", cpage);
 			    model.addAttribute("startPage", startPage);
 			    model.addAttribute("endPage", endPage);
@@ -280,18 +285,18 @@ public class AddrBookController {
 	}
 	
 	@PostMapping("/addrsDelete.do")
-	private String addrsDelete(@RequestParam(value = "addrNos", required = false) List<String> addrNos,
+	private String addrsDelete(@RequestParam(value = "addrNos[]", required = false) List<String> addrNos,
 	                           Authentication authentication, RedirectAttributes redirectAttributes) {
 	    String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 	    log.debug("addrNos 시작 = {}", addrNos);
 	    
-	    List<AddressBook> addrsToDelete = addrService.selectAddrsByNos(addrNos);
-	    log.debug("addrNos 끝 = {}", addrNos);
-	    log.debug("addrsToDelete = {}", addrsToDelete);
-	    List<String> failedNos = new ArrayList<>();
-	    for (AddressBook addressBook : addrsToDelete) { 
-	            failedNos.add(addressBook.getAddrNo());
-	        }
+//	    List<AddressBook> addrsToDelete = addrService.selectAddrsByNos(addrNos);
+//	    log.debug("addrNos 끝 = {}", addrNos);
+//	    log.debug("addrsToDelete = {}", addrsToDelete);
+//	    List<String> failedNos = new ArrayList<>();
+//	    for (AddressBook addressBook : addrsToDelete) { 
+//	            failedNos.add(addressBook.getAddrNo());
+//	        }
 
 	        int result = addrService.deleteAddrs(addrNos);
 

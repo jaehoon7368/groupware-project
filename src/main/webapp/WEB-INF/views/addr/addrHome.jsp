@@ -124,7 +124,7 @@
             <table class="addr-table">
                 <thead>
                 <tr>
-                	<th>
+                	<th style="width:35px;">
 						<input type="checkbox" id="selectAllBtn" name="" value=""/>
 					</th>
                     <th scope="col" class="th-name">이름</th>
@@ -227,7 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	              '<tr>' +
 	              '<td><input type="checkbox" name="addrNo" value="' + item.addrNo + '"/></td>' +
 	              '<td>' +
-	              '<span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>' +
 	              item.name +
 	              '</td>' +
 	              '<td>' + item.jobName + '</td>' +
@@ -265,6 +264,7 @@ const styleChange = (btn) => {
 		btn.style.borderBottom = 'none';
 	});
 		btn.style.borderBottom = 'solid 2px #000';
+		location.href
 };
 </script>
 <script>
