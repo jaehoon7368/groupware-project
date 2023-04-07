@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -138,7 +139,8 @@ public class TodoController {
 	}
 	
 	@ResponseBody
-	@GetMapping("/todoSelectByNo.do")
+//	@GetMapping("/todoSelectByNo.do")
+	@GetMapping(path = "/todoSelectByNo.do", produces = "application/json")
 	public Todo todoSelectByNo (@RequestParam String no) {
 		Todo todo = todoService.todoSelectByNo(no);
 		log.debug("코멘트 여러개 확인 = {}",todo.getTodocomments());

@@ -13,33 +13,11 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
 		<jsp:param value="" name="title"/>
 	</jsp:include>
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/chat/chat.css" />
 
 <div class="all-container app-dashboard-body-content off-canvas-content"
 	data-off-canvas-content>
 	
-<style>
-	
-/* 테이블*/
-.navigation ul li a .icon i {
-    position: relative;
-    font-size: 1.5em;
-    z-index: 1;
-    margin-top: 20px;
-}
-.left-container {
-    display: flex;
-    flex-direction: row;
-    align-content: space-around;
-    flex-wrap: wrap;
-}
-p.title {
-    font-size: 22px;
-}
-.container-detail li:hover{
-	background-color: #d9d9d942;
-	font-size:15px;
-}
-</style>
 	<!-- 왼쪽 추가 메뉴 -->
 	<div class="left-container">
 		<div class="accordion-box">
@@ -112,36 +90,6 @@ p.title {
 	<!-- 왼쪽 추가 메뉴 end -->
 	<div class="home-container">
 	<style>
-	.div-padding{
-  margin-top : 200px;
-
-}
-
-.div-padding table {
-	width: 100%;
-	text-align: center;
-	border-collapse: collapse;
-}
-
-.chat-table thead td {
-	font-size: small;
-	padding: 10px 0;
-	font-weight: bold;
-	border-top: solid 1px lightgray;
-	border-bottom: solid 1px lightgray;
-}
-
-.chat-table tbody td {
-	font-size: small;
-	padding: 10px 0;
-	border-top: solid 1px lightgray;
-	border-bottom: solid 1px lightgray;
-}
-.chat-tbl-tr:hover {
-	cursor: pointer;
-	box-shadow: 0 0 5px #d7d7d7;
-	background-color: #f8f8f8;
-}
 	</style>
 		<!-- 본문 -->
 		<div class="div-padding">
