@@ -85,8 +85,13 @@ public class TodoController {
 		
 		Emp emp = todoService.selectOneEmpByEmpId(empId);
 		 // 모든 사원 조회
+		Map<String,Object> param = new HashMap<>();
 		
-		List <Emp> emps = empService.selectAllEmpAddTitleDept();
+		param.put("no", no);
+		param.put("empId", empId);
+		//List <Emp> emps = empService.selectAllEmpAddTitleDept();
+		List <Emp> emps = empService.selectEmpAddTitleDept(param);
+		
 		// 보드 안에 사원 얼굴 조회
 		List<Attachment> attachments = todoService.selectAttachmentByBoardNo(no);
 		

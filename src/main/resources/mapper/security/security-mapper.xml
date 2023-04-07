@@ -12,22 +12,22 @@
 		where
 			emp_id = #{username}
 	</select>
-<!-- 	<select id="selectAuthorities" resultMap="authorityMap">
+ 	<select id="selectAuthorities" resultMap="authorityMap">
 		select 
 			*
 		from
 			authority
 		where
 			emp_id = #{username}
-	</select> -->
+	</select>
 	<resultMap type="emp" id="empAuthMap">
-<!-- 		<id column="emp_id" property="empId"/> -->
-		<!-- <collection property="authorities" column="member_id" ofType="simpleGrantedAuthority" select="selectAuthorities"/>
- -->	</resultMap>
-	<!-- <resultMap type="simpleGrantedAuthority" id="authorityMap">
+ 		<id column="emp_id" property="empId"/>
+		 <collection property="authorities" column="emp_id" ofType="simpleGrantedAuthority" select="selectAuthorities"/>
+ 	</resultMap>
+	 <resultMap type="simpleGrantedAuthority" id="authorityMap">
 		<constructor>
 			<arg column="auth" javaType="string"/>
 		</constructor>
-	</resultMap> -->
+	</resultMap>
 	
 </mapper>

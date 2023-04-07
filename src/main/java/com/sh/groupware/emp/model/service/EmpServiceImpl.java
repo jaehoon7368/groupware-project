@@ -174,4 +174,8 @@ public class EmpServiceImpl implements EmpService {
 	public List<EmpDetail> empFinderDeptList(Map<String, Object> param) {
 		return empDao.empFinderDeptList(param);
 	}
+	@Override
+	public List<Emp> selectEmpAddTitleDept(Map<String, Object> param) {
+		return empDao.selectEmpAddTitleDept(param);
+	}
 }

@@ -506,3 +506,4 @@ select*from emp;
         ELSE 'ㅎ'
         END = 'ㄱ' and writer = '230301';
 
+select * from authority where auth = 'ROLE_PERSONNEL';

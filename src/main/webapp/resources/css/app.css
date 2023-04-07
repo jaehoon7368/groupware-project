@@ -1,3 +1,102 @@
+.navigation {
+    position: relative;
+    height: 100%;
+    width: 80px;
+    background: #00b6c2;
+    box-shadow: 5px 0 0 #00919b9f;
+    border-left: 0;
+    overflow-x: hidden;
+    transition: width 0.5s;
+}
+
+.navigation:hover {
+    width: 200px;
+}
+
+.navigation ul {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* padding-left: 5px; */
+    padding-top: 100px;
+    
+}
+
+.navigation ul li {
+    position: relative;
+    list-style: none;
+    width: 100%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.navigation ul li.active {
+    background: #00919b9f;
+}
+
+.navigation ul li a {
+    position: relative;
+    display: block;
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    color: #fff;
+}
+
+.navigation ul li.active a::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background: #00b6c2;
+    border-radius: 50%;
+    box-shadow: 15px 15px 0 #00919b9f;
+}
+
+.navigation ul li.active a::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background: #00b6c2;
+    border-radius: 50%;
+    box-shadow: 15px -15px 0 #00919b9f;
+}
+
+.navigation ul li a .icon {
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    line-height: 70px;
+    text-align: center;
+}
+
+.navigation ul li a .icon ion-icon {
+    position: relative;
+    font-size: 1.5em;
+    z-index: 1;
+}
+.navigation ul li a .icon i {
+    position: relative;
+    font-size: 1.5em;
+    z-index: 1;
+}
+
+.navigation ul li a .title {
+    position: relative;
+    display: block;
+    padding-left: 10px;
+    height: 60px;
+    line-height: 60px;
+    white-space: nowrap;
+    font-weight: bold;
+}
 
 .app-dashboard {
     height: 100vh;
@@ -121,6 +220,11 @@
             justify-content: space-between;
     padding: 2rem 1rem;
   }
+  .app-dashboard-close-sidebar img{
+  	width: 150px;
+  	height: 100px;
+  	margin-top: 50px;
+  }
   
   .app-dashboard-sidebar .app-dashboard-sidebar-close-button {
     font-size: 14px;
@@ -166,7 +270,7 @@
     -webkit-flex: 1 1 0;
         -ms-flex: 1 1 0px;
             flex: 1 1 0;
-    /* padding: 20px; */
+    padding: 20px;
     background-color: #fefefe;
   }
   
@@ -257,7 +361,7 @@
       transition: opacity 0.5s ease-in-out;
     }
   }
-  
+ 
 .sticky-topbar {
   width: 100%;
 }
@@ -422,9 +526,9 @@ button:hover {
 }
 
 /* home.jsp 본문에 오른쪽 */
-#home-right {
+#home-right-div {
   width: 300px;
-  height: 521px;
+  height: 611px;
   border: solid 1px darkgray;
   border-radius: 10px;
   padding-left: 0px;
@@ -643,7 +747,7 @@ fontsize : 10px;
 
 /* 홈 보고 문서 */
 #home-bottom {
-  width: 770px;
+  width: 1090px;
   height: auto;
   min-height: 300px;
   border: solid 1px darkgray;

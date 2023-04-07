@@ -65,10 +65,14 @@
 	<div class="target-select">
 		<span>To.</span>
 		<select name="bType" id="bType">
-			<option value="A">전사 공지</option>
+			<option value="none">게시판을 선택해주세요.</option>
+			<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
+				<option value="${boardType.no}">${boardType.title}</option>
+			</c:forEach>
+			<!-- <option value="A">전사 공지</option>
 			<option value="M">주간 식단표</option>
 			<option value="P">사진 게시판</option>
-			<option value="N">이주의 IT뉴스</option>
+			<option value="N">이주의 IT뉴스</option> -->
 		</select>
 	</div>
 
@@ -122,12 +126,27 @@
   	
 	<div class="div-padding div-report-write-btn">
 		<input type="submit" value="등록"/>
-		<input type="submit" value="취소"/>
+		<input type="button" value="취소"/>
 	</div>
 </form:form>
+<script>
+	document.boardFrm.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const bType = e.target.bType;
+		
+		if (bType.value == 'none') {
+			alert('글을 작성할 게시판을 선택해주세요.');
+			bType.focus();
+			return false;
+		}
+		
+		e.target.submit();
+	});
+</script>
 </section>
   </div>
 </div>
+<%-- 
 <script>
 $(document).ready(function() {
      bType = "<%= request.getParameter("bType") %>";
@@ -152,7 +171,8 @@ $(document).ready(function() {
             break;
     }
 });
-</script>
+</script> 
+--%>
 <script>
 function displayFileNames() {
 	  const fileNameDiv = document.getElementById("fileName");
