@@ -63,11 +63,11 @@
 						},
 				success(data){
 						console.log(data)
-						const chatroomId = data.querySelector("chatroomId");
+						const chatroomId = data.chatroomId;
 						console.log(chatroomId.textContent);
 						
 						
-						const url = `${pageContext.request.contextPath}/chat/chatRoomPopUp.do?chatroomId=\${chatroomId.textContent}`;
+						const url = `${pageContext.request.contextPath}/chat/chatRoomPopUp.do?chatroomId=\${chatroomId}`;
 						const name = chatroomId;               //popup의 window 이름, 브라우져가 탭 , 팝업윈도으를 관리하는 이름 
 						const spec = "width=600px,height=700px";
 						open(url,name,spec);

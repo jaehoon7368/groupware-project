@@ -1,5 +1,11 @@
 @charset "UTF-8";
-	
+
+.navigation ul li a .icon i {
+    position: relative;
+    font-size: 1.5em;
+    z-index: 1;
+    margin-top: 20px;
+}
 /* 테이블*/
 .left-container {
     display: flex;
