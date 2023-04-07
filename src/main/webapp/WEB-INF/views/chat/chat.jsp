@@ -47,7 +47,6 @@
 		li.addEventListener('click',(e)=>{
 			const empId = e.target.dataset.id;
 			const myEmpId = ${empId};
-			console.log(myEmpId);
 			const csrfHeader = "${_csrf.headerName}";
 	        const csrfToken = "${_csrf.token}";
 	        const headers = {};
@@ -63,11 +62,10 @@
 						},
 				success(data){
 						console.log(data)
-						const chatroomId = data.querySelector("chatroomId");
-						console.log(chatroomId.textContent);
+						const chatroomId = data.chatroomId;
 						
 						
-						const url = `${pageContext.request.contextPath}/chat/chatRoomPopUp.do?chatroomId=\${chatroomId.textContent}`;
+						const url = `${pageContext.request.contextPath}/chat/chatRoomPopUp.do?chatroomId=\${chatroomId}`;
 						const name = chatroomId;               //popup의 window 이름, 브라우져가 탭 , 팝업윈도으를 관리하는 이름 
 						const spec = "width=600px,height=700px";
 						open(url,name,spec);

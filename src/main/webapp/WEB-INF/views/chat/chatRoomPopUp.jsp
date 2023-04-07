@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ 	<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -123,7 +123,7 @@
 								ul.innerHTML += `
 									<li class="list-group-item myli" id="dialog" title="\${currentTime}">
 									<p>
-										<span class="time"><fmt:formatDate value='${currentTime}' type='both' /></span>
+										<span class="time"><fmt:formatDate value='${date}' type='both' /></span>
 										<span class="msg2">\${msg}</span>
 									</p>
 										</li>
@@ -147,7 +147,7 @@
 											<p class="name"> \${name} </p>
 											<p>
 												<span class="msg2">\${msg}</span>
-												<span class="time"><fmt:formatDate value='${currentTime}' type='both' /></span>
+												<span class="time"><fmt:formatDate value='${date}' type='both' /></span>
 											</p>
 												</li>
 											`;
