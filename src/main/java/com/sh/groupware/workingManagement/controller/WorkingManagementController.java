@@ -215,10 +215,10 @@ public class WorkingManagementController {
 		// 주간별 누적근무시간
 		Map<String, Object> weekTime = new HashMap<>();
 
-		// weekDates 맵의 모든 내부 맵을 순회합니다.
+		// weekDates 맵의 모든 내부 맵을 순회
 		for (String week : weekDates.keySet()) {
 
-		    // 내부 맵에서 "start"와 "end" 값을 가져와서 새로운 맵에 추가합니다.
+		    // 내부 맵에서 "start"와 "end" 값을 가져와서 새로운 맵에 추가
 		    Map<String, Object> startEndMap = new HashMap<>();
 		    startEndMap.put("empId", empId);
 		    startEndMap.put("start", weekDates.get(week).get("start"));
