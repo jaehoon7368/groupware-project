@@ -349,7 +349,11 @@ function weekTimes(){
 			  let times = 144000000 - (weekTotalTime + weekOverTime); // 40시간 - 주간 기본 근무시간
 			  mainTotalWorkTime.textContent = chageWorkTime(weekTotalTime + weekOverTime);
 			  mainWeekOverTime.textContent = chageWorkTime(weekOverTime);
-			  mainWorkTime.textContent = chageWorkTime(times);
+			  if(times < 0){
+				  mainWorkTime.textContent = chageWorkTime(0);
+			  }else{
+				  mainWorkTime.textContent = chageWorkTime(times);				  
+			  }
 			  monthWorkTime.textContent = chageWorkTime(totalMonthTime + totalMonthOverTime);
 			  monthOverTime.textContent = chageWorkTime(totalMonthOverTime);
 		  },
