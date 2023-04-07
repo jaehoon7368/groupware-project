@@ -178,7 +178,7 @@
 												<img src="${pageContext.request.contextPath}/resources/upload/emp/default.png" class="my-img">
 											</c:if>
 											<c:if test="${!empty comment.renameFilename }">
-												<img src="${pageContext.request.contextPath}/resources/upload/emp/${board.renameFilename}" class="my-img">
+												<img src="${pageContext.request.contextPath}/resources/upload/emp/${comment.renameFilename}" class="my-img">
 											</c:if>
 							            </span>
 							            <span class="writer">${comment.writer}</span>
