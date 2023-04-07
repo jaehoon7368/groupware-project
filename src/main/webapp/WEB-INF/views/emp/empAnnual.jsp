@@ -102,7 +102,7 @@
                                 <select id="search-year" name="search-year">
                                 	<option selected>선택</option>
                                 <c:forEach items="${dayOffYear }" var="year">
-                                    <option value="${year.dayOffYear }">${year.dayOffYear }</option>
+                                    <option value="${year.dayOffYear}">${year.dayOffYear}</option>
                                 </c:forEach>
                                 </select>
                         </div>

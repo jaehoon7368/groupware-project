@@ -7,7 +7,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 	<jsp:include page="/WEB-INF/views/common/header.jsp">
-		<jsp:param value="Emp" name="title"/>
+		<jsp:param value="근태관리" name="title"/>
 	</jsp:include>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/emp/empEnroll.css">
  	<jsp:include page="/WEB-INF/views/emp/empLeftBar.jsp" />
