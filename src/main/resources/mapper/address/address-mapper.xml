@@ -217,12 +217,12 @@
 	    	from
 	    		addressBook
 	    	where
-	    		addrNo = #{addrNo}
+	    		addr_No = #{addrNo}
 	    </select>
 	    
 	    <delete id="deleteAddr" >
 	    	delete from addressBook
-	    	where addrNo = #{addrNo}
+	    	where addr_No = #{addrNo}
 	    </delete>
     
     

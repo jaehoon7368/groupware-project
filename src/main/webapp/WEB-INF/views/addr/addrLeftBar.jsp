@@ -37,7 +37,7 @@
 												<li><a class="container-a" href="#">기본</a></li>
 												
 											
-											<c:forEach items="${addrGroupList}" var="addrGroup">
+											<c:forEach items="${sessionScope.addrGroupList}" var="addrGroup">
 											    <li>
 											        <a href="${pageContext.request.contextPath}/addr/addrListForm.do?groupName=${addrGroup.groupName}" style="color:black;">
 											            ${addrGroup.groupName}

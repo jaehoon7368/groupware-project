@@ -483,7 +483,7 @@ SELECT *
 FROM {TABLE_NAME}
 WHERE {COLUMN_NAME} >= '가' AND {COLUMN_NAME} <='나';
 
-
+select*from emp;
 
     SELECT *
     FROM addressBook

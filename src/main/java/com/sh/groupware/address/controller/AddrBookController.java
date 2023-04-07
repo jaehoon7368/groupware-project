@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -40,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 @RequestMapping("/addr")
+@SessionAttributes({"addrGroupList"})
 public class AddrBookController {
 
 	@Autowired
@@ -108,14 +110,14 @@ public class AddrBookController {
 	@GetMapping("/addrListForm.do")
 	public String addrListForm(Model model,  @RequestParam("groupName") String groupName, Authentication authentication) {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
-	    List<AddressGroup> addrGroupList = addrService.selectAddrBookListByGroupName(groupName);
+		
+	    List<AddressGroup> addrGroupByName = addrService.selectAddrBookListByGroupName(groupName);
 	    List<AddressGroup> addrGroupNameList = addrService.selectGroupName(empId);
-		log.debug("addrGroupList = {}", addrGroupList);
+		
 		log.debug("addrGroupNameList = {}", addrGroupNameList);
-	
-	    model.addAttribute("addrGroupList", addrGroupList);
-	    model.addAttribute("groupName", groupName);
-	    model.addAttribute("addrGroupNameList = {}", addrGroupNameList);
+		
+		model.addAttribute("addrGroupByName", addrGroupByName);
+	    model.addAttribute("addrGroupNameList", addrGroupNameList);
 	    return "addr/addrListForm";
 	}
 	
@@ -140,26 +142,24 @@ public class AddrBookController {
 		
 	
 	@GetMapping("/addrAnywhere.do")
-	public void addrAnywhere(@RequestParam(defaultValue = "1") int cpage, Model model ) {
+	public void addrAnywhere(@RequestParam(defaultValue = "1") int cpage, Model model, Authentication authentication ) {
 		// 페이징처리
 				int limit = 20;
 				int offset = (cpage - 1) * limit; 
 				RowBounds rowBounds = new RowBounds(offset, limit);
 				
+				log.debug("authentication = {}", authentication);
+				Emp principal = (Emp) authentication.getPrincipal();
+				
+				String empId = principal.getEmpId();
+				//내 인사정보 가져오기
+				EmpDetail empInfo = empService.selectEmpDetail(empId);
+				
 				List<AddressBook> addressBookList = new ArrayList<>();
 				log.debug("addressBookList = {}", addressBookList);
-				List<Emp> empList = addrService.selectEmpList(rowBounds);
+				List<EmpDetail> empList = empService.selectEmpAll(rowBounds);
 				log.debug("empList = {}", empList);
-				for (Emp emp : empList) {
-					
-			        AddressBook addressBook = new AddressBook();
-			        addressBook.setName(emp.getName());
-			        addressBook.setJobName(emp.getJobCode());
-			        addressBook.setPhone(emp.getPhone());
-			        addressBook.setEmail(emp.getEmail());   
-			        addressBook.setDeptTitle(emp.getDeptCode());	 
-			        addressBookList.add(addressBook);
-			    }
+				
 				
 				// 총 게시물 수
 			    int totalCount = addrService.selectAddressBookCount();
@@ -173,6 +173,7 @@ public class AddrBookController {
 			    int startPage = ((cpage - 1) / 20) * 20 + 1; // 10 페이지씩 묶어서 보여줌
 			    int endPage = Math.min(startPage + 19, totalPage);
 			    
+			    model.addAttribute("empList = {} ", empList);
 			    model.addAttribute("addressBookList", addressBookList);
 			    model.addAttribute("currentPage", cpage);
 			    model.addAttribute("startPage", startPage);
@@ -279,7 +280,7 @@ public class AddrBookController {
 	}
 	
 	@PostMapping("/addrsDelete.do")
-	private String addrDelete(@RequestParam(value = "addrNo", required = false) List<String> addrNos,
+	private String addrsDelete(@RequestParam(value = "addrNos", required = false) List<String> addrNos,
 	                           Authentication authentication, RedirectAttributes redirectAttributes) {
 	    String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 	    log.debug("addrNos 시작 = {}", addrNos);

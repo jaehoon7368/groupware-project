@@ -62,7 +62,7 @@
  
  	<div class="tool-bar">
  		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=A">
+ 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=${param.no}">
 		 		<span><img src="${pageContext.request.contextPath}/resources/images/pencil.png" alt="" class="tool-img" /></span>
 		 		<span>새글쓰기</span>
 	 		</a>
