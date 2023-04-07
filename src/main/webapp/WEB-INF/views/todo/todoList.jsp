@@ -425,6 +425,7 @@ document.querySelector("#titleContentCanclebtn${vs.index }").addEventListener('c
 	position:absolute;
 	right: 98px;
     top: 39px;
+    transform: translate(0, -20px);
 }
 .comment-name{
 	width : 68px;
@@ -763,7 +764,7 @@ document.querySelector("#exampleFileUpload").addEventListener('change',(e)=>{
 		fr.readAsDataURL(f.files[0]);  //비동기처리  - 백그라운드 작업
 		fr.onload = (e) => {
 			//읽기 작업 완료시 호출될 load이벤트핸들러
-			document.querySelector("#img-viewer").src = f.name; // dataUrl		
+			document.querySelector("#img-viewer").src = '/resources/images/clip.png'; // dataUrl		
 			console.log(e.target.result); //파일2진데이터를 인코딩한 결과
 			
 			const div = document.querySelector('.div-report-write-file-name');

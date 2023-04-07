@@ -283,11 +283,9 @@
       width: auto;
     }
     .app-dashboard.shrink-medium .off-canvas-content {
-      margin-left: 80px;
       width: calc(100% - 80px);
     }
     .app-dashboard.shrink-medium .navigation {
-      margin-top: 2rem;
       text-align: center;
     }
     .app-dashboard.shrink-medium .menu.vertical > li > a {
