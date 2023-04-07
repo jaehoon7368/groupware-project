@@ -477,7 +477,7 @@ FROM emp e
 JOIN job j ON e.job_code = j.job_code
 JOIN dept d ON e.dept_code = d.dept_code;
 
-select*from addressbook;
+select*from addressbook; 
 
 SELECT *
 FROM {TABLE_NAME}
