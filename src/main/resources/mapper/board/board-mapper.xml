@@ -342,7 +342,8 @@
 			boardComment
 		where
 			board_no = #{no}
-		order by
+			0.
+		o3rder by
 			no desc
 	</select>
 	
