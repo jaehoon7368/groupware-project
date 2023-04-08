@@ -523,3 +523,17 @@ order by
     b.no desc;
 select * from boardtype;
 select * from board;
+
+alter table
+    boardcomment
+modify 
+    reg_date default TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul';
+    
+SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no,
+		    (select rename_filename from attachment where pk_no = b.emp_id) profile
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' ;    
