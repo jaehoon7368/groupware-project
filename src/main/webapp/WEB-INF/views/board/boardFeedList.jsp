@@ -106,10 +106,10 @@
 						<div class="tool-wrap">
 							<div class="info-wrap">
 								<span class="writer-img">
-									<c:if test="${empty board.renameFilename }">
+									<c:if test="${empty board.renameFilename}">
 										<img src="${pageContext.request.contextPath}/resources/upload/emp/default.png" class="my-img">
 									</c:if>
-									<c:if test="${!empty board.renameFilename }">
+									<c:if test="${!empty board.renameFilename}">
 										<img src="${pageContext.request.contextPath}/resources/upload/emp/${board.renameFilename}" class="my-img">
 									</c:if>
 								</span> <span class="writer">${board.writer}</span> <span
@@ -356,7 +356,7 @@ const boardDeleteBtnList = document.querySelectorAll('.delete-board-btn');
 			        headers,
 			        success(data) {
 			          console.log(data);
-			          location.href = '${pageContext.request.contextPath}/board/newsBoardList.do';
+			          location.href = "${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}";
 			        },
 			        error: console.log
 			      });

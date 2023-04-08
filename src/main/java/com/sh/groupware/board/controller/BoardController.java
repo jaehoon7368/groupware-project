@@ -265,7 +265,7 @@ public class BoardController {
 	    } else {
 	    	redirectAttributes.addFlashAttribute("msg", "작성자만 삭제할 수 있습니다.");
 	    }
-	    return "redirect:/board/boardTypeList.do?no=" + board.getBType() + "&category=" + boardType.getCategory();
+	    return "redirect:/board/boardTypeList.do?no=" + board.getNo() + "&category=" + boardType.getCategory();
 	}
 	
 	@PostMapping("/boardCommentDelete.do")
