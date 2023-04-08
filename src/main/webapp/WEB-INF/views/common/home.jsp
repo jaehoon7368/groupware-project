@@ -415,10 +415,11 @@ const updateDayWorkTime = (daytimes) =>{
 				        						</div>
 								            	<div class="right-noti">
 								               		<p> [<span class="noti-type-span">${notiType}등록</span>] '${reNoti.emp.name}' ${reNoti.emp.jobTitle }님 (이)가 <br />'${notiType}'를 등록하였습니다.</p>
-		  										<%-- <p><span class="noti-time-span">${reNoti.regDate }</span><span> </span></p> --%>
-		  										<p><span class="noti-time-span">
-		  											<fmt:parseDate value="${reNoti.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate" />
-													<fmt:formatDate value="${regDate}" pattern="yyyy-MM-dd HH:mm"/></span><span> </span></p>
+		  											<%-- <p><span class="noti-time-span">${reNoti.regDate }</span><span> </span></p> --%>
+		  											<p><span class="noti-time-span">
+			  											<fmt:parseDate value="${reNoti.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate" />
+														<fmt:formatDate value="${regDate}" pattern="yyyy-MM-dd HH:mm"/>
+													</span><span> </span></p>
 		    
 						          				</div>
 						       				</div>
