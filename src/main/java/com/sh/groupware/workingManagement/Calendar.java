@@ -11,7 +11,7 @@ public class Calendar {
 	
 	public Map<String, Map<String, Object>> updateDateText(LocalDate date) {
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM");
-	    System.out.println(date.format(formatter)); // 날짜 값을 출력.
+	    System.out.println(date.format(formatter));
 
 	    // 현재 달의 첫 번째 날짜와 마지막 날짜를 가져옴.
 	    LocalDate firstDate = date.with(TemporalAdjusters.firstDayOfMonth());
@@ -45,8 +45,6 @@ public class Calendar {
 	    // 종료일을 일요일로 변경
 	    LocalDate endDayOfThisWeek = lastDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 	    weekDates.get(lastWeek + "주차").put("end", endDayOfThisWeek.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
-
-	    System.out.println("weekDates = " + weekDates);
 
 	    return weekDates;
 	}

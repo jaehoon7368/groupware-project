@@ -418,5 +418,15 @@
 		</selectKey>
 	</insert>
 
-	
+	<select id="selectHomeBoardList" resultMap = "boardMap">
+		select 
+		    b.*,
+		    bt.title typeTitle,
+		    (select rename_filename from attachment where pk_no = b.emp_id) renameFilename 
+		from
+		    board b join boardtype bt
+		    on b.b_type = bt.no
+		order by 
+		    b.no desc
+	</select>
 </mapper>

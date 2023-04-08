@@ -44,7 +44,7 @@ create table working_management(
     no varchar2(15) not null,
     start_work timestamp default TO_TIMESTAMP_TZ(TO_CHAR(SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD HH24:MI:SS.FF3'), 'YYYY-MM-DD HH24:MI:SS.FF3 TZR TZD'),
     end_work timestamp,
-    overtime timestamp,
+    overtime number,
     reg_date date default TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul',
     state varchar2(15),
     day_work_time number,
@@ -239,7 +239,7 @@ select * from working_management order by no;
 select * from dayoff;
 select * from dayoffform;
 delete from working_management where no = '36';
-update working_management set end_work = null, state = '업무중',overtime = null,day_work_time = null where no = '107';
+update working_management set overtime = 36552580-28800000,day_work_time = 28800000 where no = '32';
 
 select day_off_year from dayoff group by day_off_year order by day_off_year;
     
@@ -314,11 +314,12 @@ insert into
 			'김사장'
 		);
 commit;
+
 select*from board;
 select*from emp;
 select*from attachment;
 select*from boardComment;
-
+select * from recentnotification;
 select
 			bc.*
 		from
@@ -540,3 +541,13 @@ select
 select*from attachment;
 select*from boardtype;
 select*from boardcomment;
+    b.*,
+    bt.title typeTitle,
+    (select rename_filename from attachment where pk_no = b.emp_id) renameFilename 
+from
+    board b join boardtype bt
+    on b.b_type = bt.no
+order by 
+    b.no desc;
+select * from boardtype;
+select * from board;

@@ -23,6 +23,7 @@ public class Board extends BoardEntity{
 	private List<BoardComment> boardComment = new ArrayList<>();
 	private Emp emp;
 	private String renameFilename;
+	private String typeTitle;
 	
 	public void addAttachment(Attachment attach) {
 		this.attachments.add(attach);
@@ -58,11 +59,7 @@ public class Board extends BoardEntity{
 		this.emp = emp;
 		this.commentList = commentList;
 		this.renameFilename = renameFilename;
+		this.typeTitle = typeTitle;
 	}
-	
-	
-
-
-	
-}
+}
 

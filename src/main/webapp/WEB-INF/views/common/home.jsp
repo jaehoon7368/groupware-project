@@ -27,7 +27,7 @@
 				
 						<div id="home-my-menu-modal">
 							<div class="my-menu-div">
-								<button class="my-menu">기본정보</button>
+								<button class="my-menu" onclick="location.href = '${pageContext.request.contextPath }/emp/empInfo.do'">기본정보</button>
 							</div>
 							<div class="my-menu-div">
 								<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
@@ -262,9 +262,7 @@ const updateDayWorkTime = (daytimes) =>{
 												  <li class="article-data" onclick="location.href='${pageContext.request.contextPath}/board/boardDetail.do?no=${board.no}'">
 												    <div class="article-wrap">
 												      <span class="bType" style="display:block; font-size:12px;">
-												      	<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
-												      		<c:if test="${board.BType == boardType.no}">다우그룹>${boardType.title}</c:if>
-												      	</c:forEach>
+												      		다우그룹>${board.typeTitle}
 												      </span>
 												      <div style="display:flex; justify-content: space-between;">
 													      <span class="title">${board.title}</span>
@@ -274,7 +272,7 @@ const updateDayWorkTime = (daytimes) =>{
 													        		<img style="width:25px; height:25px;" src="${pageContext.request.contextPath}/resources/upload/emp/default.png" class="my-img">
 													        	</c:if>
 													        	<c:if test="${!empty board.renameFilename }">
-														           <img src="${pageContext.request.contextPath}/resources/upload/emp/${board.renameFilename}" class="my-img">
+														           <img  style="width:25px; height:25px;" src="${pageContext.request.contextPath}/resources/upload/emp/${board.renameFilename}" class="my-img">
 													        	</c:if>
 													        </span>
 													        <span class="writer">${board.writer}</span>
@@ -411,11 +409,20 @@ const updateDayWorkTime = (daytimes) =>{
 											</c:choose>	
 											<div class="notification-list">
 				        						<div class="left-noti">
-				        							<img src="${pageContext.request.contextPath }/resources/upload/emp/${reNoti.attachment.renameFilename}" alt="" class="my-img">
+				        							<c:if test="${empty reNoti.attachment.renameFilename}">
+				        								<img src="${pageContext.request.contextPath }/resources/upload/emp/default.png" alt="" class="my-img">
+				        							</c:if>
+				        							<c:if test="${!empty reNoti.attachment.renameFilename}">
+				        								<img src="${pageContext.request.contextPath }/resources/upload/emp/${reNoti.attachment.renameFilename}" alt="" class="my-img">
+				        							</c:if>
 				        						</div>
 								            	<div class="right-noti">
 								               		<p> [<span class="noti-type-span">${notiType}등록</span>] '${reNoti.emp.name}' ${reNoti.emp.jobTitle }님 (이)가 <br />'${notiType}'를 등록하였습니다.</p>
-		  										<p><span class="noti-time-span">${reNoti.regDate }</span><span> </span></p>
+		  											<%-- <p><span class="noti-time-span">${reNoti.regDate }</span><span> </span></p> --%>
+		  											<p><span class="noti-time-span">
+			  											<fmt:parseDate value="${reNoti.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate" />
+														<fmt:formatDate value="${regDate}" pattern="yyyy-MM-dd HH:mm"/>
+													</span><span> </span></p>
 		    
 						          				</div>
 						       				</div>

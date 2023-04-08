@@ -106,4 +106,10 @@ public interface SignDao {
 
 	int selectMySignStatusCount(Map<String, Object> param);
 
+	@Select("select * from signStatus where sign_no = #{signNo}")
+	List<SignStatus> findBySignNoSignStatusList(String signNo);
+
+	@Update("update signStatus set status = #{status}, reason = null, reg_date = null where sign_no = #{signNo} and emp_id = #{empId}")
+	int updateSignStatus(Map<String, Object> param);
+
 } // interface end
