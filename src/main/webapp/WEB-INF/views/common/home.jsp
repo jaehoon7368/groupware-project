@@ -27,7 +27,7 @@
 				
 						<div id="home-my-menu-modal">
 							<div class="my-menu-div">
-								<button class="my-menu">기본정보</button>
+								<button class="my-menu" onclick="location.href = '${pageContext.request.contextPath }/emp/empInfo.do'">기본정보</button>
 							</div>
 							<div class="my-menu-div">
 								<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
@@ -415,7 +415,11 @@ const updateDayWorkTime = (daytimes) =>{
 				        						</div>
 								            	<div class="right-noti">
 								               		<p> [<span class="noti-type-span">${notiType}등록</span>] '${reNoti.emp.name}' ${reNoti.emp.jobTitle }님 (이)가 <br />'${notiType}'를 등록하였습니다.</p>
-		  										<p><span class="noti-time-span">${reNoti.regDate }</span><span> </span></p>
+		  											<%-- <p><span class="noti-time-span">${reNoti.regDate }</span><span> </span></p> --%>
+		  											<p><span class="noti-time-span">
+			  											<fmt:parseDate value="${reNoti.regDate}" pattern="yyyy-MM-dd'T'HH:mm" var="regDate" />
+														<fmt:formatDate value="${regDate}" pattern="yyyy-MM-dd HH:mm"/>
+													</span><span> </span></p>
 		    
 						          				</div>
 						       				</div>

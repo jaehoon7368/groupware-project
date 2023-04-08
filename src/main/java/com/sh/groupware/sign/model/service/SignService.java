@@ -85,4 +85,8 @@ public interface SignService {
 
 	int selectMySignStatusCount(Map<String, Object> param);
 
+	List<SignStatus> findBySignNoSignStatusList(String signNo);
+
+	int updateSignStatus(Map<String, Object> param);
+
 } // interface end
