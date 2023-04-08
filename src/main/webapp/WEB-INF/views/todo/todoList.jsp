@@ -73,8 +73,32 @@
 					<div class="modalTitle">Board</div>
 					<div class="modalList" id="todoHome">Todo홈</div>
 					<a href="javascript:groupModalOpen('${todoBoard.no }')" data-open="boardModal"><div class="modalList">사원공유설정</div></a>
+					<div class="modalList" id="boardDelete"  >보드 삭제</div>
 					
+					<form:form action="${pageContext.request.contextPath }/todo/todoBoardDelete.do" method="POST" id="todoBoardDeleteFrm">
+						<input type="hidden"  name="no" value="${todoBoard.no }"/>
+					</form:form>
  				</div>
+ 				
+ 				<style>
+ 				.modalList{
+ 					cursor: pointer;
+ 				}
+ 				
+ 				</style>
+ 				
+ 				<script>
+ 				
+ 				document.querySelector("#boardDelete").addEventListener('click',(e)=>{
+ 					const boardNo = e.target.dataset.no;
+ 					console.log(boardNo);
+ 					const frm = document.querySelector("#todoBoardDeleteFrm");
+ 					confrm(frm);
+ 					//frm.submit();
+ 				})
+ 				
+ 				</script>
+ 		
  	<!-- 사원공유 모달  -->
  										<div class="report-no-modal reveal" id="exampleModal1" data-reveal>
 										<h5>선택</h5>

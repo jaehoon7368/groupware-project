@@ -62,6 +62,8 @@ public interface TodoService {
 	List<TodoBoard> selectTodoBoardByEmpId(String empId);
 
 	List<Attachment> selectAttachmentByBoardNo(String boardNo);
+
+	int todoBoardDelete(String no);
 	
 
 }

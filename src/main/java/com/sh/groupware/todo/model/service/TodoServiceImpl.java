@@ -168,6 +168,9 @@ public class TodoServiceImpl implements TodoService {
 	public List<Attachment> selectAttachmentByBoardNo(String boardNo) {
 		return todoDao.selectAttachmentByBoardNo(boardNo);
 	}
-	
+	@Override
+	public int todoBoardDelete(String no) {
+		return todoDao.todoBoardDelete(no);
+	}
 	
 }
