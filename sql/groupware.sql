@@ -74,6 +74,7 @@ create table board (
     constraint fk_board_emp foreign key (emp_id) references emp (emp_id) on delete cascade,
     constraint fk_board_writer foreign key (writer) references emp (emp_id) on delete cascade
 );
+select*from board;
 
 -- 게시판 테이블 컬럼 추가
 alter table board add writer varchar2(20) not null;
