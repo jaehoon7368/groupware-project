@@ -257,6 +257,37 @@ const updateDayWorkTime = (daytimes) =>{
 									<div id="home-center" class="div-padding div-margin">
 										<h5>전사게시판</h5>
 										<div id="board-div" class="home-div">
+											<c:forEach var="board" items="${boardList}" varStatus="status">
+											<c:if test="${status.index < 4}">
+												  <li class="article-data" onclick="location.href='${pageContext.request.contextPath}/board/boardDetail.do?no=${board.no}'">
+												    <div class="article-wrap">
+												      <span class="bType" style="display:block; font-size:12px;">
+												      	<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
+												      		<c:if test="${board.BType == boardType.no}">다우그룹>${boardType.title}</c:if>
+												      	</c:forEach>
+												      </span>
+												      <div style="display:flex; justify-content: space-between;">
+													      <span class="title">${board.title}</span>
+													      <div class="writer-info" style="font-size:13px;">
+													        <span class="writer-img">
+													        	<c:if test="${empty board.renameFilename }">
+													        		<img style="width:25px; height:25px;" src="${pageContext.request.contextPath}/resources/upload/emp/default.png" class="my-img">
+													        	</c:if>
+													        	<c:if test="${!empty board.renameFilename }">
+														           <img src="${pageContext.request.contextPath}/resources/upload/emp/${board.renameFilename}" class="my-img">
+													        	</c:if>
+													        </span>
+													        <span class="writer">${board.writer}</span>
+													        <span id="createdDate" class="createdDate">
+													            <fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" />
+													            <fmt:formatDate value="${createdDate}" pattern="yyyy-MM-dd"/>
+													        </span>
+													   	</div>
+												      </div>
+												    </div>
+												  </li>
+												 </c:if>
+												</c:forEach>
 										</div>
 									</div>
 									<script>

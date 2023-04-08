@@ -90,6 +90,8 @@ public interface BoardService {
 
 	BoardType selectOneBoardType(String no);
 
+	List<Board> selectHomeBoardList();
+
 	
 
 	

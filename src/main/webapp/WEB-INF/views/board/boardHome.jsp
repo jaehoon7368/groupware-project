@@ -76,13 +76,6 @@
 					      	<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
 					      		<c:if test="${board.BType == boardType.no}">다우그룹>${boardType.title}</c:if>
 					      	</c:forEach>
-					        <%-- <c:choose>
-					          <c:when test="${board.BType == 'A'}">다우그룹>전체게시판</c:when>
-					          <c:when test="${board.BType == 'M'}">다우그룹>주간 식단표</c:when>
-					          <c:when test="${board.BType == 'N'}">다우그룹>이주의 IT뉴스</c:when>
-					          <c:when test="${board.BType == 'P'}">다우그룹>사진 게시판</c:when>
-					          <c:otherwise>${board.BType}</c:otherwise>
-					        </c:choose> --%>
 					      </span>
 					      <span class="title">${board.title}</span>
 					      <span class="article-content">${board.content}</span>
@@ -119,6 +112,7 @@
 			
 			<div class="resent-group">
 				<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
+				<c:if test="${boardType.category == 'C'}">
 					<div class="group-list">
 					    <a href="${pageContext.request.contextPath}/board/boardList.do"><span class="group-list-title">${boardType.title}</span></a>
 					    <ul>
@@ -144,6 +138,7 @@
 					        </c:forEach>
 					    </ul>
 					</div>
+					</c:if>
 				</c:forEach>
 				
 				<%-- <div class="group-list">

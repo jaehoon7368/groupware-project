@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.sh.groupware.board.model.dto.Board;
+import com.sh.groupware.board.model.service.BoardService;
 import com.sh.groupware.common.dto.RecentNotification;
 import com.sh.groupware.common.service.CommonService;
 import com.sh.groupware.emp.model.dto.Emp;
@@ -27,6 +29,9 @@ public class CommonController {
 	private CommonService commonService;
 
 	@Autowired
+	private BoardService boardService;
+	
+	@Autowired
 	private SignService signService;
 
 	@Autowired
@@ -41,6 +46,9 @@ public class CommonController {
 		log.debug("empId= {}",empId);
 		List<RecentNotification> reNotis = commonService.selectAllReNoti(); 
 		log.debug("reNotis={} ",reNotis);
+		
+		// 게시판 
+		List<Board> boardList = boardService.selectHomeBoardList();
 		
 		// 결재 대기 문서
 		List<Sign> mySignList = signService.findByMySignList(empId);
@@ -63,6 +71,7 @@ public class CommonController {
 		model.addAttribute("reNotis",reNotis);
 		model.addAttribute("mySignList", mySignList);
 		model.addAttribute("reportList", reportList);
+		model.addAttribute("boardList", boardList);
 		
 		return "common/home";
 	} // home() end
