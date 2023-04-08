@@ -44,7 +44,7 @@ create table working_management(
     no varchar2(15) not null,
     start_work timestamp default TO_TIMESTAMP_TZ(TO_CHAR(SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD HH24:MI:SS.FF3'), 'YYYY-MM-DD HH24:MI:SS.FF3 TZR TZD'),
     end_work timestamp,
-    overtime timestamp,
+    overtime number,
     reg_date date default TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul',
     state varchar2(15),
     day_work_time number,
@@ -313,11 +313,12 @@ insert into
 			'김사장'
 		);
 commit;
+
 select*from board;
 select*from emp;
 select*from attachment;
 select*from boardComment;
-
+select * from recentnotification;
 select
 			bc.*
 		from
@@ -510,3 +511,15 @@ select*from emp;
         END = 'ㄱ' and writer = '230301';
 
 select * from authority where auth = 'ROLE_PERSONNEL';
+
+select 
+    b.*,
+    bt.title typeTitle,
+    (select rename_filename from attachment where pk_no = b.emp_id) renameFilename 
+from
+    board b join boardtype bt
+    on b.b_type = bt.no
+order by 
+    b.no desc;
+select * from boardtype;
+select * from board;

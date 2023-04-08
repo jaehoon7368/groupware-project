@@ -98,7 +98,6 @@ public interface BoardDao {
 	@Select("select * from boardType where no = (select b_type from board where no = #{no})")
 	BoardType selectOneBoardType(String no);
 
-	@Select("select * from board")
 	List<Board> selectHomeBoardList();
 
 
