@@ -17,9 +17,32 @@
 		<jsp:param value="Report" name="title"/>
 	</jsp:include>
 	
+<style>
+.navigation ul li a .icon i {
+    position: relative;
+    font-size: 1.7em;
+    z-index: 1;
+    margin-top: 20px;
+}
+
+.navigation ul li a .title {
+    position: relative;
+    display: block;
+    padding-left: 10px;
+    height: 60px;
+    line-height: 60px;
+    white-space: nowrap;
+    font-weight: bold;
+    font-size : 1.1em;
+}
+	
+</style>
+	
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css">
 	
 	<jsp:include page="/WEB-INF/views/report/reportLeftBar.jsp" />
+	
+
 					
 					<div class="home-container">
 						<!-- 상단 타이틀 -->

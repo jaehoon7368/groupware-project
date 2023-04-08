@@ -411,7 +411,12 @@ const updateDayWorkTime = (daytimes) =>{
 											</c:choose>	
 											<div class="notification-list">
 				        						<div class="left-noti">
-				        							<img src="${pageContext.request.contextPath }/resources/upload/emp/${reNoti.attachment.renameFilename}" alt="" class="my-img">
+				        							<c:if test="${empty reNoti.attachment.renameFilename}">
+				        								<img src="${pageContext.request.contextPath }/resources/upload/emp/default.png" alt="" class="my-img">
+				        							</c:if>
+				        							<c:if test="${!empty reNoti.attachment.renameFilename}">
+				        								<img src="${pageContext.request.contextPath }/resources/upload/emp/${reNoti.attachment.renameFilename}" alt="" class="my-img">
+				        							</c:if>
 				        						</div>
 								            	<div class="right-noti">
 								               		<p> [<span class="noti-type-span">${notiType}등록</span>] '${reNoti.emp.name}' ${reNoti.emp.jobTitle }님 (이)가 <br />'${notiType}'를 등록하였습니다.</p>
