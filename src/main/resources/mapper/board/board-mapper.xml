@@ -183,6 +183,7 @@
 		<result column="updated_date" property="updatedDate"/>
 		<result column="emp_id" property="empId"/>
 		<result column="writer" property="writer"/>
+		<result column="renameFilename" property="renameFilename"/>
 		<association property="emp" javaType="emp">
 			<id column="emp_id" property="empId"/>
 			<result column="name" property="name"/>
@@ -267,9 +268,10 @@
 	
 	<select id="selectBoardCommentByNo" resultMap="boardCommentMap">
 		select
-			*
+			b.*,
+			(select rename_filename from attachment where pk_no = bc.emp_id) renameFilename
 		from
-			boardComment
+			boardComment b
 		where
 			no = #{no}
 	</select>
