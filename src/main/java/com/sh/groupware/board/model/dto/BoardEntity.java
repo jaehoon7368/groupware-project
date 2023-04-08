@@ -27,4 +27,5 @@ public class BoardEntity {
 	private LocalDateTime updatedDate;
 	private String empId;
 	private String writer;
+	private int commentCount;
 }

@@ -106,10 +106,10 @@
 						<div class="tool-wrap">
 							<div class="info-wrap">
 								<span class="writer-img">
-									<c:if test="${empty board.renameFilename }">
+									<c:if test="${empty board.renameFilename}">
 										<img src="${pageContext.request.contextPath}/resources/upload/emp/default.png" class="my-img">
 									</c:if>
-									<c:if test="${!empty board.renameFilename }">
+									<c:if test="${!empty board.renameFilename}">
 										<img src="${pageContext.request.contextPath}/resources/upload/emp/${board.renameFilename}" class="my-img">
 									</c:if>
 								</span> <span class="writer">${board.writer}</span> <span
@@ -160,7 +160,7 @@
 						<div class="div-padding"></div>
 						<div class="view-option">
 							<div class="comment">
-								<span>댓글</span>  <span>${commentCountMap.CommentCount}</span> <span class="part">|</span>
+								<span>댓글</span>  <span>${board.commentCount}</span> <span class="part">|</span>
 							</div>
 							<div class="likeCount">
 								<span>좋아요</span> <span class="likeCount">${board.likeCount}</span>
@@ -211,12 +211,17 @@
 							<div class="div-report-commend-all" >
 							  <form id= "commentFrm${board.no}" data-board-no="${board.no}" method="post">
 							    <div>
-							      <img src="${pageContext.request.contextPath}/resources/images/sample.jpg" class="my-img" />
+							      <c:if test="${!empty sessionScope.loginMember.attachment}">
+									<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+								</c:if>
+								<c:if test="${empty sessionScope.loginMember.attachment}">
+									<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+								</c:if>	
 							    </div>
 							    <div class="comment-input">
 							      <input type="hidden" id="_no" name="no" value="${board.no}">
-							      <input type="hidden" id="_empId" name="empId" value="${board.empId}">
-							      <input type="hidden" id="_writer" name="writer" value="${board.writer}">
+							      <input type="hidden" id="_empId" name="empId" value="${loginMember.empId}">
+							      <input type="hidden" id="_writer" name="writer" value="${loginMember.name}">
 							      <input type="hidden" id ="_comment_Level" name="comment_level" value="0" />
 							      <input type="hidden" id = "_refCommentNo" name="refCommentNo" value="${board.no}" />
 							      <textarea rows="1" id="_content" name="content" style="resize: none;" ></textarea>
@@ -323,7 +328,7 @@ function submitComment() {
 		}),
 		headers,
 		success: function(response) {
-			location.href = '${pageContext.request.contextPath}/board/newsBoardList.do';
+			location.href = "${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}";
 		},
 		error: function(xhr, status, error) {
 			alert('댓글 작성에 실패했습니다.');
@@ -351,7 +356,7 @@ const boardDeleteBtnList = document.querySelectorAll('.delete-board-btn');
 			        headers,
 			        success(data) {
 			          console.log(data);
-			          location.href = '${pageContext.request.contextPath}/board/newsBoardList.do';
+			          location.href = "${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}";
 			        },
 			        error: console.log
 			      });
@@ -380,7 +385,7 @@ deleteBtnList.forEach((deleteBtn) => {
         headers,
         success(data) {
           console.log(data);
-          location.href = '${pageContext.request.contextPath}/board/newsBoardList.do';
+          location.href = "${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}";
         },
         error: console.log
       });
@@ -413,57 +418,7 @@ function openModal(imgSrc, imgAlt) {
 	modal.style.display = 'block';
 }
 </script>
-<script>
-function displayFileNames() {
-	  const fileNameSpan = document.getElementById("fileName");
-	  const upFileInput = document.getElementById("upFile");
-	  const fileList = upFileInput.files; // 선택된 파일 리스트
-	  let fileNames = "";
 
-	  // upfile-img 클래스를 가진 div 태그 내부 초기화
-	  const upFileImgDiv = document.querySelector(".upfile-img");
-	  upFileImgDiv.innerHTML = "";
-
-	  for (let i = 0; i < fileList.length; i++) {
-	    const file = fileList[i];
-	    const fileName = file.name;
-	    if (i > 0) {
-	      fileNames += ", ";
-	    }
-	    fileNames += fileName;
-
-	    // 이미지 파일인 경우, 미리보기 이미지 생성
-	    if (file.type.includes("image/")) {
-	      const reader = new FileReader();
-	      reader.readAsDataURL(file);
-	      reader.onload = () => {
-	        const img = document.createElement("img");
-	        img.src = reader.result;
-	        img.onload = () => {
-	          // 이미지가 로드되면, 해당 이미지의 크기를 가져와 text-wrap의 높이를 조정합니다.
-	          const textWrap = document.querySelector(".text-wrap");
-	          const textWrapHeight = textWrap.offsetHeight;
-	          const imgHeight = img.height;
-	          const newHeight = textWrapHeight + imgHeight;
-	          textWrap.style.height = `${newHeight}px`;
-
-	          // content-wrap 영역도 text-wrap 영역만큼 내려가도록 설정합니다.
-	          const contentWrap = document.querySelector(".content-wrap");
-	          const contentWrapHeight = contentWrap.offsetHeight;
-	          const newContentWrapHeight = contentWrapHeight + imgHeight;
-	          contentWrap.style.height = `${newContentWrapHeight}px`;
-
-	          upFileImgDiv.appendChild(img);
-	        };
-	        img.width = 150;
-	        img.height = 150;
-	      };
-	    }
-	  }
-
-	  fileNameSpan.innerText = fileNames;
-	}
-</script>
 <script>
 function displayFileNames() {
 	  const fileNameSpan = document.getElementById("fileName");
@@ -647,7 +602,7 @@ boardList.forEach(function(board) {
           } else {
             console.log('좋아요 등록 처리 실패');
           }
-          location.href = '${pageContext.request.contextPath}/board/newsBoardList.do';
+          location.href = "${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}";
         },
         error: function(xhr, status, error) {
           console.error(status + " : " + error);
@@ -678,7 +633,7 @@ boardList.forEach(function(board) {
     		} else {
     		console.log('좋아요 취소 처리 실패');
     		}
-    		location.href = '${pageContext.request.contextPath}/board/newsBoardList.do';
+    		location.href = "${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}";
     		},
     		error: function(xhr, status, error) {
     		console.error(status + " : " + error);
