@@ -61,6 +61,9 @@ public interface TodoDao {
 	List<TodoBoard> selectTodoBoardByEmpId(String empId);
 	List<Attachment> selectAttachmentByBoardNo(String boardNo);
 	
+	@Delete("delete from todoboard where no = #{no}")
+	int todoBoardDelete(String no);
+	
 	
 
 	
