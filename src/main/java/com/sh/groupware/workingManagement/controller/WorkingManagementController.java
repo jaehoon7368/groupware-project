@@ -237,7 +237,6 @@ public class WorkingManagementController {
 		    
 		}
 
-		
 		Map<String, Object> response = new HashMap<>();
 		response.put("workList", workList);
 		response.put("weekDates", weekDates);

@@ -46,8 +46,6 @@ public class Calendar {
 	    LocalDate endDayOfThisWeek = lastDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 	    weekDates.get(lastWeek + "주차").put("end", endDayOfThisWeek.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
 
-	    System.out.println("weekDates = " + weekDates);
-
 	    return weekDates;
 	}
     
