@@ -262,9 +262,7 @@ const updateDayWorkTime = (daytimes) =>{
 												  <li class="article-data" onclick="location.href='${pageContext.request.contextPath}/board/boardDetail.do?no=${board.no}'">
 												    <div class="article-wrap">
 												      <span class="bType" style="display:block; font-size:12px;">
-												      	<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
-												      		<c:if test="${board.BType == boardType.no}">다우그룹>${boardType.title}</c:if>
-												      	</c:forEach>
+												      		다우그룹>${board.typeTitle}
 												      </span>
 												      <div style="display:flex; justify-content: space-between;">
 													      <span class="title">${board.title}</span>
@@ -274,7 +272,7 @@ const updateDayWorkTime = (daytimes) =>{
 													        		<img style="width:25px; height:25px;" src="${pageContext.request.contextPath}/resources/upload/emp/default.png" class="my-img">
 													        	</c:if>
 													        	<c:if test="${!empty board.renameFilename }">
-														           <img src="${pageContext.request.contextPath}/resources/upload/emp/${board.renameFilename}" class="my-img">
+														           <img  style="width:25px; height:25px;" src="${pageContext.request.contextPath}/resources/upload/emp/${board.renameFilename}" class="my-img">
 													        	</c:if>
 													        </span>
 													        <span class="writer">${board.writer}</span>
