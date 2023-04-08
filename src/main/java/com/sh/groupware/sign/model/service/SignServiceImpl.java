@@ -381,4 +381,16 @@ public class SignServiceImpl implements SignService {
 		return signDao.selectMySignStatusCount(param);
 	} // selectMySignStatusCount() end
 	
+	
+	@Override
+	public List<SignStatus> findBySignNoSignStatusList(String signNo) {
+		return signDao.findBySignNoSignStatusList(signNo);
+	} // findBySignNoSignStatusList() end
+	
+	
+	@Override
+	public int updateSignStatus(Map<String, Object> param) {
+		return signDao.updateSignStatus(param);
+	} // updateSignStatus() end
+	
 } // class end

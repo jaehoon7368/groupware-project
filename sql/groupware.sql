@@ -44,7 +44,7 @@ create table working_management(
     no varchar2(15) not null,
     start_work timestamp default TO_TIMESTAMP_TZ(TO_CHAR(SYSTIMESTAMP AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD HH24:MI:SS.FF3'), 'YYYY-MM-DD HH24:MI:SS.FF3 TZR TZD'),
     end_work timestamp,
-    overtime timestamp,
+    overtime number,
     reg_date date default TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul',
     state varchar2(15),
     day_work_time number,
@@ -74,13 +74,16 @@ create table board (
     constraint fk_board_emp foreign key (emp_id) references emp (emp_id) on delete cascade,
     constraint fk_board_writer foreign key (writer) references emp (emp_id) on delete cascade
 );
+
 select*from board;
+
 
 -- 게시판 테이블 컬럼 추가
 alter table board add writer varchar2(20) not null;
 alter table board add foreign key(writer) references emp (emp_id) on delete cascade;
 alter table board rename column type to b_type;
-
+select*from attachment;
+select*from emp;
 --좋아요
 CREATE TABLE board_like (
     like_no varchar2(20) PRIMARY KEY,
@@ -91,6 +94,7 @@ CREATE TABLE board_like (
     CONSTRAINT fk_board_like_emp FOREIGN KEY (emp_id) REFERENCES emp (emp_id) ON DELETE CASCADE,
     CONSTRAINT fk_board_like_board FOREIGN KEY (board_no) REFERENCES board (no) ON DELETE CASCADE
 );
+
 
 -- 게시판 좋아요 트리거
 -- 좋아요 테이블 INSERT 트리거
@@ -239,7 +243,7 @@ select * from working_management order by no;
 select * from dayoff;
 select * from dayoffform;
 delete from working_management where no = '36';
-update working_management set end_work = null, state = '업무중',overtime = null,day_work_time = null where no = '107';
+update working_management set overtime = 36552580-28800000,day_work_time = 28800000 where no = '32';
 
 select day_off_year from dayoff group by day_off_year order by day_off_year;
     
@@ -314,11 +318,12 @@ insert into
 			'김사장'
 		);
 commit;
+
 select*from board;
 select*from emp;
 select*from attachment;
 select*from boardComment;
-
+select * from recentnotification;
 select
 			bc.*
 		from
@@ -511,3 +516,57 @@ select*from emp;
         END = 'ㄱ' and writer = '230301';
 
 select * from authority where auth = 'ROLE_PERSONNEL';
+
+select 
+		    b.*,
+            a.*,
+		    (select count(*) from attachment where no = b.no and category = 'B') attach_count
+		from
+		    board b left join emp e
+		        on b.emp_id = e.emp_id
+		where 
+		    b.b_type = '3'
+		order by 
+		    no desc;
+
+
+
+		SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no 
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
+		WHERE 
+		    b.b_type = '4'
+		order by
+			b.no desc;
+select*from attachment;
+select*from boardtype;
+select*from boardcomment;
+    b.*,
+    bt.title typeTitle,
+    (select rename_filename from attachment where pk_no = b.emp_id) renameFilename 
+from
+    board b join boardtype bt
+    on b.b_type = bt.no
+order by 
+    b.no desc;
+select * from boardtype;
+select * from board;
+
+alter table
+    boardcomment
+modify 
+    reg_date default TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul';
+    
+SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no,
+		    (select rename_filename from attachment where pk_no = b.emp_id) profile
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' ;    
+

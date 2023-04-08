@@ -183,6 +183,7 @@
 		<result column="updated_date" property="updatedDate"/>
 		<result column="emp_id" property="empId"/>
 		<result column="writer" property="writer"/>
+		<result column="renameFilename" property="renameFilename"/>
 		<association property="emp" javaType="emp">
 			<id column="emp_id" property="empId"/>
 			<result column="name" property="name"/>
@@ -271,7 +272,7 @@
 		from
 			boardComment
 		where
-			no = #{no}
+		no = #{no}
 	</select>
 	
 	<delete id="deleteBoardComment">
@@ -337,13 +338,12 @@
 	
 	<select id="selectCommentListByBoardNo" resultMap="boardCommentMap">
 		select
-			*
+			b.*,
+			(select rename_filename from attachment where pk_no = b.emp_id) renameFilename
 		from
-			boardComment
+			boardComment b
 		where
 			board_no = #{no}
-		order by
-			no desc
 	</select>
 	
 	<select id="selectBoardCountByNo" resultType="int">
@@ -372,17 +372,19 @@
 	</select>
 	
 	
-	<select id="findByNoBoardList" resultMap="boardMap">
-		select 
-		    b.*,
-		    (select count(*) from attachment where no = b.no and category = 'B') attach_count
-		from
-		    board b left join emp e
-		        on b.emp_id = e.emp_id
-		where 
+	<select id="findByNoBoardList" resultMap="boardCollectionMap">
+		SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no,
+		    (select rename_filename from attachment where pk_no = b.emp_id) renameFilename
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B'
+        WHERE 
 		    b.b_type = #{no}
-		order by 
-		    no desc
+		order by
+			b.no desc
 	</select>
 	
 	
@@ -417,5 +419,15 @@
 		</selectKey>
 	</insert>
 
-	
+	<select id="selectHomeBoardList" resultMap = "boardMap">
+		select 
+		    b.*,
+		    bt.title typeTitle,
+		    (select rename_filename from attachment where pk_no = b.emp_id) renameFilename 
+		from
+		    board b join boardtype bt
+		    on b.b_type = bt.no
+		order by 
+		    b.no desc
+	</select>
 </mapper>

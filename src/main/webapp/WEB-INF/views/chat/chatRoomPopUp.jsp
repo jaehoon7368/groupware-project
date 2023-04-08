@@ -37,7 +37,7 @@
 						<p class="name1"></p>
 						<p>
 							<span class="time"><fmt:formatDate value='${date}' type='both' /></span>
-							<span class="msg2">${chatLog.msg}</span>
+							<span class="msg2 msg3">${chatLog.msg}</span>
 						</p>
 						</li>
 					
@@ -119,12 +119,13 @@
 							const ul = document.querySelector('#msg-container ul');
 							const currentTime = new Date().toLocaleTimeString();
 	
+							//내메세지 출력
 							if(empId == myId){
 								ul.innerHTML += `
 									<li class="list-group-item myli" id="dialog" title="\${currentTime}">
 									<p>
-										<span class="time"><fmt:formatDate value='${date}' type='both' /></span>
-										<span class="msg2">\${msg}</span>
+										<span class="time"><fmt:formatDate value='${today}' type='both' /></span>
+										<span class="msg2 msg3">\${msg}</span>
 									</p>
 										</li>
 									`;
@@ -140,14 +141,14 @@
 										const fileName = attach.renameFilename;
 										const name = data.name;
 										
-										
+										//상대방 메시지 출력
 										ul.innerHTML += `
 											<li class="list-group-item" id="dialog2" title="\${currentTime}">
 											<img src="${pageContext.request.contextPath }/resources/upload/emp/\${fileName}" alt=""  class="img"/>
 											<p class="name"> \${name} </p>
 											<p>
 												<span class="msg2">\${msg}</span>
-												<span class="time"><fmt:formatDate value='${date}' type='both' /></span>
+												<span class="time"><fmt:formatDate value='${today}' type='both' /></span>
 											</p>
 												</li>
 											`;

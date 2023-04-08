@@ -13,8 +13,7 @@
 	values(
 		 'tdb'||to_char(seq_todoboard_no.nextval,'fm00000'),
 		 #{title},
-		 #{empId},
-		 default
+		 #{empId}
 	)
 	
 		<selectKey order ="AFTER" resultType = "string" keyProperty="no">

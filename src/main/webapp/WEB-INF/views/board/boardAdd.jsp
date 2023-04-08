@@ -30,13 +30,13 @@
 								</div>
 								<div id="my-menu-modal">
 									<div class="my-menu-div">
-										<button class="my-menu">기본정보</button>
-									</div>
-									<div class="my-menu-div">
-										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
-											<button class="my-menu" type="submit">로그아웃</button>								
-										</form:form>
-									</div>
+										<button class="my-menu" onclick="location.href = '${pageContext.request.contextPath }/emp/empInfo.do'">기본정보</button>
+								</div>
+								<div class="my-menu-div">
+									<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
+										<button class="my-menu" type="submit">로그아웃</button>								
+									</form:form>
+								</div>
 								</div>
 							</div>
 						</div>

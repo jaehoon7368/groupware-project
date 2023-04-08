@@ -77,7 +77,7 @@ ul:hover {
 
 /* home.jsp 본문에 왼쪽 근태관리 div에 table 및 select */
 #home-work-tbl td {
-    padding: 2px;
+    padding: 4px;
 }
 
 .btn-tr {

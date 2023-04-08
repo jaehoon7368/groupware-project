@@ -316,11 +316,35 @@ public class SignController {
 	} // dayOffCreate() end
 	
 	
+	// 제출한 결재 양식 수정 시 결재선도 처음부터
+	public int formUpdateSignStatusUpdate(String signNo) {
+		List<SignStatus> signStatusList = signService.findBySignNoSignStatusList(signNo);
+		
+		int result = 0;
+		Map<String, Object> param = new HashMap<>();
+		
+		for (SignStatus signStatus : signStatusList) {
+			param.put("signNo", signStatus.getSignNo());
+			param.put("empId", signStatus.getEmpId());
+			if (signStatus.getSignOrder() == 1) {
+				param.put("status", "W");
+				result = signService.updateSignStatus(param);
+			} else {
+				param.put("status", "S");
+				result = signService.updateSignStatus(param);
+			}
+		}
+		
+		return result;
+	} // formUpdateSignStatusUpdate() end
+	
+	
 	@PostMapping("/dayOffUpdate.do")
 	public String dayOffUpdate(DayOffForm dayOff) {
 		log.debug("dayOff = {}", dayOff);
 		
 		int result = signService.updateDayOffForm(dayOff);
+		result = formUpdateSignStatusUpdate(dayOff.getSignNo());
 		
 		return "redirect:/sign/signDetail.do?no=" + dayOff.getSignNo() + "&type=D";
 	} // dayOffUpdate() end
@@ -371,6 +395,7 @@ public class SignController {
 		log.debug("trip = {}", trip);
 		
 		int result = signService.updateTripForm(trip);
+		result = formUpdateSignStatusUpdate(trip.getSignNo());
 		
 		return "redirect:/sign/signDetail.do?no=" + trip.getSignNo() + "&type=T";
 	} // tripUpdate() end
@@ -431,6 +456,8 @@ public class SignController {
 				else
 					result = signService.insertProductForm(product);
 			}
+			
+			result = formUpdateSignStatusUpdate(product.getSignNo());
 		}
 		
 		return "redirect:/sign/signDetail.do?no=" + signNo + "&type=P";
@@ -469,6 +496,7 @@ public class SignController {
 		log.debug("resignation = {}", resignation);
 		
 		int result = signService.updateResignationForm(resignation);
+		result = formUpdateSignStatusUpdate(resignation.getSignNo());
 		
 		return "redirect:/sign/signDetail.do?no=" + resignation.getSignNo() + "&type=R";
 	} // resignationUpdate() end

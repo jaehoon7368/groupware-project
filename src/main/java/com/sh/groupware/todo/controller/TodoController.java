@@ -307,6 +307,15 @@ public class TodoController {
 		return "redirect:/todo/todoList.do?no="+todoBoardNo;
 	}
 	
+	
+	@PostMapping("todoBoardDelete.do")
+	public String todoBoardDelete(@RequestParam String no) {
+		
+		int result = todoService.todoBoardDelete(no);
+		
+		
+		return "redirect:/todo/todo.do";
+	}
 
 
 

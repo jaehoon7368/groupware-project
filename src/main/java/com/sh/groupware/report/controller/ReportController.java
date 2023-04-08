@@ -130,7 +130,7 @@ public class ReportController {
 		List<Report> myReportList = reportService.findByWriterReportList(loginMember.getEmpId());
 		model.addAttribute("myReportList", myReportList);
 		
-		return "redirect:/report/myListView.do";
+		return "redirect:/report/reportListView.do?type=my";
 	} // reportCreate() end
 	
 	

@@ -16,6 +16,7 @@
 
 	<div class="home-container">
 		<!-- 상단 타이틀 -->
+
 		<div class="top-container">
 			<div class="home-topbar topbar-div">
 				<div>
@@ -25,10 +26,12 @@
 				</div>
 				<div id="my-menu-modal">
 					<div class="my-menu-div">
-						<button class="my-menu">기본정보</button>
+						<button class="my-menu" onclick="location.href = '${pageContext.request.contextPath }/emp/empInfo.do'">기본정보</button>
 					</div>
 					<div class="my-menu-div">
-						<button class="my-menu">로그아웃</button>
+						<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
+							<button class="my-menu" type="submit">로그아웃</button>								
+						</form:form>
 					</div>
 				</div>
 			</div>
@@ -46,6 +49,7 @@
 							});
 						</script>
 		<!-- 상단 타이틀 end -->
+
 
 		<!-- 본문 -->
 		<div class="div-padding">

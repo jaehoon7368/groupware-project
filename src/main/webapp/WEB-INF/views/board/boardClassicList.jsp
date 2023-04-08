@@ -36,7 +36,7 @@
 								</div>
 								<div id="my-menu-modal">
 									<div class="my-menu-div">
-										<button class="my-menu">기본정보</button>
+										<button class="my-menu" onclick="location.href = '${pageContext.request.contextPath }/emp/empInfo.do'">기본정보</button>
 									</div>
 									<div class="my-menu-div">
 										<form:form action="${pageContext.request.contextPath}/emp/empLogout.do" method="POST">
@@ -101,10 +101,10 @@
                 </tr>
                 </thead>
                 <tbody>
-	                <c:forEach items="${boardList}" var="board">
+	                <c:forEach items="${boardList}" var="board" varStatus="var">
 					    <tr data-no="${board.no}">
 					        <td><input type="checkbox" name="boardNo" value="${board.no}"/></td>
-					        <td>${empty board.no ? '' : (board.no.startsWith('bo') ? board.no.substring(2).replaceFirst("^0+(?!$)", "") : board.no)}</td>
+					        <td>${var.count}</td>
 					        <td class="board-title">
 					            <a href="#!">${board.title}</a>
 					        </td>
