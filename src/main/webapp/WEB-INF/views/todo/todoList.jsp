@@ -81,7 +81,6 @@
  										<div class="report-no-modal reveal" id="exampleModal1" data-reveal>
 										<h5>선택</h5>
 										<div>
-											<input type="text" name="search" id="search" placeholder="이름/부서/직급" />
 										</div>
 										<div class="div-emp-group">
 											<div class="accordion-box">
@@ -261,15 +260,17 @@
 									<button class="comment-btn" style="display :none;" id="todoListDeleteBtn${vs.index}" onclick="confrm(event);">삭제</button>
 								</form:form>
 								<div class="row">
-									<script>
-$('#listTitle${vs.index}').hover(
-function() {
-$('#todoListDeleteBtn${vs.index}').css("display", "block");
-},
-function() {
- $('#todoListDeleteBtn${vs.index}').css("display", "none");
-  }
-);								
+<script>
+	$('#listTitle${vs.index}').hover(
+		  function() {
+		        $('#todoListDeleteBtn${vs.index}').css("display", "block");
+		    },
+		    function() {
+		        setTimeout(function() {
+		            $('#todoListDeleteBtn${vs.index}').css("display", "none");
+		        }, 1000); // 1초 후에 숨김 처리
+		    }
+	);								
 // 제목 폼 변경 메소드
 
 
@@ -775,7 +776,7 @@ document.querySelector("#exampleFileUpload").addEventListener('change',(e)=>{
 			console.log(e.target);
 			
 			if(f){
-					div.innerHTML = f.name;
+					div.innerHTML ='파일선택 완료 ';
 			}
 			
 			const formData = new FormData();

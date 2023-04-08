@@ -16,6 +16,7 @@
 
 	<div class="home-container">
 		<!-- 상단 타이틀 -->
+
 		<div class="top-container">
 			<div class="home-topbar topbar-div">
 				<div>
@@ -48,6 +49,7 @@
 							});
 						</script>
 		<!-- 상단 타이틀 end -->
+
 
 		<!-- 본문 -->
 		<div class="div-padding">
