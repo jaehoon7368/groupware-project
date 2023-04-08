@@ -16,36 +16,8 @@
 
 	<div class="home-container">
 		<!-- 상단 타이틀 -->
-		<div class="top-container">
-			<div class="home-topbar topbar-div">
-				<div>
-					<a href="#" id="home-my-img"> <img
-						alt="" class="my-img">
-					</a>
-				</div>
-				<div id="my-menu-modal">
-					<div class="my-menu-div">
-						<button class="my-menu">기본정보</button>
-					</div>
-					<div class="my-menu-div">
-						<button class="my-menu">로그아웃</button>
-					</div>
-				</div>
-			</div>
-		</div> 
-		<script>
-							document.querySelector('#home-my-img').addEventListener('click', (e) => {
-								const modal = document.querySelector('#my-menu-modal');
-								const style =  modal.style.display;
-								
-								if (style == 'inline-block') {
-									modal.style.display = 'none';
-								} else {
-									modal.style.display = 'inline-block';
-								}
-							});
-						</script>
-		<!-- 상단 타이틀 end -->
+		
+
 
 		<!-- 본문 -->
 		<div class="div-padding">

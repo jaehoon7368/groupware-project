@@ -2,6 +2,7 @@ package com.sh.groupware.chat.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sh.groupware.chat.model.dto.ChatLog;
 import com.sh.groupware.chat.model.dto.ChatRoom;
 import com.sh.groupware.chat.model.service.ChatService;
-import com.sh.groupware.common.service.CommonService;
 import com.sh.groupware.emp.model.dto.Emp;
 import com.sh.groupware.emp.model.service.EmpService;
 import com.sh.groupware.todo.model.service.TodoService;
@@ -86,6 +86,8 @@ public class ChatController {
 		List <ChatLog> chatLogs = chatService.findChatLogBychatroomId(chatroomId);
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		Emp emp = empService.selectEmpDetail(empId);
+		
+		model.addAttribute("today", new Date());
 		model.addAttribute("emp",emp);
 		model.addAttribute("chatLogs",chatLogs);
 	}

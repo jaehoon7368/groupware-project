@@ -46,7 +46,7 @@
 	document.querySelectorAll(".li-emp").forEach((li)=>{
 		li.addEventListener('click',(e)=>{
 			const empId = e.target.dataset.id;
-			const myEmpId = ${empId};
+			const myEmpId = '<sec:authentication property="principal.username"/>';
 			const csrfHeader = "${_csrf.headerName}";
 	        const csrfToken = "${_csrf.token}";
 	        const headers = {};
