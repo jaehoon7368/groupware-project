@@ -574,7 +574,25 @@ public class BoardController {
 	    // 시작 페이지와 끝 페이지 계산
 	    int startPage = ((cpage - 1) / 10) * 10 + 1; // 10 페이지씩 묶어서 보여줌
 	    int endPage = Math.min(startPage + 9, totalPage);
-		
+	    
+	    //댓글
+	    Map<String, Object> commentCountMap = new HashMap<>();
+	    
+	    for (Board board : boardList) {
+	        List<BoardComment> commentList = boardService.selectCommentListByBoardNo(board.getNo());
+	        int likeCount = boardService.selectBoardCountByNo(board.getNo());	        
+	        board.setLikeCount(likeCount);
+	        board.setCommentList(commentList);
+
+	        int commentCount = boardService.selectBoardCommentCount(board.getNo());
+	        board.setCommentCount(commentCount);
+	    }
+	   
+	    
+	    log.debug("commentCountMap = {}", commentCountMap);
+	    log.debug("boardList = {}", boardList);
+	    
+	    model.addAttribute("commentCountMap", commentCountMap);
 	    model.addAttribute("boardList", boardList);
 	    model.addAttribute("currentPage", cpage);
 	    model.addAttribute("startPage", startPage);

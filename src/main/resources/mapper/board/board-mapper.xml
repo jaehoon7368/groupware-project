@@ -372,17 +372,18 @@
 	</select>
 	
 	
-	<select id="findByNoBoardList" resultMap="boardMap">
-		select 
-		    b.*,
-		    (select count(*) from attachment where no = b.no and category = 'B') attach_count
-		from
-		    board b left join emp e
-		        on b.emp_id = e.emp_id
-		where 
+	<select id="findByNoBoardList" resultMap="boardCollectionMap">
+		SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no 
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
+		WHERE 
 		    b.b_type = #{no}
-		order by 
-		    no desc
+		order by
+			b.no desc
 	</select>
 	
 	

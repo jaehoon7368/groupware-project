@@ -101,10 +101,10 @@
                 </tr>
                 </thead>
                 <tbody>
-	                <c:forEach items="${boardList}" var="board">
+	                <c:forEach items="${boardList}" var="board" varStatus="var">
 					    <tr data-no="${board.no}">
 					        <td><input type="checkbox" name="boardNo" value="${board.no}"/></td>
-					        <td>${empty board.no ? '' : (board.no.startsWith('bo') ? board.no.substring(2).replaceFirst("^0+(?!$)", "") : board.no)}</td>
+					        <td>${var.count}</td>
 					        <td class="board-title">
 					            <a href="#!">${board.title}</a>
 					        </td>
