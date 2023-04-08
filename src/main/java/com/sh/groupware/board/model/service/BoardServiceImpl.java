@@ -252,4 +252,8 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.selectOneBoardType(no);
 	} // selectOneBoardType() end
 
+	@Override
+	public List<Board> selectHomeBoardList() {
+		return boardDao.selectHomeBoardList();
+	}
 }

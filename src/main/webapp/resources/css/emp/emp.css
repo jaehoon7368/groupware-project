@@ -431,3 +431,49 @@ p.title {
 .a-font{
 	text-decoration: none;
 }
+
+/* 게시판 */
+.article-list {
+	list-style: none;
+	padding: 15px;
+}
+.article-data {
+	padding:5px;
+}
+
+.article-list span.title{
+	display:block;
+	padding:2px;
+	color: #666;
+	font-weight: 600;
+	font-size: 17px;
+}
+.article-list span.article-content p{
+	font-size: 13px;
+	padding:3px;
+	color: gray;
+}
+.article-list li {
+   margin: -1px 0 0;
+   padding: 16px 24px;
+   border-right:1px solid #ccc;
+   list-style:none;
+}
+
+.article-data:hover {
+    background: #F6f6f6;
+    cursor : pointer;
+  }
+  .article-wrap span.bType{
+	font-size:13px;
+	color: lightgray;
+}
+#board-div {
+	list-style:none;
+	border:none;
+	padding:5px;
+}
+.writer-info {
+	font-size:13px;
+}
+}

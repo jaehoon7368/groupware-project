@@ -80,10 +80,7 @@
 .left-content {
 	width: 100%;
 }
-.article-wrap span.bType{
-	font-size:13px;
-	color: lightgray;
-}
+
 
 .writer-info span.writer {
 	font-size:14px;
@@ -97,6 +94,10 @@
     background: #F6f6f6;
     cursor : pointer;
   }
+  .article-wrap span.bType{
+	font-size:13px;
+	color: lightgray;
+}
 
 .group-list .group-list-title {
 	font-size: 14px;
