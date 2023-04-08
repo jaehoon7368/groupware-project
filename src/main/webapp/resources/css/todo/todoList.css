@@ -1,5 +1,25 @@
 @charset "UTF-8";
 
+.navigation ul li a .icon i {
+    position: relative;
+    font-size: 1.7em;
+    z-index: 1;
+    margin-left: 15px;
+}
+
+.navigation ul li a .title {
+    position: relative;
+    display: block;
+    padding-left: 10px;
+    height: 60px;
+    line-height: 60px;
+    white-space: nowrap;
+    font-weight: bold;
+    font-size : 1.1em;
+    margin-left: 10px;
+}
+
+
 .wrap_board ul {
 	list-style: none;
 	list-style: none;
