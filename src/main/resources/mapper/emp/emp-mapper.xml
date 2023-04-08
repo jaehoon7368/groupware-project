@@ -59,6 +59,10 @@
 			(select dept_title from dept where dept_code = e.dept_code) dept_title
 		from
 			emp e
+		where
+			e.quit_yn = 'N'
+		order by
+			e.dept_code, e.job_code
 	</select>
 	<select  id="selectAllEmpAddTitleDept" resultMap="empDetailMap">
 		select 
@@ -70,6 +74,10 @@
 		    	 on e.job_code = j.job_code 
 		     join dept d
 		    	 on e.dept_code = d.dept_code
+		where
+			e.quit_yn = 'N'
+		order by
+			e.dept_code, e.job_code
 	</select>
 	<select id="selectEmpDeptList" resultMap="empDetailMap">
 		select 
@@ -80,10 +88,10 @@
 		from 
 		    emp e
 		where
-		    quit_yn = 'N'
-    		and dept_code = #{deptCode}
+		    e.quit_yn = 'N'
+    		and e.dept_code = #{deptCode}
     	order by
-    		job_code
+    		e.job_code
 	</select>
 	
 	<select id="findByMyDeptCodeManagerEmpList" resultMap="empMap">
@@ -92,12 +100,16 @@
 		from
 			emp
 		where
+			quit_yn = 'N'
+			and
 			dept_code = #{deptCode}
 			and
 			job_code in
 			<foreach collection="jobCode" item="code" index="index" open="(" close=")" separator=",">
 				#{code}
 			</foreach>
+		order by
+			job_code
 	</select>
 	
 	<select id="selectEmpAll" resultMap="empDetailMap">
@@ -215,6 +227,9 @@
 		join dept d
 		      on e.dept_code = d.dept_code
     where e.emp_id not in ((select emp_id from todoboardgroup where todoboard_no = #{no}))
+    	and quit_yn = 'N'
+    order by
+    	e.dept_code, e.job_code
 
 </select>
 	
