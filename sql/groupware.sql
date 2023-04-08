@@ -75,11 +75,15 @@ create table board (
     constraint fk_board_writer foreign key (writer) references emp (emp_id) on delete cascade
 );
 
+select*from board;
+
+
 -- 게시판 테이블 컬럼 추가
 alter table board add writer varchar2(20) not null;
 alter table board add foreign key(writer) references emp (emp_id) on delete cascade;
 alter table board rename column type to b_type;
-
+select*from attachment;
+select*from emp;
 --좋아요
 CREATE TABLE board_like (
     like_no varchar2(20) PRIMARY KEY,
@@ -90,6 +94,7 @@ CREATE TABLE board_like (
     CONSTRAINT fk_board_like_emp FOREIGN KEY (emp_id) REFERENCES emp (emp_id) ON DELETE CASCADE,
     CONSTRAINT fk_board_like_board FOREIGN KEY (board_no) REFERENCES board (no) ON DELETE CASCADE
 );
+
 
 -- 게시판 좋아요 트리거
 -- 좋아요 테이블 INSERT 트리거
@@ -513,6 +518,33 @@ select*from emp;
 select * from authority where auth = 'ROLE_PERSONNEL';
 
 select 
+		    b.*,
+            a.*,
+		    (select count(*) from attachment where no = b.no and category = 'B') attach_count
+		from
+		    board b left join emp e
+		        on b.emp_id = e.emp_id
+		where 
+		    b.b_type = '3'
+		order by 
+		    no desc;
+
+
+
+		SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no 
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
+		WHERE 
+		    b.b_type = '4'
+		order by
+			b.no desc;
+select*from attachment;
+select*from boardtype;
+select*from boardcomment;
     b.*,
     bt.title typeTitle,
     (select rename_filename from attachment where pk_no = b.emp_id) renameFilename 
@@ -537,3 +569,4 @@ SELECT
 		FROM 
 		    board b 
 		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' ;    
+

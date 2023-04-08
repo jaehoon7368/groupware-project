@@ -51,9 +51,10 @@ public class Board extends BoardEntity{
 //	}
 
 	public Board(String no, String bType, String title, String content, int readCount, int likeCount,
-			LocalDateTime createdDate, LocalDateTime updatedDate, String empId, String writer, int attachCount,
-			List<Attachment> attachments, List<BoardComment> boardComment, Emp emp, String renameFilename , String profile,String typeTitle ,List<BoardComment> commentList) {
-		super(no, bType, title, content, readCount, likeCount, createdDate, updatedDate, empId, writer);
+
+			LocalDateTime createdDate, LocalDateTime updatedDate, String empId, String writer, int attachCount, int commentCount,
+			List<Attachment> attachments, List<BoardComment> boardComment, Emp emp, String renameFilename ,List<BoardComment> commentList) {
+		super(no, bType, title, content, readCount, likeCount, createdDate, updatedDate, empId, writer, commentCount);
 		this.attachCount = attachCount;
 		this.attachments = attachments;
 		this.boardComment = boardComment;
@@ -63,10 +64,5 @@ public class Board extends BoardEntity{
 		this.profile = profile;
 		this.typeTitle = typeTitle;
 	}
-	
-	
-
-
-	
-}
+}
 
