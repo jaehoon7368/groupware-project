@@ -37,7 +37,7 @@
     <label for="sign-in-form-username">Username</label>
     <input type="text" class="sign-in-form-username" id="sign-in-form-username" name="empId">
     <label for="sign-in-form-password">Password</label>
-    <input type="text" class="sign-in-form-password" id="sign-in-form-password" name="password">
+    <input type="password" class="sign-in-form-password" id="sign-in-form-password" name="password">
     <div>
 		<input type="checkbox" name="remember-me" id="remember-me"/>
 		<label for="remember-me">Remember me</label>

@@ -176,6 +176,7 @@ document.querySelector('#btn-startwork').addEventListener('click', function () {
 	       }
 	       else{
 	           alert("이미 출근하셨습니다.");
+	           	return;
 	       }
 	   },
 	   error : console.log
@@ -268,7 +269,7 @@ function getStartAndEndDateOfWeek() {
 			  const monthWorkTime = document.querySelector("#main-month-work-time");
 			  const monthOverTime = document.querySelector("#main-month-over-time")
 			  
-			  let times = 144000000 - (weekTotalTime + weekOverTime); // 40시간 - 주간 기본 근무시간
+			  /* let times = 144000000 - (weekTotalTime + weekOverTime); // 40시간 - 주간 기본 근무시간 */
 			  totalWorkTime.textContent = chageWorkTime(weekTotalTime + weekOverTime);
 		  },
 		  error : console.log
