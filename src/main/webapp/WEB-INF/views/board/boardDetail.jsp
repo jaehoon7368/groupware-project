@@ -322,9 +322,9 @@ heartWrap.addEventListener('click', function(e) {
           fullHeartImage.style.display = 'block';
           heartWrap.classList.add('liked');
           // 좋아요 수 증가
-         var likeCountEl = heartWrap.querySelector('.like-count');
+         let likeCountEl = heartWrap.querySelector('.like-count');
 			if (likeCountEl !== null) {
-			  var likeCount = parseInt(likeCountEl.textContent);
+			  let likeCount = parseInt(likeCountEl.textContent);
 			  heartWrap.querySelector('.like-count').textContent = (likeCount + 1) + '';
 			}
         } else {
@@ -354,9 +354,9 @@ heartWrap.addEventListener('click', function(e) {
           fullHeartImage.style.display = 'none';
           heartWrap.classList.remove('liked');
        // 좋아요 수 감소
-          var likeCountEl = heartWrap.querySelector('div.like-count span.likeCount');
+          let likeCountEl = heartWrap.querySelector('div.like-count span.likeCount');
           if (likeCountEl !== null) { // 수정된 부분
-            var likeCount = parseInt(likeCountEl.textContent);
+            let likeCount = parseInt(likeCountEl.textContent);
             heartWrap.querySelector('.like-count').textContent = (likeCount - 1) + '';
           }
         } else {
@@ -490,7 +490,7 @@ deleteBtnList.forEach((deleteBtn) => {
         headers,
         success(data) {
           console.log(data);
-          location.href = '${pageContext.request.contextPath}/board/boardList.do';
+          location.href = "${pageContext.request.contextPath}/board/boardTypeList.do?no=${param.no}&category=${param.category}";
         },
         error: console.log
       });
