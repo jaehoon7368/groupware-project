@@ -22,14 +22,10 @@
 									<div class="con">
 										<ul class="container-detail font-small">
 											<c:forEach items="${boardTypeList}" var="boardType">
-												<li><a class="container-a" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${boardType.no}&category=${boardType.category}">${boardType.title}</a></li>
+												<c:if test="${boardType.no >= 1 and boardType.no <= 6}">
+													<li><a class="container-a" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${boardType.no}&category=${boardType.category}">${boardType.title}</a></li>
+												</c:if>
 											</c:forEach>
-											<%-- 
-											<li><a class="container-a" href="${pageContext.request.contextPath}/board/boardList.do">전사 공지</a></li>
-											<li><a class="container-a" href="${pageContext.request.contextPath}/board/menuBoardList.do">주간 식단표</a></li>
-											<li><a class="container-a" href="${pageContext.request.contextPath}/board/photoBoardList.do">사진 게시판</a></li>
-											<li><a class="container-a" href="${pageContext.request.contextPath}/board/newsBoardList.do">이주의 IT뉴스</a></li> 
-											--%>
 										</ul>
 									</div>
 								</li>
@@ -37,8 +33,13 @@
 									<p class="title font-medium">부서 게시판</p>
 									<div class="con">
 										<ul class="container-detail font-small">
-											<li><a class="container-a" href="#">인사부</a></li>
-											<li><a class="container-a" href="#">총무부</a></li>
+										<sec:authorize access="hasRole('ROLE_PERSONNEL')">
+											<c:forEach items="${boardTypeList}" var="boardType">
+											    <c:if test="${boardType.no >= 7 and boardType.no <= 11}">
+											        <li><a class="container-a" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${boardType.no}&category=${boardType.category}">${boardType.title}</a></li>
+											    </c:if>
+											</c:forEach>
+										</sec:authorize>
 										</ul>
 									</div>
 								</li>

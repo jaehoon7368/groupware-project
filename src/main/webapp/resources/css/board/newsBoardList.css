@@ -97,10 +97,6 @@
 	width:100%;
 }
 
-.info-wrap{
-	padding: 20px;
-}
-
 .view-option {
 	display:flex;
 	padding-left:10px;
@@ -110,9 +106,6 @@
 	padding: 5px;
 	color: lightgray;
 }
-
-
-
 
 .tool-wrap .heart-wrap img{
 	height:30px;
@@ -240,8 +233,6 @@ form#command {
   font-size: 14px;
   cursor: pointer;
 }
-
-
 .comment-submit input[type="submit"]:hover {
   background-color: #0069d9;
 }
@@ -253,6 +244,35 @@ form#command {
 .commentlist-edit-submit-button, .commentlist-cancel-button {
   margin-left: 50px;
 }
+
+#edit-post-btn, #delete-board-btn{
+	border-radius:10px;
+	font-size:12px;
+	padding-left:10px;
+}
+#comment-edit-btn, #comment-delete-btn{
+	border-radius:10px;
+	font-size:12px;
+	padding-left:10px;
+}
+#comment-edit-btn:hover, #comment-delete-btn:hover{
+	background-color: #f1f1f1;
+}
+
+#edit-post-btn:hover, #delete-board-btn:hover{
+	background-color: #f1f1f1;
+}
+input#submit-comment{
+	background-color:white;
+	border-radius: 5px;
+	width:90px;
+	height:30px;
+	cursor:pointer;
+}
+input#submit-comment:hover{
+	background-color: #f1f1f1;
+}
+
  
  /* 모달 */
    .img-thumbnail {
