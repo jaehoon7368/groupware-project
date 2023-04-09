@@ -265,7 +265,7 @@ const updateDayWorkTime = (daytimes) =>{
 												      		다우그룹>${board.typeTitle}
 												      </span>
 												      <div style="display:flex; justify-content: space-between;">
-													      <span class="title">${board.title}</span>
+													      <span class="title" style="font-size:12px;">${board.title}</span>
 													      <div class="writer-info" style="font-size:13px;">
 													        <span class="writer-img">
 													        	<c:if test="${empty board.renameFilename }">

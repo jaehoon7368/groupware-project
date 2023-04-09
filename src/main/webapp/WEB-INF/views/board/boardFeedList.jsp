@@ -118,6 +118,9 @@
 									<fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" /> 
 									<fmt:formatDate value="${createdDate}" pattern="yyyy-MM-dd EEE HH:mm" />
 								</span>
+								<span clas="content-update-wrap">
+									<button type="button" id ="delete-board-btn" class="delete-board-btn" data-board-no="${board.no}">삭제</button>
+								</span>
 							</div>
 							<div class="heart-wrap">
 							 	<input type="hidden" class="board-empId" name="empId" value="${loginMember.empId}">

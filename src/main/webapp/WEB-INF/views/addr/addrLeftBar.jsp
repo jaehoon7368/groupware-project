@@ -28,9 +28,6 @@
 									</div>
 								</li>
 								<li>
-									<a href="${pageContext.request.contextPath}/addr/addrAnywhere.do"><p class="title font-medium">Anywhere 연락망</p></a>
-								</li>
-								<li>
 									<p class="title font-medium">개인 주소록</p>
 									<div class="con">
 										<ul class="container-detail font-small" >
@@ -67,17 +64,7 @@
 									</div>
 								</li>
 								<li>
-									<p class="title font-medium">부서 주소록</p>
-									<div class="con">
-										<ul class="container-detail font-small">
-											<li><a class="container-a" href="#">인사총무팀</a></li>
-											<li><a class="container-a" href="#">개발팀</a></li>
-											<li><a class="container-a" href="#">법무팀</a></li>
-											<li><a class="container-a" href="#">마케팅팀</a></li>
-											<li><a class="container-a" href="#">기획팀</a></li>
-											
-										</ul>
-									</div>
+									<a href="${pageContext.request.contextPath}/addr/addrAnywhere.do"><p class="title font-medium">Anywhere 연락망</p></a>
 								</li>
 									
 							</ul>

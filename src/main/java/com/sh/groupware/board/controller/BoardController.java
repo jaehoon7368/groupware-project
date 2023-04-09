@@ -396,7 +396,6 @@ public class BoardController {
 	return resultMap;
 }
 
-
 	@PostMapping("/boardLikeDown.do")
 	@ResponseBody
 	public Map<String, Object> boardlikeDown(@RequestBody BoardLike boardLike) {
