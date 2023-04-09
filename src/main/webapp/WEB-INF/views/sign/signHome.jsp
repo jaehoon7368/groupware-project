@@ -65,7 +65,7 @@
 								</c:if>
 								<c:if test="${!empty mySignList}">
 									<c:forEach items="${mySignList}" var="sign" varStatus="vs">
-										<c:if test="${vs.index < 0}">
+										<c:if test="${vs.index < 3}">
 											<div class="div-sign-tobe-ok" data-no="${sign.no}" data-type="${sign.type}">
 												<div class="div-sign-tobe-tbl">
 													<table class="div-sign-tobe-ok-tbl">
