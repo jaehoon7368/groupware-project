@@ -47,7 +47,7 @@
 					<div class="home-container">
 						<!-- 상단 타이틀 -->
 						<div class="top-container">
-							<div id="report-title" class="container-title">${reportCheckList[0].title}</div>
+							<div id="report-title" class="container-title">${reportCheckList[0].title} <span style="font-size: small;">(${reportCheckList[0].explain})</span></div>
 							<div class="home-topbar topbar-div">
 								<div>
 									<a href="#" id="home-my-img">
@@ -276,7 +276,7 @@
 						
 						<!-- 보고 작성자 -->
 						<div class="div-okreport font-small">
-							<div class="div-okreport-title"><span>보고자</span></div>
+							<div class="div-okreport-title"><span>보고자 (보고자간 보고 ${reportCheck[0].createYn == 'Y' ? '공개' : '비공개'})</span></div>
 							<div class="div-okreport-all">
 								<c:forEach items="${reportCheckList}" var="reportCheck" varStatus="vs">
 									<c:if test="${reportCheck.createYn == 'Y' && reportCheck.excludeYn == 'N'}">
@@ -309,7 +309,7 @@
 						<!-- 보고 작성 -->
 						<div class="div-report-create">
 							<div class="div-report-write">
-								<div class="div-padding div-report-write-name">${reportCheckList[0].title}</div>
+								<div class="div-padding div-report-write-name" style="font-weight: bold; font-size: medium;">${sessionScope.loginMember.name} ${sessionScope.loginMember.jobTitle}</div>
 								<form action="${pageContext.request.contextPath}/report/reportDetailEnroll.do?${_csrf.parameterName}=${_csrf.token}" name="reportDetailFrm" method="POST" enctype="multipart/form-data">
 									<div class="div-padding div-report-write-content">
 										<input type="hidden" name="reportNo" value="${param.no}" />

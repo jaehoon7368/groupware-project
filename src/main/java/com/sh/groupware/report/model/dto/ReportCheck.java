@@ -17,6 +17,7 @@ public class ReportCheck extends ReportMember {
 
 	private String title;
 	private String writer;
+	private String explain;
 	private LocalDate endDate;
 	private YN publicYn;
 	private YN deptYn;
@@ -40,14 +41,16 @@ public class ReportCheck extends ReportMember {
 	public void addComment(ReportComment comment) {
 		this.comments.add(comment);
 	} // addComment() end
-	
+
 	public ReportCheck(String no, String reportNo, String empId, YN createYn, YN excludeYn, String profileImg,
-			String title, String writer, LocalDate endDate, YN publicYn, YN deptYn, int totalMemberCount,
-			int createCount, int noCreateCount, String empName, String jobTitle, String deptTitle, String detailNo,
-			String content, LocalDate createDate, List<Attachment> attachments, List<ReportComment> comments) {
+			String title, String writer, String explain, LocalDate endDate, YN publicYn, YN deptYn,
+			int totalMemberCount, int createCount, int noCreateCount, String empName, String jobTitle, String deptTitle,
+			String detailNo, String content, LocalDate createDate, List<Attachment> attachments,
+			List<ReportComment> comments) {
 		super(no, reportNo, empId, createYn, excludeYn, profileImg);
 		this.title = title;
 		this.writer = writer;
+		this.explain = explain;
 		this.endDate = endDate;
 		this.publicYn = publicYn;
 		this.deptYn = deptYn;
@@ -63,5 +66,6 @@ public class ReportCheck extends ReportMember {
 		this.attachments = attachments;
 		this.comments = comments;
 	} // ReportCheck() end
+	
 	
 } // class end
