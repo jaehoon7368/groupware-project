@@ -45,7 +45,7 @@
 	</insert>
 	
 	<select id="selectAllAddrBookList" resultMap="addressBookMap">
-		select*from addressbook where writer = #{writer}
+		select*from addressbook where writer = #{writer} ordey by no desc
 	</select>
 	
 	<select id="selectAddrBooklistByPage" resultMap="addressBookMap">
@@ -111,6 +111,7 @@
 			addressbook 
 		where 
 			group_name = #{groupName}
+		ordey by no desc
 	</select>
 	
 	<select id="selectOneAddrCollection" resultMap="addressBookCollectionMap">

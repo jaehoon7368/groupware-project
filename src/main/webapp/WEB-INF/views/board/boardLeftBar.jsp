@@ -33,17 +33,17 @@
 									<p class="title font-medium">부서 게시판</p>
 									<div class="con">
 										<ul class="container-detail font-small">
-										<sec:authorize access="hasRole('ROLE_PERSONNEL')">
 											<c:forEach items="${boardTypeList}" var="boardType">
-											    <c:if test="${boardType.no >= 7 and boardType.no <= 11}">
+											    <c:if test="${boardType.no >= 7 and boardType.no <= 11
+											     and sessionScope.loginMember.deptTitle eq boardType.title}"> 
 											        <li><a class="container-a" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${boardType.no}&category=${boardType.category}">${boardType.title}</a></li>
 											    </c:if>
 											</c:forEach>
-										</sec:authorize>
 										</ul>
 									</div>
 								</li>
 								
+								<div class="div-padding"></div>
 								<li><a href="${pageContext.request.contextPath}/board/boardAdd.do">+ 게시판 추가</a></li>
 									
 							</ul>
