@@ -34,7 +34,7 @@
 		where
 			emp_id = #{loginMember}
 		order by
-			end_date
+			end_date desc
 	</select>
 	<resultMap type="reportCheck" id="reportCheckMap"></resultMap>
 	
@@ -141,8 +141,10 @@
 	 			on r.no = rm.report_no
 	 	where
 	 		rm.emp_id = #{empId}
+	 		and
+	 		r.dept_yn = 'N'
 	 	order by
-	 		r.reg_date desc
+	 		r.reg_date desc, r.end_date desc
 	 </select>
 	 
 	 
@@ -159,7 +161,7 @@
 	 		or
 	 		re.dept_code = #{deptCode})
 	 	order by
-	 		r.reg_date desc
+	 		r.reg_date desc, r.end_date desc
 	 </select>
 	 
 	 
@@ -185,6 +187,8 @@
 	 			on r.no = rm.report_no
 	 	where
 	 		rm.emp_id = #{empId}
+	 		and
+	 		r.dept_yn = 'N'
 	 	order by
 	 		r.reg_date desc
 	 </select>
