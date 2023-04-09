@@ -112,14 +112,11 @@
 									<c:if test="${!empty board.renameFilename}">
 										<img src="${pageContext.request.contextPath}/resources/upload/emp/${board.renameFilename}" class="my-img">
 									</c:if>
-								</span> <span class="writer">${board.writer}</span> <span
+								</span> 
+								<span class="writer">${board.writer}</span> <span
 									id="createdDate" class="createdDate"> 
 									<fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" /> 
 									<fmt:formatDate value="${createdDate}" pattern="yyyy-MM-dd EEE HH:mm" />
-								</span>
-								<span clas="content-update-wrap">
-									<button type="button" id ="edit-post-btn" class="board-edit-btn" data-board-no="${board.no}">수정</button>
-									<button type="button" id ="delete-board-btn" class="delete-board-btn" data-board-no="${board.no}">삭제</button>
 								</span>
 							</div>
 							<div class="heart-wrap">
@@ -135,7 +132,7 @@
 							<input type="hidden" id="no" name="no" value="${board.no}" />
 							<input type="hidden" id="boardNo" name="boardNo" class="like-item" data-board-no="${board.no}" value="${board.no}">
 							<div class="content-view-wrap">
-								<span class="content" id="post-conten-${board.no}">${board.content}</span>
+								<span class="content" id="post-content-${board.no}">${board.content}</span>
 							</div>
 						</div>
 						<div class="div-padding"></div>
@@ -191,17 +188,13 @@
 							              <fmt:formatDate value="${regDate}" pattern="yyyy-MM-dd EEE HH:mm"/>
 							            </span>
 							            <span class="commentList-view-btn-wrap">
-							              <button type="button" id ="comment-edit-btn" class="comment-edit-btn" data-comment-no="${comment.no}">수정</button>
+							              <button type="button" id="comment-edit-btn" class="comment-edit-btn"  data-comment-no="${comment.no}">수정</button>
 							              <button type="button" id="comment-delete-btn" class="comment-delete-btn" data-comment-no="${comment.no}">삭제</button>
 							            </span>
 							          </div>
-							          <div class="commentlist-content-wrap">
-							            <span id="comment-content" class="comment-content" name="content" style="margin-left: 60px;">${comment.content}</span>
-							            <form class="comment-edit-form" >
-							              <textarea name="content" class="comment-edit-textarea" style="display: none;"></textarea>
-							              <button type="submit" class="comment-edit-submit" style="display: none; data-comment-no="${comment.no}">저장 </button>
-							              <button type="button" class="comment-edit-cancel" style="display: none; data-comment-no="${comment.no}">취소</button>
-							            </form>
+							         <div class="commentlist-content-wrap">
+							            <span class="comment-content" name="content" style="margin-left: 60px;">${comment.content}</span >
+							            
 							          </div>
 							        </div>
 							      </c:forEach>
@@ -240,59 +233,9 @@
 		</section>
 	</div>
 	
-						<%-- <!-- 수정폼 -->
-						   <form name="contentEditFrm" id="contentEditFrm">
-								<div class="form-wrap">
-									<input type="hidden" id="empId" name="empId"value="${loginMember.empId}"> 
-										<input type="hidden"id="wrtier" name="writer" value="${loginMember.name}"> 
-										<inputtype="hidden" id="title" name="title" value="이번주 IT뉴스"> 
-										<inputtype="hidden" id="bType" name="bType" value="N">
-									<div class="text-wrap">
-										  <textarea id="content" name="content"></textarea>
-										  <div class="upfile-img">
-										  </div>
-										  <div class="button-wrap">
-										    <span id="fileName" style="padding-left: 10px;"></span>
-										    <input type="file" name="upFile" id="upFile" style="display: none" onchange="displayFileNames()" multiple />
-										    <label for="upFile" class="file">
-										      <img src="${pageContext.request.contextPath}/resources/images/clip.png" alt="첨부파일" />
-										    </label>
-										    <input type="submit" id="write-btn" value="글쓰기" />
-										  </div>
-									</div>
-								</div>
-							</form>
-						  <!-- 수정폼 end --> --%>
 
 </div> <!-- 본문 end -->
 
-<!-- 게시글 수정 -->
-<script>
-/* const editBtn = document.querySelector('.board-edit-btn');
-editBtn.addEventListener('click', (e) => {
-e.preventDefault();
-const postContent = document.querySelector('.post-content');
-const editForm = document.querySelector('.edit-form');
-const cancelBtn = editForm.querySelector('.edit-cancel'); // 취소 버튼 추가
-
-postContent.style.display = 'none';
-editForm.style.display = 'block';
-
-const editTitleInput = editForm.querySelector('[name="title"]');
-const editContentInput = editForm.querySelector('[name="content"]');
-const postTitle = document.querySelector('.post-title').innerText.trim();
-const postContentText = postContent.innerText.trim();
-editTitleInput.value = postTitle;
-editContentInput.value = postContentText;
-
-// 취소 버튼 클릭 시 원래 상태로 되돌리기
-cancelBtn.addEventListener('click', (e) => {
-e.preventDefault();
-postContent.style.display = 'block';
-editForm.style.display = 'none';
-});
-}); */
-</script> 
 
 <!-- 댓글 -->
 <script>
@@ -336,6 +279,7 @@ function submitComment() {
 	});
 }
 </script>
+ 
 <!-- 게시글삭제 -->
 <script>
 const boardDeleteBtnList = document.querySelectorAll('.delete-board-btn');
