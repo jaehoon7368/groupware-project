@@ -126,7 +126,7 @@
 											</div>
 											<div class="font-small report-no-modal-btn">
 												<button type="submit">확인</button>
-												<button data-close aria-label="Close reveal">취소</button>
+												<button type="button" data-close aria-label="Close reveal">취소</button>
 											</div>
 											<button class="btn-close close-button" data-close aria-label="Close reveal" type="button">
 												<span aria-hidden="true">&times;</span>

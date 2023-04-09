@@ -140,7 +140,7 @@
                                                     <th>보고마감일</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="report-tbody">
                                             	<c:forEach items="${reportList}" var="report">
                                             		<c:if test="${report.createYn == 'Y'}">
 	                                            		<tr class="report-tr" onclick="detailReport('${report.reportNo}');">
@@ -161,6 +161,15 @@
                             		console.log(no);
                             		location.href = `${pageContext.request.contextPath}/report/reportDetail.do?no=\${no}`;
                             	};
+                            	
+                            	const tbody = document.querySelector('.report-tbody');
+                            	if (!document.querySelector('.report-tr')) {
+                            		tbody.innerHTML = `
+                            			<tr>
+                            				<td colspan="4">최근 작성된 보고가 없습니다.</td>
+                            			</tr>
+                            		`;
+                            	}
                             </script>
                             
 						</div>
