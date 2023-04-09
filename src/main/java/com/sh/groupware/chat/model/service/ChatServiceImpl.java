@@ -77,6 +77,10 @@ public class ChatServiceImpl implements ChatService {
 	public int updateLastCheck(ChatLog lastCheck) {
 		return chatDao.updateLastCheck(lastCheck);
 	}
+	@Override
+	public int chatroomDelete(String chatroomId) {
+		return chatDao.chatroomDelete(chatroomId);
+	}
 	
 	
 }

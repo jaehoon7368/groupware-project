@@ -88,6 +88,13 @@
 	<!-- 왼쪽 추가 메뉴 end -->
 	<div class="home-container">
 	<style>
+/* 	.chat-delete-btn button{   
+	    border-radius: 17px;
+	    height: 36px;
+	}
+	.chat-delete-btn button:hover{
+		background-color: gray;
+	} */
 	</style>
 		<!-- 본문 -->
 		<div class="div-padding">
@@ -97,6 +104,7 @@
                 <th width="200">채팅방 이름</th>
                 <th>메시지</th>
                 <th width="150">안읽은 메시지 수</th>
+                <th width="150"></th>
               </tr>
             </thead>
             <tbody>
@@ -106,6 +114,12 @@
 	                <td class="name">${chatLog.emp.name }님 과의 채팅방</td>
 	                <td class="msg">${chatLog.msg }</td>
 	                <td class="unreadCount"><span>${chatLog.unreadCount }</span></td>
+	                <td class="chat-delete-btn">
+	                	<form:form action="${pageContext.request.contextPath }/chat/chatroomDelete.do" method="POST">
+	                	<input type="hidden"  value ="${chatLog.chatroomId }" name="chatroomId"/>
+	                	<button  onclick ="confrm(event)" >삭제</button>
+	                	</form:form>
+	                </td>
 	              </tr>
 	             </c:forEach>
              </c:if>
@@ -122,8 +136,18 @@
 </div>
 
 <script>
- document.querySelectorAll("tr[data-chatroomId]").forEach((tr)=>{
+const confrm =(e)=>{
+	e.stopPropagation();
+	if(confirm('채팅방을 삭제하시겠습니까 ?')){
+		e.submit();
+	}
+	e.preventDefault();
+}
+
+ document.querySelectorAll("tr[data-chatroomId]").forEach((tr,event)=>{
 	tr.addEventListener('click',(e)=>{
+		e.stopPropagation();
+		
 		console.log(e.target);
 		let parentTr = e.target;
 		while(parentTr.tagName !== 'TR')
@@ -135,7 +159,7 @@
 		
 		const chatroomId = parentTr.dataset.chatroomId;
 		const url = `${pageContext.request.contextPath}/chat/chatRoomPopUp.do?chatroomId=\${parentTr.dataset.chatroomid}`;
-		const name = parentTr.dataset.chatroomid;               //popup의 window 이름, 브라우져가 탭 , 팝업윈도으를 관리하는 이름 
+		const name = parentTr.dataset.chatroomid;               //popup의 window 이름, 브라우져가 탭 , 팝업윈도우를 관리하는 이름 
 		const spec = "width=600px,height=700px";
 		open(url,name,spec);
 	})
