@@ -23,5 +23,7 @@ public interface ChatService {
 
 	int updateLastCheck(ChatLog lastCheck);
 
+	int chatroomDelete(String chatroomId);
+
 
 }
