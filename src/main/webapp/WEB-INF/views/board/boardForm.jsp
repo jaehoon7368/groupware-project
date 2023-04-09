@@ -114,26 +114,11 @@
   		</th>
   	</div>
   	
-  	<table class="check-table">
-  		<tr>
-  			<th>공개 설정</th>
-  			<td><input type="checkbox"/>공개</td>
-  			<td><input type="checkbox"/>비공개</td>
-  		</tr>
-  		<tr>
-  			<th>공지로 등록</th>
-  			<td><input type="checkbox"/> 공지로 등록</td>
-  		</tr>
-  		<tr>
-  			<th>알림</th>
-  			<td><input type="checkbox"/> 메일알림</td>
-  			<td><input type="checkbox"/> 푸시알림</td>
-  		</tr>
-  	</table>
   	
-	<div class="div-padding div-report-write-btn">
-		<input type="submit" value="등록"/>
-		<input type="button" value="취소"/>
+  	<div class="div-padding"></div>
+	<div class="div-report-write-btn">
+		<input id="write-btn" type="submit" value="등록"/>
+		<input id="cancel-btn" type="button" value="취소"/>
 	</div>
 </form:form>
 <script>

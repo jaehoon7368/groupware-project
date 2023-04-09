@@ -100,6 +100,13 @@ public class ChatController {
 		log.debug("emp 채팅 보낸 사람 {} ",emp);
 		return emp;
 	}
+	@PostMapping("/chatroomDelete.do")
+	public String chatroomDelete(@RequestParam String chatroomId) {
+		log.debug("chatroomId={}",chatroomId);
+		int result = chatService.chatroomDelete(chatroomId);
+		
+		return "redirect:/chat/chat.do";
+	}
 	
 	
 	

@@ -126,7 +126,7 @@
 											</div>
 											<div class="font-small report-no-modal-btn">
 												<button type="submit">확인</button>
-												<button data-close aria-label="Close reveal">취소</button>
+												<button type="button" data-close aria-label="Close reveal">취소</button>
 											</div>
 											<button class="btn-close close-button" data-close aria-label="Close reveal" type="button">
 												<span aria-hidden="true">&times;</span>
@@ -704,9 +704,14 @@
 																	processData: false,
 																	success(data){
 																		console.log(data);
+																		/* 
 																		const reportComment = data.querySelector('ReportComment');
 																		const regDate = data.querySelectorAll('regDate');
-																		const content = data.querySelector('content');
+																		const content = data.querySelector('content'); 
+																		*/
+																		
+																		const regDate = data.regDate;
+																		const content = data.content;
 																		console.log(regDate);
 																		reportCommentUpdateNo(e.target.querySelector('[type=button]'));
 																		
@@ -715,11 +720,14 @@
 																		spanDate.innerText = '';
 																		regDate.forEach((date, index) => {
 																			if (index === regDate.length - 1)
-																				spanDate.innerText += date.textContent;
+																				spanDate.innerText += date;
+																				/* spanDate.innerText += date.textContent; */
 																			else
-																				spanDate.innerText += date.textContent + '-';
+																				spanDate.innerText += date + '-';
+																				/* spanDate.innerText += date.textContent + '-'; */
 																		});
-																		before.querySelector('.div-report-comment-content').innerText = content.textContent;
+																		before.querySelector('.div-report-comment-content').innerText = content;
+																		/* before.querySelector('.div-report-comment-content').innerText = content.textContent; */
 																	},
 																	error : console.log
 																});
@@ -884,6 +892,9 @@
 								const fileNameDiv = afterDiv.querySelector('.div-report-write-file-name');
 								const beforeDiv = afterDiv.previousElementSibling;
 								
+								console.log('afterDiv', afterDiv);
+								console.log('beforeDiv', beforeDiv);
+								
 								fileNameDiv.innerHTML = '';
 								const files = beforeDiv.children[1].querySelectorAll('.attach-btn');
 								files.forEach((file) => {
@@ -902,6 +913,10 @@
 								
 								beforeDiv.style.display = 'inline-block';
 								afterDiv.style.display = 'none';
+								
+								const beforeContent = beforeDiv.querySelector('.before-content');
+								const afterContent = afterDiv.querySelector('.note-editable');
+								afterContent.innerHTML = beforeContent.innerHTML;
 							};
 							
 							/* 댓글 수정 */
@@ -920,8 +935,15 @@
 								const after = no.parentElement.parentElement;
 								const before = after.parentElement.previousElementSibling;
 								
+								console.log('after', after);
+								console.log('before', before);
+								
 								after.style.display = 'none';
 								before.style.display = 'block';
+								
+								const beforeContent = before.querySelector('.div-report-comment-content');
+								const afterContent = after.querySelector('#content');
+								afterContent.value = beforeContent.innerText;
 							};
 						</script>
 					</div>

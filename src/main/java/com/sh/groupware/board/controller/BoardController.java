@@ -253,19 +253,32 @@ public class BoardController {
 	}
 	
 	@PostMapping("/boardDelete.do")
-	private String boardDelete(@RequestParam String no, Authentication authentication, RedirectAttributes redirectAttributes) {
+	private String boardDelete(@RequestParam String no, Authentication authentication) {
 		
 		log.debug("보드삭제 no 확인 = {}", no);
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 	    Board board = boardService.selectBoardByNo(no); // 삭제하려는 게시물 가져오기
-	    BoardType boardType = boardService.selectOneBoardType(board.getBType());
+	    BoardType boardType = boardService.selectOneBoardType(no);
 
 	    if (board != null && board.getEmpId().equals(empId)) { // 게시물 작성자와 현재 사용자가 같을 때만 삭제
 	        int result = boardService.deleteBoard(no);
-	    } else {
-	    	redirectAttributes.addFlashAttribute("msg", "작성자만 삭제할 수 있습니다.");
 	    }
 	    return "redirect:/board/boardTypeList.do?no=" + board.getNo() + "&category=" + boardType.getCategory();
+	}
+	
+	@PostMapping("/boardsDelete.do")
+	private String boardDelete(@RequestParam(value = "boardNos[]", required = false) List<String> boardNos,
+	                           Authentication authentication) {
+	    String empId = ((Emp) authentication.getPrincipal()).getEmpId();
+	    log.debug("boardNos 시작 = {}", boardNos);
+	    
+        BoardType boardType = boardService.selectOneBoardType(boardNos.get(0));
+        log.debug("boardType = {}", boardType);
+        
+        
+        int result = boardService.deleteBoards(boardNos);
+        
+        return "redirect:/board/boardTypeList.do?no=" + boardType.getNo() + "&category=" + boardType.getCategory();
 	}
 	
 	@PostMapping("/boardCommentDelete.do")
@@ -279,27 +292,7 @@ public class BoardController {
 	    return "redirect:/board/boardDetail.do?no=" + board.getNo();
 	}
 	
-	@PostMapping("/boardsDelete.do")
-	private String boardDelete(@RequestParam(value = "boardNos[]", required = false) List<String> boardNos,
-	                           Authentication authentication, RedirectAttributes redirectAttributes) {
-	    String empId = ((Emp) authentication.getPrincipal()).getEmpId();
-	    log.debug("boardNos 시작 = {}", boardNos);
-	    
-//	    List<Board> boardsToDelete = boardService.selectBoardsByNos(boardNos);
-//	    log.debug("boardNos 끝 = {}", boardNos);
-//	    log.debug("boardsToDelete = {}", boardsToDelete);
-//	    List<String> failedNos = new ArrayList<>();
-//	    for (Board board : boardsToDelete) { 
-//	            failedNos.add(board.getNo());
-//	        }
 
-        BoardType boardType = boardService.selectOneBoardType(boardNos.get(0));
-        log.debug("boardType = {}", boardType);
-        
-        int result = boardService.deleteBoards(boardNos);
-        
-        return "redirect:/board/boardTypeList.do?no=" + boardType.getNo() + "&category=" + boardType.getCategory();
-	}
 	
 	
 	
@@ -351,82 +344,6 @@ public class BoardController {
 	    return "redirect:/board/boardDetail.do?no=" + board.getNo();
 	}
 	
-	
-	@GetMapping("/newsBoardList.do")
-	public String selectNewsBoardList(Model model) {
-	    List<Board> boardList = boardService.selectNewsBoardList();
-	    Map<String, Object> commentCountMap = new HashMap<>();
-	    
-	    for (Board board : boardList) {
-	        List<BoardComment> commentList = boardService.selectCommentListByBoardNo(board.getNo());
-	        int likeCount = boardService.selectBoardCountByNo(board.getNo());	        
-	        board.setLikeCount(likeCount);
-	        board.setCommentList(commentList);
-
-	        int commentCount = boardService.selectBoardCommentCount(board.getNo());
-	        commentCountMap.put("CommentCount", commentCount);
-	    }
-	   
-	    
-	    log.debug("commentCountMap = {}", commentCountMap);
-	    log.debug("boardList = {}", boardList);
-	    
-	    model.addAttribute("commentCountMap", commentCountMap);
-	    model.addAttribute("boardList", boardList);
-	    return "/board/newsBoardList";
-	}
-	
-	 
-
-	@GetMapping("/photoBoardList.do")
-	public String selectPhotoBoardList(Model model) {
-		 List<Board> boardList = boardService.selectPhotoBoard();
-		 Map<String, Object> commentCountMap = new HashMap<>();
-		    
-		    for (Board board : boardList) {
-		        List<BoardComment> commentList = boardService.selectCommentListByBoardNo(board.getNo());
-		        int likeCount = boardService.selectBoardCountByNo(board.getNo());
-		        board.setLikeCount(likeCount);
-		        board.setCommentList(commentList);
-		        
-		        int commentCount = boardService.selectBoardCommentCount(board.getNo());
-		        commentCountMap.put("CommentCount", commentCount);
-		    }
-		    
-		    model.addAttribute("commentCountMap", commentCountMap);
-		    model.addAttribute("boardList", boardList);
-		    return "/board/photoBoardList";
-		}
-	
-	@GetMapping("/menuBoardList.do")
-	private void menuBoardList(@RequestParam(defaultValue = "1") int cpage, Model model) {
-	
-			int limit = 20;
-			int offset = (cpage - 1) * limit; 
-			RowBounds rowBounds = new RowBounds(offset, limit);
-			
-			List<Board> boardList = boardService.selectMenuBoardList(rowBounds);
-			log.debug("boardList = {}", boardList);
-			
-			// 총 게시물 수
-		    int totalCount = boardService.selectBoardCount();
-		    log.debug("totalCount = {}", totalCount);
-
-		    // 총 페이지 수 계산
-		    int totalPage = (int) Math.ceil((double) totalCount / limit);
-		    log.debug("totalPage = {}", totalPage);
-
-		    // 시작 페이지와 끝 페이지 계산
-		    int startPage = ((cpage - 1) / 20) * 20 + 1; // 10 페이지씩 묶어서 보여줌
-		    int endPage = Math.min(startPage + 19, totalPage);
-			
-			
-		    model.addAttribute("boardList", boardList);
-		    model.addAttribute("currentPage", cpage);
-		    model.addAttribute("startPage", startPage);
-		    model.addAttribute("endPage", endPage);
-		    model.addAttribute("totalPage", totalPage);
-	}
 	
 	@PostMapping("/boardCommentEnroll.do")
 	public String boardCommentEnroll(BoardComment boardComment, Board board, @RequestParam String no, Authentication authentication) {

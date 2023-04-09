@@ -57,3 +57,24 @@ tbody {
 .check-table th {
 	width: 130px;
 }
+
+.div-report-write-btn input{
+	width:70px;
+	height:30px;
+}
+
+#write-btn{
+	background-color:#00b6c2;
+	border-radius:5px;
+	border:0.5px solid lightgray;
+	color:white;
+	font-weight: bolder;
+	margin:10px;
+}
+#cancel-btn{
+	background-color:lightgray;
+	border-radius:5px;
+	border:0.5px solid lightgray;
+	color:white;
+	font-weight: bolder;
+}

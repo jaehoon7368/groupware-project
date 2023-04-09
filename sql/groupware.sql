@@ -74,6 +74,10 @@ create table board (
     constraint fk_board_emp foreign key (emp_id) references emp (emp_id) on delete cascade,
     constraint fk_board_writer foreign key (writer) references emp (emp_id) on delete cascade
 );
+
+select*from board;
+
+
 -- 게시판 테이블 컬럼 추가
 alter table board add writer varchar2(20) not null;
 alter table board add foreign key(writer) references emp (emp_id) on delete cascade;
@@ -569,7 +573,8 @@ SELECT
 		    b.b_type = '3'
 		order by
 			b.no desc;
-
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' ;    
+            
 SELECT 
 		    b.*, 
 		    a.*, 
@@ -587,3 +592,28 @@ select * from boardType where no = (select b_type from board where b_type = '3')
 select b_type from board where b_Type = '3';
 
 select * from board;
+select 
+    no,
+    category
+from 
+    boardType 
+where 
+no = (select * from board where b_type = '3');
+
+select * from boardType where no = (select b_type from board b where b.no = 'bo293');
+
+
+select b_type from board where no = 'bo293';
+
+select*from boardType;
+insert into boardType values('7', '인사총무팀', '인사총무팀 전용게시판', 'C', 'Y');
+insert into boardType values('8', '개발팀', '개발팀 전용게시판', 'C', 'Y');
+insert into boardType values('9', '법무팀', '법무팀 전용게시판', 'C', 'Y');
+insert into boardType values('10', '마케팅', '마케팅팀 전용게시판', 'C', 'Y');
+insert into boardType values('11', '기획팀', '기획팀 전용게시판', 'C', 'Y');
+
+
+select*from dept;
+select*from board;
+select * from board where b_type = '3'; 
+select * from boardType;
