@@ -172,6 +172,7 @@
 	</div>
  </section>
  
+ <!-- 댓글 폼 -->
 <div class="div-report-commend">
   <div>댓글</div>
   <div class="div-report-commend-all">
