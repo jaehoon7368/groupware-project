@@ -564,5 +564,26 @@ SELECT
 		    (select rename_filename from attachment where pk_no = b.emp_id) profile
 		FROM 
 		    board b 
-		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' ;    
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B'
+        WHERE 
+		    b.b_type = '3'
+		order by
+			b.no desc;
 
+SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no 
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
+		WHERE 
+		    b.b_type = '3'
+		order by
+			b.no desc;
+
+select * from boardType where no = (select b_type from board where b_type = '3');
+
+select b_type from board where b_Type = '3';
+
+select * from board;
