@@ -276,7 +276,7 @@
 						
 						<!-- 보고 작성자 -->
 						<div class="div-okreport font-small">
-							<div class="div-okreport-title"><span>보고자 (보고자간 보고 ${reportCheck[0].createYn == 'Y' ? '공개' : '비공개'})</span></div>
+							<div class="div-okreport-title"><span>보고자 (보고자간 보고 ${reportCheckList[0].publicYn == 'Y' ? '공개' : '비공개'})</span></div>
 							<div class="div-okreport-all">
 								<c:forEach items="${reportCheckList}" var="reportCheck" varStatus="vs">
 									<c:if test="${reportCheck.createYn == 'Y' && reportCheck.excludeYn == 'N'}">
