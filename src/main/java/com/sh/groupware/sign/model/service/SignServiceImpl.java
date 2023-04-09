@@ -187,10 +187,12 @@ public class SignServiceImpl implements SignService {
 		String[] j12Arr = {"j1", "j2"};
 		String[] j123Arr = {"j1", "j2", "j3"};
 		List<SignStatus> signStatusList = new ArrayList<>();
+		List<Emp> myDept = new ArrayList<>();
 		
 		// deptCode가 'd1'이 아닌 경우
 		if (!"d1".equals(sign.getDeptCode())) {
 			List<Emp> D1J12Manager = empDao.findByD1ManagerEmpList();
+			
 			Map<String, Object> param = new HashMap<>();
 			param.put("deptCode", sign.getDeptCode());
 			
@@ -199,32 +201,22 @@ public class SignServiceImpl implements SignService {
 				break;
 			case "j2" :
 				param.put("jobCode", j1Arr);
-				List<Emp> myDeptJ1 = empDao.findByMyDeptCodeManagerEmpList(param);
-
-				if (myDeptJ1 != null) {
-					for (Emp emp : myDeptJ1)
-						signStatusList.add(new SignStatus(emp.getEmpId()));
-				}
+				myDept = empDao.findByMyDeptCodeManagerEmpList(param);
 				break;
 			case "j3" :
 				param.put("jobCode", j12Arr);
-				List<Emp> myDeptJ12 = empDao.findByMyDeptCodeManagerEmpList(param);
-
-				if (myDeptJ12 != null) {
-					for (Emp emp : myDeptJ12)
-						signStatusList.add(new SignStatus(emp.getEmpId()));
-				}
+				myDept = empDao.findByMyDeptCodeManagerEmpList(param);
 				break;
 			default :
 				param.put("jobCode", j123Arr);
-				List<Emp> myDeptJ123 = empDao.findByMyDeptCodeManagerEmpList(param);
-
-				if (myDeptJ123 != null) {
-					for (Emp emp : myDeptJ123)
-						signStatusList.add(new SignStatus(emp.getEmpId()));
-				}
+				myDept = empDao.findByMyDeptCodeManagerEmpList(param);
 				break;
 			} // switch end
+
+			if (myDept.size() > 0) {
+				for (Emp emp : myDept)
+					signStatusList.add(new SignStatus(emp.getEmpId()));
+			} // 내 부서 결재자 결재선 추가
 
 			if (D1J12Manager != null) {
 				for (Emp emp : D1J12Manager)
@@ -241,32 +233,22 @@ public class SignServiceImpl implements SignService {
 				break;
 			case "j2" :
 				param.put("jobCode", j1Arr);
-				List<Emp> myDeptJ1 = empDao.findByMyDeptCodeManagerEmpList(param);
-
-				if (myDeptJ1 != null) {
-					for (Emp emp : myDeptJ1)
-						signStatusList.add(new SignStatus(emp.getEmpId()));
-				}
+				myDept = empDao.findByMyDeptCodeManagerEmpList(param);
 				break;
 			case "j3" :
 				param.put("jobCode", j12Arr);
-				List<Emp> myDeptJ12 = empDao.findByMyDeptCodeManagerEmpList(param);
-
-				if (myDeptJ12 != null) {
-					for (Emp emp : myDeptJ12)
-						signStatusList.add(new SignStatus(emp.getEmpId()));
-				}
+				myDept = empDao.findByMyDeptCodeManagerEmpList(param);
 				break;
 			default :
 				param.put("jobCode", j123Arr);
-				List<Emp> myDeptJ123 = empDao.findByMyDeptCodeManagerEmpList(param);
-				
-				if (myDeptJ123 != null) {
-					for (Emp emp : myDeptJ123)
-						signStatusList.add(new SignStatus(emp.getEmpId()));
-				}
+				myDept = empDao.findByMyDeptCodeManagerEmpList(param);
 				break;
 			} // switch end
+			
+			if (myDept.size() > 0) {
+				for (Emp emp : myDept)
+					signStatusList.add(new SignStatus(emp.getEmpId()));
+			}
 		} // else end
 		
 		for (int i = 0; i < signStatusList.size(); i++) {

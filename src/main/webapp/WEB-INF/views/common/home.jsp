@@ -359,6 +359,26 @@ const updateDayWorkTime = (daytimes) =>{
 												}
 											});
 										});
+										
+										document.querySelectorAll('.div-sign-all-tbl-tr').forEach((report) => {
+											report.addEventListener('click', (e) => {
+												console.log(e.target);
+												let data = e.target;
+												
+												while (true) {
+													if (data.tagName === 'TR' && data.classList[0] === 'div-sign-all-tbl-tr') {
+														console.log(data.tagName);
+														console.log(data.classList[0]);
+														console.log(data);
+														location.href = `${pageContext.request.contextPath}/sign/signDetail.do?no=\${data.dataset.no}&type=\${data.dataset.type}`;
+														break;
+													} else {
+														data = data.parentElement;
+														continue;
+													}
+												}
+											});
+										});
 									</script>
 									</div>
 									
