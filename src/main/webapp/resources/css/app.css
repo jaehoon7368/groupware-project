@@ -741,6 +741,10 @@ fontsize : 10px;
 	margin: 8px;
 }
 
+.div-sign-all-tbl-tr:hover {
+	cursor: pointer;
+}
+
 
 /* 홈 보고 문서 */
 #home-bottom {

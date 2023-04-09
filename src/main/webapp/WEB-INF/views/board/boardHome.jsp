@@ -111,8 +111,9 @@
 			</div>
 			
 			<div class="resent-group">
+			
 				<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
-				<c:if test="${boardType.category == 'C'}">
+				<c:if test="${boardType.category == 'C' and boardType.no >= 1 and boardType.no <= 6}">
 					<div class="group-list">
 					    <a href="${pageContext.request.contextPath}/board/boardList.do"><span class="group-list-title">${boardType.title}</span></a>
 					    <ul>
@@ -140,58 +141,6 @@
 					</div>
 					</c:if>
 				</c:forEach>
-				
-				<%-- <div class="group-list">
-					<a href="${pageContext.request.contextPath}/board/newsBoardList.do"><span class="group-list-title">이주의 IT뉴스</span></a>
-					<ul>
-				        <c:set var="count" value="0"/>
-					        <c:forEach items="${boardList}" var="board">
-					            <c:if test="${board.BType == 'N' && count < 5}">
-					                <c:set var="onclick" value="''" />
-					                <c:if test="${board.title.length() > 13}">
-					                    <c:set var="title" value="${board.title.substring(0, 13)}..." />
-					                </c:if>
-					                <c:if test="${board.title.length() <= 13}">
-					                    <c:set var="title" value="${board.title}" />
-					                </c:if>
-					                <li>
-					                    <a href="${pageContext.request.contextPath}/board/boardDetail.do?no=${board.no}">${title}</a>
-					                    <span class="createdDate">
-					                        <fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" />
-					                        <fmt:formatDate value="${createdDate}" pattern="MM-dd"/>
-					                    </span>
-					                </li>
-					                <c:set var="count" value="${count + 1}" />
-					            </c:if>
-					        </c:forEach>
-					    </ul>
-				</div>
-				
-				<div class="group-list">
-					<a href="${pageContext.request.contextPath}/board/menuBoardList.do"><span class="group-list-title">주간 식단표</span></a>
-					<ul>
-				        <c:set var="count" value="0"/>
-					       <c:forEach items="${boardList}" var="board">
-					            <c:if test="${board.BType == 'M' && count < 5}">
-					                <c:set var="onclick" value="''" />
-					                <c:if test="${board.title.length() > 13}">
-					                    <c:set var="title" value="${board.title.substring(0, 13)}..." />
-					                </c:if>
-					                <c:if test="${board.title.length() <= 13}">
-					                    <c:set var="title" value="${board.title}" />
-					                </c:if>
-					                <li>
-					                    <a href="${pageContext.request.contextPath}/board/boardDetail.do?no=${board.no}">${title}</a>
-					                    <span class="createdDate">
-					                        <fmt:parseDate value="${board.createdDate}" pattern="yyyy-MM-dd'T'HH:mm" var="createdDate" />
-					                        <fmt:formatDate value="${createdDate}" pattern="MM-dd"/>
-					                    </span>
-					                </li>
-					                <c:set var="count" value="${count + 1}" />
-					            </c:if>
-					        </c:forEach>
-					    </ul>
-				</div> --%>
 			</div>
 		</section> <!--  right-content end -->
 

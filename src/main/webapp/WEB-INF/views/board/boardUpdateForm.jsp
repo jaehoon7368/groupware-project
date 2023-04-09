@@ -72,17 +72,10 @@
   	
 	<div class="target-select">
 	  <span>To.</span>
-	  	<%-- <input type="hidden" name="bType" value="${param.BType}"> --%>
 		  <select name="bType" id="bType">
 			<c:forEach items="${sessionScope.boardTypeList}" var="boardType">
 				<option value="${boardType.no}" ${board.BType == boardType.no ? 'selected' : ''}>${boardType.title}</option>
 			</c:forEach>
-		    <%-- 
-		    <option value="A" ${board.BType == 'A' ? 'selected' : ''}>전사 공지</option>
-		    <option value="M" ${board.BType == 'M' ? 'selected' : ''}>주간 식단표</option>
-		    <option value="P" ${board.BType == 'P' ? 'selected' : ''}>사진 게시판</option>
-		    <option value="N" ${board.BType == 'N' ? 'selected' : ''}>IT뉴스</option> 
-		    --%>
 		  </select>
 	</div>
 
@@ -127,23 +120,7 @@
   			</td>
   		</th>
   	</div>
-  	
-  	<table class="check-table">
-  		<tr>
-  			<th>공개 설정</th>
-  			<td><input type="checkbox"/>공개</td>
-  			<td><input type="checkbox"/>비공개</td>
-  		</tr>
-  		<tr>
-  			<th>공지로 등록</th>
-  			<td><input type="checkbox"/> 공지로 등록</td>
-  		</tr>
-  		<tr>
-  			<th>알림</th>
-  			<td><input type="checkbox"/> 메일알림</td>
-  			<td><input type="checkbox"/> 푸시알림</td>
-  		</tr>
-  	</table>
+  
   	
 	<div class="div-padding div-report-write-btn">
 	  <input type="submit" value="수정"/>

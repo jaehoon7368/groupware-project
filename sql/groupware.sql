@@ -568,9 +568,30 @@ SELECT
 		    (select rename_filename from attachment where pk_no = b.emp_id) profile
 		FROM 
 		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B'
+        WHERE 
+		    b.b_type = '3'
+		order by
+			b.no desc;
 		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' ;    
             
+SELECT 
+		    b.*, 
+		    a.*, 
+		    a.no AS attach_no 
+		FROM 
+		    board b 
+		    LEFT JOIN attachment a ON b.no = a.pk_no AND a.category = 'B' 
+		WHERE 
+		    b.b_type = '3'
+		order by
+			b.no desc;
 
+select * from boardType where no = (select b_type from board where b_type = '3');
+
+select b_type from board where b_Type = '3';
+
+select * from board;
 select 
     no,
     category
@@ -584,15 +605,27 @@ select * from boardType where no = (select b_type from board b where b.no = 'bo2
 
 select b_type from board where no = 'bo293';
 
+
 select*from boardType;
 insert into boardType values('7', '인사총무팀', '인사총무팀 전용게시판', 'C', 'Y');
-insert into boardType values('8', '개발팀', '개발팀 전용게시판', 'C', 'Y');
-insert into boardType values('9', '법무팀', '법무팀 전용게시판', 'C', 'Y');
+insert into boardType values('8', '개발', '개발팀 전용게시판', 'C', 'Y');
+insert into boardType values('9', '법무', '법무팀 전용게시판', 'C', 'Y');
 insert into boardType values('10', '마케팅', '마케팅팀 전용게시판', 'C', 'Y');
-insert into boardType values('11', '기획팀', '기획팀 전용게시판', 'C', 'Y');
-
+insert into boardType values('11', '기획', '기획팀 전용게시판', 'C', 'Y');
 
 select*from dept;
 select*from board;
 select * from board where b_type = '3'; 
 select * from boardType;
+
+select 
+    bt.title
+    from
+     emp  e  join dept d
+     on e.dept_code = d.dept_code
+     join boardType bt
+     on d.dept_title = bt.title
+     where e.emp_id = #{};
+     
+     select * from emp;
+     select * from dept;
