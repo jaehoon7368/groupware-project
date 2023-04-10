@@ -49,7 +49,7 @@
 	</select>
 	
 	<select id="selectAddrBooklistByPage" resultMap="addressBookMap">
-		select*from addressBook where writer = #{writer}
+		select*from addressBook where writer = #{empId}
 	</select>
 	
 	<select id="selectAddressBookCountById" resultType="int">
@@ -168,8 +168,10 @@
 	</update>
 	
 	<select id="filterNamesByKeyword" resultMap="addressBookMap">
-		    SELECT *
-		    FROM addressBook
+		    SELECT 
+		    	*
+		    FROM 
+		    	addressBook
 		    WHERE CASE 
 		    <![CDATA[
 		        WHEN name  < 'ㄱ' THEN SUBSTR(name, 1, 1)

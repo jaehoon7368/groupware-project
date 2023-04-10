@@ -22,7 +22,7 @@
 									<div class="con">
 										<ul class="container-detail font-small">
 											<c:forEach items="${boardTypeList}" var="boardType">
-												<c:if test="${boardType.no >= 1 and boardType.no <= 6}">
+												<c:if test="${boardType.no >= 1 and boardType.no <= 6 or boardType.no > 11}">
 													<li>
 													<a class="container-a" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${boardType.no}&category=${boardType.category}">${boardType.title}</a>
 													</li>

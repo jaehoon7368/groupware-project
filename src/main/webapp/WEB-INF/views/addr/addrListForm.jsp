@@ -127,7 +127,7 @@
             <table class="addr-table">
                 <thead>
                 <tr>
-                	<th style="padding-left:5px;">
+                	<th style="padding-left:3px;">
 						<input type="checkbox" id="selectAllBtn" name="" value=""/>
 					</th>
                     <th scope="col" class="th-name">이름</th>
@@ -151,7 +151,7 @@
 	                <c:if test="${!empty addrGroupByName }">
 	               <c:forEach items="${addrGroupByName}" var="addr">
 					    <tr data-no="${addr.addrNo}">
-					        <td style="padding-left:5px;"><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
+					        <td style="padding-left:3px; width:30px;"><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
 					        <td>${addr.name}</td>
 					        <td>${addr.jobName}</td>
 					        <td>${addr.phone}</td>
