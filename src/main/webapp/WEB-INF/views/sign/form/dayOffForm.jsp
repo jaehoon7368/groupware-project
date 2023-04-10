@@ -205,13 +205,6 @@
 												return tag.innerText = val;
 											};
 											
-											const checkDate = (choiceDate) => {
-												noDateList.forEach((no) => {
-													if (choiceDate == no.regDate)
-														alert('해당 날짜는 ${no.state}(으)로 불가합니다.');
-												});
-											};
-											
 											window.addEventListener('load', () => {
 												startDate.min = today;
 												startDate.value = today;
@@ -256,9 +249,7 @@
 											});
 											
 											halfType.addEventListener('change', (e) => {
-												console.log(e.target);
 												type = e.target.value;
-												console.log(halfType);
 												
 												switch (type) {
 												case 'H':
@@ -303,10 +294,6 @@
 								const half = frm.half;
 								const start = frm.startDate;
 								const end = frm.endDate;
-								console.log(frm.startDate.value);
-								console.log(frm.endDate.value);
-								console.log(vacationType.value);
-								console.log(half.value);
 								
 								frm.count.value = applyPoint.innerText;
 								

@@ -65,12 +65,6 @@
 	 		</a>
  		</div>
  		<div class="tool-button">
- 			<a href="#">
-		 		<span><img src="${pageContext.request.contextPath}/resources/images/email.png" alt="" class="tool-img" style="height:28px; width:28px;" /></span>
-		 		<span>메일발송</span>
-	 		</a>
- 		</div>
- 		<div class="tool-button">
  			<a href="${pageContext.request.contextPath}/addr/addrDelete.do">
 	 			<span><img src="${pageContext.request.contextPath}/resources/images/trash.png" alt="" class="tool-img" /></span>
 	 			<span>삭제</span>
@@ -142,6 +136,12 @@
                 </tr>
                 </thead>
                 <tbody>
+                <c:if test="${empty addrBookList }">
+                     <tr>
+                        <td colspan="11" style="padding-top:20px;">조회된 주소록이 없습니다.</td>
+                    </tr>
+                </c:if>
+                <c:if test="${!empty addrBookList }">	
 	               <c:forEach items="${addrBookList}" var="addr">
 					    <tr data-no="${addr.addrNo}">
 					        <td><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
@@ -157,6 +157,7 @@
 					        <td>${addr.groupName}</td>
 					    </tr>
 					</c:forEach>
+				</c:if>
                 </tbody>
             </table>
         </div>
@@ -172,7 +173,7 @@
 
     <c:if test="${startPage > 1}">
       <li class="page-item">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do?cpage=${startPage-1}" aria-label="Previous">
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrHome.do?cpage=${startPage-1}" aria-label="Previous">
           <span aria-hidden="true">&lt;</span>
           <span class="sr-only">Previous</span>
         </a>
