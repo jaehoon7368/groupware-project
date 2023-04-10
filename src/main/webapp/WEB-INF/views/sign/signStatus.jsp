@@ -74,6 +74,7 @@
 											<tr>
 												<td>기안일</td>
 												<td>결재양식</td>
+												<td>기안자</td>
 												<td>긴급</td>
 												<td>결재상태</td>
 											</tr>
@@ -81,7 +82,7 @@
 										<tbody>
 											<c:if test="${empty mySignStatusList}">
 												<tr>
-													<td colspan="4">
+													<td colspan="5">
 														결재&nbsp;
 														<c:choose>
 															<c:when test="${param.status == 'W'}">대기</c:when>
@@ -104,6 +105,7 @@
 																<c:when test="${sign.type == 'R'}">사직서</c:when>
 															</c:choose>
 														</td>
+														<td>${sign.name}</td>
 														<td>
 															<c:if test="${sign.emergency == 'Y'}">
 																<button type="button" class="small alert button hollow">긴급</button>
