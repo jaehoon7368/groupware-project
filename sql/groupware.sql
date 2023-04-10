@@ -122,7 +122,7 @@ BEGIN
 END;
 /
 --ALTER TRIGGER ADMIN.TRG_BOARD_LIKE COMPILE;
-DROP TRIGGER trg_board_like_insert;
+DROP TRIGGER trg_board_like_update;
 drop table board_like;
 select*from board;
 create sequence seq_board_like_no;
