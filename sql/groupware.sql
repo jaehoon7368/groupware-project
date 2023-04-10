@@ -242,13 +242,13 @@ select * from attachment;
 select * from working_management order by no;
 select * from dayoff;
 select * from dayoffform;
-delete from working_management where no = '121';
-update working_management set overtime = 36552580-28800000,day_work_time = 28800000 where no = '32';
+delete from working_management where no = '123';
+update working_management set start_work = null where no = '50';
 
 select day_off_year from dayoff group by day_off_year order by day_off_year;
-    
+select * from working_management where no in ('40','47','50');
 delete from emp where emp_id = '230304';
-
+delete from working_management where no = '122';
 select * from attachment;
 select 
     nvl(sum(day_work_time),0) day_work_time,

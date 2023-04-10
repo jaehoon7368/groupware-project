@@ -93,7 +93,7 @@
 <script>
 window.addEventListener('load', function(){
 	
-	 getStartAndEndDateOfWeek();
+	getStartAndEndDateOfWeek();
 	
 	const csrfHeader = "${_csrf.headerName}";
     const csrfToken = "${_csrf.token}";
@@ -111,7 +111,7 @@ window.addEventListener('load', function(){
  			   var endtime = new Date(endWork);
  			   
  			   //하루 근무시간 계산
- 			   const daytimes = endtime - starttime;
+ 			   const daytimes = endtime - starttime; //퇴근시간 - 출근시간
  			   console.log(daytimes);
  			   
  			   const workState = document.querySelector("#work-state");
@@ -263,13 +263,7 @@ function getStartAndEndDateOfWeek() {
 			  console.log(data);
 			  const {totalMonthOverTime ,totalMonthTime, weekOverTime ,weekTotalTime} = data;
 			  const totalWorkTime = document.querySelector("#totalwork-time");
-			  const mainTotalWorkTime = document.querySelector("#main-totalwork-time");
-			  const mainWeekOverTime = document.querySelector("#main-week-over-time");
-			  const mainWorkTime = document.querySelector("#main-work-time");
-			  const monthWorkTime = document.querySelector("#main-month-work-time");
-			  const monthOverTime = document.querySelector("#main-month-over-time")
 			  
-			  /* let times = 144000000 - (weekTotalTime + weekOverTime); // 40시간 - 주간 기본 근무시간 */
 			  totalWorkTime.textContent = chageWorkTime(weekTotalTime + weekOverTime);
 		  },
 		  error : console.log
