@@ -37,7 +37,7 @@ public interface WorkingManagementDao {
 	@Select("select * from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end})+0.5 order by reg_date")
 	List<WorkingManagement> selectWeekDatas(Map<String, Object> param);
 
-	@Select("select sum(day_work_time) from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end})+0.5 order by reg_date")
+	@Select("select nvl(sum(day_work_time),0) from working_management where emp_id = #{empId} and reg_date between #{start} and to_date(#{end})+0.5 order by reg_date")
 	int weekTotalTime(Map<String, Object> param);
 
 	@Select("select nvl(sum(day_work_time),0) from working_management where reg_date like '%' || #{monthTime} || '%' and emp_id = #{empId}")
