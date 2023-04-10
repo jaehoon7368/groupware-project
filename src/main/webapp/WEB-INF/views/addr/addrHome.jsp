@@ -225,6 +225,7 @@ quickRegisterButton.addEventListener('click', function() {
 });
 </script>
 <script>
+
   // 클릭 이벤트 핸들러 함수
  function handleButtonClick(event) {
 	  console.log('event', event);
@@ -238,6 +239,7 @@ quickRegisterButton.addEventListener('click', function() {
   buttons.forEach(button => {
     button.addEventListener('click', handleButtonClick);
   });
+  
 </script>
 
 <script>

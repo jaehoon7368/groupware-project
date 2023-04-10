@@ -23,8 +23,12 @@
 										<ul class="container-detail font-small">
 											<c:forEach items="${boardTypeList}" var="boardType">
 												<c:if test="${boardType.no >= 1 and boardType.no <= 6}">
-													<li><a class="container-a" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${boardType.no}&category=${boardType.category}">${boardType.title}</a></li>
+													<li>
+													<a class="container-a" href="${pageContext.request.contextPath}/board/boardTypeList.do?no=${boardType.no}&category=${boardType.category}">${boardType.title}</a>
+													</li>
+													
 												</c:if>
+												
 											</c:forEach>
 										</ul>
 									</div>
@@ -44,8 +48,9 @@
 								</li>
 								
 								<div class="div-padding"></div>
-								<li><a href="${pageContext.request.contextPath}/board/boardAdd.do">+ 게시판 추가</a></li>
-									
+								<sec:authorize access="hasRole('ROLE_PERSONNEL')">
+									<li><a href="${pageContext.request.contextPath}/board/boardAdd.do">+ 게시판 추가</a></li>
+								</sec:authorize>
 							</ul>
 						</div>
 					</div>

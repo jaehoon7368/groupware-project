@@ -75,10 +75,6 @@
 								<option value="">다우그룹</option>
 							</select>
 						</span>
-						<!-- <span class="btn-wrap">
-							<span>+</span>
-							<span>게시판 그룹 선택</span>
-						</span> -->
 					</td>
 				</tr>
 			<tr>
@@ -122,89 +118,6 @@
 						<hr>
 					</td>
 				</tr>
-				<!-- <tr>
-					<th>
-						<span>공유 부서 설정</span>
-					</th>
-					<td>
-						<span class="wrap-option">
-							<input type="radio" />
-							<lebel>사용함</lebel>
-						</span>
-						<span class="wrap-option">
-							<input type="radio" checked="checked"/>
-							<lebel>사용하지 않음</lebel>
-						</span>
-							<div class="desc">※ 게시판을 공유할 부서를 지정하세요</div>
-					</td>
-				</tr>
-				<tr class="line">
-					<td colspan="3">
-						<hr>
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<span>비공개 설정</span>
-					</th>
-					<td>
-						<span class="wrap-option">
-							<input type="radio" />
-							<lebel>사용함</lebel>
-						</span>
-						<span class="wrap-option">
-							<input type="radio" checked="checked"/>
-							<lebel>사용하지 않음</lebel>
-						</span>
-							<div class="desc">※ 게시판을 공개할 멤버를 지정하세요.</div>
-					</td>
-				</tr>
-				<tr class="line">
-					<td colspan="3">
-						<hr>
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<span>익명 설정</span>
-					</th>
-					<td>
-						<span class="wrap-option">
-							<input type="radio" />
-							<lebel>사용함</lebel>
-						</span>
-						<span class="wrap-option">
-							<input type="radio" checked="checked"/>
-							<lebel>사용하지 않음</lebel>
-						</span>
-							<div class="desc">※ 익명 설정은 나중에 변결하실 수 없습니다.</div>
-					</td>
-				</tr>
-				<tr class="line">
-					<td colspan="3">
-						<hr>
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<span>말머리</span>
-					</th>
-					<td>
-						<span class="wrap-option">
-							<input type="radio" />
-							<lebel>사용함</lebel>
-						</span>
-						<span class="wrap-option">
-							<input type="radio" checked="checked"/>
-							<lebel>사용하지 않음</lebel>
-						</span>
-					</td>
-				</tr>
-				<tr class="line">
-					<td colspan="3">
-						<hr>
-					</td>
-				</tr> -->
 				<tr>
 					<th>
 						<span>댓글 작성</span>
