@@ -23,7 +23,7 @@ public interface AddrService {
 
 	List<AddressGroup> selectGroupName(String empId);
 
-	List<AddressGroup> selectAddrBookListByGroupName(String groupName);
+	List<AddressGroup> selectAddrBookListByGroupName(String groupName, RowBounds rowBounds);
 
 	List<AddressGroup> findByEmpId(String empId);
 
@@ -44,5 +44,7 @@ public interface AddrService {
 	AddressBook selectAddrByNo(String addrNo);
 
 	int deleteAddr(String addrNo);
+
+	int selectAddrBookListByGroupNameCount(String groupName);
 
 }
