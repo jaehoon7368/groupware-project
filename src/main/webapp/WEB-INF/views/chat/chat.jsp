@@ -18,9 +18,10 @@
 <div class="all-container app-dashboard-body-content off-canvas-content"
 	data-off-canvas-content>
 	
+ 
 	<!-- 왼쪽 추가 메뉴 -->
 	<div class="left-container">
-		<div class="accordion-box">
+		<div class="accordion-box" style="margin-top: 90px;">
 			<ul class="container-list">
 				<c:forEach items="${sessionScope.deptList}" var="dept">
 				<li>
