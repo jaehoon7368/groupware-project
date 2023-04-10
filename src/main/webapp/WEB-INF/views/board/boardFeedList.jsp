@@ -99,6 +99,12 @@
 		<section class="content-wrap">
 			<form name="contentFrm">
 				<div class="content-border">
+					<c:if test="${empty boardList }">
+	                     <tr>
+	                        <td colspan="" style="padding-top:20px;">조회된 주소록이 없습니다.</td>
+	                    </tr>
+	                </c:if>
+	                <c:if test="${!empty boardList }">
 					<c:forEach var="board" items="${boardList}" varStatus="status">
 					<div class="board-item" data-board-no="${board.no}" data-emp-id="${board.empId}">
 					<input type="hidden" id="boardNo" name="boardNo" class="like-item" data-board-no="${board.no}" value="${board.no}">
@@ -231,6 +237,7 @@
 					</div>
 					</div>
 					</c:forEach>
+					</c:if>
 				</div>
 			</form>
 		</section>
