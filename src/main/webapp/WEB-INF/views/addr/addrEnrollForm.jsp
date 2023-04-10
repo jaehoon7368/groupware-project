@@ -64,7 +64,7 @@
                                 <tr>
                                     <th></th>
                                     <td>
-                                        <div id="profile-box">
+                                        <div id="profile-box" style="display:none">
                                             <img id="preview" src="#" style="max-width:150px; max-height:150px;">
                                             <label for="upfile"><i class="fa-solid fa-magnifying-glass" style="padding-top:7px;"></i></label>
                                             <input type="file" id="upFile" name="upFile" accept="image/*" onchange="previewImage(event)">

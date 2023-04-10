@@ -226,6 +226,13 @@
 	    	where addr_No = #{addrNo}
 	    </delete>
     
-    
+    	<select id="selectAddrBookListByGroupNameCount" resultType="int">
+    		select
+    			count(*)
+    		from
+    			addressbook
+    		where
+    			group_name = #{groupName}
+    	</select>
 	
 </mapper>
