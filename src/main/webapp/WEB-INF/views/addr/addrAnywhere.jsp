@@ -17,7 +17,7 @@
 <div class="home-container">
 	<!-- 상단 타이틀 -->
 	<div class="top-container">
-		<div class="container-title">Anywhere 사내 주소록</div>
+		<div class="container-title">Anywhere 사내 연락망</div>
 		<div class="home-topbar topbar-div">
 			<div>
 				<a href="#" id="home-my-img">

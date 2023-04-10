@@ -208,11 +208,12 @@
               <button type="button" class="comment-edit-cancel">취소</button>
             </form>
           </div>
-        </div>
+       	</div>
       </c:forEach>
     </div>
   </div>
 </div>
+    
 
     	
         <div class="comment-write-view" style="margin-left: 20px;">
@@ -241,6 +242,7 @@
         </div>
     </div>
 </div>
+ 
 <!-- 좋아요 -->
 <script>
 $(document).ready(function() {
@@ -337,7 +339,7 @@ heartWrap.addEventListener('click', function(e) {
       }
     });
   } else {
-    // 좋아요를 누른 경우
+    // 좋아요를 취소 처리
     $.ajax({
       type: 'POST',
       url: '${pageContext.request.contextPath}/board/boardLikeDown.do',

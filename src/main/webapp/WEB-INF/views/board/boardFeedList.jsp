@@ -100,9 +100,8 @@
 			<form name="contentFrm">
 				<div class="content-border">
 					<c:if test="${empty boardList }">
-	                     <tr>
-	                        <td colspan="" style="padding-top:20px;">조회된 주소록이 없습니다.</td>
-	                    </tr>
+	                        <span style="margin-left:40%;"> 게시글을 작성해 주세요</span>
+
 	                </c:if>
 	                <c:if test="${!empty boardList }">
 					<c:forEach var="board" items="${boardList}" varStatus="status">
@@ -151,7 +150,7 @@
 						    <c:set var="extension" value="${fn:substring(attach.originalFilename, fn:length(attach.originalFilename) - 3, fn:length(attach.originalFilename))}"/>
 						    <c:choose>
 						      <c:when test="${extension == 'jpg' || extension == 'jpeg' || extension == 'png' || extension == 'gif'}">
-						        <img class="img-thumbnail" src="${pageContext.request.contextPath}/board/fileDownload.do?no=${attach.no}" style="width: 200px; height: 200px;"
+						        <img class="img-thumbnail" src="${pageContext.request.contextPath}/board/fileDownload.do?no=${attach.no}" style="width: 250px; height: 250px;"
 						         alt="${attach.originalFilename}" onclick="openModal('${pageContext.request.contextPath}/board/fileDownload.do?no=${attach.no}', '${attach.originalFilename}')">
 						      </c:when>
 						      <c:otherwise>

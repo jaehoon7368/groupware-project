@@ -656,3 +656,5 @@ select
                 
 select*from addressbook;
 select*from addressgroup;
+delete from addressgroup where no = '43';
+select*from boardType;

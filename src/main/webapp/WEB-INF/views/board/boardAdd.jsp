@@ -113,12 +113,8 @@
 						<div class="desc">※ 게시판 유형은 나중에 변경하실 수 없습니다.</div>
 					</td>
 				</tr>
-				<tr class="line">
-					<td colspan="2">
-						<hr>
-					</td>
-				</tr>
-				<tr>
+			
+				<tr style="display:none;">
 					<th>
 						<span>댓글 작성</span>
 					</th>
