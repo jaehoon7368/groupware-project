@@ -101,6 +101,12 @@
                 </tr>
                 </thead>
                 <tbody>
+                	<c:if test="${empty boardList }">
+	                     <tr>
+	                        <td colspan="7" style="padding-top:20px;">게시물을 등록해 주세요.</td>
+	                    </tr>
+               		 </c:if>
+               		 <c:if test="${!empty boardList }">
 	                <c:forEach items="${boardList}" var="board" varStatus="var">
 					    <tr data-no="${board.no}">
 					        <td><input type="checkbox" name="boardNo" value="${board.no}"/></td>
@@ -117,6 +123,7 @@
 					        <td>${board.likeCount}</td>
 					    </tr>
 					</c:forEach>
+					</c:if>
                 </tbody>
             </table>
         </div>
