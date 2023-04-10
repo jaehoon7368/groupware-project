@@ -166,17 +166,9 @@ public class AddrBookController {
 				
 				List<EmpDetail> empList = empService.selectEmpAll(rowBounds);
 				log.debug("empList = {}", empList);
-				
-				
-				
-//				List<AddressBook> addressBookList = new ArrayList<>();
-//				log.debug("addressBookList = {}", addressBookList);
-//				
-				
-				
-				
+							
 				// 총 게시물 수
-			    int totalCount = addrService.selectAddressBookCount();
+				int totalCount = empService.selectEmpCount();
 			    log.debug("totalCount = {}", totalCount);
 
 			    // 총 페이지 수 계산
@@ -188,7 +180,6 @@ public class AddrBookController {
 			    int endPage = Math.min(startPage + 9, totalPage);
 			    
 			    model.addAttribute("empList", empList);
-//			    model.addAttribute("addressBookList", addressBookList);
 			    model.addAttribute("currentPage", cpage);
 			    model.addAttribute("startPage", startPage);
 			    model.addAttribute("endPage", endPage);

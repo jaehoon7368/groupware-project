@@ -17,7 +17,7 @@
 <div class="home-container">
 	<!-- 상단 타이틀 -->
 	<div class="top-container">
-		<div class="container-title">전체 주소록</div>
+		<div class="container-title">개인 주소록</div>
 		<div class="home-topbar topbar-div">
 			<div>
 				<a href="#" id="home-my-img"> <img
@@ -65,19 +65,13 @@
 	 		</a>
  		</div>
  		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=A">
-		 		<span><img src="${pageContext.request.contextPath}/resources/images/email.png" alt="" class="tool-img" style="height:28px; width:28px;" /></span>
-		 		<span>메일발송</span>
-	 		</a>
- 		</div>
- 		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/board/boardDelete.do">
+ 			<a href="${pageContext.request.contextPath}/addr/addrDelete.do">
 	 			<span><img src="${pageContext.request.contextPath}/resources/images/trash.png" alt="" class="tool-img" /></span>
 	 			<span>삭제</span>
 	 		</a>
  		</div>
  		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/board/boardDelete.do">
+ 			<a href="${pageContext.request.contextPath}/addr/addrDelete.do">
 	 			<span><img src="${pageContext.request.contextPath}/resources/images/copy.png" alt="" class="tool-img" /></span>
 	 			<span>주소록 복사</span>
 	 		</a>
@@ -121,7 +115,7 @@
             <table class="addr-table">
                 <thead>
                 <tr>
-                	<th>
+                	<th style="padding-left:5px;">
 						<input type="checkbox" id="selectAllBtn" name="" value=""/>
 					</th>
                     <th scope="col" class="th-name">이름</th>
@@ -137,9 +131,15 @@
                 </tr>
                 </thead>
                 <tbody>
+	                <c:if test="${empty addrBookByName }">
+	                     <tr >
+	                        <td colspan="11" style="padding-top:20px;">조회된 주소록이 없습니다..</td>
+	                    </tr>
+	                </c:if>
+	                <c:if test="${!empty addrBookByName }">
 	               <c:forEach items="${addrGroupByName}" var="addr">
 					    <tr data-no="${addr.addrNo}">
-					        <td><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
+					        <td style="padding-left:5px;"><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
 					        <td>${addr.name}</td>
 					        <td>${addr.jobName}</td>
 					        <td>${addr.phone}</td>
@@ -152,6 +152,7 @@
 					        <td>${addr.groupName}</td>
 					    </tr>
 					</c:forEach>
+					</c:if>
                 </tbody>
             </table>
         </div>
@@ -167,7 +168,7 @@
 
     <c:if test="${startPage > 1}">
       <li class="page-item">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do?cpage=${startPage-1}" aria-label="Previous">
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrListForm.do?cpage=${startPage-1}" aria-label="Previous">
           <span aria-hidden="true">&lt;</span>
           <span class="sr-only">Previous</span>
         </a>
@@ -176,13 +177,13 @@
 
     <c:forEach var="i" begin="${startPage}" end="${endPage}">
       <li class="page-item ${i==currentPage ? 'active' : ''}">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do?cpage=${i}">${i}</a>
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrListForm.do?cpage=${i}">${i}</a>
       </li>
     </c:forEach>
 
     <c:if test="${endPage < totalPage}">
       <li class="page-item">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do?cpage=${endPage+1}" aria-label="Next">
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAddrListForm.do?cpage=${endPage+1}" aria-label="Next">
           <span aria-hidden="true">&gt;</span>
           <span class="sr-only">Next</span>
         </a>
@@ -191,7 +192,7 @@
 	</c:if>
 
 	
-	
+<!-- 	
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const addList = $('#addressList'); // 주소록 리스트 요소 가져오기
@@ -256,7 +257,22 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', handleButtonClick);
   });
 });
-</script>	
+</script> -->	
+<script>
+  // 클릭 이벤트 핸들러 함수
+ function handleButtonClick(event) {
+	  console.log('event', event);
+  const keyword = event.target.innerText;
+  location.href = '${pageContext.request.contextPath}/addr/addrHome.do?keyword=' + keyword;
+	  console.log(keyword);
+  }
+  // 버튼 요소들 가져오기
+  const buttons = document.querySelectorAll('.btn-search-keyword');
+  // 버튼 요소들에 클릭 이벤트 핸들러 함수 등록하기
+  buttons.forEach(button => {
+    button.addEventListener('click', handleButtonClick);
+  });
+</script>
 <script>
 const styleChange = (btn) => {
 	document.querySelectorAll('#search-div .btn-search-keyword').forEach((btn) => {
@@ -265,6 +281,7 @@ const styleChange = (btn) => {
 		btn.style.borderBottom = 'solid 2px #000';
 };
 </script>
+
 <script>
 $(document).ready(function() {
     // 전체선택 버튼 클릭 시
@@ -277,7 +294,34 @@ $(document).ready(function() {
     $('input[name=addrNo]').change(function() {
         // 선택된 체크박스의 값 가져오기
         const addrNo = $(this).val();
-        console.log("Selected addrNo: " + boardNo);
+        console.log("Selected addrNo: " + addrNo);
+        
+ // 삭제 버튼 클릭 시
+        $('a[href$="/addrDelete.do"]').click(function(event) {
+            event.preventDefault();
+            const addrNos = [];
+            const csrfHeader = "${_csrf.headerName}";
+      	    const csrfToken = "${_csrf.token}";
+      	    const headers = {};
+      	  headers[csrfHeader] = csrfToken;
+            $('input[name=addrNo]:checked').each(function() {
+                addrNos.push($(this).val());
+            });
+            console.log("Selected addrNos: " + addrNos);
+            
+            $.ajax({
+                url: '${pageContext.request.contextPath}/addr/addrsDelete.do',
+                type: 'POST',
+                data: {addrNos: addrNos},
+                headers,
+                success: function() {
+                    location.href = "${pageContext.request.contextPath}/addr/addrHome.do";
+                },
+                error: function() {
+                    alert("삭제 실패");
+                }
+            });    
+    });
     });
 });
 </script>

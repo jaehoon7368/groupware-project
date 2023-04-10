@@ -617,6 +617,7 @@ select*from dept;
 select*from board;
 select * from board where b_type = '3'; 
 select * from boardType;
+select * from emp;
 
 select 
     bt.title
@@ -629,3 +630,19 @@ select
      
      select * from emp;
      select * from dept;
+
+select*from addressBook;
+
+select 
+		    e.*,
+		    (select job_title from job where e.job_code = job_code) job_title,
+		    (select dept_title from dept where e.dept_code = dept_code) dept_title,
+		    (select rename_filename from attachment where pk_no = e.emp_id) renameFilename
+		from 
+		    emp e
+		where
+		    quit_yn = 'N'
+			or
+			quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')
+		order by
+			e.dept_code,e.job_code;
