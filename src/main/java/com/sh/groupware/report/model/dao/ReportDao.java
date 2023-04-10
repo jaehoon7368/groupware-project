@@ -59,7 +59,7 @@ public interface ReportDao {
 	@Update("update reportMember set create_yn = 'Y' where report_no = #{no} and emp_id = #{empId}")
 	int updateCreateYnY(Map<String, Object> param);
 
-	@Select("select * from report where dept_yn = 'Y' and writer in (select emp_id from emp where dept_code = #{code}) order by end_date desc, reg_date desc")
+	@Select("select * from report where dept_yn = 'Y' and writer in (select emp_id from emp where dept_code = #{code}) order by reg_date desc, end_date desc")
 	List<Report> findByDeptCodeReportList(String code, RowBounds rowBounds);
 
 	ReportDetail findByDetailNoReportDetail(String no);
