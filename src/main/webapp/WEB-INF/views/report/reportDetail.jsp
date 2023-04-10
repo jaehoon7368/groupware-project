@@ -203,7 +203,7 @@
 								        		},
 								        		error: console.log,
 								        		complete(){
-								        			//location.reload();
+								        			location.reload();
 								        		}
 								        	});
 								        });

@@ -6,8 +6,12 @@
     border-left: 0;
     overflow-x: hidden;
     transition: width 0.5s;
+     -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  	scrollbar-width: none; /* 파이어폭스 */
 }
-
+.navigation::-webkit-scrollbar {
+  display: none;
+}
 .navigation:hover {
     width: 200px;
 }

@@ -50,15 +50,17 @@ public class WorkingManagementController {
 	@Autowired
 	private EmpService empService;
 	
-	DateTimeFormatter dayf = DateTimeFormatter.ofPattern("yy/MM/dd"); //날짜 패턴 변경
 	DateTimeFormatter dayff = DateTimeFormatter.ofPattern("yy/MM"); //날짜 패턴 변경
+	
+	DateTimeFormatter dayf = DateTimeFormatter.ofPattern("yy/MM/dd"); //날짜 패턴 변경
 	LocalDateTime now = LocalDateTime.now(); //현재 시간
 	
+	// 근태관리 로드될시 금일 근무 기록 조회
 	@GetMapping("/checkWorkTime.do")
 	public ResponseEntity<WorkingManagement> checkWorkTime(Authentication authentication) {
 		 Emp principal = (Emp) authentication.getPrincipal();
 		 String empId = principal.getEmpId();
-		 String time = now.format(dayf);
+		 String time = now.format(dayf); //현재날짜를 yy/MM/dd 형식으로 변경
 		 Map<String,Object> param = new HashMap<>();
 		 param.put("empId", empId);
 		 param.put("time", time);
@@ -76,7 +78,7 @@ public class WorkingManagementController {
 	public ResponseEntity<?> insertStartWork(Authentication authentication) {
 	    Emp principal = (Emp) authentication.getPrincipal();
 	    String empId = principal.getEmpId();
-	    String time = now.format(dayf);
+	    String time = now.format(dayf); //현재날짜를 yy/MM/dd 형식으로 변경
 	    Map<String,Object> param = new HashMap<>();
 	    Map<String,Object> state = new HashMap<>();
 	    log.debug(time);
@@ -152,7 +154,7 @@ public class WorkingManagementController {
 			daytime = daytimes - 3600000;
 		}
 		
-		//근무시간이 8시간이 넘었을때 기본근무시간과 연장근무시간 분기처리
+		//근무시간이 8시간이 넘었을때 기본근무시간과 연장근무시간 처리
 		if(daytime > 28800000) {
 			overtime = daytime - 28800000;
 			daytime = 28800000;
@@ -165,7 +167,6 @@ public class WorkingManagementController {
 		Map<String,Object> param = new HashMap<>();
 		param.put("empId", empId);
 		param.put("time", time);
-		
 		param.put("daytime", daytime);
 		param.put("overtime", overtime);
 		
@@ -176,7 +177,6 @@ public class WorkingManagementController {
 		}else {
 			result = workingManagementService.updateDayWorkTime(param); // 금일 근무시간 업데이트
 		}
-		
 		
 		Map<String,Object> state = new HashMap<>();
 		if(result > 0)
@@ -191,23 +191,19 @@ public class WorkingManagementController {
 	@ResponseBody
 	@GetMapping("/selectMonthWork.do")
 	public ResponseEntity<?> selectMonthWork(String dateText,Authentication authentication){
-		log.debug("dateText={}", dateText); //2023.03
+		log.debug("dateText={}", dateText); //2023.04
 		Emp principal = (Emp) authentication.getPrincipal();
 		String empId = principal.getEmpId();
 				
 		String[] arr = dateText.split("\\.");
-		String date = arr[0].substring(2) + "/" + arr[1] ; //23/03으로 변경
+		String date = arr[0].substring(2) + "/" + arr[1] ; //23/04으로 변경
 		log.debug("date = {}",date);
 		
 		Map<String,Object> param = new HashMap<>();
 		param.put("empId", empId);
 		param.put("date", date);
-		
-		 // 회원의 월별 근태현황 조회
-		List<WorkingManagement> workList = workingManagementService.selectMonthWork(param);
-		
+				
 		Calendar cal = new Calendar();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM");
  	    LocalDate currentDate = LocalDate.parse(dateText + ".01", DateTimeFormatter.ofPattern("yyyy.MM.dd"));
  	    Map<String, Map<String, Object>> weekDates = cal.updateDateText(currentDate);
 		log.debug("weekDate = {}",weekDates);
@@ -238,7 +234,6 @@ public class WorkingManagementController {
 		}
 
 		Map<String, Object> response = new HashMap<>();
-		response.put("workList", workList);
 		response.put("weekDates", weekDates);
 
 		return ResponseEntity.ok()
