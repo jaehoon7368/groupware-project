@@ -194,17 +194,10 @@ public class WorkingManagementController {
 		log.debug("dateText={}", dateText); //2023.04
 		Emp principal = (Emp) authentication.getPrincipal();
 		String empId = principal.getEmpId();
-				
-		String[] arr = dateText.split("\\.");
-		String date = arr[0].substring(2) + "/" + arr[1] ; //23/04으로 변경
-		log.debug("date = {}",date);
-		
-		Map<String,Object> param = new HashMap<>();
-		param.put("empId", empId);
-		param.put("date", date);
-				
+								
 		Calendar cal = new Calendar();
  	    LocalDate currentDate = LocalDate.parse(dateText + ".01", DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+ 	    log.debug("currentDate = {}",currentDate);
  	    Map<String, Map<String, Object>> weekDates = cal.updateDateText(currentDate);
 		log.debug("weekDate = {}",weekDates);
 	
