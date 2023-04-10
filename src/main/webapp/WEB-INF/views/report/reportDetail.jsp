@@ -118,7 +118,7 @@
 														<input type="hidden" name="no" value="${param.no}" />
 														<input id="checkAll" type="checkbox"><label for="checkAll" class="font-small">전체</label><br />
 														<c:forEach items="${reportCheckList}" var="reportCheck">
-															<input id="${reportCheck.empId}" name="unreport" type="checkbox" onchange="checkEach(this);" value="${reportCheck.empId}" data-name="${reportCheck.empName}" data-job-title=" ${reportCheck.jobTitle}" ${reportCheck.excludeYn == 'Y' ? 'checked' : ''}>
+															<input id="${reportCheck.empId}" name="unreport" type="checkbox" onchange="checkEach(this);" value="${reportCheck.empId}" data-yn="${reportCheck.excludeYn}" data-name="${reportCheck.empName}" data-job-title=" ${reportCheck.jobTitle}" ${reportCheck.excludeYn == 'Y' ? 'checked' : ''}>
 															<label for="${reportCheck.empId}" class="font-small">${reportCheck.empName} ${reportCheck.jobTitle}</label><br />
 														</c:forEach>
 													</fieldset>
@@ -126,9 +126,9 @@
 											</div>
 											<div class="font-small report-no-modal-btn">
 												<button type="submit">확인</button>
-												<button type="button" data-close aria-label="Close reveal">취소</button>
+												<button type="button" data-close aria-label="Close reveal" onclick="unreportFrmNo();">취소</button>
 											</div>
-											<button class="btn-close close-button" data-close aria-label="Close reveal" type="button">
+											<button class="btn-close close-button" data-close aria-label="Close reveal" type="button" onclick="unreportFrmNo();">
 												<span aria-hidden="true">&times;</span>
 											</button>
 										</form>
@@ -203,10 +203,22 @@
 								        		},
 								        		error: console.log,
 								        		complete(){
-								        			location.reload();
+								        			//location.reload();
 								        		}
 								        	});
 								        });
+								        
+								        /* 취소 버튼 클릭 시 원래 있던 대로 체크하기 */
+								        const unreportFrmNo = () => {
+								        	const unreportList = document.unreportFrm.querySelectorAll('[name=unreport]');
+								        	unreportList.forEach((unreport) => {
+								        		const yn = unreport.dataset.yn;
+								        		if (yn == 'Y')
+								        			unreport.checked = 'checked';
+								        		else
+								        			unreport.checked = '';
+								        	});
+								        };
 								    </script>
 								</div>
 							</div>
@@ -253,7 +265,7 @@
 							<div class="div-unreport-all">
 								<c:forEach items="${reportCheckList}" var="reportCheck">
 									<c:if test="${reportCheck.createYn == 'N' && reportCheck.excludeYn == 'N'}">
-										<div class="div-unreport-one">
+										<div class="div-unreport-one ${sessionScope.loginMember.empId == reportCheck.empId ? 'div-me' : ''}">
 											<div>
 												<c:if test="${empty reportCheck.profileImg}">
 													<img src="${pageContext.request.contextPath}/resources/images/default.png" class="my-img" />
@@ -276,7 +288,7 @@
 						
 						<!-- 보고 작성자 -->
 						<div class="div-okreport font-small">
-							<div class="div-okreport-title"><span>보고자 (보고자간 보고 ${reportCheck[0].createYn == 'Y' ? '공개' : '비공개'})</span></div>
+							<div class="div-okreport-title"><span>보고자 (보고자간 보고 ${reportCheckList[0].publicYn == 'Y' ? '공개' : '비공개'})</span></div>
 							<div class="div-okreport-all">
 								<c:forEach items="${reportCheckList}" var="reportCheck" varStatus="vs">
 									<c:if test="${reportCheck.createYn == 'Y' && reportCheck.excludeYn == 'N'}">
@@ -823,8 +835,6 @@
 											} else {
 												console.log('no');
 											}
-											
-											//allView[no].style.display = 'block';
 											
 											break;
 										} else {

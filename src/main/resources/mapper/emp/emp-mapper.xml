@@ -93,11 +93,11 @@
 		    emp e
 		where
 		    (
-		    	e.quit_yn = 'N'
-    			and e.dept_code = #{deptCode}
+	    		e.quit_yn = 'N'
+				or
+				quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')
     		)
-			or
-			quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')
+   			and e.dept_code = #{deptCode}
     	order by
     		e.job_code
 	</select>
@@ -110,16 +110,16 @@
 		where
 			(
 				quit_yn = 'N'
-				and
-				dept_code = #{deptCode}
-				and
-				job_code in
-				<foreach collection="jobCode" item="code" index="index" open="(" close=")" separator=",">
-					#{code}
-				</foreach>
+				or
+				quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')
 			)
-			or
-			quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')
+			and
+			dept_code = #{deptCode}
+			and
+			job_code in
+			<foreach collection="jobCode" item="code" index="index" open="(" close=")" separator=",">
+				#{code}
+			</foreach>
 		order by
 			job_code
 	</select>
@@ -154,21 +154,21 @@
 		where
 			(
 			    quit_yn = 'N'
-			    <if test="searchType == 'dept_title'">
-				    and
-					d.dept_title like '%' || #{searchKeyword} ||'%'
-			    </if>
-			    <if test="searchType == 'job_title'">
-				    and
-					j.job_title like '%' || #{searchKeyword} ||'%'
-			    </if>
-			    <if test="searchType == 'name'">
-				    and
-					e.name like '%' || #{searchKeyword} ||'%'
-			    </if>
+				or
+				quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')
 			)
-			or
-			quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')
+		    <if test="searchType == 'dept_title'">
+			    and
+				d.dept_title like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="searchType == 'job_title'">
+			    and
+				j.job_title like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="searchType == 'name'">
+			    and
+				e.name like '%' || #{searchKeyword} ||'%'
+		    </if>
 		order by
 			e.dept_code,e.job_code		
 	</select>
@@ -184,25 +184,25 @@
 		where
 			(
 			    quit_yn = 'N'
-			    <if test="searchType == 'dept_title'">
-				    and
-					d.dept_title like '%' || #{searchKeyword} ||'%'
-			    </if>
-			    <if test="searchType == 'job_title'">
-				    and
-					j.job_title like '%' || #{searchKeyword} ||'%'
-			    </if>
-			    <if test="searchType == 'name'">
-				    and
-					e.name like '%' || #{searchKeyword} ||'%'
-			    </if>
-			    <if test="deptCode != null">
-			    	and
-			    	e.dept_code = #{deptCode}
-			    </if>		    
+				or
+				quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')		
 			)
-			or
-			quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')		
+		    <if test="searchType == 'dept_title'">
+			    and
+				d.dept_title like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="searchType == 'job_title'">
+			    and
+				j.job_title like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="searchType == 'name'">
+			    and
+				e.name like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="deptCode != null">
+		    	and
+		    	e.dept_code = #{deptCode}
+		    </if>		    
 	</select>
 	
 	<select id="empFinderDeptList" resultMap="empDetailMap">
@@ -219,25 +219,25 @@
 		where
 			(
 			    quit_yn = 'N'
-			    <if test="searchType == 'dept_title'">
-				    and
-					d.dept_title like '%' || #{searchKeyword} ||'%'
-			    </if>
-			    <if test="searchType == 'job_title'">
-				    and
-					j.job_title like '%' || #{searchKeyword} ||'%'
-			    </if>
-			    <if test="searchType == 'name'">
-				    and
-					e.name like '%' || #{searchKeyword} ||'%'
-			    </if>
-			    <if test="deptCode != null">
-			    	and
-			    	e.dept_code = #{deptCode}
-			    </if>		    
+				or
+				quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')
 			)
-			or
-			quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')
+		    <if test="searchType == 'dept_title'">
+			    and
+				d.dept_title like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="searchType == 'job_title'">
+			    and
+				j.job_title like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="searchType == 'name'">
+			    and
+				e.name like '%' || #{searchKeyword} ||'%'
+		    </if>
+		    <if test="deptCode != null">
+		    	and
+		    	e.dept_code = #{deptCode}
+		    </if>		    
 		order by
 			e.dept_code,e.job_code	
 	</select>
@@ -253,12 +253,13 @@
 		join dept d
 		      on e.dept_code = d.dept_code
     where 
+   		e.emp_id not in ((select emp_id from todoboardgroup where todoboard_no = #{no}))
+   		and
     	(
-    		e.emp_id not in ((select emp_id from todoboardgroup where todoboard_no = #{no}))
-    		and quit_yn = 'N'
+    		quit_yn = 'N'
+			or
+			quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')
     	)
-		or
-		quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')
     order by
     	e.dept_code, e.job_code
 

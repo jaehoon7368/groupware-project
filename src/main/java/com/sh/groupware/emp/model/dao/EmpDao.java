@@ -47,7 +47,7 @@ public interface EmpDao {
 	
 	List<Emp> findByMyDeptCodeManagerEmpList(Map<String, Object> param);
 
-	@Select("select * from emp where (dept_code = 'd1' and job_code in ('j1', 'j2') and quit_yn = 'N') or quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul') order by job_code desc")
+	@Select("select * from emp where dept_code = 'd1' and job_code in ('j1', 'j2') and (quit_yn = 'N' or quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')) order by job_code desc")
 	List<Emp> findByD1ManagerEmpList();
 
 	@Update("update emp set quit_date = #{endDate}, quit_yn = 'Y' where emp_id = #{empId}")
