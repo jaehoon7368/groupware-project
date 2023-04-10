@@ -162,13 +162,13 @@ create table addressbook (
     email varchar2(100) not null,
     reg_date date default sysdate,
     memo varchar2(500),
-    group_name varchar2(50) not null,
+    group_name varchar2(50),
     group_type char not null,
     writer varchar2(20) not null,
     constraint pk_addressbook primary key (addr_no)
 );
-
-
+ALTER TABLE addressBook MODIFY group_name varchar2(50) null;
+select * from addressBook;
 --drop table addressbook;
 -- 그룹원
 create table groupMember (
@@ -646,3 +646,13 @@ select
 			quit_date >= (TO_TIMESTAMP_TZ(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AT TIME ZONE 'Asia/Seoul')
 		order by
 			e.dept_code,e.job_code;
+            
+    select
+    			count(*)
+    		from
+    			addressbook
+    		where
+    			group_name = '우리';
+                
+select*from addressbook;
+select*from addressgroup;

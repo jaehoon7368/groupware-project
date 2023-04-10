@@ -117,16 +117,36 @@ public class AddrBookController {
 	}
 	
 	@GetMapping("/addrListForm.do")
-	public String addrListForm(Model model,  @RequestParam("groupName") String groupName, Authentication authentication) {
+	public String addrListForm(@RequestParam(defaultValue = "1") int cpage, @RequestParam("groupName") String groupName, Model model, Authentication authentication) {
 		String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 		
-	    List<AddressGroup> addrGroupByName = addrService.selectAddrBookListByGroupName(groupName);
+		int limit = 10;
+		int offset = (cpage - 1) * limit; 
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+	    List<AddressGroup> addrGroupByName = addrService.selectAddrBookListByGroupName(groupName, rowBounds);
 	    List<AddressGroup> addrGroupNameList = addrService.selectGroupName(empId);
+	    
+	 // 총 게시물 수
+		int totalCount = addrService.selectAddrBookListByGroupNameCount(groupName);
+	    log.debug("totalCount = {}", totalCount);
+
+	    // 총 페이지 수 계산
+	    int totalPage = (int) Math.ceil((double) totalCount / limit);
+	    log.debug("totalPage = {}", totalPage);
+
+	    // 시작 페이지와 끝 페이지 계산
+	    int startPage = ((cpage - 1) / 10) * 10 + 1; // 10 페이지씩 묶어서 보여줌
+	    int endPage = Math.min(startPage + 9, totalPage);
 		
 		log.debug("addrGroupNameList = {}", addrGroupNameList);
 		
 		model.addAttribute("addrGroupByName", addrGroupByName);
 	    model.addAttribute("addrGroupNameList", addrGroupNameList);
+	    model.addAttribute("currentPage", cpage);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPage", totalPage);
 	    return "addr/addrListForm";
 	}
 	
@@ -224,9 +244,16 @@ public class AddrBookController {
 			log.debug("addressBook = {}", addressBook);
 			int result = addrService.insertAddrbook(addressBook);
 			redirectAttr.addFlashAttribute("msg", "주소록을 성공적으로 저장했습니다.");
+			
+		if(addressBook.getGroupName() == null) {
+			return "redirect:/addr/addrHome.do";			
+		} else {
+			redirectAttr.addAttribute("groupName", addressBook.getGroupName());
+	        return "redirect:/addr/addrListForm.do";
+		}
+					
 		
-		
-		return "redirect:/addr/addrHome.do";
+//		return "redirect:/addr/addrHome.do";
 	}
 	
 	@GetMapping("/addrUpdateForm.do")
@@ -290,13 +317,6 @@ public class AddrBookController {
 	    String empId = ((Emp) authentication.getPrincipal()).getEmpId();
 	    log.debug("addrNos 시작 = {}", addrNos);
 	    
-//	    List<AddressBook> addrsToDelete = addrService.selectAddrsByNos(addrNos);
-//	    log.debug("addrNos 끝 = {}", addrNos);
-//	    log.debug("addrsToDelete = {}", addrsToDelete);
-//	    List<String> failedNos = new ArrayList<>();
-//	    for (AddressBook addressBook : addrsToDelete) { 
-//	            failedNos.add(addressBook.getAddrNo());
-//	        }
 
 	        int result = addrService.deleteAddrs(addrNos);
 

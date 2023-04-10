@@ -71,8 +71,8 @@ public class AddrServiceImpl implements AddrService {
 	}
 	
 	@Override
-	public List<AddressGroup> selectAddrBookListByGroupName(String groupName) {
-		return addrBookDao.selectAddrBookListByGroupName(groupName);
+	public List<AddressGroup> selectAddrBookListByGroupName(String groupName, RowBounds rowBounds) {
+		return addrBookDao.selectAddrBookListByGroupName(groupName, rowBounds);
 	}
 	
 	@Override
@@ -123,6 +123,11 @@ public class AddrServiceImpl implements AddrService {
 	@Override
 	public int deleteAddr(String addrNo) {
 		return addrBookDao.deleteAddr(addrNo);
+	}
+	
+	@Override
+	public int selectAddrBookListByGroupNameCount(String groupName) {
+		return addrBookDao.selectAddrBookListByGroupNameCount(groupName);
 	}
 }
 

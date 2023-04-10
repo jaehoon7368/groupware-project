@@ -20,9 +20,13 @@
 		<div class="container-title">개인 주소록</div>
 		<div class="home-topbar topbar-div">
 			<div>
-				<a href="#" id="home-my-img"> <img
-					src="${pageContext.request.contextPath}/resources/images/sample.jpg"
-					alt="" class="my-img">
+				<a href="#" id="home-my-img">
+					<c:if test="${!empty sessionScope.loginMember.attachment}">
+						<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+					</c:if>
+					<c:if test="${empty sessionScope.loginMember.attachment}">
+						<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+					</c:if>
 				</a>
 			</div>
 			<div id="my-menu-modal">
@@ -80,12 +84,20 @@
  	
  	<div class="div-padding"></div>
  	
- 	<div class="simpleFrm-wrap">
- 		<form action="" id="simpleEnrollFrm">
- 			<input style="color:gray; font-size:13px;" type="text" id="" name="" value="이름"/>
- 			<input style="color:gray; font-size:13px;"  type="text" id="" name="" value="이메일"/>
- 			<input style="color:gray; font-size:13px;" type="text" id="" name="" value="휴대폰" />
- 			<input type="button" id="" name="" style="height:30px; width:30px; border:none;" value="+"/> 
+ 	<div class="simpleFrm-wrap" style="display:none;">
+ 		<form action="${pageContext.request.contextPath}/addr/addrEnroll.do?${_csrf.parameterName}=${_csrf.token}" id="simpleEnrollFrm"method="post"
+ 		enctype="multipart/form-data">
+            <div id="profile-box" style="display:none;">
+               <label for="upfile"><i class="fa-solid fa-magnifying-glass" style="padding-top:7px;"></i></label>
+               <input type="file" id="upFile" name="upFile" accept="image/*" onchange="previewImage(event)">
+            </div>                   
+ 			<input style="color:gray; font-size:13px;" type="text" id="name" name="name" placeholder="이름"/>
+ 			<input style="color:gray; font-size:13px;"  type="text" id="email" name="email" placeholder="이메일"/>
+ 			<input style="color:gray; font-size:13px;" type="text" id="phone" name="phone" placeholder="휴대폰"/>
+ 			<input type="hidden" name="groupType" value="P" />
+ 			<input type="hidden" name="writer" id="writer" value="${loginMember.empId}" required>
+ 			<input type="hidden" name="groupName" value="${param.groupName}" />
+ 			<input type="submit" id="" name="" style="height:30px; width:30px; border:none;" value="+"/> 
  		</form>
  	</div>
  	<div class="div-padding"></div>
@@ -131,12 +143,12 @@
                 </tr>
                 </thead>
                 <tbody>
-	                <c:if test="${empty addrBookByName }">
-	                     <tr >
+	                <c:if test="${empty addrGroupByName}">
+	                     <tr>
 	                        <td colspan="11" style="padding-top:20px;">조회된 주소록이 없습니다..</td>
 	                    </tr>
 	                </c:if>
-	                <c:if test="${!empty addrBookByName }">
+	                <c:if test="${!empty addrGroupByName }">
 	               <c:forEach items="${addrGroupByName}" var="addr">
 					    <tr data-no="${addr.addrNo}">
 					        <td style="padding-left:5px;"><input type="checkbox" name="addrNo" value="${addr.addrNo}"/></td>
@@ -168,7 +180,7 @@
 
     <c:if test="${startPage > 1}">
       <li class="page-item">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrListForm.do?cpage=${startPage-1}" aria-label="Previous">
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrListForm.do?groupName=${param.groupName}&cpage=${startPage-1}" aria-label="Previous">
           <span aria-hidden="true">&lt;</span>
           <span class="sr-only">Previous</span>
         </a>
@@ -177,13 +189,13 @@
 
     <c:forEach var="i" begin="${startPage}" end="${endPage}">
       <li class="page-item ${i==currentPage ? 'active' : ''}">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrListForm.do?cpage=${i}">${i}</a>
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrListForm.do?groupName=${param.groupName}&cpage=${i}">${i}</a>
       </li>
     </c:forEach>
 
     <c:if test="${endPage < totalPage}">
       <li class="page-item">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAddrListForm.do?cpage=${endPage+1}" aria-label="Next">
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAddrListForm.do?groupName=${param.groupName}&cpage=${endPage+1}" aria-label="Next">
           <span aria-hidden="true">&gt;</span>
           <span class="sr-only">Next</span>
         </a>
@@ -192,72 +204,22 @@
 	</c:if>
 
 	
-<!-- 	
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const addList = $('#addressList'); // 주소록 리스트 요소 가져오기
-  addList.hide(); // 리스트 숨김 처리
+const quickRegisterButton = document.querySelector('.tool-button a');
 
-  // 클릭 이벤트 핸들러 함수
- function handleButtonClick(event) {
-  const keyword = event.target.innerText;
-  if (keyword === "전체") { // 전체 키워드인 경우
-	  location.reload(); // 숨겨진 모든 행 보이기
 
+quickRegisterButton.addEventListener('click', function() {
+  const simpleFrmWrap = document.querySelector('.simpleFrm-wrap');
+
+  if (simpleFrmWrap.style.display === 'none') {
+    simpleFrmWrap.style.display = 'block';
+  } else {
+    simpleFrmWrap.style.display = 'none';
   }
-  filterNames(keyword);
-  console.log(keyword);
-}
-
-  // 서버에 요청을 보내는 함수
-  function filterNames(keyword) {
-	  $.ajax({
-	      url: '${pageContext.request.contextPath}/addr/keywordSearch.do',
-	      type: 'GET',
-	      dataType: 'json',
-	      data: { keyword },
-	      success: function (data) {
-	        $('.addr-table tbody').empty();
-	        if (data.length === 0) {
-	          $('.addr-table tbody').append('<tr><td style="padding-top:50px;" colspan="11">조회된 주소록이 없습니다.</td></tr>');
-	        } else {
-	          $.each(data, function (index, item) {
-	            $('.addr-table tbody').append(
-	              '<tr data-no="' + item.addrNo + '">' +
-	              '<td><input type="checkbox" name="addrNo" value="' + item.addrNo + '"/></td>' +
-	              '<td>' +
-	              '<span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>' +
-	              item.name +
-	              '</td>' +
-	              '<td>' + item.jobName + '</td>' +
-	              '<td>' + item.phone + '</td>' +
-	              '<td>' + item.email + '</td>' +
-	              '<td>' + item.deptTitle + '</td>' +
-	              '<td>' + item.company + '</td>' +
-	              '<td>' + item.cpTel + '</td>' +
-	              '<td>' + item.cpAddress + '</td>' +
-	              '<td>' + item.memo + '</td>' +
-	              '<td>' + item.groupName + '</td>' +
-	              '</tr>'
-	            );
-	          });
-	        }
-	      },
-	      error: function (jqXHR, textStatus, errorThrown) {
-	        console.log(jqXHR.responseText);
-	      }
-	    });
-	  }
-
-  // 버튼 요소들 가져오기
-  const buttons = document.querySelectorAll('.btn-search-keyword');
-
-  // 버튼 요소들에 클릭 이벤트 핸들러 함수 등록하기
-  buttons.forEach(button => {
-    button.addEventListener('click', handleButtonClick);
-  });
+  
+  
 });
-</script> -->	
+</script>
 <script>
   // 클릭 이벤트 핸들러 함수
  function handleButtonClick(event) {

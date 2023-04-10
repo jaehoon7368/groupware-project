@@ -20,9 +20,13 @@
 		<div class="container-title">전체 주소록</div>
 		<div class="home-topbar topbar-div">
 			<div>
-				<a href="#" id="home-my-img"> <img
-					src="${pageContext.request.contextPath}/resources/images/sample.jpg"
-					alt="" class="my-img">
+				<a href="#" id="home-my-img">
+					<c:if test="${!empty sessionScope.loginMember.attachment}">
+						<img src="${pageContext.request.contextPath}/resources/upload/emp/${sessionScope.loginMember.attachment.renameFilename}" alt="" class="my-img">
+					</c:if>
+					<c:if test="${empty sessionScope.loginMember.attachment}">
+						<img src="${pageContext.request.contextPath}/resources/images/default.png" alt="" class="my-img">
+					</c:if>
 				</a>
 			</div>
 			<div id="my-menu-modal">
@@ -80,12 +84,19 @@
  	
  	<div class="div-padding"></div>
  	
- 	<div class="simpleFrm-wrap">
- 		<form action="" id="simpleEnrollFrm">
- 			<input style="color:gray; font-size:13px;" type="text" id="" name="" value="이름"/>
- 			<input style="color:gray; font-size:13px;"  type="text" id="" name="" value="이메일"/>
- 			<input style="color:gray; font-size:13px;" type="text" id="" name="" value="휴대폰" />
- 			<input type="button" id="" name="" style="height:30px; width:30px; border:none;" value="+"/> 
+ 	<div class="simpleFrm-wrap" style="display:none;">
+ 		<form action="${pageContext.request.contextPath}/addr/addrEnroll.do?${_csrf.parameterName}=${_csrf.token}" id="simpleEnrollFrm"method="post"
+ 		enctype="multipart/form-data">
+            <div id="profile-box" style="display:none;">
+               <label for="upfile"><i class="fa-solid fa-magnifying-glass" style="padding-top:7px;"></i></label>
+               <input type="file" id="upFile" name="upFile" accept="image/*" onchange="previewImage(event)">
+            </div>                   
+ 			<input style="color:gray; font-size:13px;" type="text" id="name" name="name" placeholder="이름"/>
+ 			<input style="color:gray; font-size:13px;"  type="text" id="email" name="email" placeholder="이메일"/>
+ 			<input style="color:gray; font-size:13px;" type="text" id="phone" name="phone" placeholder="휴대폰"/>
+ 			<input type="hidden" name="groupType" value="P" />
+ 			<input type="hidden" name="writer" id="writer" value="${loginMember.empId}" required>
+ 			<input type="submit" id="" name="" style="height:30px; width:30px; border:none;" value="+"/> 
  		</form>
  	</div>
  	<div class="div-padding"></div>
@@ -197,6 +208,22 @@
 	  </ul>
 	</c:if>
 
+<script>
+const quickRegisterButton = document.querySelector('.tool-button a');
+
+
+quickRegisterButton.addEventListener('click', function() {
+  const simpleFrmWrap = document.querySelector('.simpleFrm-wrap');
+
+  if (simpleFrmWrap.style.display === 'none') {
+    simpleFrmWrap.style.display = 'block';
+  } else {
+    simpleFrmWrap.style.display = 'none';
+  }
+  
+  
+});
+</script>
 <script>
   // 클릭 이벤트 핸들러 함수
  function handleButtonClick(event) {
