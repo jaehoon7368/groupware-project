@@ -191,7 +191,7 @@ public class SignServiceImpl implements SignService {
 		
 		// deptCode가 'd1'이 아닌 경우
 		if (!"d1".equals(sign.getDeptCode())) {
-			List<Emp> D1J12Manager = empDao.findByD1ManagerEmpList();
+			List<Emp> D1J123Manager = empDao.findByD1ManagerEmpList();
 			
 			Map<String, Object> param = new HashMap<>();
 			param.put("deptCode", sign.getDeptCode());
@@ -218,8 +218,8 @@ public class SignServiceImpl implements SignService {
 					signStatusList.add(new SignStatus(emp.getEmpId()));
 			} // 내 부서 결재자 결재선 추가
 
-			if (D1J12Manager != null) {
-				for (Emp emp : D1J12Manager)
+			if (D1J123Manager != null) {
+				for (Emp emp : D1J123Manager)
 					signStatusList.add(new SignStatus(emp.getEmpId()));
 			}
 		} // deptCode가 'd1'인 경우
