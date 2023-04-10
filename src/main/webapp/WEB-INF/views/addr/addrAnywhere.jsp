@@ -17,7 +17,7 @@
 <div class="home-container">
 	<!-- 상단 타이틀 -->
 	<div class="top-container">
-		<div class="container-title">주소록</div>
+		<div class="container-title">Anywhere 사내 주소록</div>
 		<div class="home-topbar topbar-div">
 			<div>
 				<a href="#" id="home-my-img"> <img
@@ -58,17 +58,11 @@
 	
 	<div class="content">
 	
-	<div class="tool-bar">
+	<%-- <div class="tool-bar">
  		<div class="tool-button">
  			<a href="#">
 		 		<span><img src="${pageContext.request.contextPath}/resources/images/plus.png" alt="" class="tool-img" /></span>
 		 		<span>빠른등록</span>
-	 		</a>
- 		</div>
- 		<div class="tool-button">
- 			<a href="${pageContext.request.contextPath}/board/boardForm.do?bType=A">
-		 		<span><img src="${pageContext.request.contextPath}/resources/images/email.png" alt="" class="tool-img" style="height:28px; width:28px;" /></span>
-		 		<span>메일발송</span>
 	 		</a>
  		</div>
  		<div class="tool-button">
@@ -94,7 +88,7 @@
  			<input style="color:gray; font-size:13px;" type="text" id="" name="" value="휴대폰" />
  			<input type="button" id="" name="" style="height:30px; width:30px; border:none;" value="+"/> 
  		</form>
- 	</div>
+ 	</div> --%>
  	<div class="div-padding"></div>
  	
  	<div id="search-div" class="search-div" style="display:flex;">
@@ -137,7 +131,12 @@
 					   	<tr data-no="${empList.empId}">
 					   		<td><input type="checkbox" name="addrNo" value="${empList.empId}"/></td>
 	                		<td>
-	                		<span class="writer-img"><img src="${pageContext.request.contextPath}/resources/images/sample.jpg" alt="" class="my-img"></span>
+	                		<c:if test="${!empty empList.renameFilename}">
+					            <img src="${pageContext.request.contextPath}/resources/upload/emp/${empList.renameFilename}" alt="" class="my-img">
+					        </c:if>
+					        <c:if test="${empty empList.renameFilename}">
+					             <img src="${pageContext.request.contextPath}/resources/images/default.png" alt=""class="my-img">
+					        </c:if>
 	                		${empList.name}
 	                		</td>
 	                		<td>${empList.jobTitle}</td>
@@ -170,7 +169,7 @@
 
     <c:forEach var="i" begin="${startPage}" end="${endPage}">
       <li class="page-item ${i==currentPage ? 'active' : ''}">
-        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do.do?cpage=${i}">${i}</a>
+        <a class="page-link" href="${pageContext.request.contextPath}/addr/addrAnywhere.do?cpage=${i}">${i}</a>
       </li>
     </c:forEach>
 
@@ -181,11 +180,11 @@
           <span class="sr-only">Next</span>
         </a>
       </li>
-	  </ul>
 	</c:if>
+	</ul>
 
 
-<script>
+<!-- <script>
 document.addEventListener('DOMContentLoaded', () => {
   const addList = $('#addressList'); // 주소록 리스트 요소 가져오기
   addList.hide(); // 리스트 숨김 처리
@@ -249,6 +248,21 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', handleButtonClick);
   });
 });
+</script> -->
+<script>
+  // 클릭 이벤트 핸들러 함수
+ function handleButtonClick(event) {
+	  console.log('event', event);
+  const keyword = event.target.innerText;
+  location.href = '${pageContext.request.contextPath}/addr/addrHome.do?keyword=' + keyword;
+	  console.log(keyword);
+  }
+  // 버튼 요소들 가져오기
+  const buttons = document.querySelectorAll('.btn-search-keyword');
+  // 버튼 요소들에 클릭 이벤트 핸들러 함수 등록하기
+  buttons.forEach(button => {
+    button.addEventListener('click', handleButtonClick);
+  });
 </script>
 <script>
 const styleChange = (btn) => {

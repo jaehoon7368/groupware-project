@@ -30,8 +30,7 @@
 								<li>
 									<p class="title font-medium">개인 주소록</p>
 									<div class="con">
-										<ul class="container-detail font-small" >
-												<li><a class="container-a" href="#">기본</a></li>
+										<ul class="container-detail font-small">
 												
 											
 											<c:forEach items="${sessionScope.addrGroupList}" var="addrGroup">
