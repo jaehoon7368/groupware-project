@@ -50,9 +50,9 @@ public class WorkingManagementController {
 	@Autowired
 	private EmpService empService;
 	
-	DateTimeFormatter dayff = DateTimeFormatter.ofPattern("yy-MM"); //날짜 패턴 변경
+	DateTimeFormatter dayff = DateTimeFormatter.ofPattern("yy.MM"); //날짜 패턴 변경
 	
-	DateTimeFormatter dayf = DateTimeFormatter.ofPattern("yy-MM-dd"); //날짜 패턴 변경
+	DateTimeFormatter dayf = DateTimeFormatter.ofPattern("yy.MM.dd"); //날짜 패턴 변경
 	LocalDateTime now = LocalDateTime.now(); //현재 시간
 	
 	// 근태관리 로드될시 금일 근무 기록 조회
