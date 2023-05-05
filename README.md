@@ -1,7 +1,6 @@
 # groupware-project
 
-url <br />
- http://43.200.241.19/
+url : http://43.200.241.19/
  
 일반회원 로그인 <br/>
  id : emp025 <br/>
