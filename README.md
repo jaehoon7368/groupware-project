@@ -19,6 +19,7 @@
 - DBMS : Oracle
 - Framework : Spring Framework, Mybatis
 - IDE : STS(Spring Tool Suite), SQLDeveloper
+- 배포 : AWS
 
 ***
 ### 구현 기능
