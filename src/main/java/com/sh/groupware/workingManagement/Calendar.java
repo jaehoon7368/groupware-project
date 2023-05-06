@@ -33,8 +33,8 @@ public class Calendar {
 	        if (weekEnd.isAfter(lastDate)) { // 현재 주의 마지막 날짜가 현재 달의 마지막 날짜를 넘어가면 현재 달의 마지막 날짜로 설정.
 	            weekEnd = lastDate;
 	        }
-	        String start = weekStart.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-	        String end = weekEnd.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+	        String start = weekStart.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	        String end = weekEnd.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	        Map<String, Object> week = new HashMap<>();
 	        week.put("start", start);
 	        week.put("end", end);
@@ -44,7 +44,7 @@ public class Calendar {
 
 	    // 종료일을 일요일로 변경
 	    LocalDate endDayOfThisWeek = lastDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
-	    weekDates.get(lastWeek + "주차").put("end", endDayOfThisWeek.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+	    weekDates.get(lastWeek + "주차").put("end", endDayOfThisWeek.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
 	    return weekDates;
 	}

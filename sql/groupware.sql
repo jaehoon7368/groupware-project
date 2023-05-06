@@ -658,3 +658,6 @@ select*from addressbook;
 select*from addressgroup;
 delete from addressgroup where no = '43';
 select*from boardType;
+
+select * from working_management;
+delete from working_management where no = '163';
