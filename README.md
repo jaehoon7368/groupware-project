@@ -1,5 +1,7 @@
 # groupware-project
 ***
+![ezgif com-video-to-gif (1)](https://user-images.githubusercontent.com/109495226/236609836-cb263dd2-7d49-4a41-9c1b-7aab520e82b7.gif)
+
 #### URL : http://43.200.241.19/
 #### 배포 : AWS
 
