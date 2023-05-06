@@ -1,6 +1,7 @@
 # groupware-project
 ***
 #### URL : http://43.200.241.19/
+#### 배포 : AWS
 
 ***
 #### 일반회원 로그인 <br/>
@@ -19,7 +20,6 @@
 - DBMS : Oracle
 - Framework : Spring Framework, Mybatis
 - IDE : STS(Spring Tool Suite), SQLDeveloper
-- 배포 : AWS
 
 ***
 ### 구현 기능
