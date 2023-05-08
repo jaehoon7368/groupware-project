@@ -51,7 +51,7 @@ public class WorkingManagementController {
 	private EmpService empService;
 	
 	DateTimeFormatter dayff = DateTimeFormatter.ofPattern("yy-MM"); //날짜 패턴 변경
-	
+	DateTimeFormatter dayfff = DateTimeFormatter.ofPattern("yy/MM"); //날짜 패턴 변경
 	DateTimeFormatter dayf = DateTimeFormatter.ofPattern("yy-MM-dd"); //날짜 패턴 변경
 	LocalDateTime now = LocalDateTime.now(); //현재 시간
 	
@@ -262,7 +262,7 @@ public class WorkingManagementController {
 		Emp principal = (Emp) authentication.getPrincipal();
 		String empId = principal.getEmpId();
 		
-		String monthTime = now.format(dayff);
+		String monthTime = now.format(dayfff);
 		
 		
 		Map<String,Object> param = new HashMap<>();
