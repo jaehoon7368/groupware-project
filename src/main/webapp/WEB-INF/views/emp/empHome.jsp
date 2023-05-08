@@ -338,7 +338,7 @@ function weekTimes(){
 		  data : {start, end},
 		  contentType : "application/json; charset=utf-8",
 		  success(data){
-			  console.log(data);
+			  console.log("weekTotalTime", data);
 			  const {totalMonthOverTime ,totalMonthTime, weekOverTime ,weekTotalTime} = data;
 			  const mainTotalWorkTime = document.querySelector("#main-totalwork-time");
 			  const mainWeekOverTime = document.querySelector("#main-week-over-time");
