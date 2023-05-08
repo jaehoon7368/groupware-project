@@ -43,5 +43,5 @@
 - 근태관리 구현(월, 주차, 일, 부서별)
 
 ***
-### DB - ERD
+### ERD
 https://www.erdcloud.com/d/2BgYNtAFPpE4NpNG8
